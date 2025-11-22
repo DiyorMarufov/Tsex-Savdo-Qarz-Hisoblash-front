@@ -6,6 +6,7 @@ import { useUser } from "../api/useAuth/useUser";
 import { useApiNotification } from "../../../shared/hooks/api-notification/useApiNotification";
 import { jwtDecode } from "jwt-decode";
 import { setToken } from "../model/authModel";
+import { useForm } from "antd/es/form/Form";
 
 type FieldType = {
   phone_number: string;
@@ -17,6 +18,7 @@ const { Item } = Form;
 const LoginForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [form] = useForm();
 
   const { handleApiError } = useApiNotification();
   const { signIn } = useUser();
@@ -39,11 +41,23 @@ const LoginForm = () => {
         navigate(`/${role}`);
       },
       onError: (err: any) => {
-        const message = err?.response?.data?.message;
+        const message = Array.isArray(err?.response?.data?.message)
+          ? err?.response?.data?.message[0]
+          : err?.response?.data?.message;
+
         switch (message) {
           case "Invalid credentials":
-            handleApiError("Foydalanuvchi topilmadi", "top");
+            handleApiError("Raqam yoki parol noto'g'ri", "top");
             break;
+
+          case "phone_number must be a valid phone number":
+            handleApiError("Telefon raqam noto'g'ri", "top");
+            break;
+
+          case "You have been blocked by superadmin":
+            handleApiError("Siz bloklangansiz", "top");
+            break;
+
           default:
             handleApiError("Serverda nosozlik", "top");
             break;
@@ -53,7 +67,7 @@ const LoginForm = () => {
   };
   return (
     <div className="h-screen flex justify-center items-center bg-bg-ty px-3">
-      <div className="h-[606px] w-[384px] flex flex-col gap-8">
+      <div className="h-[606px] w-[450px] flex flex-col gap-8">
         <div className="flex flex-col items-center gap-3">
           <span className="text-[32px] font-bold text-[#2D3748]">
             Xush kelibsiz!
@@ -62,8 +76,12 @@ const LoginForm = () => {
             Davom etish uchun tizimga kiring
           </span>
         </div>
-        <div className="h-[366px] pt-11 px-8 rounded-2xl shadow-sm bg-white">
-          <Form onFinish={onFinish}>
+        <div className="h-[366px] pt-11 px-6 rounded-2xl shadow-sm bg-white">
+          <Form
+            onFinish={onFinish}
+            form={form}
+            initialValues={{ phone_number: "+998 " }}
+          >
             <span className="flex mb-1 text-[16px] text-bg-sy">
               Telefon raqami
             </span>
@@ -75,7 +93,28 @@ const LoginForm = () => {
             >
               <Input
                 className="h-[49px]! placeholder:text-bg-sy! placeholder:text-[17px]! text-[17px]! bg-bg-ty!"
-                placeholder="+998"
+                placeholder="+998 90 123 45 67"
+                maxLength={17}
+                onChange={(e) => {
+                  if (!e.target.value.startsWith("+998")) {
+                    e.target.value =
+                      "+998" + e.target.value.replace(/\D/g, "").slice(0, 9);
+                  }
+
+                  const numbers = e.target.value.replace(/\D/g, "").slice(3);
+                  let formatted = "+998";
+
+                  if (numbers.length > 0)
+                    formatted += " " + numbers.slice(0, 2);
+                  if (numbers.length > 2)
+                    formatted += " " + numbers.slice(2, 5);
+                  if (numbers.length > 5)
+                    formatted += " " + numbers.slice(5, 7);
+                  if (numbers.length > 7)
+                    formatted += " " + numbers.slice(7, 9);
+
+                  form.setFieldsValue({ phone_number: formatted });
+                }}
               />
             </Item>
 

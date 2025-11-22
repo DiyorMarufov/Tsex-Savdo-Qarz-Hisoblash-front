@@ -45,10 +45,15 @@ const Sidebar: FC<Props> = ({ collapsed }) => {
       collapsible
       collapsed={collapsed}
       width={256}
-      className="h-screen pt-22"
-      style={{ background: "#fff" }}
+      className="pt-22 max-[701px]:hidden"
+      style={{
+        background: "#fff",
+        position: "sticky",
+        top: 0,
+        height: "100vh",
+        overflow: "auto",
+      }}
     >
-      <div className="demo-logo-vertical" />
       <Menu
         theme="light"
         mode="inline"

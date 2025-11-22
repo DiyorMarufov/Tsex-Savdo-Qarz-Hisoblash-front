@@ -14,7 +14,7 @@ export const useApiNotification = () => {
       | "bottomRight"
   ) => {
     api.error({
-      title: "Error",
+      title,
       message: title,
       placement,
     });

@@ -12,8 +12,8 @@ import type { ReactNode } from "react";
 export interface SidebarNavItem {
   id: number;
   to: string;
-  label: string;
-  icon: ReactNode;
+  label?: string;
+  icon?: ReactNode;
 }
 
 export const SuperadminSidebarNavigation: SidebarNavItem[] = [
