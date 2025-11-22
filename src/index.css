@@ -128,3 +128,7 @@
 .main-outlet::-webkit-scrollbar {
   display: none;
 }
+
+.main-content::-webkit-scrollbar {
+  display: none !important;
+}

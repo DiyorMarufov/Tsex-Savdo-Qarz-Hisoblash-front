@@ -24,6 +24,7 @@
     "react-input-mask": "^3.0.0-alpha.2",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.9.6",
+    "recharts": "^3.4.1",
     "tailwind-merge": "^3.4.0",
     "tailwindcss": "^4.1.17"
   },

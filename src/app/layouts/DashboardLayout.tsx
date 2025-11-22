@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Button, Layout } from "antd";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import Sidebar from "../../widgets/superadmin/sidebar/Sidebar";
 import { useSelector } from "react-redux";
 import type { RootState } from "../store";
@@ -10,6 +10,7 @@ import {
   SuperadminSidebarNavigation,
   type SidebarNavItem,
 } from "../../shared/config/routes";
+import BottomNav from "../../widgets/bottomNav/BottomNav";
 
 const { Header, Content } = Layout;
 
@@ -56,31 +57,14 @@ const DashboardLayout: React.FC = () => {
           />
         </Header>
         <Content
-          className="bg-bg-ty px-6.5 py-5"
+          className="bg-bg-ty px-6.5 pt-5 pb-20 main-content"
           style={{ minHeight: "calc(100vh - 64px)" }}
         >
           <Outlet />
         </Content>
       </Layout>
 
-      <div className="min-[701px]:hidden flex justify-between fixed bottom-[0.7px] left-0 w-full bg-white shadow-md z-50 px-[0.7px]">
-        {items.map((link: any) => (
-          <NavLink
-            end
-            to={link.key}
-            key={link?.key}
-            className={({ isActive }) =>
-              `${
-                isActive
-                  ? "bg-blue-500! text-white!"
-                  : "bg-white! text-blue-500! hover:bg-blue-100!"
-              } flex items-center justify-center w-full h-[55px] rounded-[3px]`
-            }
-          >
-            {link.icon}
-          </NavLink>
-        ))}
-      </div>
+      <BottomNav items={items} />
     </Layout>
   );
 };
