@@ -10,11 +10,10 @@ interface Props {
 
 const AdminGuard: FC<Props> = ({ allowedRoles }) => {
   const token = useSelector((state: RootState) => state.setToken.token);
-  const decoded = jwtDecode<{ id: number; role: string }>(token as string);
-  const { role } = decoded;
-
   if (!token) return <Navigate to="/login" replace />;
-
+  
+  const decoded = jwtDecode<{ id: number; role: string }>(token as any);
+  const { role } = decoded;
   const hasAccess = allowedRoles.includes(role);
 
   if (!hasAccess) return <Navigate to="/" replace />;

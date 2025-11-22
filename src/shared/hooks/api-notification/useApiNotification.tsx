@@ -1,4 +1,4 @@
-import { useNotificationApi } from "../providers/NotificatonProvider/NotificationProvider";
+import { useNotificationApi } from "../../providers/NotificatonProvider/NotificationProvider";
 
 export const useApiNotification = () => {
   const api = useNotificationApi();

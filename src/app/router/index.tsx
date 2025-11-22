@@ -5,22 +5,28 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import NavigateToRole from "../providers/router/guards/NavigateToRole";
 import AdminGuard from "../providers/router/guards/AdminGuard";
 import DashboardPage from "../../pages/superadmin/dashboard/DashboardPage";
+import AuthGuard from "../providers/router/guards/AuthGuard";
 
 const Router = () => {
   const routes = useRoutes([
     { path: "/login", element: <LoginPage /> },
-    { index: true, element: <NavigateToRole /> },
+    { path: "/", element: <NavigateToRole /> },
     {
-      path: "/",
-      element: <DashboardLayout />,
+      element: <AuthGuard />,
       children: [
         {
-          path: "superadmin",
-          element: <AdminGuard allowedRoles={["superadmin"]} />,
+          path: "/",
+          element: <DashboardLayout />,
           children: [
             {
-              index: true,
-              element: <DashboardPage />,
+              path: "superadmin",
+              element: <AdminGuard allowedRoles={["superadmin"]} />,
+              children: [
+                {
+                  index: true,
+                  element: <DashboardPage />,
+                },
+              ],
             },
           ],
         },

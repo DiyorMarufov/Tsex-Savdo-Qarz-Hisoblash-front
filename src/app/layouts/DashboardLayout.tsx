@@ -1,26 +1,19 @@
 import React, { useState } from "react";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { Button, Layout, Menu } from "antd";
+import { Button, Layout } from "antd";
 import { Outlet } from "react-router-dom";
+import Sidebar from "../../widgets/superadmin/sidebar/Sidebar";
 
-const { Header, Sider, Content } = Layout;
+const { Header, Content } = Layout;
 
 const DashboardLayout: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
     <Layout>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
-        <div className="demo-logo-vertical" />
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={["1"]}
-          items={[]}
-        />
-      </Sider>
+      <Sidebar collapsed={collapsed} />
       <Layout>
-        <Header style={{ padding: 0, background: "#F8F9FA" }}>
+        <Header className="bg-bg-ty! p-0!">
           <Button
             type="text"
             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
@@ -35,7 +28,7 @@ const DashboardLayout: React.FC = () => {
         <Content
           style={{
             padding: 32,
-            background: "#F8F9FA",
+            background: "#f8f9fa",
           }}
         >
           <Outlet />

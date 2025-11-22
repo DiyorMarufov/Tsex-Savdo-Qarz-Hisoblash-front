@@ -2,7 +2,7 @@ import { memo } from "react";
 import { AppProvider } from "./providers";
 import Router from "./router";
 
-const App = () => {
+const AppRouter = () => {
   return (
     <AppProvider>
       <Router />
@@ -10,4 +10,4 @@ const App = () => {
   );
 };
 
-export default memo(App);
+export default memo(AppRouter);
