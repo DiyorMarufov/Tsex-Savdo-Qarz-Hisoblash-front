@@ -1,9 +1,47 @@
-import { memo } from 'react';
+import { memo } from "react";
+import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
+import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
+import Filter from "../../../shared/ui/Filter/Filter";
+import { ProTable } from "@ant-design/pro-components";
+import { columns, fakeProducts } from "./model/product-table-model";
 
 const ProductsPage = () => {
   return (
     <div>
-      <h2>ProductsPage</h2>
+      <LargeTitle title="Mahsulotlar" />
+
+      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-6 p-[17px] flex items-center gap-4 max-[900px]:flex-wrap">
+        <SearchInput
+          placeholder="Mahsulot nomi,brandi bo'yicha qidirish"
+          className="h-12! min-[900px]:w-[50%]! bg-bg-ty! placeholder:text-[#616161]! text-[#616161]! text-[17px]!"
+        />
+        <div className="flex gap-4 min-[900px]:w-[50%] max-[900px]:w-full max-[390px]:flex-wrap">
+          <Filter
+            placeholder="Barcha do'konlar"
+            className="h-12! min-[900px]:w-[50%]! max-[900px]:w-full bg-bg-ty! text-[#616161]! text-[17px]!"
+          />
+          <Filter
+            placeholder="Barcha tsexlar"
+            className="h-12! min-[900px]:w-[50%]! max-[900px]:w-full bg-bg-ty! text-[#616161]! text-[17px]!"
+          />
+        </div>
+      </div>
+
+      <div className="mt-4">
+        <ProTable
+          dataSource={fakeProducts}
+          rowKey="id"
+          pagination={{
+            showSizeChanger: true,
+            responsive: false,
+          }}
+          columns={columns}
+          search={false}
+          dateFormatter="string"
+          headerTitle="Mahsulotlar"
+          scroll={{ x: "max-content" }}
+        />
+      </div>
     </div>
   );
 };

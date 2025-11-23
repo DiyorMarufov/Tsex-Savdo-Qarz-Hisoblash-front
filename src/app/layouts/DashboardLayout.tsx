@@ -11,6 +11,7 @@ import {
   type SidebarNavItem,
 } from "../../shared/config/routes";
 import BottomNav from "../../widgets/bottomNav/BottomNav";
+import logo from "../../shared/assets/logo/Background.svg";
 
 const { Header, Content } = Layout;
 
@@ -43,7 +44,7 @@ const DashboardLayout: React.FC = () => {
     <Layout style={{ minHeight: "100vh" }}>
       <Sidebar collapsed={collapsed} />
       <Layout>
-        <Header className="bg-bg-ty! p-0! sticky top-0 z-50 shadow-sm">
+        <Header className="bg-bg-ty! p-0! sticky top-0 z-50 shadow-sm flex">
           <Button
             type="text"
             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
@@ -55,6 +56,12 @@ const DashboardLayout: React.FC = () => {
             }}
             className="max-[701px]:hidden! max-[701px]:transition-all!"
           />
+          <div className="w-full flex justify-center max-[701px]:justify-start max-[701px]:pl-6.5">
+            <div className="flex items-center gap-3">
+              <img src={logo} className="w-10 h-10" alt="" />
+              <span className="text-[25px] font-bold max-[250px]:text-[20px]">Savdo tizimi</span>
+            </div>
+          </div>
         </Header>
         <Content
           className="bg-bg-ty px-6.5 pt-5 pb-20 main-content"

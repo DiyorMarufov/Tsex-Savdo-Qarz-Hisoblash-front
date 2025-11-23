@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { store } from "../store";
 import Loader from "../../shared/ui/Loader/Loader";
 import { NotificationProvider } from "../../shared/providers/NotificatonProvider/NotificationProvider";
+import { ConfigProvider } from "antd";
+import uzUZ from "../../locales/uzUZ";
 
 const client = new QueryClient({
   defaultOptions: {
@@ -20,7 +22,9 @@ export const AppProvider = memo(({ children }: { children: ReactNode }) => {
       <Provider store={store}>
         <QueryClientProvider client={client}>
           <NotificationProvider>
-            <Suspense fallback={<Loader />}>{children}</Suspense>
+            <ConfigProvider locale={uzUZ}>
+              <Suspense fallback={<Loader />}>{children}</Suspense>
+            </ConfigProvider>
           </NotificationProvider>
         </QueryClientProvider>
       </Provider>
