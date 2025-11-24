@@ -163,38 +163,4 @@ export const fakeProducts: ProductTableListItem[] = [
   },
 ];
 
-export const uzMessages: Record<string, string> = {
-  "tableToolBar.columnSetting": "Ustunlar",
-  "tableToolBar.columnDisplay": "Ko‘rinadigan ustunlar",
-  "tableToolBar.columnFixedLeft": "Chapga mahkamlash",
-  "tableToolBar.columnFixedRight": "O‘ngga mahkamlash",
-  "tableToolBar.columnFixedNone": "Mahkamlashni o‘chirish",
 
-  "tableToolBar.leftPin": "Chap tomonga mahkamlash",
-  "tableToolBar.rightPin": "O‘ng tomonga mahkamlash",
-  "tableToolBar.noPin": "Mahkamlashsiz",
-
-  "tableToolBar.reset": "Tiklash",
-  "tableToolBar.reload": "Yangilash",
-
-  "tableToolBar.density": "Ko‘rinish zichligi",
-  "tableToolBar.densityDefault": "O‘rta",
-  "tableToolBar.densityLarger": "Keng",
-  "tableToolBar.densitySmall": "Yig‘iq",
-
-  "tableToolBar.fixedLeft": "Chapga mahkamlangan",
-  "tableToolBar.notFixed": "Mahkamlanmagan",
-
-  "pagination.items_per_page": "sahifada",
-  "pagination.jump_to": "O‘tish",
-  "pagination.jump_to_confirm": "Tasdiqlash",
-  "pagination.page": "Sahifa",
-
-  "pagination.prev_page": "Oldingi",
-  "pagination.next_page": "Keyingi",
-  "pagination.prev_5": "Oldingi 5 sahifa",
-  "pagination.next_5": "Keyingi 5 sahifa",
-
-  "pagination.total": "Jami {{total}} ta",
-  "pagination.range": "{{start}}–{{end}} orasidagi",
-};

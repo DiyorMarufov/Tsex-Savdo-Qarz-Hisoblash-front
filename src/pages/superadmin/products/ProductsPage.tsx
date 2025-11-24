@@ -13,16 +13,16 @@ const ProductsPage = () => {
       <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-6 p-[17px] flex items-center gap-4 max-[900px]:flex-wrap">
         <SearchInput
           placeholder="Mahsulot nomi,brandi bo'yicha qidirish"
-          className="h-12! min-[900px]:w-[50%]! bg-bg-ty! placeholder:text-[#616161]! text-[#616161]! text-[17px]!"
+          className="h-12! min-[900px]:w-[50%]! bg-bg-ty! text-[17px]!"
         />
-        <div className="flex gap-4 min-[900px]:w-[50%] max-[900px]:w-full max-[390px]:flex-wrap">
+        <div className="flex gap-4 min-[900px]:w-[50%] max-[900px]:w-full max-[400px]:flex-wrap">
           <Filter
             placeholder="Barcha do'konlar"
-            className="h-12! min-[900px]:w-[50%]! max-[900px]:w-full bg-bg-ty! text-[#616161]! text-[17px]!"
+            className="h-12! min-[900px]:w-[50%]! max-[900px]:w-full! custom-select"
           />
           <Filter
             placeholder="Barcha tsexlar"
-            className="h-12! min-[900px]:w-[50%]! max-[900px]:w-full bg-bg-ty! text-[#616161]! text-[17px]!"
+            className="h-12! min-[900px]:w-[50%]! max-[900px]:w-full! custom-select"
           />
         </div>
       </div>

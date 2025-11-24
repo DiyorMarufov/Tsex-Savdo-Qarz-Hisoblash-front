@@ -7,7 +7,7 @@
   --color-bg-py: #1c1b22;
   --color-bg-sy: #4a5568;
   --color-bg-ty: #f8f9fa;
-  --color-bg-fy: #e2e8f0
+  --color-bg-fy: #e2e8f0;
 }
 
 @theme inline {
@@ -132,4 +132,23 @@
 
 .main-content::-webkit-scrollbar {
   display: none !important;
+}
+
+/* selectorning o‘zi */
+.custom-select .ant-select-selector {
+  background-color: #f8f9fa !important;
+  color: #616161 !important;
+  font-size: 15px !important;
+}
+
+/* placeholder color */
+.custom-select .ant-select-selection-placeholder {
+  color: #616161 !important;
+  font-size: 15px !important;
+}
+
+/* search input color */
+.custom-select .ant-select-selection-search input {
+  color: #616161 !important;
+  font-size: 15px !important;
 }

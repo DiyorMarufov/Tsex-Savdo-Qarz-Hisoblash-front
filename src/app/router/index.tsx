@@ -34,10 +34,10 @@ const SettingsPage = lazy(
 const Router = () => {
   const routes = useRoutes([
     { path: "/login", element: <LoginPage /> },
-    { path: "/", element: <NavigateToRole /> },
     {
       element: <AuthGuard />,
       children: [
+        { path: "/", element: <NavigateToRole /> },
         {
           path: "/",
           element: <DashboardLayout />,
