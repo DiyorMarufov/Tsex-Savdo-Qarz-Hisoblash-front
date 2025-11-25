@@ -3,7 +3,7 @@ import { Spinner } from "../../../components/ui/spinner";
 
 const Loader = () => {
   return (
-    <div className="h-screen flex justify-center items-center">
+    <div className="h-[89vh] flex justify-center items-center">
       <Spinner className="size-17 text-blue-500" />
     </div>
   );
