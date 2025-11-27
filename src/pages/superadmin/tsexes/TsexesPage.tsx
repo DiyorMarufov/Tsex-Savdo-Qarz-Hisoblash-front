@@ -1,14 +1,54 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
 import SmallTitle from "../../../shared/ui/Title/SmallTitle/SmallTitle";
+import { Button as AntdButton } from "antd";
 import Button from "../../../shared/ui/Button/Button";
 import { Plus } from "lucide-react";
 import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
 import { DatePicker } from "antd/lib";
 import ProTable from "@ant-design/pro-table";
 import { fakeTsexData, tsexColumns } from "./model/tsexes-model";
+import { Form, Input, Modal, Select, type FormProps } from "antd";
+import { useForm } from "antd/es/form/Form";
+
+type FieldType = {
+  tsex_id: string;
+  type: "partial_payment" | "payment" | "avans";
+  amount: number;
+  description?: string;
+};
 
 const TsexesPage = () => {
+  const [openDetail, setOpenDetail] = useState<boolean>(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [form] = useForm();
+
+  // Add Modal starts
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+  // Add Modal ends
+
+  // Add transaction starts
+  const onFinish: FormProps<FieldType>["onFinish"] = (values: FieldType) => {
+    console.log("Success:", values);
+  };
+  // Add transaction ends
+
+  // HandleOpenDetail starts
+  const handleOpenDetail = (row: any) => {
+    setSelectedRow(row);
+    setOpenDetail(true);
+  };
+  // HanleOpenDetail ends
+
+  console.log(openDetail, selectedRow);
   return (
     <div>
       <div className="flex items-center justify-between gap-3 max-[500px]:flex-wrap">
@@ -17,7 +57,7 @@ const TsexesPage = () => {
           <SmallTitle title="Barcha tsexlarning moliyaviy balanslarini kuzatish va boshqarish" />
         </div>
         <div className="max-[500px]:w-full">
-          <Button className="flex gap-2 max-[500px]:w-full">
+          <Button className="flex gap-2 max-[500px]:w-full" onClick={showModal}>
             <Plus /> Yangi operatsiya
           </Button>
         </div>
@@ -72,13 +112,113 @@ const TsexesPage = () => {
             showSizeChanger: true,
             responsive: false,
           }}
-          columns={tsexColumns}
+          columns={tsexColumns(handleOpenDetail)}
           search={false}
           dateFormatter="string"
           headerTitle="Tsexlar"
           scroll={{ x: "max-content" }}
         />
       </div>
+
+      <Modal
+        centered
+        title="To'lov qilish"
+        closable={{ "aria-label": "Custom Close Button" }}
+        open={isModalOpen}
+        onCancel={handleCancel}
+        footer={
+          <div className="flex gap-2 justify-end">
+            <AntdButton
+              className="bg-red-500! text-white!"
+              onClick={handleCancel}
+            >
+              Bekor qilish
+            </AntdButton>
+            <AntdButton
+              onClick={() => form.submit()}
+              className="bg-green-500! text-white!"
+            >
+              Tasdiqlash
+            </AntdButton>
+          </div>
+        }
+      >
+        <div className="mt-6">
+          <Form name="basic" onFinish={onFinish} form={form}>
+            <div>
+              <span className="flex mb-1 font-medium text-[15px]">Tsex</span>
+              <Form.Item<FieldType>
+                name="tsex_id"
+                rules={[
+                  {
+                    required: true,
+                    message: "Tsex tanlanishi shart!",
+                  },
+                ]}
+              >
+                <Select className="h-10!" />
+              </Form.Item>
+            </div>
+
+            <div>
+              <span className="flex mb-1 font-medium text-[15px]">
+                To'lov turi
+              </span>
+              <Form.Item<FieldType>
+                name="type"
+                rules={[
+                  {
+                    required: true,
+                    message: "To'lov turi tanlanishi shart!",
+                  },
+                ]}
+              >
+                <Select className="h-10!" />
+              </Form.Item>
+            </div>
+
+            <div>
+              <span className="flex mb-1 font-medium text-[15px]">Summa</span>
+              <Form.Item<FieldType> name="amount">
+                <Input className="h-10!" placeholder="0.00 UZS" />
+              </Form.Item>
+            </div>
+
+            <div>
+              <span className="flex mb-1 font-medium text-[15px]">
+                Izoh (ixtiyoriy)
+              </span>
+              <Form.Item<FieldType> name="description">
+                <Input.TextArea
+                  className="h-17!"
+                  autoSize={false}
+                  placeholder="Izoh"
+                />
+              </Form.Item>
+            </div>
+          </Form>
+        </div>
+      </Modal>
+
+      <Modal
+        centered
+        title="Moliya tarixi"
+        closable={{ "aria-label": "Custom Close Button" }}
+        open={openDetail}
+        onCancel={() => setOpenDetail(false)}
+        footer={
+          <div className="flex gap-2 justify-end">
+            <AntdButton
+              className="bg-red-500! text-white!"
+              onClick={() => setOpenDetail(false)}
+            >
+              Bekor qilish
+            </AntdButton>
+          </div>
+        }
+      >
+        hello
+      </Modal>
     </div>
   );
 };
