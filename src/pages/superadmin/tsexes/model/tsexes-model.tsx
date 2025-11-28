@@ -74,7 +74,7 @@ export const tsexColumns = (
     render: (_, record) => (
       <div
         className="text-[15px] text-green-500 cursor-pointer hover:opacity-80"
-        onClick={() => onOpenDetail(record)}
+        onClick={() => onOpenDetail(record.id)}
       >
         Batafsil
       </div>

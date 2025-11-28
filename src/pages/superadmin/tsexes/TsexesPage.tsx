@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo, useRef, useState } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
 import SmallTitle from "../../../shared/ui/Title/SmallTitle/SmallTitle";
 import { Button as AntdButton } from "antd";
@@ -10,6 +10,10 @@ import ProTable from "@ant-design/pro-table";
 import { fakeTsexData, tsexColumns } from "./model/tsexes-model";
 import { Form, Input, Modal, Select, type FormProps } from "antd";
 import { useForm } from "antd/es/form/Form";
+import {
+  fakeTsexTransactionsData,
+  tsexTransactionsColumns,
+} from "./model/tsexes-transactions-model";
 
 type FieldType = {
   tsex_id: string;
@@ -20,7 +24,7 @@ type FieldType = {
 
 const TsexesPage = () => {
   const [openDetail, setOpenDetail] = useState<boolean>(false);
-  const [selectedRow, setSelectedRow] = useState(null);
+  const tsexId = useRef<string | null>(null);
   const [form] = useForm();
 
   // Add Modal starts
@@ -42,24 +46,29 @@ const TsexesPage = () => {
   // Add transaction ends
 
   // HandleOpenDetail starts
-  const handleOpenDetail = (row: any) => {
-    setSelectedRow(row);
+  const handleOpenDetail = (id: string) => {
+    tsexId.current = id;
     setOpenDetail(true);
   };
   // HanleOpenDetail ends
-
-  console.log(openDetail, selectedRow);
   return (
     <div>
-      <div className="flex items-center justify-between gap-3 max-[500px]:flex-wrap">
+      <div className="flex items-center justify-between gap-3">
         <div>
           <LargeTitle title="Tsexlar" />
           <SmallTitle title="Barcha tsexlarning moliyaviy balanslarini kuzatish va boshqarish" />
         </div>
-        <div className="max-[500px]:w-full">
+        <div className="max-[500px]:w-full max-[500px]:hidden">
           <Button className="flex gap-2 max-[500px]:w-full" onClick={showModal}>
             <Plus /> Yangi operatsiya
           </Button>
+        </div>
+
+        <div
+          className="bg-green-500 p-4 rounded-full text-white sticky right-0 min-[500px]:hidden cursor-pointer"
+          onClick={showModal}
+        >
+          <Plus />
         </div>
       </div>
 
@@ -115,7 +124,6 @@ const TsexesPage = () => {
           columns={tsexColumns(handleOpenDetail)}
           search={false}
           dateFormatter="string"
-          headerTitle="Tsexlar"
           scroll={{ x: "max-content" }}
         />
       </div>
@@ -217,7 +225,18 @@ const TsexesPage = () => {
           </div>
         }
       >
-        hello
+        <ProTable
+          dataSource={fakeTsexTransactionsData}
+          rowKey="id"
+          pagination={{
+            showSizeChanger: true,
+            responsive: false,
+          }}
+          columns={tsexTransactionsColumns}
+          search={false}
+          dateFormatter="string"
+          scroll={{ x: "max-content" }}
+        />
       </Modal>
     </div>
   );
