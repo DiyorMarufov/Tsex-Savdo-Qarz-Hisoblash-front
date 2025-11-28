@@ -53,22 +53,15 @@ const TsexesPage = () => {
   // HanleOpenDetail ends
   return (
     <div>
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex items-center justify-between gap-3 max-[500px]:flex-wrap">
         <div>
           <LargeTitle title="Tsexlar" />
           <SmallTitle title="Barcha tsexlarning moliyaviy balanslarini kuzatish va boshqarish" />
         </div>
-        <div className="max-[500px]:w-full max-[500px]:hidden">
+        <div className="max-[500px]:w-full">
           <Button className="flex gap-2 max-[500px]:w-full" onClick={showModal}>
             <Plus /> Yangi operatsiya
           </Button>
-        </div>
-
-        <div
-          className="bg-green-500 p-4 rounded-full text-white sticky right-0 min-[500px]:hidden cursor-pointer"
-          onClick={showModal}
-        >
-          <Plus />
         </div>
       </div>
 

@@ -6,37 +6,32 @@ import { ArrowDown, ArrowUp, Plus } from "lucide-react";
 import Button from "../../../shared/ui/Button/Button";
 import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
 import ProTable from "@ant-design/pro-table";
+import { customerColumns, fakeCustomerData } from "./model/customers-model";
 
 const CustomersPage = () => {
   return (
     <div>
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex items-center justify-between gap-3 max-[1300px]:flex-wrap">
         <div>
           <LargeTitle title="Mijozlar" />
           <SmallTitle title="Qarzdorlik va hisob-kitoblarining joriy balansini kuzatish" />
         </div>
 
-        <div className="flex gap-3">
-          <div>
-            <AntdButton className="px-6! py-5! rounded-[10px]! bg-[#E5E7EB]!">
-              {" "}
-              <ArrowDown />
-              Qarz berish
-            </AntdButton>
-          </div>
-          <div>
-            <AntdButton className="px-6! py-5! rounded-[10px]! bg-[#E5E7EB]!">
-              {" "}
-              <ArrowUp />
-              Qarz berish
-            </AntdButton>
-          </div>
-          <div>
-            <Button className="rounded-[10px]!">
-              <Plus />
-              Yangi mijoz
-            </Button>
-          </div>
+        <div className="grid grid-cols-3 gap-3 max-[1300px]:w-full max-[830px]:grid-cols-2 max-[365px]:grid-cols-1">
+          <AntdButton className="py-5! rounded-[10px]! bg-[#E5E7EB]! max-[1300px]:w-full">
+            {" "}
+            <ArrowDown/>
+            Qarz berish
+          </AntdButton>
+          <AntdButton className="py-5! rounded-[10px]! bg-[#E5E7EB]! max-[1300px]:w-full">
+            {" "}
+            <ArrowUp />
+            Qarz olish
+          </AntdButton>
+          <Button className="rounded-[10px]! max-[1300px]:w-full max-[830px]:col-span-2! max-[365px]:col-span-1!">
+            <Plus />
+            Yangi mijoz
+          </Button>
         </div>
       </div>
 
@@ -76,20 +71,20 @@ const CustomersPage = () => {
           placeholder="Tsex nomi yoki operatsiya bo'yicha qidirish"
           className="h-12! bg-bg-ty! text-[17px]!"
         />
-        <div>
+        <div className="max-[960px]:w-full">
           <DatePicker className="h-12! bg-bg-ty! text-[17px]! w-[300px] max-[960px]:w-full!" />
         </div>
       </div>
 
       <div className="mt-4">
         <ProTable
-          // dataSource={fakeTsexData}
+          dataSource={fakeCustomerData}
           rowKey="id"
           pagination={{
             showSizeChanger: true,
             responsive: false,
           }}
-          // columns={tsexColumns(handleOpenDetail)}
+          columns={customerColumns}
           search={false}
           dateFormatter="string"
           scroll={{ x: "max-content" }}

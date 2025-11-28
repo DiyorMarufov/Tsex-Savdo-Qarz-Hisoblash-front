@@ -76,6 +76,7 @@ export const tsexTransactionsColumns: ProColumns<TsexTransactionsTableListItem>[
 
 export const fakeTsexTransactionsData: TsexTransactionsTableListItem[] = [
   {
+    id: "1",
     tsex: { name: "Krossovka tsexi" },
     type: "payment",
     amount: 5500000,
@@ -85,6 +86,7 @@ export const fakeTsexTransactionsData: TsexTransactionsTableListItem[] = [
     created_at: new Date("2025-11-28T10:00:00"),
   },
   {
+    id: "2",
     tsex: { name: "Etik tsexi" },
     type: "avans",
     amount: 2000000,
@@ -94,6 +96,7 @@ export const fakeTsexTransactionsData: TsexTransactionsTableListItem[] = [
     created_at: new Date("2025-11-27T15:30:00"),
   },
   {
+    id: "3",
     tsex: { name: "Krossovka tsexi" },
     type: "partial_payment",
     amount: 1500000,
@@ -103,6 +106,7 @@ export const fakeTsexTransactionsData: TsexTransactionsTableListItem[] = [
     created_at: new Date("2025-11-27T11:45:00"),
   },
   {
+    id: "4",
     tsex: { name: "Tapochka tsexi" },
     type: "payment",
     amount: 3200000,
@@ -112,6 +116,7 @@ export const fakeTsexTransactionsData: TsexTransactionsTableListItem[] = [
     created_at: new Date("2025-11-26T09:20:00"),
   },
   {
+    id: "5",
     tsex: { name: "Sport poyabzal tsexi" },
     type: "avans",
     amount: 1500000,

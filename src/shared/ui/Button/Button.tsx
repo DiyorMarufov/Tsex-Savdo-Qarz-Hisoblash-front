@@ -15,7 +15,7 @@ const ButtonComp: FC<Props> = ({
 }) => {
   return (
     <Button
-      className={`px-7! py-5! bg-green-500! text-white! rounded-2xl! ${className}`}
+      className={`py-5! bg-green-500! text-white! rounded-2xl! ${className}`}
       {...rest}
     >
       {children}

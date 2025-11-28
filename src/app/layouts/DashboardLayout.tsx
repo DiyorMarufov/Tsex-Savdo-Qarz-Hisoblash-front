@@ -64,7 +64,7 @@ const DashboardLayout: React.FC = () => {
           </div>
         </Header>
         <Content
-          className="bg-bg-ty px-6.5 pt-5 pb-22.5 main-content"
+          className="bg-bg-ty min-[700px]:px-4.5 max-[700px]:px-3.5 pt-5 pb-22.5 main-content "
           style={{ minHeight: "calc(100vh - 64px)" }}
         >
           <Outlet />
