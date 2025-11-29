@@ -1,22 +1,25 @@
 import type { Locale } from "antd/es/locale";
+import antdUz from "antd/es/locale/uz_UZ";
 
 const uzUZ: Locale = {
+  ...antdUz,
   locale: "uz",
-
   Pagination: {
-    items_per_page: "sahifada",
+    ...antdUz.Pagination,
+    items_per_page: "/ sahifada",
     jump_to: "O‘tish",
     jump_to_confirm: "Tasdiqlash",
     page: "Sahifa",
-    prev_page: "Oldingi",
-    next_page: "Keyingi",
-    prev_5: "Oldingi 5",
-    next_5: "Keyingi 5",
-    prev_3: "Oldingi 3",
-    next_3: "Keyingi 3",
+    prev_page: "Oldingi sahifa",
+    next_page: "Keyingi sahifa",
+    prev_5: "Oldingi 5 sahifa",
+    next_5: "Keyingi 5 sahifa",
+    prev_3: "Oldingi 3 sahifa",
+    next_3: "Keyingi 3 sahifa",
   },
 
   Table: {
+    ...antdUz.Table,
     filterTitle: "Filtr",
     filterConfirm: "OK",
     filterReset: "Tozalash",
@@ -34,17 +37,20 @@ const uzUZ: Locale = {
   },
 
   Modal: {
+    ...antdUz.Modal,
     okText: "OK",
     cancelText: "Bekor qilish",
     justOkText: "OK",
   },
 
   Popconfirm: {
+    ...antdUz.Popconfirm,
     okText: "OK",
     cancelText: "Bekor qilish",
   },
 
   Transfer: {
+    ...antdUz.Transfer,
     titles: ["Chap", "O‘ng"],
     searchPlaceholder: "Qidirish",
     itemUnit: "ta",
@@ -52,6 +58,7 @@ const uzUZ: Locale = {
   },
 
   Upload: {
+    ...antdUz.Upload,
     uploading: "Yuklanmoqda...",
     removeFile: "Faylni o‘chirish",
     uploadError: "Yuklashda xatolik",
@@ -60,14 +67,17 @@ const uzUZ: Locale = {
   },
 
   Empty: {
+    ...antdUz.Empty,
     description: "Ma’lumot yo‘q",
   },
 
   Form: {
+    ...antdUz.Form,
     optional: "(ixtiyoriy)",
     defaultValidateMessages: {
+      ...antdUz.Form?.defaultValidateMessages,
       default: "Xatolik mavjud",
-      required: "Bu maydon to‘ldirilishi shart",
+      required: "${label} maydon to‘ldirilishi shart",
       enum: "Qiymatlardan biri bo‘lishi kerak: [${enum}]",
       whitespace: "Bo‘sh bo‘lmasligi kerak",
       date: {
@@ -114,9 +124,12 @@ const uzUZ: Locale = {
     },
   },
 
+  // DatePicker qismi: Asosiy obyektdagi sanani boshqarish logikasini saqlab qolamiz
   DatePicker: {
+    ...antdUz.DatePicker,
     // @ts-ignore
     lang: {
+      ...antdUz.DatePicker?.lang,
       placeholder: "Sanani tanlang",
       yearPlaceholder: "Yilni tanlang",
       quarterPlaceholder: "Kvartal tanlang",
@@ -155,11 +168,14 @@ const uzUZ: Locale = {
   },
 
   TimePicker: {
+    ...antdUz.TimePicker,
     placeholder: "Vaqtni tanlang",
   },
 
   Calendar: {
+    ...antdUz.Calendar,
     lang: {
+      ...antdUz.Calendar?.lang,
       placeholder: "Sanani tanlang",
       yearPlaceholder: "Yilni tanlang",
       monthPlaceholder: "Oyni tanlang",

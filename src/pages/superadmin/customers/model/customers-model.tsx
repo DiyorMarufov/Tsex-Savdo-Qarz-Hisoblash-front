@@ -11,11 +11,13 @@ export type CustomersListItemsType = {
   details?: string;
 };
 
-export const customerColumns: ProColumns<CustomersListItemsType>[] = [
+export const customerColumns = (
+  openDetail: any
+): ProColumns<CustomersListItemsType>[] => [
   {
     title: "F.I",
     dataIndex: "full_name",
-    width: 130,
+    width: 120,
     fixed: "left",
     render: (_, record) => <a>{record.full_name}</a>,
   },
@@ -69,8 +71,11 @@ export const customerColumns: ProColumns<CustomersListItemsType>[] = [
     title: "",
     key: "",
     width: 70,
-    render: (_) => (
-      <div className="text-[15px] text-green-500 cursor-pointer hover:opacity-80">
+    render: (_, record) => (
+      <div
+        className="text-[15px] text-green-500 cursor-pointer hover:opacity-80"
+        onClick={() => openDetail(record.id)}
+      >
         Batafsil
       </div>
     ),

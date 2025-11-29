@@ -9,7 +9,6 @@ import { DatePicker } from "antd/lib";
 import ProTable from "@ant-design/pro-table";
 import { fakeTsexData, tsexColumns } from "./model/tsexes-model";
 import { Form, Input, Modal, Select, type FormProps } from "antd";
-import { useForm } from "antd/es/form/Form";
 import {
   fakeTsexTransactionsData,
   tsexTransactionsColumns,
@@ -25,7 +24,7 @@ type FieldType = {
 const TsexesPage = () => {
   const [openDetail, setOpenDetail] = useState<boolean>(false);
   const tsexId = useRef<string | null>(null);
-  const [form] = useForm();
+  const [form] = Form.useForm();
 
   // Add Modal starts
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -49,6 +48,10 @@ const TsexesPage = () => {
   const handleOpenDetail = (id: string) => {
     tsexId.current = id;
     setOpenDetail(true);
+  };
+
+  const handleCancelDetail = () => {
+    setOpenDetail(false);
   };
   // HanleOpenDetail ends
   return (
@@ -99,11 +102,9 @@ const TsexesPage = () => {
       <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-6 p-[17px] flex items-center gap-5 max-[960px]:flex-wrap">
         <SearchInput
           placeholder="Tsex nomi yoki operatsiya bo'yicha qidirish"
-          className="h-12! min-[1000px]:w-[50%]! bg-bg-ty! text-[17px]!"
+          className="h-12! bg-bg-ty! text-[17px]!"
         />
-        <div className="w-full">
-          <DatePicker className="h-12! bg-bg-ty! text-[17px]! w-[300px] max-[960px]:w-full!" />
-        </div>
+        <DatePicker className="h-12! bg-bg-ty! text-[17px]! w-[300px] max-[960px]:w-full!" />
       </div>
 
       <div className="mt-4">
@@ -206,12 +207,12 @@ const TsexesPage = () => {
         title="Moliya tarixi"
         closable={{ "aria-label": "Custom Close Button" }}
         open={openDetail}
-        onCancel={() => setOpenDetail(false)}
+        onCancel={handleCancelDetail}
         footer={
           <div className="flex gap-2 justify-end">
             <AntdButton
               className="bg-red-500! text-white!"
-              onClick={() => setOpenDetail(false)}
+              onClick={handleCancelDetail}
             >
               Bekor qilish
             </AntdButton>
