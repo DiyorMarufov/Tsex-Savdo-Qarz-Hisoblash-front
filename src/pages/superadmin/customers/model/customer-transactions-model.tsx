@@ -112,6 +112,7 @@ export const transactionColumns: ProColumns<CustomerTranscationsListItemsType>[]
 export const fakeTransactionData: CustomerTranscationsListItemsType[] = [
   // --- 1-Tranzaksiya: Qarz Olish (Borrowing) ---
   {
+    id: "1",
     customer: { id: "1", full_name: "Yusupov Akmal" },
     type: "borrowing",
     amount: 10000000,
@@ -123,6 +124,7 @@ export const fakeTransactionData: CustomerTranscationsListItemsType[] = [
 
   // --- 2-Tranzaksiya: Qarzni Qaytarish (Repayment) ---
   {
+    id: "2",
     customer: { id: "1", full_name: "Yusupov Akmal" },
     type: "repayment",
     amount: 3000000,
@@ -134,6 +136,7 @@ export const fakeTransactionData: CustomerTranscationsListItemsType[] = [
 
   // --- 3-Tranzaksiya: Qarzni To'liq Yopish (Paid Off) ---
   {
+    id: "3",
     customer: { id: "2", full_name: "Qodirova Shahnoza" },
     type: "paid_off",
     amount: 1200000,
@@ -145,6 +148,7 @@ export const fakeTransactionData: CustomerTranscationsListItemsType[] = [
 
   // --- 4-Tranzaksiya: Qo'shimcha Qarz Olish (Borrow More) ---
   {
+    id: "4",
     customer: { id: "5", full_name: "Karimov Javohir" },
     type: "borrow_more",
     amount: 500000,
@@ -156,6 +160,7 @@ export const fakeTransactionData: CustomerTranscationsListItemsType[] = [
 
   // --- 5-Tranzaksiya: Bizning Bergan Qarzimiz (Lending) ---
   {
+    id: "5",
     customer: { id: "3", full_name: "Sobirov Alijon" },
     type: "lending",
     amount: 850000,
@@ -167,6 +172,7 @@ export const fakeTransactionData: CustomerTranscationsListItemsType[] = [
 
   // --- 6-Tranzaksiya: Bergan Qarzimizdan Pulni Qaytarib Olish (Received) ---
   {
+    id: "6",
     customer: { id: "3", full_name: "Sobirov Alijon" },
     type: "received",
     amount: 350000,

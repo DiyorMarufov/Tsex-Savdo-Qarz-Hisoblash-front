@@ -181,7 +181,15 @@ const TsexesPage = () => {
 
             <div>
               <span className="flex mb-1 font-medium text-[15px]">Summa</span>
-              <Form.Item<FieldType> name="amount">
+              <Form.Item<FieldType>
+                name="amount"
+                rules={[
+                  {
+                    required: true,
+                    message: "To'lov summasi kiritilishi shart!",
+                  },
+                ]}
+              >
                 <Input className="h-10!" placeholder="0.00 UZS" />
               </Form.Item>
             </div>

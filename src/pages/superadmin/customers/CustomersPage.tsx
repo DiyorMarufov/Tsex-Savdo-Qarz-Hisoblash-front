@@ -313,7 +313,7 @@ const CustomersPage = () => {
                 rules={[
                   {
                     required: true,
-                    message: "Mijozning to'liq ismi kiritilishi shart!",
+                    message: "To'liq ism kiritilishi shart!",
                   },
                 ]}
               >
@@ -330,7 +330,7 @@ const CustomersPage = () => {
                 rules={[
                   {
                     required: true,
-                    message: "Mijozning tel raqami kiritilishi shart!",
+                    message: "Tel raqam kiritilishi shart!",
                   },
                 ]}
               >
@@ -345,6 +345,12 @@ const CustomersPage = () => {
               <Form.Item<newCustomerFieldType>
                 name="region"
                 className="w-full!"
+                rules={[
+                  {
+                    required: true,
+                    message: "Viloyat yoki shahar tanlanishi shart!",
+                  },
+                ]}
               >
                 <Select
                   className="h-10! w-full"

@@ -50,7 +50,7 @@ export const customerColumns = (
     },
   },
   {
-    title: "Oxirgi Tranzaksiya Sanasi",
+    title: "Oxirgi Tranzaksiya",
     dataIndex: "last_transaction",
     valueType: "dateTime",
     width: 180,
