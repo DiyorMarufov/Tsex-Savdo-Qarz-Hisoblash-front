@@ -34,7 +34,7 @@ export const columns: ProColumns<ProductTableListItem>[] = [
     dataIndex: "price",
     width: 100,
     align: "right",
-    render: (_, record) => record.price.toLocaleString(),
+    render: (_, record) => <div className="text-green-600 font-bold">{record.price.toLocaleString()}</div>,
   },
   {
     title: "Miqdori",

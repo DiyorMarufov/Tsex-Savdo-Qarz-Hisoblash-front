@@ -15,11 +15,8 @@ import Button from "../../../shared/ui/Button/Button";
 import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
 import ProTable from "@ant-design/pro-table";
 import { customerColumns, fakeCustomerData } from "./model/customers-model";
-import {
-  fakeTransactionData,
-  transactionColumns,
-} from "./model/customer-transactions-model";
 import CountUp from "react-countup";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 type transcationFieldType = {
   customer_id: string;
@@ -38,9 +35,9 @@ const CustomersPage = () => {
   const [transactionOpen, setTransactionOpen] = useState<boolean>(false);
   const transactionType = useRef<"lend" | "borrow" | null>(null);
   const [newCustomerOpen, setNewCustomerOpen] = useState<boolean>(false);
-  const [openDetail, setOpenDetail] = useState<boolean>(false);
-  const customerId = useRef<string | null>(null);
   const [form] = Form.useForm();
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   // Transaction starts
   const handleLend = () => {
@@ -83,15 +80,12 @@ const CustomersPage = () => {
 
   // Detail starts
   const handleOpenDetail = (id: string) => {
-    customerId.current = id;
-    setOpenDetail(true);
+    navigate(`detail/${id}`);
   };
 
-  const handleCancelDetail = () => {
-    setOpenDetail(false);
-  };
   // Detail ends
 
+  if (pathname.startsWith("/superadmin/customers/detail/")) return <Outlet />;
   return (
     <div>
       <div className="flex items-center justify-between gap-3 max-[1300px]:flex-wrap">
@@ -135,7 +129,7 @@ const CustomersPage = () => {
           <span className="font-bold text-[30px] text-green-600 max-[900px]:text-[25px] max-[500px]:text-[22px]">
             <CountUp
               start={0}
-              end={-15200000}
+              end={15200000}
               duration={2.5}
               separator=","
               decimal="."
@@ -150,7 +144,7 @@ const CustomersPage = () => {
           <span className="font-bold text-[30px] text-red-600 max-[900px]:text-[25px] max-[500px]:text-[22px]">
             <CountUp
               start={0}
-              end={15200000}
+              end={-15200000}
               duration={2.5}
               separator=","
               decimal="."
@@ -381,38 +375,6 @@ const CustomersPage = () => {
             </div>
           </Form>
         </div>
-      </Modal>
-
-      <Modal
-        centered
-        title="Moliya tarixi"
-        closable={{ "aria-label": "Custom Close Button" }}
-        open={openDetail}
-        onCancel={handleCancelDetail}
-        footer={
-          <div className="flex gap-2 justify-end">
-            <AntdButton
-              className="bg-red-500! text-white!"
-              onClick={handleCancelDetail}
-            >
-              Bekor qilish
-            </AntdButton>
-          </div>
-        }
-      >
-        <ProTable
-          dataSource={fakeTransactionData}
-          rowKey="id"
-          pagination={{
-            showSizeChanger: true,
-            responsive: false,
-          }}
-          columns={transactionColumns}
-          search={false}
-          dateFormatter="string"
-          scroll={{ x: "max-content" }}
-          style={{ width: "100%" }}
-        />
       </Modal>
     </div>
   );

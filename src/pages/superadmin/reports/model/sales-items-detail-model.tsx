@@ -19,7 +19,7 @@ export const salesItemColumns: ProColumns<SaleItemsTableListItem>[] = [
     width: 120,
     fixed: "left",
     sorter: true,
-    render: (_, record) => record.product?.name ?? "-",
+    render: (_, record) => <a>{record.product?.name ?? "-"}</a>,
   },
   {
     title: "Soni",

@@ -1,4 +1,5 @@
 import type { ProColumns } from "@ant-design/pro-table";
+import { Edit, Trash } from "lucide-react";
 
 export type CustomerTranscationsListItemsType = {
   id?: string;
@@ -16,6 +17,9 @@ export type CustomerTranscationsListItemsType = {
   description: string;
   balance_after: number;
   status: "open" | "closed";
+  created_at: Date;
+  actions?: any;
+  details?: any;
 };
 
 export const transactionColumns: ProColumns<CustomerTranscationsListItemsType>[] =
@@ -36,7 +40,7 @@ export const transactionColumns: ProColumns<CustomerTranscationsListItemsType>[]
       filters: true,
       onFilter: true,
       valueEnum: {
-        borrowing: { text: "Qarz oldi", status: "Error" },
+        borrowing: { text: "Qarz olish", status: "Error" },
         borrow_more: { text: "Qoʻshimcha qarz", status: "Error" },
         repayment: { text: "Qaytarish", status: "Success" },
         paid_off: { text: "Toʻliq yopish", status: "Success" },
@@ -54,7 +58,9 @@ export const transactionColumns: ProColumns<CustomerTranscationsListItemsType>[]
       render: (_, record) => {
         // Pul miqdorini formatlash
         const formattedAmount = record.amount.toLocaleString("uz-UZ");
-        return <span className="font-bold text-green-600">{formattedAmount}</span>;
+        return (
+          <span className="font-bold text-green-600">{formattedAmount}</span>
+        );
       },
     },
     {
@@ -68,7 +74,6 @@ export const transactionColumns: ProColumns<CustomerTranscationsListItemsType>[]
       title: "Tranzaksiyadan Keyingi Balans",
       dataIndex: "balance_after",
       width: 180,
-      align: "right",
       search: false,
       render: (_, record) => {
         const balanceAmount = record.balance_after;
@@ -101,10 +106,30 @@ export const transactionColumns: ProColumns<CustomerTranscationsListItemsType>[]
       ellipsis: true, // Uzun matnni qisqartirish
       search: false,
     },
+    {
+      title: "Amallar",
+      width: 100,
+      valueType: "option",
+      render: (_) => (
+        <div className="flex gap-3">
+          <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
+          <Trash className="text-red-600 cursor-pointer hover:opacity-80" />
+        </div>
+      ),
+    },
+    {
+      title: "",
+      key: "",
+      width: 100,
+      render: (_) => (
+        <div className="text-[15px] text-green-500 cursor-pointer hover:opacity-80">
+          Batafsil
+        </div>
+      ),
+    },
   ];
 
 export const fakeTransactionData: CustomerTranscationsListItemsType[] = [
-  // --- 1-Tranzaksiya: Qarz Olish (Borrowing) ---
   {
     id: "1",
     customer: { id: "1", full_name: "Yusupov Akmal" },
@@ -112,67 +137,20 @@ export const fakeTransactionData: CustomerTranscationsListItemsType[] = [
     amount: 10000000,
     due_date: new Date("2026-01-15"),
     description: "Asosiy qarzni olib ketish",
-    balance_after: -10000000, // Qarz yuki (Manfiy balans)
+    balance_after: -10000000,
     status: "open",
+    created_at: new Date("2025-12-30"),
   },
 
-  // --- 2-Tranzaksiya: Qarzni Qaytarish (Repayment) ---
   {
     id: "2",
     customer: { id: "1", full_name: "Yusupov Akmal" },
-    type: "repayment",
-    amount: 3000000,
-    due_date: new Date("2026-01-15"),
-    description: "Birinchi to'lov (qarz qismini yopish)",
-    balance_after: -7000000, // Qarz kamaydi
-    status: "open",
-  },
-
-  // --- 3-Tranzaksiya: Qarzni To'liq Yopish (Paid Off) ---
-  {
-    id: "3",
-    customer: { id: "2", full_name: "Qodirova Shahnoza" },
-    type: "paid_off",
-    amount: 1200000,
-    due_date: new Date("2025-11-27"),
-    description: "Oldingi 1.2 mln so'mlik qarz to'liq yopildi",
-    balance_after: 0, // Balans 0 ga teng
-    status: "closed",
-  },
-
-  // --- 4-Tranzaksiya: Qo'shimcha Qarz Olish (Borrow More) ---
-  {
-    id: "4",
-    customer: { id: "5", full_name: "Karimov Javohir" },
-    type: "borrow_more",
-    amount: 500000,
-    due_date: new Date("2026-02-01"),
-    description: "Kutilmagan xarajatlar uchun qo'shimcha mablag'",
-    balance_after: -4700000, // Oldingi -4200000 ga +500000 qo'shildi
-    status: "open",
-  },
-
-  // --- 5-Tranzaksiya: Bizning Bergan Qarzimiz (Lending) ---
-  {
-    id: "5",
-    customer: { id: "3", full_name: "Sobirov Alijon" },
     type: "lending",
     amount: 850000,
     due_date: new Date("2025-12-30"),
     description: "Biz tomonidan berilgan tovar krediti",
-    balance_after: 850000, // Bizga qarzdor (Musbat balans)
+    balance_after: 850000,
     status: "open",
-  },
-
-  // --- 6-Tranzaksiya: Bergan Qarzimizdan Pulni Qaytarib Olish (Received) ---
-  {
-    id: "6",
-    customer: { id: "3", full_name: "Sobirov Alijon" },
-    type: "received",
-    amount: 350000,
-    due_date: new Date("2025-12-30"),
-    description: "Berilgan qarzning bir qismi qoplandi",
-    balance_after: 500000, // Bizga qarz qoldi
-    status: "open",
+    created_at: new Date("2025-12-30"),
   },
 ];

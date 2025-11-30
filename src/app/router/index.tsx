@@ -1,6 +1,9 @@
 import { lazy, memo } from "react";
 import { useRoutes } from "react-router-dom";
 
+const CustomersDetailPage = lazy(
+  () => import("../../pages/superadmin/customers/CustomersDetailPage")
+);
 const LoginPage = lazy(() => import("../../pages/login/LoginPage"));
 const DashboardLayout = lazy(() => import("../layouts/DashboardLayout"));
 const NavigateToRole = lazy(
@@ -64,7 +67,16 @@ const Router = () => {
                 },
                 {
                   path: "customers",
-                  element: <CustomersPage />,
+                  children: [
+                    {
+                      index: true,
+                      element: <CustomersPage />,
+                    },
+                    {
+                      path: "detail/:id",
+                      element: <CustomersDetailPage />,
+                    },
+                  ],
                 },
                 {
                   path: "users",
