@@ -14,7 +14,6 @@ export const useApiNotification = () => {
       | "bottomRight"
   ) => {
     api.error({
-      title,
       message: title,
       placement,
     });
@@ -25,7 +24,6 @@ export const useApiNotification = () => {
     description: string = ""
   ) => {
     api.success({
-      title: "Success",
       message: title,
       description,
       placement: "topRight",
@@ -37,7 +35,6 @@ export const useApiNotification = () => {
     description: string = "Something went wrong"
   ) => {
     api.warning({
-      title: "Warning",
       message: title,
       description,
       placement: "topRight",
