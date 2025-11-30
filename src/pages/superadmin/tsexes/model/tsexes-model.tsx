@@ -32,14 +32,16 @@ export const tsexColumns = (
     dataIndex: "balance",
     width: 100,
     align: "right",
-    render: (_, record) =>
-      record.balance > 0 ? (
-        <div className="text-red-600">- {record.balance.toLocaleString()}</div>
-      ) : (
-        <div className="text-green-600">
-          + {record.balance.toLocaleString()}
-        </div>
-      ),
+    render: (_, record) => {
+      const balanceAmount = record.balance;
+      const formattedAmount = Math.abs(balanceAmount).toLocaleString("uz-UZ");
+
+      if (balanceAmount > 0) {
+        return <div className="text-red-600">- {formattedAmount}</div>;
+      }
+
+      return <div className="text-green-600">{formattedAmount}</div>;
+    },
   },
   {
     title: "Oxirgi operatsiya",

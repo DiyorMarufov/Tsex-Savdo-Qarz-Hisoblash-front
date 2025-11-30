@@ -19,6 +19,7 @@ import {
   fakeTransactionData,
   transactionColumns,
 } from "./model/customer-transactions-model";
+import CountUp from "react-countup";
 
 type transcationFieldType = {
   customer_id: string;
@@ -132,7 +133,14 @@ const CustomersPage = () => {
             Jami haqdorlik
           </span>
           <span className="font-bold text-[30px] text-green-600 max-[900px]:text-[25px] max-[500px]:text-[22px]">
-            15,200,000 usz
+            <CountUp
+              start={0}
+              end={-15200000}
+              duration={2.5}
+              separator=","
+              decimal="."
+              suffix=" UZS"
+            />
           </span>
         </div>
         <div className="border border-bg-fy bg-[#ffffff] rounded-2xl p-7 flex flex-col gap-1 max-[500px]:items-center">
@@ -140,7 +148,14 @@ const CustomersPage = () => {
             Jami qarzdorlik
           </span>
           <span className="font-bold text-[30px] text-red-600 max-[900px]:text-[25px] max-[500px]:text-[22px]">
-            15,200,000 usz
+            <CountUp
+              start={0}
+              end={15200000}
+              duration={2.5}
+              separator=","
+              decimal="."
+              suffix=" UZS"
+            />
           </span>
         </div>
         <div
@@ -152,7 +167,15 @@ const CustomersPage = () => {
             Umumiy balans
           </span>
           <span className="font-bold text-[30px] text-green-600 max-[900px]:text-[25px] max-[500px]:text-[22px]">
-            +15,200,000 usz
+            +
+            <CountUp
+              start={0}
+              end={15200000}
+              duration={2.5}
+              separator=","
+              decimal="."
+              suffix=" UZS"
+            />
           </span>
         </div>
       </div>
@@ -214,9 +237,7 @@ const CustomersPage = () => {
         <div className="mt-6">
           <Form name="basic" onFinish={transactionOnFinish} form={form}>
             <div>
-              <span className="flex mb-1 font-medium text-[15px]">
-                Sotib oluvchi
-              </span>
+              <span className="flex mb-1 font-medium text-[15px]">Mijoz</span>
               <Form.Item<transcationFieldType>
                 name="customer_id"
                 rules={[

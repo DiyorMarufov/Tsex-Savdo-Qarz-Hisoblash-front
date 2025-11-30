@@ -34,6 +34,7 @@ export const columns: ProColumns<ProductTableListItem>[] = [
     dataIndex: "price",
     width: 100,
     align: "right",
+    render: (_, record) => record.price.toLocaleString(),
   },
   {
     title: "Miqdori",
@@ -162,5 +163,3 @@ export const fakeProducts: ProductTableListItem[] = [
     actions: {},
   },
 ];
-
-

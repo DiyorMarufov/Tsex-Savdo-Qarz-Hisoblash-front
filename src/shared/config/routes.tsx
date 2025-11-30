@@ -44,7 +44,7 @@ export const SuperadminSidebarNavigation: SidebarNavItem[] = [
   {
     id: 5,
     to: "/superadmin/customers",
-    label: "Sotib oluvchilar",
+    label: "Mijozlar",
     icon: <Users className="w-5 h-5" />,
   },
   {

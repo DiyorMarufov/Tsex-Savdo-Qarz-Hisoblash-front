@@ -9,7 +9,6 @@ import {
   Button as AntdButton,
   Form,
   type FormProps,
-  Space,
   DatePicker,
   Select,
 } from "antd";
@@ -114,21 +113,20 @@ const ReportsPage = () => {
       >
         <div className="mt-6">
           <Form name="basic" onFinish={filterOnFinish} form={form}>
-            <div className="mb-5">
+            <div className="mb-5 w-full">
               <span className="flex mb-1 font-medium text-[15px]">
                 Sana oralig'i
               </span>
-              <Space>
-                <DatePicker.RangePicker
-                  showTime={{ format: "HH:mm" }}
-                  format="YYYY-MM-DD HH:mm"
-                  onChange={(value, dateString) => {
-                    console.log("Selected Time: ", value);
-                    console.log("Formatted Selected Time: ", dateString);
-                  }}
-                  className="h-10!"
-                />
-              </Space>
+              <DatePicker.RangePicker
+                showTime={{ format: "HH:mm" }}
+                format="YYYY-MM-DD HH:mm"
+                onChange={(value, dateString) => {
+                  console.log("Selected Time: ", value);
+                  console.log("Formatted Selected Time: ", dateString);
+                }}
+                className="h-10! w-full"
+                inputReadOnly
+              />
             </div>
 
             <div>
@@ -146,9 +144,7 @@ const ReportsPage = () => {
             </div>
 
             <div>
-              <span className="flex mb-1 font-medium text-[15px]">
-                Sotib oluvchi
-              </span>
+              <span className="flex mb-1 font-medium text-[15px]">Mijoz</span>
               <Form.Item<filterFieldType> name="customer">
                 <Select className="h-10!" />
               </Form.Item>

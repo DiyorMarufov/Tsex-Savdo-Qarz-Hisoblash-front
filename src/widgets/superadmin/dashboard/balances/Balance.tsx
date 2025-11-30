@@ -1,5 +1,6 @@
 import { ArrowUp } from "lucide-react";
 import { memo } from "react";
+import CountUp from "react-countup";
 
 const Balances = () => {
   return (
@@ -9,7 +10,15 @@ const Balances = () => {
           Umumiy Savdo
         </span>
         <span className="text-[32px] font-bold text-bg-py max-[560px]:text-[25px] max-[480px]:text-[20px]">
-          125.4M USZ
+          <CountUp
+            start={0}
+            end={125.4}
+            duration={2.5}
+            separator=" "
+            decimal="."
+            decimals={1}
+            suffix="M UZS"
+          />
         </span>
         <span className="flex items-center text-green-500">
           <ArrowUp className="w-4 h-4" /> +<span>12.5</span>%
@@ -20,7 +29,15 @@ const Balances = () => {
           Umumiy Qarzlar
         </span>
         <span className="text-[32px] font-bold text-bg-py max-[560px]:text-[25px] max-[480px]:text-[20px]">
-          125.4M USZ
+          <CountUp
+            start={0}
+            end={125.4}
+            duration={2.5}
+            separator=" "
+            decimal="."
+            decimals={1}
+            suffix="M UZS"
+          />
         </span>
         <span className="flex items-center text-red-500">
           <ArrowUp className="w-4 h-4" /> +<span>12.5</span>%
@@ -31,7 +48,15 @@ const Balances = () => {
           Tsexlar Balansi
         </span>
         <span className="text-[32px] font-bold text-bg-py max-[560px]:text-[25px] max-[480px]:text-[20px]">
-          125.4M USZ
+          <CountUp
+            start={0}
+            end={125.4}
+            duration={2.5}
+            separator=" "
+            decimal="."
+            decimals={1}
+            suffix="M UZS"
+          />
         </span>
         <span className="flex items-center text-green-500">
           <ArrowUp className="w-4 h-4" /> +<span>12.5</span>%
@@ -42,7 +67,15 @@ const Balances = () => {
           Mijozlar balansi
         </span>
         <span className="text-[32px] font-bold text-bg-py max-[560px]:text-[25px] max-[480px]:text-[20px]">
-          125.4M USZ
+          <CountUp
+            start={0}
+            end={125.4}
+            duration={2.5}
+            separator=" "
+            decimal="."
+            decimals={1}
+            suffix="M UZS"
+          />
         </span>
         <span className="flex items-center text-green-500">
           <ArrowUp className="w-4 h-4" /> +<span>12.5</span>%

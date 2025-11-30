@@ -35,8 +35,10 @@ export const salesItemColumns: ProColumns<SaleItemsTableListItem>[] = [
     sorter: true,
     hideInSearch: true,
     render: (_, record) => {
-      const formattedAmount = record.price.toLocaleString("uz-UZ");
-      return <span className="font-medium">{formattedAmount}</span>;
+      const formattedAmount = record.price.toLocaleString();
+      return (
+        <span className="font-bold text-green-600">{formattedAmount}</span>
+      );
     },
   },
   {
@@ -45,8 +47,8 @@ export const salesItemColumns: ProColumns<SaleItemsTableListItem>[] = [
     width: 160,
     sorter: true,
     render: (_, record) => (
-      <span className="font-bold text-blue-600">
-        {record.total_amount.toLocaleString("uz-UZ")}
+      <span className="font-bold text-green-600">
+        {record.total_amount.toLocaleString()}
       </span>
     ),
   },

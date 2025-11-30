@@ -50,12 +50,11 @@ export const transactionColumns: ProColumns<CustomerTranscationsListItemsType>[]
       dataIndex: "amount",
       width: 120,
       align: "right",
-      valueType: "money",
       sorter: true,
       render: (_, record) => {
         // Pul miqdorini formatlash
         const formattedAmount = record.amount.toLocaleString("uz-UZ");
-        return <span className="font-medium">{formattedAmount}</span>;
+        return <span className="font-bold text-green-600">{formattedAmount}</span>;
       },
     },
     {
@@ -72,23 +71,18 @@ export const transactionColumns: ProColumns<CustomerTranscationsListItemsType>[]
       align: "right",
       search: false,
       render: (_, record) => {
-        const balance = record.balance_after;
-        const formattedBalance = Math.abs(balance).toLocaleString("uz-UZ");
+        const balanceAmount = record.balance_after;
+        const formattedAmount = Math.abs(balanceAmount).toLocaleString("uz-UZ");
 
-        if (balance > 0) {
-          // Musbat: Bizga qarz/foyda
+        if (balanceAmount > 0) {
           return (
-            <div className="text-green-600 font-bold">+ {formattedBalance}</div>
+            <div className="text-red-600 font-bold">- {formattedAmount}</div>
           );
         }
-        if (balance < 0) {
-          // Manfiy: Bizning qarzimiz/Zarar
-          return (
-            <div className="text-red-600 font-bold">- {formattedBalance}</div>
-          );
-        }
-        // Nol
-        return <div className="text-gray-500">{formattedBalance}</div>;
+
+        return (
+          <div className="text-green-600 font-bold">{formattedAmount}</div>
+        );
       },
     },
     {

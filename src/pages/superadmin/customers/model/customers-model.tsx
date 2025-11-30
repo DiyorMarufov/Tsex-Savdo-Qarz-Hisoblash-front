@@ -40,11 +40,11 @@ export const customerColumns = (
     align: "right",
     render: (_, record) => {
       const formattedBalance = record.balance.toLocaleString();
-      return record.balance >= 0 ? (
-        <div className="text-green-600">+ {formattedBalance}</div>
+      return record.balance > 0 ? (
+        <div className="text-red-600">-{formattedBalance}</div>
       ) : (
-        <div className="text-red-600">
-          - {formattedBalance.replace("-", "")}
+        <div className="text-green-600">
+          {formattedBalance}
         </div>
       );
     },

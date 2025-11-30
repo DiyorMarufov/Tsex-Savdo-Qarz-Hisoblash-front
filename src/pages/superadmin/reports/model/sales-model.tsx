@@ -67,7 +67,11 @@ export const salesColumns = (
     width: 120,
     sorter: true,
     hideInSearch: true,
-    render: (_, record) => record.total_sum.toLocaleString(),
+    render: (_, record) => (
+      <div className="text-green-600 font-bold">
+        {record.total_sum.toLocaleString()}
+      </div>
+    ),
   },
   {
     title: "To'langan",
@@ -75,7 +79,11 @@ export const salesColumns = (
     width: 120,
     sorter: true,
     hideInSearch: true,
-    render: (_, record) => record.paid_amount.toLocaleString(),
+    render: (_, record) => (
+      <div className="text-green-600 font-bold">
+        {record.paid_amount.toLocaleString()}
+      </div>
+    ),
   },
   {
     title: "Qarz (UZS)",
@@ -113,7 +121,7 @@ export const salesColumns = (
     render: (_, record) => (
       <div
         className="text-[15px] text-green-500 cursor-pointer hover:opacity-80"
-        onClick={()=> onOpenDetail(record.id)}
+        onClick={() => onOpenDetail(record.id)}
       >
         Batafsil
       </div>

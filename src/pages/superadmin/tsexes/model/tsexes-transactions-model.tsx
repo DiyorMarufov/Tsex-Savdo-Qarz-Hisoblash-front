@@ -36,15 +36,9 @@ export const tsexTransactionsColumns: ProColumns<TsexTransactionsTableListItem>[
       dataIndex: "amount",
       width: 130,
       align: "right",
-      render: (_, record) => {
-        const formattedAmount = record.amount.toLocaleString();
-        const isNegative = record.type === "avans";
-        return (
-          <div className={isNegative ? "text-red-600" : "text-green-600"}>
-            {isNegative ? `- ${formattedAmount}` : `+ ${formattedAmount}`}
-          </div>
-        );
-      },
+      render: (_, record) => (
+        <div className="text-green-600">{record.amount.toLocaleString()}</div>
+      ),
     },
     {
       title: "Izoh",
@@ -57,7 +51,16 @@ export const tsexTransactionsColumns: ProColumns<TsexTransactionsTableListItem>[
       dataIndex: "balance_after",
       width: 130,
       align: "right",
-      render: (_, record) => record.balance_after.toLocaleString() + " UZS",
+      render: (_, record) => {
+        const balanceAmount = record.balance_after;
+        const formattedAmount = Math.abs(balanceAmount).toLocaleString("uz-UZ");
+
+        if (balanceAmount > 0) {
+          return <div className="text-red-600 font-bold">- {formattedAmount}</div>;
+        }
+
+        return <div className="text-green-600 font-bold">{formattedAmount}</div>;
+      },
     },
     {
       title: "Kim Kiritdi",

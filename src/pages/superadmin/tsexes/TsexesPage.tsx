@@ -13,6 +13,7 @@ import {
   fakeTsexTransactionsData,
   tsexTransactionsColumns,
 } from "./model/tsexes-transactions-model";
+import CountUp from "react-countup";
 
 type FieldType = {
   tsex_id: string;
@@ -74,7 +75,14 @@ const TsexesPage = () => {
             Jami haqdorlik
           </span>
           <span className="font-bold text-[30px] text-green-600 max-[900px]:text-[25px] max-[500px]:text-[22px]">
-            15,200,000 usz
+            <CountUp
+              start={0}
+              end={15200000}
+              duration={2.5}
+              separator=","
+              decimal="."
+              suffix=" UZS"
+            />
           </span>
         </div>
         <div className="border border-bg-fy bg-[#ffffff] rounded-2xl p-7 flex flex-col gap-1 max-[500px]:items-center">
@@ -82,7 +90,14 @@ const TsexesPage = () => {
             Jami qarzdorlik
           </span>
           <span className="font-bold text-[30px] text-red-600 max-[900px]:text-[25px] max-[500px]:text-[22px]">
-            15,200,000 usz
+            <CountUp
+              start={0}
+              end={-15200000}
+              duration={2.5}
+              separator=","
+              decimal="."
+              suffix=" UZS"
+            />
           </span>
         </div>
         <div
@@ -94,7 +109,14 @@ const TsexesPage = () => {
             Umumiy balans
           </span>
           <span className="font-bold text-[30px] text-green-600 max-[900px]:text-[25px] max-[500px]:text-[22px]">
-            +15,200,000 usz
+            <CountUp
+              start={0}
+              end={15200000}
+              duration={2.5}
+              separator=","
+              decimal="."
+              suffix=" UZS"
+            />
           </span>
         </div>
       </div>
