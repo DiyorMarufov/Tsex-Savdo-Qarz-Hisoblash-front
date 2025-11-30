@@ -129,7 +129,7 @@ const CustomersPage = () => {
       <div className="mt-5 grid grid-cols-3 gap-5 max-[1250px]:grid-cols-2 max-[500px]:grid-cols-1">
         <div className="border border-bg-fy bg-[#ffffff] rounded-2xl p-7 flex flex-col gap-1 max-[500px]:items-center">
           <span className="text-[22px] font-medium text-bg-py max-[900px]:text-[20px] max-[500px]:text-[17px]">
-            Jami qarzdorlik
+            Jami haqdorlik
           </span>
           <span className="font-bold text-[30px] text-green-600 max-[900px]:text-[25px] max-[500px]:text-[22px]">
             15,200,000 usz
@@ -137,7 +137,7 @@ const CustomersPage = () => {
         </div>
         <div className="border border-bg-fy bg-[#ffffff] rounded-2xl p-7 flex flex-col gap-1 max-[500px]:items-center">
           <span className="text-[22px] font-medium text-bg-py max-[900px]:text-[20px] max-[500px]:text-[17px]">
-            Jami haqdorlik
+            Jami qarzdorlik
           </span>
           <span className="font-bold text-[30px] text-red-600 max-[900px]:text-[25px] max-[500px]:text-[22px]">
             15,200,000 usz
