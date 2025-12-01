@@ -22,112 +22,114 @@ export type CustomerTranscationsListItemsType = {
   details?: any;
 };
 
-export const transactionColumns: ProColumns<CustomerTranscationsListItemsType>[] =
-  [
-    {
-      title: "Mijoz F.I.",
-      dataIndex: ["customer", "full_name"], // Nested field
-      width: 120,
-      sorter: true,
-      search: false,
-      fixed: "left",
-      render: (_, record) => <a>{record.customer?.full_name || "Nomaʼlum"}</a>,
+export const transactionColumns = (
+  handleOpenTransactionDetail: any
+): ProColumns<CustomerTranscationsListItemsType>[] => [
+  {
+    title: "Mijoz F.I.",
+    dataIndex: ["customer", "full_name"], // Nested field
+    width: 120,
+    sorter: true,
+    search: false,
+    fixed: "left",
+    render: (_, record) => <a>{record.customer?.full_name || "Nomaʼlum"}</a>,
+  },
+  {
+    title: "Tranzaksiya Turi",
+    dataIndex: "type",
+    width: 140,
+    filters: true,
+    onFilter: true,
+    valueEnum: {
+      borrowing: { text: "Qarz olish", status: "Error" },
+      borrow_more: { text: "Qoʻshimcha qarz", status: "Error" },
+      repayment: { text: "Qaytarish", status: "Success" },
+      paid_off: { text: "Toʻliq yopish", status: "Success" },
+      lending: { text: "Qarz berish", status: "Warning" },
+      lend_more: { text: "Qoʻshimcha berish", status: "Warning" },
+      received: { text: "Qaytarib olish", status: "Success" },
     },
-    {
-      title: "Tranzaksiya Turi",
-      dataIndex: "type",
-      width: 140,
-      filters: true,
-      onFilter: true,
-      valueEnum: {
-        borrowing: { text: "Qarz olish", status: "Error" },
-        borrow_more: { text: "Qoʻshimcha qarz", status: "Error" },
-        repayment: { text: "Qaytarish", status: "Success" },
-        paid_off: { text: "Toʻliq yopish", status: "Success" },
-        lending: { text: "Qarz berish", status: "Warning" },
-        lend_more: { text: "Qoʻshimcha berish", status: "Warning" },
-        received: { text: "Qaytarib olish", status: "Success" },
-      },
+  },
+  {
+    title: "Miqdor (UZS)",
+    dataIndex: "amount",
+    width: 120,
+    align: "right",
+    sorter: true,
+    render: (_, record) => {
+      // Pul miqdorini formatlash
+      const formattedAmount = record.amount.toLocaleString("uz-UZ");
+      return (
+        <span className="font-bold text-green-600">{formattedAmount}</span>
+      );
     },
-    {
-      title: "Miqdor (UZS)",
-      dataIndex: "amount",
-      width: 120,
-      align: "right",
-      sorter: true,
-      render: (_, record) => {
-        // Pul miqdorini formatlash
-        const formattedAmount = record.amount.toLocaleString("uz-UZ");
-        return (
-          <span className="font-bold text-green-600">{formattedAmount}</span>
-        );
-      },
-    },
-    {
-      title: "Tugash Sanasi",
-      dataIndex: "due_date",
-      valueType: "date", // Ant Design DatePicker bilan mos keladi
-      width: 130,
-      sorter: true,
-    },
-    {
-      title: "Tranzaksiyadan Keyingi Balans",
-      dataIndex: "balance_after",
-      width: 180,
-      search: false,
-      render: (_, record) => {
-        const balanceAmount = record.balance_after;
-        const formattedAmount = Math.abs(balanceAmount).toLocaleString("uz-UZ");
+  },
+  {
+    title: "Tugash Sanasi",
+    dataIndex: "due_date",
+    valueType: "date", // Ant Design DatePicker bilan mos keladi
+    width: 130,
+    sorter: true,
+  },
+  {
+    title: "Tranzaksiyadan Keyingi Balans",
+    dataIndex: "balance_after",
+    width: 180,
+    search: false,
+    render: (_, record) => {
+      const balanceAmount = record.balance_after;
+      const formattedAmount = Math.abs(balanceAmount).toLocaleString("uz-UZ");
 
-        if (balanceAmount > 0) {
-          return (
-            <div className="text-red-600 font-bold">- {formattedAmount}</div>
-          );
-        }
-
+      if (balanceAmount > 0) {
         return (
-          <div className="text-green-600 font-bold">{formattedAmount}</div>
+          <div className="text-red-600 font-bold">- {formattedAmount}</div>
         );
-      },
+      }
+
+      return <div className="text-green-600 font-bold">{formattedAmount}</div>;
     },
-    {
-      title: "Holat",
-      dataIndex: "status",
-      width: 90,
-      valueEnum: {
-        open: { text: "Ochiq", status: "Processing" }, // Davom etayotgan tranzaksiya
-        closed: { text: "Yopilgan", status: "Success" }, // Yakunlangan tranzaksiya
-      },
+  },
+  {
+    title: "Holat",
+    dataIndex: "status",
+    width: 90,
+    valueEnum: {
+      open: { text: "Ochiq", status: "Processing" }, // Davom etayotgan tranzaksiya
+      closed: { text: "Yopilgan", status: "Success" }, // Yakunlangan tranzaksiya
     },
-    {
-      title: "Izoh",
-      dataIndex: "description",
-      width: 250,
-      ellipsis: true, // Uzun matnni qisqartirish
-      search: false,
-    },
-    {
-      title: "Amallar",
-      width: 100,
-      valueType: "option",
-      render: (_) => (
-        <div className="flex gap-3">
-          <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
-          <Trash className="text-red-600 cursor-pointer hover:opacity-80" />
-        </div>
-      ),
-    },
-    {
-      title: "",
-      key: "",
-      width: 100,
-      render: (_) => (
-        <div className="text-[15px] text-green-500 cursor-pointer hover:opacity-80">
-          Batafsil
-        </div>
-      ),
-    },
-  ];
+  },
+  {
+    title: "Izoh",
+    dataIndex: "description",
+    width: 250,
+    ellipsis: true, // Uzun matnni qisqartirish
+    search: false,
+  },
+  {
+    title: "Amallar",
+    width: 100,
+    valueType: "option",
+    render: (_) => (
+      <div className="flex gap-3">
+        <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
+        <Trash className="text-red-600 cursor-pointer hover:opacity-80" />
+      </div>
+    ),
+  },
+  {
+    title: "",
+    key: "",
+    width: 100,
+    render: (_, record) => (
+      <div
+        className="text-[15px] text-green-500 cursor-pointer hover:opacity-80"
+        onClick={() => handleOpenTransactionDetail(record.id)}
+      >
+        Batafsil
+      </div>
+    ),
+  },
+];
 
 export const fakeTransactionData: CustomerTranscationsListItemsType[] = [
   {
