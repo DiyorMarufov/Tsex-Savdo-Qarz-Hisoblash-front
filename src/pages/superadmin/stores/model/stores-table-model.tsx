@@ -6,7 +6,6 @@ export type StoresTableListItem = {
   name: string;
   address: string;
   created_at: Date;
-  actions: any;
 };
 
 export const storesColumns: ProColumns<StoresTableListItem>[] = [
@@ -48,34 +47,29 @@ export const fakeStores: StoresTableListItem[] = [
     name: "Sneaker Store",
     address: "Toshkent, Chilonzor 17",
     created_at: new Date("2024-11-15T11:20:00"),
-    actions: {},
   },
   {
     id: "2",
     name: "Winter Shoes",
     address: "Toshkent, Sergeli 5",
     created_at: new Date("2024-11-10T09:50:00"),
-    actions: {},
   },
   {
     id: "3",
     name: "Home Market",
     address: "Toshkent, Yunusobod 12",
     created_at: new Date("2024-11-12T15:10:00"),
-    actions: {},
   },
   {
     id: "4",
     name: "Classic Shoes",
     address: "Toshkent, Shayhontohur 3",
     created_at: new Date("2024-11-11T13:05:00"),
-    actions: {},
   },
   {
     id: "5",
     name: "Adidas Store",
     address: "Toshkent, Mirzo Ulug‘bek 9",
     created_at: new Date("2024-11-05T17:30:00"),
-    actions: {},
   },
 ];
