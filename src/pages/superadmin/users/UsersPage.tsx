@@ -1,6 +1,5 @@
 import { memo, useState } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
-import SmallTitle from "../../../shared/ui/Title/SmallTitle/SmallTitle";
 import Button from "../../../shared/ui/Button/Button";
 import { Plus } from "lucide-react";
 import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
@@ -47,7 +46,6 @@ const UsersPage = () => {
       <div className="flex justify-between gap-3 items-center max-[750px]:flex-wrap">
         <div>
           <LargeTitle title="Foydalanuvchilar" />
-          <SmallTitle title="Foydalanuvchilarni kuzatish va boshqarish" />
         </div>
 
         <Button className="max-[750px]:w-full" onClick={handleNewUser}>

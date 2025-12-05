@@ -1,6 +1,5 @@
 import { memo } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
-import SmallTitle from "../../../shared/ui/Title/SmallTitle/SmallTitle";
 import Balances from "../../../widgets/superadmin/dashboard/balances/Balance";
 import SaleChart from "../../../widgets/superadmin/dashboard/sale-chart/SaleChart";
 import CustomerBalances from "../../../widgets/superadmin/dashboard/customer-balances/CustomerBalances";
@@ -11,9 +10,7 @@ const DashboardPage = () => {
   return (
     <div>
       <LargeTitle title="Boshqaruv paneli" />
-      <SmallTitle title="Biznesingizning asosiy ko'rsatkichlarini kuzatib boring" />
-
-      <div className="mt-6">
+      <div className="mt-2">
         <Balances />
       </div>
 
@@ -26,7 +23,10 @@ const DashboardPage = () => {
                 Oxirgi 7 kun
               </p>
             </div>
-            <Select placeholder="Day" className="w-[150px] h-10! max-[350px]:w-full!" />
+            <Select
+              placeholder="Day"
+              className="w-[150px] h-10! max-[350px]:w-full!"
+            />
           </div>
           <div className="pt-3">
             <SaleChart />

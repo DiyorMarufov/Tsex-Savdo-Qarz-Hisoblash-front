@@ -56,7 +56,7 @@ export const tsexTransactionsColumns: ProColumns<TsexTransactionsTableListItem>[
         const formattedAmount = Math.abs(balanceAmount).toLocaleString("uz-UZ");
 
         if (balanceAmount > 0) {
-          return <div className="text-red-600 font-bold">- {formattedAmount}</div>;
+          return <div className="text-red-600 font-bold">-{formattedAmount}</div>;
         }
 
         return <div className="text-green-600 font-bold">{formattedAmount}</div>;

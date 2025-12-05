@@ -1,6 +1,5 @@
 import { memo, useRef, useState } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
-import SmallTitle from "../../../shared/ui/Title/SmallTitle/SmallTitle";
 import {
   Button as AntdButton,
   DatePicker,
@@ -91,7 +90,6 @@ const CustomersPage = () => {
       <div className="flex items-center justify-between gap-3 max-[1300px]:flex-wrap">
         <div>
           <LargeTitle title="Mijozlar" />
-          <SmallTitle title="Qarzdorlik va hisob-kitoblarining joriy balansini kuzatish" />
         </div>
 
         <div className="grid grid-cols-3 gap-3 max-[1300px]:w-full max-[830px]:grid-cols-2 max-[365px]:grid-cols-1">
@@ -121,7 +119,7 @@ const CustomersPage = () => {
         </div>
       </div>
 
-      <div className="mt-5 grid grid-cols-3 gap-5 max-[1250px]:grid-cols-2 max-[500px]:grid-cols-1">
+      <div className="mt-3 grid grid-cols-3 gap-5 max-[1250px]:grid-cols-2 max-[500px]:grid-cols-1">
         <div className="border border-bg-fy bg-[#ffffff] rounded-2xl p-7 flex flex-col gap-1 max-[500px]:items-center">
           <span className="text-[22px] font-medium text-bg-py max-[900px]:text-[20px] max-[500px]:text-[17px]">
             Jami haqdorlik

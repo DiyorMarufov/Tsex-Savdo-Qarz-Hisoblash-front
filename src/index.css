@@ -152,3 +152,11 @@
   color: #616161 !important;
   font-size: 15px !important;
 }
+
+.custom-modal-bg .ant-modal-content {
+  background-color: #f8f9fa !important; /* Xohlagan rang kodi */
+}
+
+.custom-modal-bg .ant-modal-header {
+  background-color: #f8f9fa !important;
+}

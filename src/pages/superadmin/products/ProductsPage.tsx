@@ -8,7 +8,6 @@ import {
   fakeProducts,
   type ProductTableListItem,
 } from "./model/product-table-model";
-import SmallTitle from "../../../shared/ui/Title/SmallTitle/SmallTitle";
 import { Edit, Trash } from "lucide-react";
 import { Pagination } from "antd";
 
@@ -16,9 +15,8 @@ const ProductsPage = () => {
   return (
     <div>
       <LargeTitle title="Mahsulotlar" />
-      <SmallTitle title="Mahsulotlarni kuzatish" />
 
-      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-6 p-[17px] flex items-center gap-4 max-[900px]:flex-wrap">
+      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-2 p-[17px] flex items-center gap-4 max-[900px]:flex-wrap">
         <SearchInput
           placeholder="Mahsulot nomi,brandi bo'yicha qidirish"
           className="h-12! min-[900px]:w-[50%]! bg-bg-ty! text-[17px]!"

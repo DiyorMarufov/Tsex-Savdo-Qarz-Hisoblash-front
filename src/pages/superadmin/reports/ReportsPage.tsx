@@ -1,6 +1,5 @@
 import { memo, useRef, useState } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
-import SmallTitle from "../../../shared/ui/Title/SmallTitle/SmallTitle";
 import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
 import ProTable from "@ant-design/pro-table";
 import { Filter } from "lucide-react";
@@ -59,10 +58,9 @@ const ReportsPage = () => {
     <div>
       <div>
         <LargeTitle title="Hisobotlar" />
-        <SmallTitle title="Hisobotlarni ko'rish va boshqarish" />
       </div>
 
-      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-6 p-[17px] flex items-center gap-3">
+      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-2 p-[17px] flex items-center gap-3">
         <SearchInput
           placeholder="Ismi yoki telefon raqami bo'yicha qidirish"
           className="h-12! bg-bg-ty! text-[17px]!"
