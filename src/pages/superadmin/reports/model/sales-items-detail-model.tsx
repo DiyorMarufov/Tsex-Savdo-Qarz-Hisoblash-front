@@ -1,5 +1,4 @@
 import type { ProColumns } from "@ant-design/pro-table";
-import { Edit } from "lucide-react";
 
 export type SaleItemsTableListItem = {
   id?: string;
@@ -9,7 +8,6 @@ export type SaleItemsTableListItem = {
   price: number;
   total_amount: number;
   created_at: Date;
-  actions?: any;
 };
 
 export const salesItemColumns: ProColumns<SaleItemsTableListItem>[] = [
@@ -59,17 +57,6 @@ export const salesItemColumns: ProColumns<SaleItemsTableListItem>[] = [
     valueType: "dateTime",
     sorter: true,
     search: false,
-  },
-  {
-    title: "Amallar",
-    key: "actions",
-    width: 100,
-    valueType: "option",
-    render: () => (
-      <div className="flex items-center ml-4">
-        <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
-      </div>
-    ),
   },
 ];
 

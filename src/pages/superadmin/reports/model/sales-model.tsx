@@ -1,5 +1,4 @@
 import type { ProColumns } from "@ant-design/pro-table";
-import { Edit } from "lucide-react";
 
 export type SalesTableListItem = {
   id?: string;
@@ -108,17 +107,7 @@ export const salesColumns = (
     width: 160,
     valueType: "dateTime",
   },
-  {
-    title: "Amallar",
-    key: "actions",
-    width: 100,
-    valueType: "option",
-    render: () => (
-      <div className="flex items-center ml-4">
-        <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
-      </div>
-    ), // Misol uchun bitta amal
-  },
+
   {
     title: "",
     key: "",

@@ -1,5 +1,5 @@
 import ProTable from "@ant-design/pro-table";
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import {
   fakeTransactionData,
   transactionColumns,
@@ -12,6 +12,10 @@ import { Button as AntdButton } from "antd";
 const CustomersDetailPage = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  
+  useEffect(() => {
+    window.scroll({ top: 0 });
+  }, []);
   // CustomerTransaction detail starts
   const handleOpenTransactionDetail = (id: string) => {
     navigate(`transaction/${id}`);
@@ -21,8 +25,12 @@ const CustomersDetailPage = () => {
   if (pathname.includes("/transaction/")) {
     return <Outlet />;
   }
+
   return (
     <>
+     <div className="text-[20px]">
+       Aliyev Dilshod ni tranzaksiyalari
+     </div>
       <div className="max-[500px]:hidden">
         <ProTable
           dataSource={fakeTransactionData}
@@ -38,7 +46,7 @@ const CustomersDetailPage = () => {
         />
       </div>
 
-      <div className="min-[500px]:hidden flex flex-col gap-5 mt-4">
+      <div className="min-[500px]:hidden flex flex-col gap-5 mt-3">
         {fakeTransactionData.map((trd: CustomerTranscationsListItemsType) => (
           <div
             key={trd.id}

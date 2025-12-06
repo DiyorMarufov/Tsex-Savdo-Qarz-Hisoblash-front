@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import ProTable from "@ant-design/pro-table";
 import {
   fakeTransactionDetailData,
@@ -8,6 +8,9 @@ import {
 import { ArrowDown, ArrowUp, CheckCircle, Edit, Trash } from "lucide-react";
 
 const CustomerTransactionDetails = () => {
+  useEffect(() => {
+    window.scroll({ top: 0 });
+  }, []);
   return (
     <div className="flex flex-col gap-5">
       <div className="grid grid-cols-3 gap-8 px-3">

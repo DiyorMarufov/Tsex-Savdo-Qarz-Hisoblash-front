@@ -1,8 +1,8 @@
-import { memo, useRef, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
 import { Button as AntdButton, Pagination } from "antd";
 import Button from "../../../shared/ui/Button/Button";
-import { Edit, Plus, Trash } from "lucide-react";
+import { Edit, Plus } from "lucide-react";
 import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
 import { DatePicker } from "antd/lib";
 import ProTable from "@ant-design/pro-table";
@@ -12,12 +12,8 @@ import {
   type TsexTableListItem,
 } from "./model/tsexes-model";
 import { Form, Input, Modal, Select, type FormProps } from "antd";
-import {
-  fakeTsexTransactionsData,
-  tsexTransactionsColumns,
-  type TsexTransactionsTableListItem,
-} from "./model/tsexes-transactions-model";
 import CountUp from "react-countup";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 type FieldType = {
   tsex_id: string;
@@ -27,10 +23,13 @@ type FieldType = {
 };
 
 const TsexesPage = () => {
-  const [openDetail, setOpenDetail] = useState<boolean>(false);
-  const tsexId = useRef<string | null>(null);
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
   const [form] = Form.useForm();
 
+  useEffect(() => {
+    window.scroll({ top: 0 });
+  }, []);
   // Add Modal starts
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -51,14 +50,12 @@ const TsexesPage = () => {
 
   // HandleOpenDetail starts
   const handleOpenDetail = (id: string) => {
-    tsexId.current = id;
-    setOpenDetail(true);
+    navigate(`transactions/${id}`);
   };
 
-  const handleCancelDetail = () => {
-    setOpenDetail(false);
-  };
+  if (pathname.startsWith("/superadmin/tsexes/transactions")) return <Outlet />;
   // HanleOpenDetail ends
+
   return (
     <div>
       <div className="flex items-center justify-between gap-3 max-[500px]:flex-wrap">
@@ -224,7 +221,6 @@ const TsexesPage = () => {
               <div className="flex justify-between mt-1 px-5 pb-4">
                 <div className="flex items-center gap-5">
                   <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
-                  <Trash className="text-red-600 cursor-pointer hover:opacity-80" />
                 </div>
                 <div>
                   <AntdButton
@@ -328,130 +324,6 @@ const TsexesPage = () => {
               </Form.Item>
             </div>
           </Form>
-        </div>
-      </Modal>
-
-      <Modal
-        centered
-        title="Moliya tarixi"
-        closable={{ "aria-label": "Custom Close Button" }}
-        open={openDetail}
-        onCancel={handleCancelDetail}
-        footer={
-          <div className="flex gap-2 justify-end">
-            <AntdButton
-              className="bg-red-500! text-white!"
-              onClick={handleCancelDetail}
-            >
-              Bekor qilish
-            </AntdButton>
-          </div>
-        }
-        className="w-[1000px]! custom-modal-bg"
-        styles={{
-          body: {
-            maxHeight: "86vh",
-            overflowY: "auto",
-          },
-        }}
-      >
-        <ProTable
-          dataSource={fakeTsexTransactionsData}
-          rowKey="id"
-          pagination={{
-            showSizeChanger: true,
-            responsive: false,
-          }}
-          columns={tsexTransactionsColumns}
-          search={false}
-          dateFormatter="string"
-          scroll={{ x: "max-content" }}
-          className="max-[500px]:hidden"
-        />
-
-        <div className="min-[500px]:hidden flex flex-col gap-5">
-          {fakeTsexTransactionsData.map((dt: TsexTransactionsTableListItem) => (
-            <div
-              key={dt.id}
-              className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px] overflow-hidden"
-            >
-              <div className="p-5 flex justify-between">
-                <a className="text-[17px] font-bold">{dt.tsex.name}</a>
-                <span className="text-[15px] font-bold">
-                  {(() => {
-                    switch (dt.type) {
-                      case "payment":
-                        return (
-                          <span className="bg-green-100 rounded-full text-green-500 px-2 py-1">
-                            To'liq To'lov
-                          </span>
-                        );
-                      case "partial_payment":
-                        return (
-                          <span className="bg-yellow-100 rounded-full text-yellow-500 px-2 py-1">
-                            Qisman To'lov
-                          </span>
-                        );
-                      case "avans":
-                        return (
-                          <span className="bg-blue-100 rounded-full text-blue-500 px-2 py-1">
-                            Avans (Oldindan)
-                          </span>
-                        );
-                      default:
-                        return dt.type;
-                    }
-                  })()}
-                </span>
-              </div>
-              <div className="w-full h-px bg-bg-fy"></div>
-              <div className="flex flex-col gap-3">
-                <div className="grid grid-cols-2 gap-3 p-5">
-                  <div className="flex flex-col w-1/2 justify-start">
-                    <span className="text-[16px] font-medium text-[#6B7280]">
-                      Miqdori
-                    </span>
-                    <span className="text-[17px] font-bold text-green-600">
-                      {dt.amount.toLocaleString()}
-                    </span>
-                  </div>
-                  <div className="flex flex-col items-end">
-                    <span className="text-[16px] font-medium text-[#6B7280] whitespace-nowrap">
-                      Balans (Keyin)
-                    </span>
-                    {dt.balance_after > 0 ? (
-                      <span className="text-[17px] font-bold text-red-500">
-                        -{dt.balance_after.toLocaleString()}
-                      </span>
-                    ) : (
-                      <span className="text-[17px] font-bold text-green-500">
-                        {dt.balance_after.toLocaleString()}
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-[16px] font-medium text-[#6B7280]">
-                      Izoh
-                    </span>
-                    <span className="text-[17px] font-bold text-[#4B5563] whitespace-nowrap">
-                      {dt.description}
-                    </span>
-                  </div>
-                </div>
-                <div className="p-5 flex justify-between bg-bg-ty">
-                  <span className="text-[#6D7482] font-bold text-[15px]">
-                    {dt.created_by.name}
-                  </span>
-                  <span className="text-[#6D7482] font-bold text-[15px]">
-                    {dt.created_at.toLocaleString("uz-UZ")}
-                  </span>
-                </div>
-              </div>
-            </div>
-          ))}
-          <div className="flex justify-center">
-            <Pagination />
-          </div>
         </div>
       </Modal>
     </div>

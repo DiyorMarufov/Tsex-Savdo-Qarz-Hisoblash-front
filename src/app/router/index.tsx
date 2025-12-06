@@ -1,6 +1,9 @@
 import { lazy, memo } from "react";
 import { useRoutes } from "react-router-dom";
 
+const TsexesTransactions = lazy(
+  () => import("../../pages/superadmin/tsexes/TsexesTransactions")
+);
 const CustomerTransactionDetails = lazy(
   () => import("../../pages/superadmin/customers/CustomerTransactionDetails")
 );
@@ -67,6 +70,12 @@ const Router = () => {
                 {
                   path: "tsexes",
                   element: <TsexesPage />,
+                  children: [
+                    {
+                      path: "transactions/:id",
+                      element: <TsexesTransactions />,
+                    },
+                  ],
                 },
                 {
                   path: "customers",

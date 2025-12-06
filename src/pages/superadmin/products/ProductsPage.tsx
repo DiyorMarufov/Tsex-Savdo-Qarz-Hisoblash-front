@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
 import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
 import Filter from "../../../shared/ui/Filter/Filter";
@@ -12,6 +12,9 @@ import { Edit, Trash } from "lucide-react";
 import { Pagination } from "antd";
 
 const ProductsPage = () => {
+  useEffect(() => {
+    window.scroll({ top: 0 });
+  }, []);
   return (
     <div>
       <LargeTitle title="Mahsulotlar" />

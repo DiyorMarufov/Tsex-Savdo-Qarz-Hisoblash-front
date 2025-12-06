@@ -1,8 +1,8 @@
-import { memo, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
 import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
 import ProTable from "@ant-design/pro-table";
-import { Edit, Filter, Trash } from "lucide-react";
+import { Edit, Filter } from "lucide-react";
 import {
   Modal,
   Button as AntdButton,
@@ -19,6 +19,7 @@ import {
 import {
   fakeSalesItems,
   salesItemColumns,
+  type SaleItemsTableListItem,
 } from "./model/sales-items-detail-model";
 
 type filterFieldType = {
@@ -32,6 +33,10 @@ const ReportsPage = () => {
   const [detailOpen, setdetailOpen] = useState<boolean>(false);
   const saleId = useRef<string | null>(null);
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    window.scroll({ top: 0 });
+  }, []);
   // Filter starts
   const handleFilter = () => {
     setFilterOpen(true);
@@ -58,6 +63,7 @@ const ReportsPage = () => {
     setdetailOpen(false);
   };
   // Sale Items detail ends
+
   return (
     <div>
       <div>
@@ -184,11 +190,7 @@ const ReportsPage = () => {
 
                 <div className="w-full h-px bg-bg-fy"></div>
 
-                <div className="flex justify-between mt-1 px-5 pb-4">
-                  <div className="flex items-center gap-5">
-                    <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
-                    <Trash className="text-red-600 cursor-pointer hover:opacity-80" />
-                  </div>
+                <div className="flex justify-end mt-1 px-5 pb-4">
                   <div>
                     <AntdButton
                       className="bg-[#1D4ED8]! text-white!"
@@ -270,7 +272,13 @@ const ReportsPage = () => {
 
       <Modal
         centered
-        className="w-[1000px]!"
+        className="w-[1000px]! custom-modal-bg"
+        styles={{
+          body: {
+            maxHeight: "79vh",
+            overflowY: "auto",
+          },
+        }}
         title={
           <div className="flex flex-col">
             <div>Sotuv tavsilotlari</div>
@@ -299,18 +307,83 @@ const ReportsPage = () => {
           </div>
         }
       >
-        <ProTable
-          dataSource={fakeSalesItems}
-          rowKey="id"
-          pagination={{
-            showSizeChanger: true,
-            responsive: false,
-          }}
-          columns={salesItemColumns}
-          search={false}
-          dateFormatter="string"
-          scroll={{ x: "max-content" }}
-        />
+        <div className="max-[500px]:hidden">
+          <ProTable
+            dataSource={fakeSalesItems}
+            rowKey="id"
+            pagination={{
+              showSizeChanger: true,
+              responsive: false,
+            }}
+            columns={salesItemColumns}
+            search={false}
+            dateFormatter="string"
+            scroll={{ x: "max-content" }}
+          />
+        </div>
+
+        <div className="mt-4 min-[500px]:hidden flex flex-col gap-5">
+          {fakeSalesItems.map((sli: SaleItemsTableListItem) => (
+            <div
+              key={sli.id}
+              className="flex flex-col gap-3 border border-bg-fy bg-[#ffffff] rounded-[12px] overflow-hidden"
+            >
+              <div className="flex justify-between items-center gap-3 pt-5 px-5">
+                <div className="flex flex-col items-start">
+                  <span className="text-[15px] font-bold text-[#64748B]">
+                    Mahsulot
+                  </span>
+                  <a className="text-[17px] font-bold whitespace-nowrap">
+                    {sli.product.name}
+                  </a>
+                </div>
+                <div className="flex flex-col items-end">
+                  <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
+                </div>
+              </div>
+
+              <div className="flex px-5">
+                <div className="flex flex-col w-1/2">
+                  <span className="text-[16px] font-medium text-[#6B7280] whitespace-nowrap">
+                    Soni
+                  </span>
+                  <span className="text-[17px] font-bold text-[#4B5563] whitespace-nowrap">
+                    {sli.quantity}
+                  </span>
+                </div>
+                <div className="flex flex-col w-1/2">
+                  <span className="text-[16px] font-medium text-[#6B7280] whitespace-nowrap">
+                    Narxi
+                  </span>
+                  <span className="text-[17px] font-bold text-green-500 whitespace-nowrap">
+                    {sli.price.toLocaleString()}
+                  </span>
+                </div>
+              </div>
+
+              <div className="w-full h-px bg-bg-fy"></div>
+
+              <div className="flex justify-between mt-1 px-5 pb-4">
+                <div className="flex flex-col w-1/2">
+                  <span className="text-[16px] font-medium text-[#6B7280] whitespace-nowrap">
+                    Umumiy Summa
+                  </span>
+                  <span className="text-[17px] font-bold text-green-500 whitespace-nowrap">
+                    {sli.total_amount.toLocaleString()}
+                  </span>
+                </div>
+                <div className="flex flex-col w-1/2">
+                  <span className="text-[16px] font-medium text-[#6B7280] whitespace-nowrap">
+                    Sotuv Sanasi
+                  </span>
+                  <span className="text-[17px] font-bold text-[#4B5563] whitespace-nowrap">
+                    {sli.created_at.toLocaleString("uz-UZ")}
+                  </span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </Modal>
     </div>
   );

@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
 import Balances from "../../../widgets/superadmin/dashboard/balances/Balance";
 import SaleChart from "../../../widgets/superadmin/dashboard/sale-chart/SaleChart";
@@ -7,6 +7,9 @@ import TsexBalances from "../../../widgets/superadmin/dashboard/tsex-balances/Ts
 import { Select } from "antd";
 
 const DashboardPage = () => {
+  useEffect(() => {
+    window.scroll({ top: 0 });
+  }, []);
   return (
     <div>
       <LargeTitle title="Boshqaruv paneli" />

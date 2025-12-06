@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
 import Button from "../../../shared/ui/Button/Button";
 import { Edit, Plus, Trash } from "lucide-react";
@@ -30,6 +30,9 @@ const UsersPage = () => {
   const [newUserOpen, setNewUserOpen] = useState<boolean>(false);
   const [form] = Form.useForm();
 
+  useEffect(() => {
+    window.scroll({ top: 0 });
+  }, []);
   // New user starts
   const handleNewUser = () => {
     setNewUserOpen(true);
@@ -45,6 +48,7 @@ const UsersPage = () => {
     console.log("Success:", values);
   };
   // New user ends
+
   return (
     <div>
       <div className="flex justify-between gap-3 items-center max-[750px]:flex-wrap">
@@ -143,9 +147,7 @@ const UsersPage = () => {
                   </div>
                 ) : (
                   <div className="px-2 rounded-full bg-red-100 flex justify-center items-center">
-                    <span className="font-bold text-red-500">
-                      Nofaol
-                    </span>
+                    <span className="font-bold text-red-500">Nofaol</span>
                   </div>
                 )}
               </div>

@@ -1,4 +1,4 @@
-import { memo, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
 import {
   Button as AntdButton,
@@ -42,6 +42,9 @@ const CustomersPage = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
+  useEffect(() => {
+    window.scroll({ top: 0 });
+  }, []);
   // Transaction starts
   const handleLend = () => {
     transactionType.current = "lend";
@@ -89,6 +92,7 @@ const CustomersPage = () => {
   // Detail ends
 
   if (pathname.startsWith("/superadmin/customers/detail/")) return <Outlet />;
+
   return (
     <div>
       <div className="flex items-center justify-between gap-3 max-[1300px]:flex-wrap">
