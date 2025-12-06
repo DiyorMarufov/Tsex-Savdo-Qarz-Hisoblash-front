@@ -104,6 +104,12 @@ export const transactionColumns = (
     search: false,
   },
   {
+    title: "Kiritilgan sana",
+    dataIndex: "created_at",
+    valueType: "dateTime",
+    width: 170,
+  },
+  {
     title: "Amallar",
     width: 100,
     valueType: "option",

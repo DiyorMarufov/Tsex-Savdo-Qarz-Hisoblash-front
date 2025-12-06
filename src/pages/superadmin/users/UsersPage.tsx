@@ -1,11 +1,15 @@
 import { memo, useState } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
 import Button from "../../../shared/ui/Button/Button";
-import { Plus } from "lucide-react";
+import { Edit, Plus, Trash } from "lucide-react";
 import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
 import Filter from "../../../shared/ui/Filter/Filter";
 import ProTable from "@ant-design/pro-table";
-import { fakeUsers, userColumns } from "./model/users-model";
+import {
+  fakeUsers,
+  userColumns,
+  type UsersTableListItem,
+} from "./model/users-model";
 import {
   Modal,
   type FormProps,
@@ -48,7 +52,10 @@ const UsersPage = () => {
           <LargeTitle title="Foydalanuvchilar" />
         </div>
 
-        <Button className="max-[750px]:w-full! max-[500px]:hidden!" onClick={handleNewUser}>
+        <Button
+          className="max-[750px]:w-full! max-[500px]:hidden!"
+          onClick={handleNewUser}
+        >
           <Plus />
           Foydalanuvchi qo'shish
         </Button>
@@ -78,7 +85,7 @@ const UsersPage = () => {
         </div>
       </div>
 
-      <div className="mt-4">
+      <div className="mt-4 max-[500px]:hidden">
         <ProTable
           dataSource={fakeUsers}
           rowKey="id"
@@ -93,8 +100,67 @@ const UsersPage = () => {
           scroll={{ x: "max-content" }}
         />
       </div>
-      
-      
+
+      <div className="min-[500px]:hidden flex flex-col gap-5 mt-4">
+        {fakeUsers.map((user: UsersTableListItem) => (
+          <div
+            key={user.id}
+            className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]"
+          >
+            <div className="flex justify-between p-5">
+              <div className="flex flex-col">
+                <a className="text-[17px] font-bold whitespace-nowrap">
+                  {user.full_name}
+                </a>
+                <span className="text-[16px] font-bold text-[#4B5563] whitespace-nowrap">
+                  {user.phone_number}
+                </span>
+              </div>
+              <div className="flex items-center gap-5">
+                <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
+                <Trash className="text-red-600 cursor-pointer hover:opacity-80" />
+              </div>
+            </div>
+
+            <div className="w-full h-px bg-bg-fy"></div>
+
+            <div className="flex flex-col p-5 gap-2">
+              <div className="flex justify-between">
+                <span className="font-medium text-[#6B7280] text-[16px]">
+                  Roli
+                </span>
+                <span className="text-[17px] font-bold text-[#4B5563]">
+                  {user.roles.name}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="font-medium text-[#6B7280] text-[16px]">
+                  Faolligi
+                </span>
+                {user.is_active ? (
+                  <div className="px-2 rounded-full bg-green-100 flex justify-center items-center">
+                    <span className="font-bold text-green-500">Faol</span>
+                  </div>
+                ) : (
+                  <div className="px-2 rounded-full bg-red-100 flex justify-center items-center">
+                    <span className="font-bold text-red-500">
+                      Nofaol
+                    </span>
+                  </div>
+                )}
+              </div>
+              <div className="flex justify-between">
+                <span className="font-medium text-[#6B7280] text-[16px]">
+                  Kiritilgan sana
+                </span>
+                <span className="text-[17px] font-bold text-[#4B5563]">
+                  {user.created_at.toLocaleString("uz-UZ")}
+                </span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
 
       <Modal
         centered

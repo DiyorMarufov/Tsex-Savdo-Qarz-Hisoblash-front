@@ -288,6 +288,14 @@ const CustomersPage = () => {
                   {cs.last_transaction.toLocaleString("uz-UZ")}
                 </span>
               </div>
+              <div className="flex justify-between gap-3">
+                <span className="text-[16px] font-medium text-[#6B7280] whitespace-nowrap">
+                  Kiritilgan sana
+                </span>
+                <span className="text-[17px] font-bold text-[#4B5563] whitespace-nowrap">
+                  {cs.created_at.toLocaleString("uz-UZ")}
+                </span>
+              </div>
             </div>
 
             <div className="w-full h-px bg-bg-fy"></div>

@@ -4,12 +4,7 @@ import { Edit, Trash } from "lucide-react";
 export type CustomerTranscationDetailListItemsType = {
   id?: string;
   customer: any;
-  type:
-    | "borrow_more"
-    | "repayment"
-    | "paid_off"
-    | "lend_more"
-    | "received";
+  type: "borrow_more" | "repayment" | "paid_off" | "lend_more" | "received";
   amount: number;
   due_date: Date;
   description: string;
@@ -101,6 +96,12 @@ export const transactionDetailColumns: ProColumns<CustomerTranscationDetailListI
       width: 250,
       ellipsis: true, // Uzun matnni qisqartirish
       search: false,
+    },
+    {
+      title: "Kiritilgan sana",
+      dataIndex: "created_at",
+      valueType: "dateTime",
+      width: 170,
     },
     {
       title: "Amallar",

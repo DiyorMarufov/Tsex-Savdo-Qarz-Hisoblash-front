@@ -8,7 +8,6 @@ export type UsersTableListItem = {
   roles: { name: string };
   is_active: boolean;
   created_at: Date;
-  actions: any;
 };
 
 export const userColumns: ProColumns<UsersTableListItem>[] = [
@@ -90,7 +89,6 @@ export const fakeUsers: UsersTableListItem[] = [
     roles: { name: "Administrator" },
     is_active: true,
     created_at: new Date("2024-01-10T10:00:00"),
-    actions: {},
   },
   {
     id: "u2",
@@ -99,7 +97,6 @@ export const fakeUsers: UsersTableListItem[] = [
     roles: { name: "Menejer" },
     is_active: true,
     created_at: new Date("2024-05-20T14:30:00"),
-    actions: {},
   },
   {
     id: "u3",
@@ -108,7 +105,6 @@ export const fakeUsers: UsersTableListItem[] = [
     roles: { name: "Ishchi" },
     is_active: false, // Nofaol foydalanuvchi
     created_at: new Date("2023-11-01T09:15:00"),
-    actions: {},
   },
   {
     id: "u4",
@@ -117,7 +113,6 @@ export const fakeUsers: UsersTableListItem[] = [
     roles: { name: "Menejer" },
     is_active: true,
     created_at: new Date("2024-06-25T17:50:00"),
-    actions: {},
   },
   {
     id: "u5",
@@ -126,6 +121,5 @@ export const fakeUsers: UsersTableListItem[] = [
     roles: { name: "Ishchi" },
     is_active: true,
     created_at: new Date("2024-03-05T11:20:00"),
-    actions: {},
   },
 ];

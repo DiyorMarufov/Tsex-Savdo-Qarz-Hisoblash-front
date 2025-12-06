@@ -10,8 +10,7 @@ export type SalesTableListItem = {
   total_sum: number;
   paid_amount: number;
   debt: number;
-  actions?: any;
-  details?: string;
+  created_at: Date;
 };
 
 export const salesColumns = (
@@ -104,6 +103,12 @@ export const salesColumns = (
     },
   },
   {
+    title: "Kiritilgan sana",
+    dataIndex: "created_at",
+    width: 160,
+    valueType: "dateTime",
+  },
+  {
     title: "Amallar",
     key: "actions",
     width: 100,
@@ -139,6 +144,7 @@ export const fakeSales: SalesTableListItem[] = [
     total_sum: 550000,
     paid_amount: 550000,
     debt: 0,
+    created_at: new Date("2024-05-20T14:30:00"),
   },
   {
     id: "s2",
@@ -149,6 +155,7 @@ export const fakeSales: SalesTableListItem[] = [
     total_sum: 1200000,
     paid_amount: 500000,
     debt: 700000,
+    created_at: new Date("2024-05-20T14:30:00"),
   },
   {
     id: "s3",
@@ -159,6 +166,7 @@ export const fakeSales: SalesTableListItem[] = [
     total_sum: 300000,
     paid_amount: 0,
     debt: 300000,
+    created_at: new Date("2024-05-20T14:30:00"),
   },
   {
     id: "s4",
@@ -169,5 +177,6 @@ export const fakeSales: SalesTableListItem[] = [
     total_sum: 80000,
     paid_amount: 80000,
     debt: 0,
+    created_at: new Date("2024-05-20T14:30:00"),
   },
 ];

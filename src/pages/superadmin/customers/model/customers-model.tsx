@@ -8,6 +8,7 @@ export type CustomersListItemsType = {
   region: string;
   balance: number;
   last_transaction: Date;
+  created_at: Date;
 };
 
 export const customerColumns = (
@@ -57,6 +58,12 @@ export const customerColumns = (
     width: 180,
   },
   {
+    title: "Kiritilgan sana",
+    dataIndex: "created_at",
+    valueType: "dateTime",
+    width: 170,
+  },
+  {
     title: "Amallar",
     key: "actions",
     valueType: "option",
@@ -91,6 +98,7 @@ export const fakeCustomerData: CustomersListItemsType[] = [
     region: "Toshkent sh.",
     balance: 5500000, // Foyda (plyus)
     last_transaction: new Date("2025-11-28T10:00:00"),
+    created_at: new Date("2024-11-10T09:50:00"),
   },
   {
     id: "2",
@@ -99,6 +107,7 @@ export const fakeCustomerData: CustomersListItemsType[] = [
     region: "Samarqand viloyati",
     balance: -1200000, // Qarz (minus)
     last_transaction: new Date("2025-11-27T15:30:00"),
+    created_at: new Date("2024-11-10T09:50:00"),
   },
   {
     id: "3",
@@ -107,6 +116,7 @@ export const fakeCustomerData: CustomersListItemsType[] = [
     region: "Andijon viloyati",
     balance: 850000,
     last_transaction: new Date("2025-11-27T11:45:00"),
+    created_at: new Date("2024-11-10T09:50:00"),
   },
   {
     id: "4",
@@ -115,6 +125,7 @@ export const fakeCustomerData: CustomersListItemsType[] = [
     region: "Buxoro viloyati",
     balance: 0,
     last_transaction: new Date("2025-11-26T09:20:00"),
+    created_at: new Date("2024-11-10T09:50:00"),
   },
   {
     id: "5",
@@ -123,5 +134,6 @@ export const fakeCustomerData: CustomersListItemsType[] = [
     region: "Farg'ona viloyati",
     balance: -4200000,
     last_transaction: new Date("2025-11-25T14:10:00"),
+    created_at: new Date("2024-11-10T09:50:00"),
   },
 ];
