@@ -9,11 +9,15 @@ import {
   Select,
   type FormProps,
 } from "antd";
-import { ArrowDown, ArrowUp, Plus } from "lucide-react";
+import { ArrowDown, ArrowUp, Edit, Plus, Trash } from "lucide-react";
 import Button from "../../../shared/ui/Button/Button";
 import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
 import ProTable from "@ant-design/pro-table";
-import { customerColumns, fakeCustomerData } from "./model/customers-model";
+import {
+  customerColumns,
+  fakeCustomerData,
+  type CustomersListItemsType,
+} from "./model/customers-model";
 import CountUp from "react-countup";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
@@ -92,7 +96,7 @@ const CustomersPage = () => {
           <LargeTitle title="Mijozlar" />
         </div>
 
-        <div className="grid grid-cols-3 gap-3 max-[1300px]:w-full max-[830px]:grid-cols-2 max-[365px]:grid-cols-1">
+        <div className="grid grid-cols-3 gap-3 max-[1300px]:w-full max-[830px]:grid-cols-2 max-[365px]:grid-cols-1 max-[500px]:hidden">
           <AntdButton
             className="py-5! rounded-[10px]! bg-[#E5E7EB]! max-[1300px]:w-full"
             onClick={handleLend}
@@ -116,6 +120,44 @@ const CustomersPage = () => {
             <Plus />
             Yangi mijoz
           </Button>
+        </div>
+
+        <div className="grid grid-cols-3 gap-8 px-3 w-full min-[500px]:hidden">
+          <div className="flex flex-col items-center cursor-pointer text-green-600 hover:text-green-700 transition duration-150">
+            <div
+              className="p-3 border-2 border-green-600 rounded-full bg-green-100/50"
+              onClick={handleLend}
+            >
+              <ArrowUp className="h-8 w-8" />
+            </div>
+            <span className="text-sm font-medium mt-1 whitespace-nowrap text-center">
+              Qarz berish
+            </span>
+          </div>
+
+          <div className="flex flex-col items-center cursor-pointer text-red-600 hover:text-red-700 transition duration-150">
+            <div
+              className="p-3 border-2 border-red-600 rounded-full bg-red-100/50"
+              onClick={handleBorrow}
+            >
+              <ArrowDown className="h-8 w-8" />
+            </div>
+            <span className="text-sm font-medium mt-1 whitespace-nowrap text-center">
+              Qarz olish
+            </span>
+          </div>
+
+          <div className="flex flex-col items-center cursor-pointer text-blue-600 hover:text-blue-700 transition duration-150">
+            <div
+              className="p-3 border-2 border-blue-600 rounded-full bg-blue-100/50"
+              onClick={handleNewCustomer}
+            >
+              <Plus className="h-8 w-8" />
+            </div>
+            <span className="text-sm font-medium mt-1 whitespace-nowrap text-center">
+              Yengi mijoz
+            </span>
+          </div>
         </div>
       </div>
 
@@ -186,7 +228,7 @@ const CustomersPage = () => {
         </div>
       </div>
 
-      <div className="mt-4">
+      <div className="mt-4 max-[500px]:hidden">
         <ProTable
           dataSource={fakeCustomerData}
           rowKey="id"
@@ -199,6 +241,73 @@ const CustomersPage = () => {
           dateFormatter="string"
           scroll={{ x: "max-content" }}
         />
+      </div>
+
+      <div className="mt-4 min-[500px]:hidden flex flex-col gap-5">
+        {fakeCustomerData.map((cs: CustomersListItemsType) => (
+          <div
+            key={cs.id}
+            className="flex flex-col gap-3 border border-bg-fy bg-[#ffffff] rounded-[12px] overflow-hidden"
+          >
+            <div className="flex justify-between items-center gap-3 pt-5 px-5">
+              <div className="flex flex-col items-start">
+                <a className="text-[17px] font-bold whitespace-nowrap">
+                  {cs.full_name}
+                </a>
+                <span className="text-[15px] font-bold text-[#64748B]">
+                  {cs.region}
+                </span>
+              </div>
+              <div className="flex flex-col items-end">
+                {cs.balance > 0 ? (
+                  <span className="text-[17px] font-bold text-red-500">
+                    -{Math.abs(cs.balance).toLocaleString()}
+                  </span>
+                ) : (
+                  <span className="text-[17px] font-bold text-green-500">
+                    {Math.abs(cs.balance).toLocaleString()}
+                  </span>
+                )}
+              </div>
+            </div>
+
+            <div className="flex flex-col px-5">
+              <div className="flex justify-between gap-3">
+                <span className="text-[16px] font-medium text-[#6B7280] whitespace-nowrap">
+                  Telefon raqami
+                </span>
+                <span className="text-[17px] font-bold text-[#4B5563] whitespace-nowrap">
+                  {cs.phone_number}
+                </span>
+              </div>
+              <div className="flex justify-between gap-3">
+                <span className="text-[16px] font-medium text-[#6B7280] whitespace-nowrap">
+                  Oxirgi tranzaksiya
+                </span>
+                <span className="text-[17px] font-bold text-[#4B5563] whitespace-nowrap">
+                  {cs.last_transaction.toLocaleString("uz-UZ")}
+                </span>
+              </div>
+            </div>
+
+            <div className="w-full h-px bg-bg-fy"></div>
+
+            <div className="flex justify-between mt-1 px-5 pb-4">
+              <div className="flex items-center gap-5">
+                <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
+                <Trash className="text-red-600 cursor-pointer hover:opacity-80" />
+              </div>
+              <div>
+                <AntdButton
+                  className="bg-[#1D4ED8]! text-white!"
+                  onClick={() => handleOpenDetail(cs.id as string)}
+                >
+                  Batafsil
+                </AntdButton>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
 
       <Modal

@@ -159,8 +159,8 @@ const TsexesPage = () => {
             key={ts.id}
             className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]"
           >
-            <div className="p-5 flex flex-col gap-3">
-              <div className="grid grid-cols-2 gap-3">
+            <div className="flex flex-col gap-3">
+              <div className="grid grid-cols-2 gap-3 px-5 pt-5">
                 <div className="flex flex-col justify-start w-1/2">
                   <span className="text-[16px] font-medium text-[#6B7280]">
                     Nomi
@@ -193,7 +193,7 @@ const TsexesPage = () => {
                 </div>
               </div>
 
-              <div className="flex flex-col">
+              <div className="flex flex-col px-5">
                 <div>
                   <span className="font-medium text-[#6B7280] text-[16px]">
                     Oxirgi operatsiya
@@ -206,7 +206,7 @@ const TsexesPage = () => {
                 </div>
               </div>
 
-              <div className="flex flex-col">
+              <div className="flex flex-col px-5">
                 <div>
                   <span className="font-medium text-[#6B7280] text-[16px]">
                     Kiritilgan sana
@@ -221,7 +221,7 @@ const TsexesPage = () => {
 
               <div className="w-full h-px bg-bg-fy"></div>
 
-              <div className="flex justify-between mt-1">
+              <div className="flex justify-between mt-1 px-5 pb-4">
                 <div className="flex items-center gap-5">
                   <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
                   <Trash className="text-red-600 cursor-pointer hover:opacity-80" />

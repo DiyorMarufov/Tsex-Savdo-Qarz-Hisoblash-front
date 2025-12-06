@@ -48,13 +48,20 @@ const UsersPage = () => {
           <LargeTitle title="Foydalanuvchilar" />
         </div>
 
-        <Button className="max-[750px]:w-full" onClick={handleNewUser}>
+        <Button className="max-[750px]:w-full! max-[500px]:hidden!" onClick={handleNewUser}>
           <Plus />
           Foydalanuvchi qo'shish
         </Button>
+
+        <div
+          className="min-[500px]:hidden p-2.5 rounded-full bg-green-500 cursor-pointer hover:opacity-80"
+          onClick={handleNewUser}
+        >
+          <Plus className="text-white" />
+        </div>
       </div>
 
-      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-6 p-[17px] flex items-center gap-4 max-[900px]:flex-wrap">
+      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-3 p-[17px] flex items-center gap-4 max-[900px]:flex-wrap">
         <SearchInput
           placeholder="Ismi yoki telefon raqami bo'yicha qidirish"
           className="h-12! min-[900px]:w-[50%]! bg-bg-ty! text-[17px]!"
@@ -86,6 +93,8 @@ const UsersPage = () => {
           scroll={{ x: "max-content" }}
         />
       </div>
+      
+      
 
       <Modal
         centered

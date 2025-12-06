@@ -5,11 +5,9 @@ export type CustomerTranscationDetailListItemsType = {
   id?: string;
   customer: any;
   type:
-    | "borrowing"
     | "borrow_more"
     | "repayment"
     | "paid_off"
-    | "lending"
     | "lend_more"
     | "received";
   amount: number;
@@ -18,7 +16,6 @@ export type CustomerTranscationDetailListItemsType = {
   balance_after: number;
   status: "open" | "closed";
   created_at: Date;
-  actions?: any;
 };
 
 export const transactionDetailColumns: ProColumns<CustomerTranscationDetailListItemsType>[] =

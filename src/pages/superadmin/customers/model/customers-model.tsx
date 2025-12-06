@@ -8,7 +8,6 @@ export type CustomersListItemsType = {
   region: string;
   balance: number;
   last_transaction: Date;
-  details?: string;
 };
 
 export const customerColumns = (

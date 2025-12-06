@@ -18,8 +18,6 @@ export type CustomerTranscationsListItemsType = {
   balance_after: number;
   status: "open" | "closed";
   created_at: Date;
-  actions?: any;
-  details?: any;
 };
 
 export const transactionColumns = (
