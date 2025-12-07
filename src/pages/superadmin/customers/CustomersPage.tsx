@@ -317,7 +317,7 @@ const CustomersPage = () => {
 
             <div className="w-full h-px bg-bg-fy"></div>
 
-            <div className="flex justify-between mt-1 px-3.5 pb-4">
+            <div className="flex justify-between mt-1 px-3.5 pb-3.5">
               <div className="flex items-center gap-5">
                 <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
                 <Trash className="text-red-600 cursor-pointer hover:opacity-80" />

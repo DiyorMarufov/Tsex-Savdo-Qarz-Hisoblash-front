@@ -149,7 +149,7 @@ const ReportsPage = () => {
               </div>
 
               <div className="flex flex-col gap-3">
-                <div className="grid grid-cols-2 gap-3 px-5">
+                <div className="grid grid-cols-2 gap-3 px-3.5">
                   <div className="flex flex-col justify-start">
                     <span className="text-[15px] font-medium text-[#6B7280]">
                       Summa
@@ -190,7 +190,7 @@ const ReportsPage = () => {
                   </div>
                 </div>
 
-                <div className="flex flex-col justify-start px-5">
+                <div className="flex flex-col justify-start px-3.5">
                   <span className="text-[15px] font-medium text-[#6B7280]">
                     Kiritilgan sana
                   </span>
@@ -201,7 +201,7 @@ const ReportsPage = () => {
 
                 <div className="w-full h-px bg-bg-fy"></div>
 
-                <div className="flex justify-end mt-1 px-5 pb-4">
+                <div className="flex justify-end mt-1 px-3.5 pb-4">
                   <div>
                     <AntdButton
                       className="bg-[#1D4ED8]! text-white!"

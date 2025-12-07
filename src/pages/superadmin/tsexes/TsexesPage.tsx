@@ -154,8 +154,8 @@ const TsexesPage = () => {
             key={ts.id}
             className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]"
           >
-            <div className="flex flex-col gap-3">
-              <div className="grid grid-cols-2 gap-3 px-3.5 py-3 pt-5">
+            <div className="flex flex-col">
+              <div className="grid grid-cols-2 gap-3 px-3.5 py-3">
                 <div className="flex flex-col justify-start">
                   <span className="text-[15px] font-medium text-[#6B7280]">
                     Nomi
@@ -188,35 +188,37 @@ const TsexesPage = () => {
                 </div>
               </div>
 
-              <div className="flex flex-col px-3.5">
-                <div>
-                  <span className="font-medium text-[#6B7280] text-[15px]">
-                    Oxirgi operatsiya
-                  </span>
+              <div className="flex flex-col gap-3 pb-2.5">
+                <div className="flex flex-col px-3.5">
+                  <div>
+                    <span className="font-medium text-[#6B7280] text-[15px]">
+                      Oxirgi operatsiya
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-[16px] font-bold text-[#4B5563]">
+                      {ts.last_operation}
+                    </span>
+                  </div>
                 </div>
-                <div>
-                  <span className="text-[16px] font-bold text-[#4B5563]">
-                    {ts.last_operation}
-                  </span>
-                </div>
-              </div>
 
-              <div className="flex flex-col px-3.5">
-                <div>
-                  <span className="font-medium text-[#6B7280] text-[15px]">
-                    Kiritilgan sana
-                  </span>
-                </div>
-                <div>
-                  <span className="text-[16px] font-bold text-[#4B5563]">
-                    {ts.created_at.toLocaleString("uz-UZ")}
-                  </span>
+                <div className="flex flex-col px-3.5">
+                  <div>
+                    <span className="font-medium text-[#6B7280] text-[15px]">
+                      Kiritilgan sana
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-[16px] font-bold text-[#4B5563]">
+                      {ts.created_at.toLocaleString("uz-UZ")}
+                    </span>
+                  </div>
                 </div>
               </div>
 
               <div className="w-full h-px bg-bg-fy"></div>
 
-              <div className="flex justify-between mt-1 px-3.5 pb-4">
+              <div className="flex justify-between mt-1 px-3.5 pt-3 pb-4">
                 <div className="flex items-center gap-5">
                   <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
                 </div>
