@@ -111,15 +111,10 @@ const UsersPage = () => {
             key={user.id}
             className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]"
           >
-            <div className="flex justify-between p-5">
+            <div className="flex justify-between px-3.5 py-3">
               <div className="flex flex-col">
-                <a
-                  title={user.full_name}
-                  className="text-[17px] font-bold line-clamp-1"
-                >
-                  {user.full_name}
-                </a>
-                <span className="text-[16px] font-bold text-[#4B5563]">
+                <a className="text-[16px] font-bold">{user.full_name}</a>
+                <span className="text-[15px] font-bold text-[#4B5563]">
                   {user.phone_number}
                 </span>
               </div>
@@ -131,34 +126,34 @@ const UsersPage = () => {
 
             <div className="w-full h-px bg-bg-fy"></div>
 
-            <div className="flex flex-col p-5 gap-2">
+            <div className="flex flex-col px-3.5 py-3 gap-2">
               <div className="flex justify-between">
-                <span className="font-medium text-[#6B7280] text-[16px]">
+                <span className="font-medium text-[#6B7280] text-[15px]">
                   Roli
                 </span>
-                <span className="text-[17px] font-bold text-[#4B5563]">
+                <span className="text-[16px] font-bold text-[#4B5563]">
                   {user.roles.name}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="font-medium text-[#6B7280] text-[16px]">
+                <span className="font-medium text-[#6B7280] text-[15px]">
                   Faolligi
                 </span>
                 {user.is_active ? (
                   <div className="px-2 rounded-full bg-green-100 flex justify-center items-center">
-                    <span className="font-bold text-green-500">Faol</span>
+                    <span className="font-bold text-green-500 text-[12px]">Faol</span>
                   </div>
                 ) : (
                   <div className="px-2 rounded-full bg-red-100 flex justify-center items-center">
-                    <span className="font-bold text-red-500">Nofaol</span>
+                    <span className="font-bold text-red-500 text-[12px]">Nofaol</span>
                   </div>
                 )}
               </div>
               <div className="flex justify-between">
-                <span className="font-medium text-[#6B7280] text-[16px]">
+                <span className="font-medium text-[#6B7280] text-[15px]">
                   Kiritilgan sana
                 </span>
-                <span className="text-[17px] font-bold text-[#4B5563]">
+                <span className="text-[16px] font-bold text-[#4B5563]">
                   {user.created_at.toLocaleString("uz-UZ")}
                 </span>
               </div>

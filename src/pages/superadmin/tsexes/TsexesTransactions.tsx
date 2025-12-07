@@ -37,17 +37,9 @@ const TsexesTransactions = () => {
             key={dt.id}
             className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px] overflow-hidden"
           >
-            <div className="p-5 flex justify-between">
-              <a
-                title={dt.tsex.name}
-                className="text-[17px] font-bold line-clamp-1"
-              >
-                {dt.tsex.name}
-              </a>
-              <span
-                title={dt.type}
-                className="text-[15px] font-bold line-clamp-1"
-              >
+            <div className="px-3.5 py-3 flex justify-between items-center">
+              <a className="text-[16px] font-bold">{dt.tsex.name}</a>
+              <span className="text-[12px] font-bold">
                 {(() => {
                   switch (dt.type) {
                     case "payment":
@@ -76,42 +68,39 @@ const TsexesTransactions = () => {
             </div>
             <div className="w-full h-px bg-bg-fy"></div>
             <div className="flex flex-col gap-3">
-              <div className="grid grid-cols-2 gap-3 p-5">
+              <div className="grid grid-cols-2 gap-3 px-3.5 py-3">
                 <div className="flex flex-col w-1/2 justify-start">
-                  <span className="text-[16px] font-medium text-[#6B7280]">
+                  <span className="text-[15px] font-medium text-[#6B7280]">
                     Miqdori
                   </span>
-                  <span className="text-[17px] font-bold text-green-600">
+                  <span className="text-[16px] font-bold text-green-600">
                     {dt.amount.toLocaleString()}
                   </span>
                 </div>
                 <div className="flex flex-col items-end">
-                  <span className="text-[16px] font-medium text-[#6B7280] whitespace-nowrap">
+                  <span className="text-[15px] font-medium text-[#6B7280] whitespace-nowrap">
                     Balans (Keyin)
                   </span>
                   {dt.balance_after > 0 ? (
-                    <span className="text-[17px] font-bold text-red-500">
+                    <span className="text-[16px] font-bold text-red-500">
                       -{dt.balance_after.toLocaleString()}
                     </span>
                   ) : (
-                    <span className="text-[17px] font-bold text-green-500">
+                    <span className="text-[16px] font-bold text-green-500">
                       {dt.balance_after.toLocaleString()}
                     </span>
                   )}
                 </div>
                 <div className="flex flex-col col-span-2">
-                  <span className="text-[16px] font-medium text-[#6B7280]">
+                  <span className="text-[15px] font-medium text-[#6B7280]">
                     Izoh
                   </span>
-                  <span
-                    title={dt.description}
-                    className="text-[17px] font-bold text-[#4B5563] line-clamp-1"
-                  >
+                  <span className="text-[16px] font-bold text-[#4B5563]">
                     {dt.description}
                   </span>
                 </div>
               </div>
-              <div className="flex justify-between items-center bg-bg-ty px-5">
+              <div className="flex justify-between items-center bg-bg-ty px-3.5">
                 <div className="py-2 flex flex-col">
                   <span className="text-[#6D7482] font-bold text-[15px]">
                     {dt.created_by.name}

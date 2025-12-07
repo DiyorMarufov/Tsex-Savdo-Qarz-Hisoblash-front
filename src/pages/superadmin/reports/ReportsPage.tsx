@@ -115,20 +115,12 @@ const ReportsPage = () => {
             className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]"
           >
             <div className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]">
-              <div className="flex justify-between p-5">
+              <div className="flex justify-between p-3.5 py-3">
                 <div className="flex flex-col">
-                  <span
-                    title={sl.store.name}
-                    className="text-[15px] font-bold text-[#6B7280] line-clamp-1"
-                  >
+                  <span className="text-[15px] font-bold text-[#6B7280]">
                     {sl.store.name}
                   </span>
-                  <a
-                    title={sl.customer.name}
-                    className="text-[17px] font-bold line-clamp-1"
-                  >
-                    {sl.customer.name}
-                  </a>
+                  <a className="text-[16px] font-bold">{sl.customer.name}</a>
                 </div>
                 <div className="flex items-center gap-3">
                   <div
@@ -143,7 +135,7 @@ const ReportsPage = () => {
         : "bg-gray-100 text-[#4B5563]"
     }`}
                   >
-                    <span className="text-[14px] font-bold">
+                    <span className="text-[12px] font-bold">
                       {sl.type === "full_payment"
                         ? "To'liq to'lov"
                         : sl.type === "partial_payment"
@@ -159,53 +151,50 @@ const ReportsPage = () => {
               <div className="flex flex-col gap-3">
                 <div className="grid grid-cols-2 gap-3 px-5">
                   <div className="flex flex-col justify-start">
-                    <span className="text-[16px] font-medium text-[#6B7280]">
+                    <span className="text-[15px] font-medium text-[#6B7280]">
                       Summa
                     </span>
-                    <span className="text-[17px] font-bold text-green-600">
+                    <span className="text-[16px] font-bold text-green-600">
                       {sl.total_sum.toLocaleString()}
                     </span>
                   </div>
                   <div className="flex flex-col justify-start">
-                    <span className="text-[16px] font-medium text-[#6B7280]">
+                    <span className="text-[15px] font-medium text-[#6B7280]">
                       To'langan
                     </span>
-                    <span className="text-[17px] font-bold text-green-600">
+                    <span className="text-[16px] font-bold text-green-600">
                       {sl.paid_amount.toLocaleString()}
                     </span>
                   </div>
                   <div className="flex flex-col justify-start">
-                    <span className="text-[16px] font-medium text-[#6B7280]">
+                    <span className="text-[15px] font-medium text-[#6B7280]">
                       Qarz
                     </span>
                     {sl.debt > 0 ? (
-                      <span className="text-[17px] font-bold text-red-500">
+                      <span className="text-[16px] font-bold text-red-500">
                         -{sl.debt.toLocaleString()}
                       </span>
                     ) : (
-                      <span className="text-[17px] font-bold text-red-500">
+                      <span className="text-[16px] font-bold text-red-500">
                         {sl.debt.toLocaleString()}
                       </span>
                     )}
                   </div>
                   <div className="flex flex-col justify-start">
-                    <span className="text-[16px] font-medium text-[#6B7280]">
+                    <span className="text-[15px] font-medium text-[#6B7280]">
                       Sotuvchi
                     </span>
-                    <span
-                      title={sl.seller.name}
-                      className="text-[17px] font-bold text-[#4B5563] line-clamp-1"
-                    >
+                    <span className="text-[16px] font-bold text-[#4B5563]">
                       {sl.seller.name}
                     </span>
                   </div>
                 </div>
 
                 <div className="flex flex-col justify-start px-5">
-                  <span className="text-[16px] font-medium text-[#6B7280]">
+                  <span className="text-[15px] font-medium text-[#6B7280]">
                     Kiritilgan sana
                   </span>
-                  <span className="text-[17px] font-bold text-[#4B5563]">
+                  <span className="text-[16px] font-bold text-[#4B5563]">
                     {sl.created_at.toLocaleString("uz-UZ")}
                   </span>
                 </div>
@@ -350,37 +339,32 @@ const ReportsPage = () => {
               key={sli.id}
               className="flex flex-col gap-3 border border-bg-fy bg-[#ffffff] rounded-[12px] overflow-hidden"
             >
-              <div className="flex justify-between items-center gap-3 pt-5 px-5">
+              <div className="flex justify-between items-center gap-3 pt-3 px-3.5">
                 <div className="flex flex-col items-start">
                   <span className="text-[15px] font-bold text-[#64748B]">
                     Mahsulot
                   </span>
-                  <a
-                    title={sli.product.name}
-                    className="text-[17px] font-bold line-clamp-1"
-                  >
-                    {sli.product.name}
-                  </a>
+                  <a className="text-[16px] font-bold">{sli.product.name}</a>
                 </div>
                 <div className="flex flex-col items-end">
                   <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
                 </div>
               </div>
 
-              <div className="flex px-5">
+              <div className="flex px-3.5">
                 <div className="flex flex-col w-1/2">
-                  <span className="text-[16px] font-medium text-[#6B7280]">
+                  <span className="text-[15px] font-medium text-[#6B7280]">
                     Soni
                   </span>
-                  <span className="text-[17px] font-bold text-[#4B5563]">
+                  <span className="text-[16px] font-bold text-[#4B5563]">
                     {sli.quantity}
                   </span>
                 </div>
                 <div className="flex flex-col w-1/2">
-                  <span className="text-[16px] font-medium text-[#6B7280]">
+                  <span className="text-[15px] font-medium text-[#6B7280]">
                     Narxi
                   </span>
-                  <span className="text-[17px] font-bold text-green-500">
+                  <span className="text-[16px] font-bold text-green-500">
                     {sli.price.toLocaleString()}
                   </span>
                 </div>
@@ -388,23 +372,20 @@ const ReportsPage = () => {
 
               <div className="w-full h-px bg-bg-fy"></div>
 
-              <div className="flex justify-between mt-1 px-5 pb-4">
+              <div className="flex mt-1 px-3.5 pb-3">
                 <div className="flex flex-col w-1/2">
-                  <span className="text-[16px] font-medium text-[#6B7280]">
+                  <span className="text-[15px] font-medium text-[#6B7280]">
                     Umumiy Summa
                   </span>
-                  <span className="text-[17px] font-bold text-green-500">
+                  <span className="text-[16px] font-bold text-green-500">
                     {sli.total_amount.toLocaleString()}
                   </span>
                 </div>
                 <div className="flex flex-col w-1/2">
-                  <span className="text-[16px] font-medium text-[#6B7280]">
+                  <span className="text-[15px] font-medium text-[#6B7280]">
                     Sotuv Sanasi
                   </span>
-                  <span
-                    title={sli.created_at.toLocaleString("uz-UZ")}
-                    className="text-[17px] font-bold text-[#4B5563] line-clamp-1"
-                  >
+                  <span className="text-[15px] font-bold text-[#4B5563]">
                     {sli.created_at.toLocaleString("uz-UZ")}
                   </span>
                 </div>
@@ -418,16 +399,13 @@ const ReportsPage = () => {
         className="min-[500px]:hidden fixed bottom-18 right-2.5 z-50 
                 bg-[#ffffff] border border-gray-200 
                 shadow-sm rounded-full p-2 pl-[15px]
-                flex items-center w-[205px]"
+                flex items-center justify-center w-[95%] overflow-auto"
       >
         <span className="text-sm font-semibold text-gray-700 whitespace-nowrap">
           Jami savdo:
         </span>
 
-        <span
-          title="15,200,000"
-          className="font-extrabold text-[17px] text-green-600 line-clamp-1 truncate ml-2"
-        >
+        <span className="font-extrabold text-[17px] text-green-600 truncate ml-2">
           <CountUp start={0} end={15200200} duration={2.5} separator="," />
         </span>
       </div>

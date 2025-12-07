@@ -19,10 +19,10 @@ const ProductsPage = () => {
     <div>
       <LargeTitle title="Mahsulotlar" />
 
-      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-2 p-[17px] flex items-center gap-4 max-[900px]:flex-wrap">
+      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-2 p-4 flex items-center gap-4 max-[900px]:flex-wrap">
         <SearchInput
           placeholder="Mahsulot nomi,brandi bo'yicha qidirish"
-          className="h-12! min-[900px]:w-[50%]! bg-bg-ty! text-[17px]!"
+          className="h-12! min-[900px]:w-[50%]! bg-bg-ty! text-[16px]!"
         />
         <div className="flex gap-4 min-[900px]:w-[50%] max-[900px]:w-full max-[400px]:flex-wrap">
           <Filter
@@ -58,51 +58,46 @@ const ProductsPage = () => {
             key={pr.id}
             className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]"
           >
-            <div className="flex justify-between p-5">
-              <a title={pr.name} className="text-[17px] font-bold line-clamp-1">
-                {pr.name}
-              </a>
-              <span
-                title={pr.brand}
-                className="text-[15px] font-bold text-[#6B7280] line-clamp-1"
-              >
+            <div className="flex justify-between px-3.5 py-3">
+              <a className="text-[16px] font-bold">{pr.name}</a>
+              <span className="text-[14px] font-bold text-[#6B7280]">
                 {pr.brand}
               </span>
             </div>
 
             <div className="w-full h-px bg-bg-fy"></div>
 
-            <div className="p-5 flex flex-col gap-3">
+            <div className="px-3.5 py-3 flex flex-col gap-3">
               <div className="grid grid-cols-2 gap-3">
                 <div className="flex flex-col justify-start w-1/2">
-                  <span className="text-[16px] font-medium text-[#6B7280]">
+                  <span className="text-[15px] font-medium text-[#6B7280]">
                     Narxi
                   </span>
-                  <span className="text-[17px] font-bold text-green-600">
+                  <span className="text-[16px] font-bold text-green-600">
                     {pr.price.toLocaleString()}
                   </span>
                 </div>
                 <div className="flex flex-col justify-start w-1/2">
-                  <span className="text-[16px] font-medium text-[#6B7280]">
+                  <span className="text-[15px] font-medium text-[#6B7280]">
                     Miqdori
                   </span>
-                  <span className="text-[17px] font-bold text-[#4B5563]">
+                  <span className="text-[16px] font-bold text-[#4B5563]">
                     {pr.quantity}
                   </span>
                 </div>
                 <div className="flex flex-col justify-start w-1/2">
-                  <span className="text-[16px] font-medium text-[#6B7280] whitespace-nowrap">
+                  <span className="text-[15px] font-medium text-[#6B7280] whitespace-nowrap">
                     Pochkadagi soni
                   </span>
-                  <span className="text-[17px] font-bold text-[#4B5563]">
+                  <span className="text-[16px] font-bold text-[#4B5563]">
                     {pr.unit_in_package}
                   </span>
                 </div>
                 <div className="flex flex-col justify-start w-1/2">
-                  <span className="text-[16px] font-medium text-[#6B7280]">
+                  <span className="text-[15px] font-medium text-[#6B7280]">
                     O'lchami
                   </span>
-                  <span className="text-[17px] font-bold text-[#4B5563]">
+                  <span className="text-[16px] font-bold text-[#4B5563]">
                     {pr.size}
                   </span>
                 </div>
@@ -110,36 +105,27 @@ const ProductsPage = () => {
 
               <div className="flex flex-col">
                 <div>
-                  <span className="font-medium text-[#6B7280] text-[16px]">
+                  <span className="font-medium text-[#6B7280] text-[15px]">
                     Do'kon / Tsex
                   </span>
                 </div>
                 <div className="w-full">
-                  <span
-                    title={pr.shop.name}
-                    className="text-[17px] font-bold text-[#4B5563] line-clamp-1"
-                  >
-                    {pr.shop.name} /{" "}
-                    <span title={pr.tsex.name}>{pr.tsex.name}</span>
+                  <span className="text-[16px] font-bold text-[#4B5563]">
+                    {pr.shop.name} / <span>{pr.tsex.name}</span>
                   </span>
                 </div>
               </div>
 
               <div className="flex flex-col">
                 <div>
-                  <span className="font-medium text-[#6B7280] text-[16px]">
+                  <span className="font-medium text-[#6B7280] text-[15px]">
                     Kim kiritgan / Sana
                   </span>
                 </div>
                 <div>
-                  <span
-                    title={pr.created_by.full_name}
-                    className="text-[17px] font-bold text-[#4B5563] line-clamp-1"
-                  >
+                  <span className="text-[16px] font-bold text-[#4B5563]">
                     {pr.created_by.full_name} /{" "}
-                    <span title={pr.created_at.toLocaleString("uz-UZ")}>
-                      {pr.created_at.toLocaleString("uz-UZ")}
-                    </span>
+                    <span>{pr.created_at.toLocaleString("uz-UZ")}</span>
                   </span>
                 </div>
               </div>

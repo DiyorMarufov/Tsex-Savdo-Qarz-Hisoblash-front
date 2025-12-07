@@ -9,25 +9,25 @@ const CustomerBalances = () => {
 
       <div className="flex flex-col gap-4 overflow-y-auto h-[150px]">
         <div className="flex justify-between">
-          <span className="font-medium text-[17px] text-[#6B7280] line-clamp-1">
+          <span className="font-medium text-[17px] text-[#6B7280]">
             Alisher Valiyev
           </span>
           <span className="text-[16px] font-bold text-red-500">5.8M UZS</span>
         </div>
         <div className="flex justify-between">
-          <span className="font-medium text-[17px] text-[#6B7280] line-clamp-1">
+          <span className="font-medium text-[17px] text-[#6B7280]">
             Salima Azimova
           </span>
           <span className="text-[16px] font-bold text-red-500">5.8M UZS</span>
         </div>
         <div className="flex justify-between">
-          <span className="font-medium text-[17px] text-[#6B7280] line-clamp-1">
+          <span className="font-medium text-[17px] text-[#6B7280]">
             Zuhriddin Akromaliyev
           </span>
           <span className="text-[16px] font-bold text-red-500">5.8M UZS</span>
         </div>
         <div className="flex justify-between">
-          <span className="font-medium text-[17px] text-[#6B7280] line-clamp-1">
+          <span className="font-medium text-[17px] text-[#6B7280]">
             Muhriddin Muhriddinov
           </span>
           <span className="text-[16px] font-bold text-red-500">5.8M UZS</span>

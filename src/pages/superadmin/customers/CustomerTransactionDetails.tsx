@@ -104,41 +104,57 @@ const CustomerTransactionDetails = () => {
                 className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]"
               >
                 <div className="">
-                  <div className="flex flex-col p-5">
-                    <a
-                      title={trd.customer.full_name}
-                      className="text-[17px] font-bold text-green-600 line-clamp-1"
-                    >
+                  <div className="flex justify-between gap-3 px-3.5 py-3">
+                    <a className="text-[16px] font-bold text-green-600">
                       {trd.customer.full_name}
                     </a>
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={`h-3 w-3 rounded-full ${
-                          trd.type === "borrow_more"
-                            ? "bg-red-500"
-                            : trd.type === "lend_more"
-                            ? "bg-blue-500"
-                            : trd.type === "repayment" ||
-                              trd.type === "received"
-                            ? "bg-green-500"
-                            : trd.type === "paid_off"
-                            ? "bg-green-700"
-                            : "bg-gray-400"
-                        }`}
-                      ></div>
+                    <div className="flex justify-between items-center whitespace-nowrap">
+                      <span className="text-[12px] font-bold">
+                        {(() => {
+                          let text;
+                          let bgColor;
+                          let textColor;
 
-                      <span className="text-[17px] font-bold text-[#4B5563]">
-                        {trd.type === "borrow_more"
-                          ? "Qo'shimcha qarz olish"
-                          : trd.type === "repayment"
-                          ? "Qarzni qaytarish"
-                          : trd.type === "paid_off"
-                          ? "To'liq to'landi"
-                          : trd.type === "lend_more"
-                          ? "Qo'shimcha qarz berish"
-                          : trd.type === "received"
-                          ? "Qarzni qabul qilish"
-                          : trd.type}
+                          switch (trd.type) {
+                            case "borrow_more":
+                              text = "Qo'shimcha qarz olish";
+                              bgColor = "bg-red-100";
+                              textColor = "text-red-600";
+                              break;
+                            case "lend_more":
+                              text = "Qo'shimcha qarz berish";
+                              bgColor = "bg-blue-100";
+                              textColor = "text-blue-600";
+                              break;
+                            case "repayment":
+                              text = "Qarzni qaytarish";
+                              bgColor = "bg-green-100";
+                              textColor = "text-green-600";
+                              break;
+                            case "received":
+                              text = "Qarzni qabul qilish";
+                              bgColor = "bg-green-100";
+                              textColor = "text-green-600";
+                              break;
+                            case "paid_off":
+                              text = "To'liq to'landi";
+                              bgColor = "bg-green-700";
+                              textColor = "text-white";
+                              break;
+                            default:
+                              text = trd.type;
+                              bgColor = "bg-gray-200";
+                              textColor = "text-gray-600";
+                          }
+
+                          return (
+                            <span
+                              className={`${bgColor} rounded-full ${textColor} px-2 py-1 whitespace-nowrap`}
+                            >
+                              {text}
+                            </span>
+                          );
+                        })()}
                       </span>
                     </div>
                   </div>
@@ -146,43 +162,40 @@ const CustomerTransactionDetails = () => {
 
                 <div className="w-full h-px bg-bg-fy"></div>
 
-                <div className="p-5 flex flex-col gap-3">
+                <div className="px-3.5 py-3 flex flex-col gap-3">
                   <div className="grid grid-cols-2 gap-3">
                     <div className="flex flex-col justify-start w-1/2">
-                      <span className="text-[16px] font-medium text-[#6B7280]">
+                      <span className="text-[15px] font-medium text-[#6B7280]">
                         Miqdor
                       </span>
-                      <span className="text-[17px] font-bold text-green-600">
+                      <span className="text-[16px] font-bold text-green-600">
                         {trd.amount.toLocaleString()}
                       </span>
                     </div>
                     <div className="flex flex-col justify-start">
-                      <span title="Keyingi Balans" className="text-[16px] font-medium text-[#6B7280] line-clamp-1">
+                      <span className="text-[15px] font-medium text-[#6B7280]">
                         Keyingi Balans
                       </span>
                       {trd.balance_after > 0 ? (
-                        <span className="text-[17px] font-bold text-red-500">
+                        <span className="text-[16px] font-bold text-red-500">
                           -{Math.abs(trd.balance_after).toLocaleString()}
                         </span>
                       ) : (
-                        <span className="text-[17px] font-bold text-green-500">
+                        <span className="text-[16px] font-bold text-green-500">
                           {Math.abs(trd.balance_after).toLocaleString()}
                         </span>
                       )}
                     </div>
                     <div className="flex flex-col justify-start">
-                      <span className="text-[16px] font-medium text-[#6B7280]">
+                      <span className="text-[15px] font-medium text-[#6B7280]">
                         Tugash sanasi
                       </span>
-                      <span
-                        title={trd.due_date.toLocaleString("uz-UZ")}
-                        className="text-[17px] font-bold text-[#4B5563] line-clamp-1"
-                      >
+                      <span className="text-[16px] font-bold text-[#4B5563]">
                         {trd.due_date.toLocaleString("uz-UZ")}
                       </span>
                     </div>
                     <div className="flex flex-col justify-start">
-                      <span className="text-[16px] font-medium text-[#6B7280]">
+                      <span className="text-[15px] font-medium text-[#6B7280]">
                         Holati
                       </span>
                       <div className="flex items-center gap-2">
@@ -194,7 +207,7 @@ const CustomerTransactionDetails = () => {
                           }`}
                         ></div>
 
-                        <span className="text-[17px] font-bold text-[#4B5563]">
+                        <span className="text-[16px] font-bold text-[#4B5563]">
                           {trd.status === "open" ? "Ochiq" : "Yopilgan"}
                         </span>
                       </div>
@@ -203,15 +216,12 @@ const CustomerTransactionDetails = () => {
 
                   <div className="flex flex-col">
                     <div>
-                      <span className="font-medium text-[#6B7280] text-[16px]">
+                      <span className="font-medium text-[#6B7280] text-[15px]">
                         Izoh
                       </span>
                     </div>
                     <div>
-                      <span
-                        title={trd.description}
-                        className="text-[17px] font-bold text-[#4B5563] line-clamp-1"
-                      >
+                      <span className="text-[16px] font-bold text-[#4B5563]">
                         {" "}
                         {trd.description}
                       </span>
@@ -220,15 +230,12 @@ const CustomerTransactionDetails = () => {
 
                   <div className="flex flex-col">
                     <div>
-                      <span className="font-medium text-[#6B7280] text-[16px]">
+                      <span className="font-medium text-[#6B7280] text-[15px]">
                         Kiritilgan sana
                       </span>
                     </div>
                     <div>
-                      <span
-                        title={trd.created_at.toLocaleString("uz-UZ")}
-                        className="text-[17px] font-bold text-[#4B5563] line-clamp-1"
-                      >
+                      <span className="text-[16px] font-bold text-[#4B5563]">
                         {" "}
                         {trd.created_at.toLocaleString("uz-UZ")}
                       </span>

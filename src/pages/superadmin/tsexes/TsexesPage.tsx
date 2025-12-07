@@ -126,7 +126,7 @@ const TsexesPage = () => {
         </div>
       </div>
 
-      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-6 p-[17px] flex items-center gap-5 max-[960px]:flex-wrap">
+      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-6 p-3.5 flex items-center gap-5 max-[960px]:flex-wrap">
         <SearchInput
           placeholder="Tsex nomi yoki operatsiya bo'yicha qidirish"
           className="h-12! bg-bg-ty! text-[17px]!"
@@ -155,75 +155,60 @@ const TsexesPage = () => {
             className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]"
           >
             <div className="flex flex-col gap-3">
-              <div className="grid grid-cols-2 gap-3 px-5 pt-5">
-                <div className="flex flex-col justify-start w-1/2">
-                  <span className="text-[16px] font-medium text-[#6B7280]">
+              <div className="grid grid-cols-2 gap-3 px-3.5 py-3 pt-5">
+                <div className="flex flex-col justify-start">
+                  <span className="text-[15px] font-medium text-[#6B7280]">
                     Nomi
                   </span>
-                  <a
-                    title={ts.name}
-                    className="text-[17px] font-bold text-green-600 line-clamp-1"
-                  >
+                  <a className="text-[16px] font-bold text-green-600">
                     {ts.name}
                   </a>
                 </div>
                 <div className="flex flex-col justify-start">
-                  <span
-                    title={"Tsex Manager"}
-                    className="text-[16px] font-medium text-[#6B7280] line-clamp-1"
-                  >
+                  <span className="text-[15px] font-medium text-[#6B7280]">
                     Tsex Manager
                   </span>
-                  <span
-                    title={ts.tsex.name}
-                    className="text-[17px] font-bold text-[#4B5563] line-clamp-1"
-                  >
+                  <span className="text-[16px] font-bold text-[#4B5563]">
                     {ts.tsex.name}
                   </span>
                 </div>
                 <div className="flex flex-col justify-start">
-                  <span className="text-[16px] font-medium text-[#6B7280] whitespace-nowrap">
+                  <span className="text-[15px] font-medium text-[#6B7280] whitespace-nowrap">
                     Balansi
                   </span>
                   {ts.balance > 0 ? (
-                    <span className="text-[17px] font-bold text-red-500">
+                    <span className="text-[16px] font-bold text-red-500">
                       -{ts.balance.toLocaleString()}
                     </span>
                   ) : (
-                    <span className="text-[17px] font-bold text-green-500">
+                    <span className="text-[16px] font-bold text-green-500">
                       {ts.balance.toLocaleString()}
                     </span>
                   )}
                 </div>
               </div>
 
-              <div className="flex flex-col px-5">
+              <div className="flex flex-col px-3.5">
                 <div>
-                  <span className="font-medium text-[#6B7280] text-[16px]">
+                  <span className="font-medium text-[#6B7280] text-[15px]">
                     Oxirgi operatsiya
                   </span>
                 </div>
                 <div>
-                  <span
-                    title={ts.last_operation}
-                    className="text-[17px] font-bold text-[#4B5563] line-clamp-1"
-                  >
+                  <span className="text-[16px] font-bold text-[#4B5563]">
                     {ts.last_operation}
                   </span>
                 </div>
               </div>
 
-              <div className="flex flex-col px-5">
+              <div className="flex flex-col px-3.5">
                 <div>
-                  <span className="font-medium text-[#6B7280] text-[16px]">
+                  <span className="font-medium text-[#6B7280] text-[15px]">
                     Kiritilgan sana
                   </span>
                 </div>
                 <div>
-                  <span
-                    title={ts.created_at.toLocaleString("uz-UZ")}
-                    className="text-[17px] font-bold text-[#4B5563] line-clamp-1"
-                  >
+                  <span className="text-[16px] font-bold text-[#4B5563]">
                     {ts.created_at.toLocaleString("uz-UZ")}
                   </span>
                 </div>
@@ -231,7 +216,7 @@ const TsexesPage = () => {
 
               <div className="w-full h-px bg-bg-fy"></div>
 
-              <div className="flex justify-between mt-1 px-5 pb-4">
+              <div className="flex justify-between mt-1 px-3.5 pb-4">
                 <div className="flex items-center gap-5">
                   <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
                 </div>

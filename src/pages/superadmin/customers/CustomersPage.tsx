@@ -218,7 +218,7 @@ const CustomersPage = () => {
         </div>
       </div>
 
-      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-6 p-[17px] flex items-center gap-5 max-[960px]:flex-wrap">
+      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-6 p-3.5 flex items-center gap-5 max-[960px]:flex-wrap">
         <SearchInput
           placeholder="Tsex nomi yoki operatsiya bo'yicha qidirish"
           className="h-12! bg-bg-ty! text-[17px]!"
@@ -252,70 +252,63 @@ const CustomersPage = () => {
             key={cs.id}
             className="flex flex-col gap-3 border border-bg-fy bg-[#ffffff] rounded-[12px] overflow-hidden"
           >
-            <div className="flex justify-between items-center gap-3 pt-5 px-5">
+            <div className="flex justify-between items-center gap-3 pt-3 px-3.5">
               <div className="flex flex-col items-start">
                 <a
-                  title={cs.full_name}
-                  className="text-[17px] font-bold line-clamp-1"
+                  className="text-[16px] font-bold"
                 >
                   {cs.full_name}
                 </a>
                 <span
-                  title={cs.region}
-                  className="text-[15px] font-bold text-[#64748B] line-clamp-1"
+                  className="text-[15px] font-bold text-[#64748B]"
                 >
                   {cs.region}
                 </span>
               </div>
               <div className="flex flex-col items-end">
                 {cs.balance > 0 ? (
-                  <span className="text-[17px] font-bold text-red-500">
+                  <span className="text-[16px] font-bold text-red-500">
                     -{Math.abs(cs.balance).toLocaleString()}
                   </span>
                 ) : (
-                  <span className="text-[17px] font-bold text-green-500">
+                  <span className="text-[16px] font-bold text-green-500">
                     {Math.abs(cs.balance).toLocaleString()}
                   </span>
                 )}
               </div>
             </div>
 
-            <div className="flex flex-col px-5">
+            <div className="flex flex-col px-3.5">
               <div className="flex justify-between gap-3">
                 <span
-                  title="Telefon raqami"
-                  className="text-[16px] font-medium text-[#6B7280] line-clamp-1"
+                  className="text-[15px] font-medium text-[#6B7280]"
                 >
                   Telefon raqami
                 </span>
                 <span
-                  title={cs.phone_number}
-                  className="text-[17px] font-bold text-[#4B5563] line-clamp-1"
+                  className="text-[16px] font-bold text-[#4B5563]"
                 >
                   {cs.phone_number}
                 </span>
               </div>
               <div className="flex justify-between gap-3">
                 <span
-                  title="Oxirgi tranzaksiya"
-                  className="text-[16px] font-medium text-[#6B7280] line-clamp-1"
+                  className="text-[15px] font-medium text-[#6B7280]"
                 >
                   Oxirgi tranzaksiya
                 </span>
                 <span
-                  title={cs.last_transaction.toLocaleString("uz-UZ")}
-                  className="text-[17px] font-bold text-[#4B5563] line-clamp-1"
+                  className="text-[16px] font-bold text-[#4B5563]"
                 >
                   {cs.last_transaction.toLocaleString("uz-UZ")}
                 </span>
               </div>
               <div className="flex justify-between gap-3">
-                <span title="Kiritilgan sana" className="text-[16px] font-medium text-[#6B7280] line-clamp-1">
+                <span title="Kiritilgan sana" className="text-[15px] font-medium text-[#6B7280]">
                   Kiritilgan sana
                 </span>
                 <span
-                  title={cs.created_at.toLocaleString("uz-UZ")}
-                  className="text-[17px] font-bold text-[#4B5563] line-clamp-1"
+                  className="text-[16px] font-bold text-[#4B5563]"
                 >
                   {cs.created_at.toLocaleString("uz-UZ")}
                 </span>
@@ -324,7 +317,7 @@ const CustomersPage = () => {
 
             <div className="w-full h-px bg-bg-fy"></div>
 
-            <div className="flex justify-between mt-1 px-5 pb-4">
+            <div className="flex justify-between mt-1 px-3.5 pb-4">
               <div className="flex items-center gap-5">
                 <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
                 <Trash className="text-red-600 cursor-pointer hover:opacity-80" />

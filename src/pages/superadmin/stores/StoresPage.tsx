@@ -20,7 +20,7 @@ const StoresPage = () => {
         <LargeTitle title="Do'konlar" />
       </div>
 
-      <div className="mt-3 rounded-[12px] border border-e-bg-fy bg-[#ffffff] p-[17px]">
+      <div className="mt-3 rounded-[12px] border border-e-bg-fy bg-[#ffffff] p-3.5">
         <SearchInput
           placeholder="Do'kon nomi yoki manzili bo'yicha qidirish"
           className="h-12! bg-bg-ty! text-[17px]!"
@@ -49,18 +49,10 @@ const StoresPage = () => {
             key={st.id}
             className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]"
           >
-            <div className="p-5 flex justify-between">
-              <div className="flex flex-col gap-2">
-                <a
-                  title={st.name}
-                  className="text-[17px] font-bold line-clamp-1"
-                >
-                  {st.name}
-                </a>
-                <span
-                  title={st.address}
-                  className="font-bold text-[17px] text-[#4B5563] line-clamp-1"
-                >
+            <div className="px-3.5 py-3 flex justify-between">
+              <div className="flex flex-col gap-1">
+                <a className="text-[16px] font-bold">{st.name}</a>
+                <span className="font-bold text-[15px] text-[#4B5563]">
                   {st.address}
                 </span>
               </div>
@@ -72,13 +64,10 @@ const StoresPage = () => {
 
             <div className="w-full h-px bg-bg-fy"></div>
 
-            <div className="p-5">
-              <span className="text-[16px] font-medium text-[#6B7280]">
+            <div className="px-3.5 py-3">
+              <span className="text-[15px] font-medium text-[#6B7280]">
                 Kiritilgan sana:{" "}
-                <span
-                  title={st.created_at.toLocaleString("uz-UZ")}
-                  className="text-[17px] font-bold text-[#4B5563] line-clamp-1"
-                >
+                <span className="text-[16px] font-bold text-[#4B5563]">
                   {st.created_at.toLocaleString("uz-UZ")}
                 </span>
               </span>
