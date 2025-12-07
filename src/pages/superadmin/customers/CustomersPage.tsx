@@ -477,7 +477,7 @@ const CustomersPage = () => {
 
             <div>
               <span className="flex mb-1 font-medium text-[15px]">
-                To'lov summasi
+                Tel raqami
               </span>
               <Form.Item<newCustomerFieldType>
                 name="phone_number"
@@ -488,7 +488,7 @@ const CustomersPage = () => {
                   },
                 ]}
               >
-                <Input className="h-10!" placeholder="0.00 UZS" />
+                <Input className="h-10!" placeholder="+998" />
               </Form.Item>
             </div>
 
