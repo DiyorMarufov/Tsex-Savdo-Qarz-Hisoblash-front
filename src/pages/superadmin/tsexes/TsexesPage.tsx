@@ -4,7 +4,6 @@ import { Button as AntdButton, Pagination } from "antd";
 import Button from "../../../shared/ui/Button/Button";
 import { Edit, Plus } from "lucide-react";
 import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
-import { DatePicker } from "antd/lib";
 import ProTable from "@ant-design/pro-table";
 import {
   fakeTsexData,
@@ -132,7 +131,6 @@ const TsexesPage = () => {
           placeholder="Tsex nomi yoki operatsiya bo'yicha qidirish"
           className="h-12! bg-bg-ty! text-[17px]!"
         />
-        <DatePicker className="h-12! bg-bg-ty! text-[17px]! w-[300px] max-[960px]:w-full!" />
       </div>
 
       <div className="mt-4 max-[500px]:hidden">
@@ -162,15 +160,24 @@ const TsexesPage = () => {
                   <span className="text-[16px] font-medium text-[#6B7280]">
                     Nomi
                   </span>
-                  <a className="text-[17px] font-bold text-green-600 whitespace-nowrap">
+                  <a
+                    title={ts.name}
+                    className="text-[17px] font-bold text-green-600 line-clamp-1"
+                  >
                     {ts.name}
                   </a>
                 </div>
-                <div className="flex flex-col justify-start w-1/2">
-                  <span className="text-[16px] font-medium text-[#6B7280] whitespace-nowrap">
+                <div className="flex flex-col justify-start">
+                  <span
+                    title={"Tsex Manager"}
+                    className="text-[16px] font-medium text-[#6B7280] line-clamp-1"
+                  >
                     Tsex Manager
                   </span>
-                  <span className="text-[17px] font-bold text-[#4B5563] whitespace-nowrap">
+                  <span
+                    title={ts.tsex.name}
+                    className="text-[17px] font-bold text-[#4B5563] line-clamp-1"
+                  >
                     {ts.tsex.name}
                   </span>
                 </div>
@@ -197,7 +204,10 @@ const TsexesPage = () => {
                   </span>
                 </div>
                 <div>
-                  <span className="text-[17px] font-bold text-[#4B5563]">
+                  <span
+                    title={ts.last_operation}
+                    className="text-[17px] font-bold text-[#4B5563] line-clamp-1"
+                  >
                     {ts.last_operation}
                   </span>
                 </div>
@@ -210,7 +220,10 @@ const TsexesPage = () => {
                   </span>
                 </div>
                 <div>
-                  <span className="text-[17px] font-bold text-[#4B5563]">
+                  <span
+                    title={ts.created_at.toLocaleString("uz-UZ")}
+                    className="text-[17px] font-bold text-[#4B5563] line-clamp-1"
+                  >
                     {ts.created_at.toLocaleString("uz-UZ")}
                   </span>
                 </div>

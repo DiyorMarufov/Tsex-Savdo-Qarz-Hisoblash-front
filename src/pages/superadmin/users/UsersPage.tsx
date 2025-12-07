@@ -113,10 +113,13 @@ const UsersPage = () => {
           >
             <div className="flex justify-between p-5">
               <div className="flex flex-col">
-                <a className="text-[17px] font-bold whitespace-nowrap">
+                <a
+                  title={user.full_name}
+                  className="text-[17px] font-bold line-clamp-1"
+                >
                   {user.full_name}
                 </a>
-                <span className="text-[16px] font-bold text-[#4B5563] whitespace-nowrap">
+                <span className="text-[16px] font-bold text-[#4B5563]">
                   {user.phone_number}
                 </span>
               </div>

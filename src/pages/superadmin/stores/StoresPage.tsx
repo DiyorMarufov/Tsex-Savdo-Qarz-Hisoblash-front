@@ -51,8 +51,16 @@ const StoresPage = () => {
           >
             <div className="p-5 flex justify-between">
               <div className="flex flex-col gap-2">
-                <a className="text-[17px] font-bold">{st.name}</a>
-                <span className="font-bold text-[17px] text-[#4B5563]">
+                <a
+                  title={st.name}
+                  className="text-[17px] font-bold line-clamp-1"
+                >
+                  {st.name}
+                </a>
+                <span
+                  title={st.address}
+                  className="font-bold text-[17px] text-[#4B5563] line-clamp-1"
+                >
                   {st.address}
                 </span>
               </div>
@@ -67,7 +75,10 @@ const StoresPage = () => {
             <div className="p-5">
               <span className="text-[16px] font-medium text-[#6B7280]">
                 Kiritilgan sana:{" "}
-                <span className="text-[17px] font-bold text-[#4B5563]">
+                <span
+                  title={st.created_at.toLocaleString("uz-UZ")}
+                  className="text-[17px] font-bold text-[#4B5563] line-clamp-1"
+                >
                   {st.created_at.toLocaleString("uz-UZ")}
                 </span>
               </span>

@@ -21,6 +21,7 @@ import {
   salesItemColumns,
   type SaleItemsTableListItem,
 } from "./model/sales-items-detail-model";
+import CountUp from "react-countup";
 
 type filterFieldType = {
   store?: string;
@@ -65,7 +66,7 @@ const ReportsPage = () => {
   // Sale Items detail ends
 
   return (
-    <div>
+    <div className="relative pb-11.5">
       <div>
         <LargeTitle title="Hisobotlar" />
       </div>
@@ -94,6 +95,16 @@ const ReportsPage = () => {
           search={false}
           dateFormatter="string"
           scroll={{ x: "max-content" }}
+          footer={() => (
+            <div>
+              <span className="text-[17px] font-bold">
+                Jami savdo:{" "}
+                <span className="text-green-500 font-bold text-[18px]">
+                  15,000,000
+                </span>
+              </span>
+            </div>
+          )}
         />
       </div>
 
@@ -106,10 +117,18 @@ const ReportsPage = () => {
             <div className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]">
               <div className="flex justify-between p-5">
                 <div className="flex flex-col">
-                  <span className="text-[15px] font-bold text-[#6B7280]">
+                  <span
+                    title={sl.store.name}
+                    className="text-[15px] font-bold text-[#6B7280] line-clamp-1"
+                  >
                     {sl.store.name}
                   </span>
-                  <a className="text-[17px] font-bold">{sl.customer.name}</a>
+                  <a
+                    title={sl.customer.name}
+                    className="text-[17px] font-bold line-clamp-1"
+                  >
+                    {sl.customer.name}
+                  </a>
                 </div>
                 <div className="flex items-center gap-3">
                   <div
@@ -156,7 +175,7 @@ const ReportsPage = () => {
                     </span>
                   </div>
                   <div className="flex flex-col justify-start">
-                    <span className="text-[16px] font-medium text-[#6B7280] whitespace-nowrap">
+                    <span className="text-[16px] font-medium text-[#6B7280]">
                       Qarz
                     </span>
                     {sl.debt > 0 ? (
@@ -173,7 +192,10 @@ const ReportsPage = () => {
                     <span className="text-[16px] font-medium text-[#6B7280]">
                       Sotuvchi
                     </span>
-                    <span className="text-[17px] font-bold text-[#4B5563]">
+                    <span
+                      title={sl.seller.name}
+                      className="text-[17px] font-bold text-[#4B5563] line-clamp-1"
+                    >
                       {sl.seller.name}
                     </span>
                   </div>
@@ -333,7 +355,10 @@ const ReportsPage = () => {
                   <span className="text-[15px] font-bold text-[#64748B]">
                     Mahsulot
                   </span>
-                  <a className="text-[17px] font-bold whitespace-nowrap">
+                  <a
+                    title={sli.product.name}
+                    className="text-[17px] font-bold line-clamp-1"
+                  >
                     {sli.product.name}
                   </a>
                 </div>
@@ -344,18 +369,18 @@ const ReportsPage = () => {
 
               <div className="flex px-5">
                 <div className="flex flex-col w-1/2">
-                  <span className="text-[16px] font-medium text-[#6B7280] whitespace-nowrap">
+                  <span className="text-[16px] font-medium text-[#6B7280]">
                     Soni
                   </span>
-                  <span className="text-[17px] font-bold text-[#4B5563] whitespace-nowrap">
+                  <span className="text-[17px] font-bold text-[#4B5563]">
                     {sli.quantity}
                   </span>
                 </div>
                 <div className="flex flex-col w-1/2">
-                  <span className="text-[16px] font-medium text-[#6B7280] whitespace-nowrap">
+                  <span className="text-[16px] font-medium text-[#6B7280]">
                     Narxi
                   </span>
-                  <span className="text-[17px] font-bold text-green-500 whitespace-nowrap">
+                  <span className="text-[17px] font-bold text-green-500">
                     {sli.price.toLocaleString()}
                   </span>
                 </div>
@@ -365,18 +390,21 @@ const ReportsPage = () => {
 
               <div className="flex justify-between mt-1 px-5 pb-4">
                 <div className="flex flex-col w-1/2">
-                  <span className="text-[16px] font-medium text-[#6B7280] whitespace-nowrap">
+                  <span className="text-[16px] font-medium text-[#6B7280]">
                     Umumiy Summa
                   </span>
-                  <span className="text-[17px] font-bold text-green-500 whitespace-nowrap">
+                  <span className="text-[17px] font-bold text-green-500">
                     {sli.total_amount.toLocaleString()}
                   </span>
                 </div>
                 <div className="flex flex-col w-1/2">
-                  <span className="text-[16px] font-medium text-[#6B7280] whitespace-nowrap">
+                  <span className="text-[16px] font-medium text-[#6B7280]">
                     Sotuv Sanasi
                   </span>
-                  <span className="text-[17px] font-bold text-[#4B5563] whitespace-nowrap">
+                  <span
+                    title={sli.created_at.toLocaleString("uz-UZ")}
+                    className="text-[17px] font-bold text-[#4B5563] line-clamp-1"
+                  >
                     {sli.created_at.toLocaleString("uz-UZ")}
                   </span>
                 </div>
@@ -385,6 +413,24 @@ const ReportsPage = () => {
           ))}
         </div>
       </Modal>
+
+      <div
+        className="min-[500px]:hidden fixed bottom-18 right-2.5 z-50 
+                bg-[#ffffff] border border-gray-200 
+                shadow-sm rounded-full p-2 pl-[15px]
+                flex items-center w-[205px]"
+      >
+        <span className="text-sm font-semibold text-gray-700 whitespace-nowrap">
+          Jami savdo:
+        </span>
+
+        <span
+          title="15,200,000"
+          className="font-extrabold text-[17px] text-green-600 line-clamp-1 truncate ml-2"
+        >
+          <CountUp start={0} end={15200200} duration={2.5} separator="," />
+        </span>
+      </div>
     </div>
   );
 };

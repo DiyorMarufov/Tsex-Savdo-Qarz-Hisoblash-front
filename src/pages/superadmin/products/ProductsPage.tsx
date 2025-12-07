@@ -59,8 +59,13 @@ const ProductsPage = () => {
             className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]"
           >
             <div className="flex justify-between p-5">
-              <a className="text-[17px] font-bold">{pr.name}</a>
-              <span className="text-[15px] font-bold text-[#6B7280]">
+              <a title={pr.name} className="text-[17px] font-bold line-clamp-1">
+                {pr.name}
+              </a>
+              <span
+                title={pr.brand}
+                className="text-[15px] font-bold text-[#6B7280] line-clamp-1"
+              >
                 {pr.brand}
               </span>
             </div>
@@ -109,9 +114,13 @@ const ProductsPage = () => {
                     Do'kon / Tsex
                   </span>
                 </div>
-                <div>
-                  <span className="text-[17px] font-bold text-[#4B5563]">
-                    {pr.shop.name} / <span>{pr.tsex.name}</span>
+                <div className="w-full">
+                  <span
+                    title={pr.shop.name}
+                    className="text-[17px] font-bold text-[#4B5563] line-clamp-1"
+                  >
+                    {pr.shop.name} /{" "}
+                    <span title={pr.tsex.name}>{pr.tsex.name}</span>
                   </span>
                 </div>
               </div>
@@ -123,9 +132,14 @@ const ProductsPage = () => {
                   </span>
                 </div>
                 <div>
-                  <span className="text-[17px] font-bold text-[#4B5563]">
+                  <span
+                    title={pr.created_by.full_name}
+                    className="text-[17px] font-bold text-[#4B5563] line-clamp-1"
+                  >
                     {pr.created_by.full_name} /{" "}
-                    <span>{pr.created_at.toLocaleString("uz-UZ")}</span>
+                    <span title={pr.created_at.toLocaleString("uz-UZ")}>
+                      {pr.created_at.toLocaleString("uz-UZ")}
+                    </span>
                   </span>
                 </div>
               </div>

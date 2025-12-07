@@ -9,7 +9,7 @@ const BottomNav: FC<Props> = ({ items }) => {
   return (
     <div className="min-[701px]:hidden fixed bottom-2.5 left-0 w-full z-50 px-2.5">
       <div
-        className="flex justify-between border border-bg-fy rounded-full bg-white overflow-hidden shadow-[0_20px_55px_40px_rgba(255,255,255,1),0_-3px_15px_rgba(255,255,255,0.08)]"
+        className="flex justify-between border border-bg-fy rounded-full bg-white overflow-hidden shadow-[0_25px_50px_-12px_rgba(255,255,255,0.7),0_-8px_15px_-3px_rgba(255,255,255,0.2)]"
       >
         {items.map((link: any) => (
           <NavLink

@@ -12,7 +12,7 @@ import { Button as AntdButton } from "antd";
 const CustomersDetailPage = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  
+
   useEffect(() => {
     window.scroll({ top: 0 });
   }, []);
@@ -28,9 +28,7 @@ const CustomersDetailPage = () => {
 
   return (
     <>
-     <div className="text-[20px]">
-       Aliyev Dilshod ni tranzaksiyalari
-     </div>
+      <span className="text-[20px]">Aliyev Dilshod ni tranzaksiyalari</span>
       <div className="max-[500px]:hidden">
         <ProTable
           dataSource={fakeTransactionData}
@@ -54,7 +52,10 @@ const CustomersDetailPage = () => {
           >
             <div className="">
               <div className="flex flex-col p-5">
-                <a className="text-[17px] font-bold text-green-600 whitespace-nowrap">
+                <a
+                  title={trd.customer.full_name}
+                  className="text-[17px] font-bold text-green-600 line-clamp-1"
+                >
                   {trd.customer.full_name}
                 </a>
                 <div className="flex items-center gap-3">
@@ -83,8 +84,8 @@ const CustomersDetailPage = () => {
                     {trd.amount.toLocaleString()}
                   </span>
                 </div>
-                <div className="flex flex-col justify-start w-1/2">
-                  <span className="text-[16px] font-medium text-[#6B7280] whitespace-nowrap">
+                <div className="flex flex-col justify-start">
+                  <span title="Keyingi Balans" className="text-[16px] font-medium text-[#6B7280] line-clamp-1">
                     Keyingi Balans
                   </span>
                   {trd.balance_after > 0 ? (
@@ -97,15 +98,21 @@ const CustomersDetailPage = () => {
                     </span>
                   )}
                 </div>
-                <div className="flex flex-col justify-start w-1/2 whitespace-nowrap">
-                  <span className="text-[16px] font-medium text-[#6B7280]">
+                <div className="flex flex-col justify-start">
+                  <span
+                    title="Tugash sanasi"
+                    className="text-[16px] font-medium text-[#6B7280]"
+                  >
                     Tugash sanasi
                   </span>
-                  <span className="text-[17px] font-bold text-[#4B5563]">
+                  <span
+                    title={trd.due_date.toLocaleString("uz-UZ")}
+                    className="text-[17px] font-bold text-[#4B5563] line-clamp-1"
+                  >
                     {trd.due_date.toLocaleString("uz-UZ")}
                   </span>
                 </div>
-                <div className="flex flex-col justify-start w-1/2">
+                <div className="flex flex-col justify-start">
                   <span className="text-[16px] font-medium text-[#6B7280]">
                     Holati
                   </span>
@@ -130,7 +137,10 @@ const CustomersDetailPage = () => {
                   </span>
                 </div>
                 <div>
-                  <span className="text-[17px] font-bold text-[#4B5563]">
+                  <span
+                    title={trd.description}
+                    className="text-[17px] font-bold text-[#4B5563] line-clamp-1"
+                  >
                     {" "}
                     {trd.description}
                   </span>
@@ -144,7 +154,10 @@ const CustomersDetailPage = () => {
                   </span>
                 </div>
                 <div>
-                  <span className="text-[17px] font-bold text-[#4B5563]">
+                  <span
+                    title={trd.created_at.toLocaleString("uz-UZ")}
+                    className="text-[17px] font-bold text-[#4B5563] line-clamp-1"
+                  >
                     {" "}
                     {trd.created_at.toLocaleString("uz-UZ")}
                   </span>

@@ -38,8 +38,16 @@ const TsexesTransactions = () => {
             className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px] overflow-hidden"
           >
             <div className="p-5 flex justify-between">
-              <a className="text-[17px] font-bold">{dt.tsex.name}</a>
-              <span className="text-[15px] font-bold">
+              <a
+                title={dt.tsex.name}
+                className="text-[17px] font-bold line-clamp-1"
+              >
+                {dt.tsex.name}
+              </a>
+              <span
+                title={dt.type}
+                className="text-[15px] font-bold line-clamp-1"
+              >
                 {(() => {
                   switch (dt.type) {
                     case "payment":
@@ -91,11 +99,14 @@ const TsexesTransactions = () => {
                     </span>
                   )}
                 </div>
-                <div className="flex flex-col">
+                <div className="flex flex-col col-span-2">
                   <span className="text-[16px] font-medium text-[#6B7280]">
                     Izoh
                   </span>
-                  <span className="text-[17px] font-bold text-[#4B5563] whitespace-nowrap">
+                  <span
+                    title={dt.description}
+                    className="text-[17px] font-bold text-[#4B5563] line-clamp-1"
+                  >
                     {dt.description}
                   </span>
                 </div>

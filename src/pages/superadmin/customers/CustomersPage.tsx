@@ -224,10 +224,9 @@ const CustomersPage = () => {
           className="h-12! bg-bg-ty! text-[17px]!"
         />
         <div className="max-[960px]:w-full">
-          <DatePicker
+          <Select
             className="h-12! bg-bg-ty! text-[17px]! w-[300px] max-[960px]:w-full!"
-            placeholder="YYYY-MM-DD"
-            inputReadOnly={true}
+            placeholder="Viloyat/Shahar"
           />
         </div>
       </div>
@@ -255,10 +254,16 @@ const CustomersPage = () => {
           >
             <div className="flex justify-between items-center gap-3 pt-5 px-5">
               <div className="flex flex-col items-start">
-                <a className="text-[17px] font-bold whitespace-nowrap">
+                <a
+                  title={cs.full_name}
+                  className="text-[17px] font-bold line-clamp-1"
+                >
                   {cs.full_name}
                 </a>
-                <span className="text-[15px] font-bold text-[#64748B]">
+                <span
+                  title={cs.region}
+                  className="text-[15px] font-bold text-[#64748B] line-clamp-1"
+                >
                   {cs.region}
                 </span>
               </div>
@@ -277,26 +282,41 @@ const CustomersPage = () => {
 
             <div className="flex flex-col px-5">
               <div className="flex justify-between gap-3">
-                <span className="text-[16px] font-medium text-[#6B7280] whitespace-nowrap">
+                <span
+                  title="Telefon raqami"
+                  className="text-[16px] font-medium text-[#6B7280] line-clamp-1"
+                >
                   Telefon raqami
                 </span>
-                <span className="text-[17px] font-bold text-[#4B5563] whitespace-nowrap">
+                <span
+                  title={cs.phone_number}
+                  className="text-[17px] font-bold text-[#4B5563] line-clamp-1"
+                >
                   {cs.phone_number}
                 </span>
               </div>
               <div className="flex justify-between gap-3">
-                <span className="text-[16px] font-medium text-[#6B7280] whitespace-nowrap">
+                <span
+                  title="Oxirgi tranzaksiya"
+                  className="text-[16px] font-medium text-[#6B7280] line-clamp-1"
+                >
                   Oxirgi tranzaksiya
                 </span>
-                <span className="text-[17px] font-bold text-[#4B5563] whitespace-nowrap">
+                <span
+                  title={cs.last_transaction.toLocaleString("uz-UZ")}
+                  className="text-[17px] font-bold text-[#4B5563] line-clamp-1"
+                >
                   {cs.last_transaction.toLocaleString("uz-UZ")}
                 </span>
               </div>
               <div className="flex justify-between gap-3">
-                <span className="text-[16px] font-medium text-[#6B7280] whitespace-nowrap">
+                <span title="Kiritilgan sana" className="text-[16px] font-medium text-[#6B7280] line-clamp-1">
                   Kiritilgan sana
                 </span>
-                <span className="text-[17px] font-bold text-[#4B5563] whitespace-nowrap">
+                <span
+                  title={cs.created_at.toLocaleString("uz-UZ")}
+                  className="text-[17px] font-bold text-[#4B5563] line-clamp-1"
+                >
                   {cs.created_at.toLocaleString("uz-UZ")}
                 </span>
               </div>
