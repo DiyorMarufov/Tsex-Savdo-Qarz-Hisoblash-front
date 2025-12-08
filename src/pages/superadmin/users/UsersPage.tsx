@@ -72,12 +72,12 @@ const UsersPage = () => {
         </div>
       </div>
 
-      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-3 p-3.5 flex items-center gap-4 max-[900px]:flex-wrap">
+      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-3 p-3.5 flex items-center gap-3 max-[900px]:flex-wrap">
         <SearchInput
           placeholder="Ismi yoki telefon raqami bo'yicha qidirish"
           className="h-12! min-[900px]:w-[50%]! bg-bg-ty! text-[17px]!"
         />
-        <div className="flex gap-4 min-[900px]:w-[50%] max-[900px]:w-full max-[370px]:flex-wrap">
+        <div className="flex gap-3 min-[900px]:w-[50%] max-[900px]:w-full max-[370px]:flex-wrap">
           <Filter
             placeholder="Rol bo'yicha"
             className="h-12! min-[900px]:w-[50%]! max-[900px]:w-full! custom-select"
