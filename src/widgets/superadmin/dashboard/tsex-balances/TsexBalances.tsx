@@ -2,12 +2,12 @@ import { memo } from "react";
 
 const TsexBalances = () => {
   return (
-    <div className="flex flex-col gap-4 p-[25px] bg-[#ffffff] rounded-2xl border border-[#E2E8F0]">
+    <div className="flex flex-col gap-4 px-5 py-4 bg-[#ffffff] rounded-2xl border border-[#E2E8F0]">
       <span className="text-[20px] text-bg-py font-bold">
         Tsexlar bo'yicha
       </span>
 
-      <div className="flex flex-col gap-4 overflow-y-auto h-[150px]">
+      <div className="flex flex-col gap-3 overflow-y-auto h-[150px]">
         <div className="flex justify-between">
           <span className="font-medium text-[17px] text-[#6B7280]">
             Alisher Valiyev
