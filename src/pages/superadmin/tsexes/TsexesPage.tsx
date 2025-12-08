@@ -155,7 +155,7 @@ const TsexesPage = () => {
             className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]"
           >
             <div className="flex flex-col">
-              <div className="grid grid-cols-2 gap-3 px-3.5 py-3">
+              <div className="grid grid-cols-2 gap-3 px-3.5 py-2.5">
                 <div className="flex flex-col justify-start">
                   <span className="text-[15px] font-medium text-[#6B7280]">
                     Nomi
@@ -218,7 +218,7 @@ const TsexesPage = () => {
 
               <div className="w-full h-px bg-bg-fy"></div>
 
-              <div className="flex justify-between mt-1 px-3.5 pt-3 pb-4">
+              <div className="flex justify-between mt-1 px-3.5 pt-2 pb-3">
                 <div className="flex items-center gap-5">
                   <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
                 </div>

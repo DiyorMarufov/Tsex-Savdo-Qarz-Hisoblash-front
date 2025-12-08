@@ -71,7 +71,7 @@ const ReportsPage = () => {
         <LargeTitle title="Hisobotlar" />
       </div>
 
-      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-2 p-[17px] flex items-center gap-3">
+      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-2 p-3.5 flex items-center gap-3">
         <SearchInput
           placeholder="Ismi yoki telefon raqami bo'yicha qidirish"
           className="h-12! bg-bg-ty! text-[17px]!"
@@ -115,7 +115,7 @@ const ReportsPage = () => {
             className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]"
           >
             <div className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]">
-              <div className="flex justify-between p-3.5 py-3">
+              <div className="flex justify-between px-3.5 py-2.5">
                 <div className="flex flex-col">
                   <span className="text-[15px] font-bold text-[#6B7280]">
                     {sl.store.name}
@@ -201,7 +201,7 @@ const ReportsPage = () => {
 
                 <div className="w-full h-px bg-bg-fy"></div>
 
-                <div className="flex justify-end mt-1 px-3.5 pb-4">
+                <div className="flex justify-end px-3.5 pb-3">
                   <div>
                     <AntdButton
                       className="bg-[#1D4ED8]! text-white!"
@@ -372,7 +372,7 @@ const ReportsPage = () => {
 
               <div className="w-full h-px bg-bg-fy"></div>
 
-              <div className="flex mt-1 px-3.5 pb-3">
+              <div className="flex px-3.5 pb-3">
                 <div className="flex flex-col w-1/2">
                   <span className="text-[15px] font-medium text-[#6B7280]">
                     Umumiy Summa

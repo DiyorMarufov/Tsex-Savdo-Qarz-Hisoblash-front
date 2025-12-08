@@ -47,7 +47,7 @@ const CustomerTransactionDetails = () => {
 
   return (
     <div className="flex flex-col gap-5">
-      <span className="text-[20px]">Aliyev Dilshod ni tranzaksiyalari</span>
+      <span className="text-[20px] font-medium text-[#4B5563]">Aliyev Dilshod ni tranzaksiyalari</span>
       <div className="grid grid-cols-3 gap-8 px-3">
         <div className="flex flex-col items-center cursor-pointer text-green-600 hover:text-green-700 transition duration-150">
           <div
@@ -104,7 +104,7 @@ const CustomerTransactionDetails = () => {
                 className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]"
               >
                 <div className="">
-                  <div className="flex justify-between gap-3 px-3.5 py-3">
+                  <div className="flex justify-between gap-3 px-3.5 py-2.5">
                     <a className="text-[16px] font-bold text-green-600">
                       {trd.customer.full_name}
                     </a>
@@ -162,7 +162,7 @@ const CustomerTransactionDetails = () => {
 
                 <div className="w-full h-px bg-bg-fy"></div>
 
-                <div className="px-3.5 py-3 flex flex-col gap-3">
+                <div className="px-3.5 py-2.5 flex flex-col gap-3">
                   <div className="grid grid-cols-2 gap-3">
                     <div className="flex flex-col justify-start w-1/2">
                       <span className="text-[15px] font-medium text-[#6B7280]">
@@ -242,7 +242,7 @@ const CustomerTransactionDetails = () => {
                     </div>
                   </div>
 
-                  <div className="flex justify-end mt-1">
+                  <div className="flex justify-end mt-1 pb-[1.5px]">
                     <div className="flex items-center gap-5">
                       <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
                       <Trash className="text-red-600 cursor-pointer hover:opacity-80" />

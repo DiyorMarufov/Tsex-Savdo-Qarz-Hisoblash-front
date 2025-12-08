@@ -72,7 +72,7 @@ const UsersPage = () => {
         </div>
       </div>
 
-      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-3 p-[17px] flex items-center gap-4 max-[900px]:flex-wrap">
+      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-3 p-3.5 flex items-center gap-4 max-[900px]:flex-wrap">
         <SearchInput
           placeholder="Ismi yoki telefon raqami bo'yicha qidirish"
           className="h-12! min-[900px]:w-[50%]! bg-bg-ty! text-[17px]!"
@@ -111,7 +111,7 @@ const UsersPage = () => {
             key={user.id}
             className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]"
           >
-            <div className="flex justify-between px-3.5 py-3">
+            <div className="flex justify-between px-3.5 py-2.5">
               <div className="flex flex-col">
                 <a className="text-[16px] font-bold">{user.full_name}</a>
                 <span className="text-[15px] font-bold text-[#4B5563]">
@@ -126,7 +126,7 @@ const UsersPage = () => {
 
             <div className="w-full h-px bg-bg-fy"></div>
 
-            <div className="flex flex-col px-3.5 py-3 gap-2">
+            <div className="flex flex-col px-3.5 py-2.5 gap-2">
               <div className="flex justify-between">
                 <span className="font-medium text-[#6B7280] text-[15px]">
                   Roli

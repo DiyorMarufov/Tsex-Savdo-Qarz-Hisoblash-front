@@ -49,7 +49,7 @@ const StoresPage = () => {
             key={st.id}
             className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]"
           >
-            <div className="px-3.5 py-3 flex justify-between">
+            <div className="px-3.5 py-2.5 flex justify-between">
               <div className="flex flex-col gap-1">
                 <a className="text-[16px] font-bold">{st.name}</a>
                 <span className="font-bold text-[15px] text-[#4B5563]">
@@ -64,7 +64,7 @@ const StoresPage = () => {
 
             <div className="w-full h-px bg-bg-fy"></div>
 
-            <div className="px-3.5 py-3">
+            <div className="px-3.5 py-2.5">
               <span className="text-[15px] font-medium text-[#6B7280]">
                 Kiritilgan sana:{" "}
                 <span className="text-[16px] font-bold text-[#4B5563]">

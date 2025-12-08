@@ -19,7 +19,7 @@ const ProductsPage = () => {
     <div>
       <LargeTitle title="Mahsulotlar" />
 
-      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-2 p-4 flex items-center gap-4 max-[900px]:flex-wrap">
+      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-2 p-3.5 flex items-center gap-4 max-[900px]:flex-wrap">
         <SearchInput
           placeholder="Mahsulot nomi,brandi bo'yicha qidirish"
           className="h-12! min-[900px]:w-[50%]! bg-bg-ty! text-[16px]!"
@@ -58,7 +58,7 @@ const ProductsPage = () => {
             key={pr.id}
             className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]"
           >
-            <div className="flex justify-between px-3.5 py-3">
+            <div className="flex justify-between px-3.5 py-2.5">
               <a className="text-[16px] font-bold">{pr.name}</a>
               <span className="text-[14px] font-bold text-[#6B7280]">
                 {pr.brand}
@@ -67,7 +67,7 @@ const ProductsPage = () => {
 
             <div className="w-full h-px bg-bg-fy"></div>
 
-            <div className="px-3.5 py-3 flex flex-col gap-3">
+            <div className="px-3.5 py-2.5 flex flex-col gap-3">
               <div className="grid grid-cols-2 gap-3">
                 <div className="flex flex-col justify-start w-1/2">
                   <span className="text-[15px] font-medium text-[#6B7280]">
@@ -130,7 +130,7 @@ const ProductsPage = () => {
                 </div>
               </div>
 
-              <div className="flex justify-end">
+              <div className="flex justify-end pb-px">
                 <div className="flex items-center gap-5">
                   <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
                   <Trash className="text-red-600 cursor-pointer hover:opacity-80" />

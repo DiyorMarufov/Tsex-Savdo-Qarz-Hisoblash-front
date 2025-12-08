@@ -14,7 +14,7 @@ const TsexesTransactions = () => {
   }, []);
   return (
     <>
-      <div className="pb-3 text-[20px] font-medium">
+      <div className="pb-3 text-[20px] font-medium text-[#4B5563]">
         1 chi tsexning tranzaksiyalari
       </div>
       <ProTable
@@ -37,7 +37,7 @@ const TsexesTransactions = () => {
             key={dt.id}
             className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px] overflow-hidden"
           >
-            <div className="px-3.5 py-3 flex justify-between items-center">
+            <div className="px-3.5 py-2.5 flex justify-between items-center">
               <a className="text-[16px] font-bold">{dt.tsex.name}</a>
               <span className="text-[12px] font-bold">
                 {(() => {
@@ -68,7 +68,7 @@ const TsexesTransactions = () => {
             </div>
             <div className="w-full h-px bg-bg-fy"></div>
             <div className="flex flex-col gap-3">
-              <div className="grid grid-cols-2 gap-3 px-3.5 py-3">
+              <div className="grid grid-cols-2 gap-3 px-3.5 py-2.5">
                 <div className="flex flex-col w-1/2 justify-start">
                   <span className="text-[15px] font-medium text-[#6B7280]">
                     Miqdori

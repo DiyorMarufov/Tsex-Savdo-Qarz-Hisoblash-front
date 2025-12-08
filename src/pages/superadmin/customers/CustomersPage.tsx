@@ -252,7 +252,7 @@ const CustomersPage = () => {
             key={cs.id}
             className="flex flex-col gap-3 border border-bg-fy bg-[#ffffff] rounded-[12px] overflow-hidden"
           >
-            <div className="flex justify-between items-center gap-3 pt-3 px-3.5">
+            <div className="flex justify-between items-center gap-3 pt-2.5 px-3.5">
               <div className="flex flex-col items-start">
                 <a
                   className="text-[16px] font-bold"
@@ -317,7 +317,7 @@ const CustomersPage = () => {
 
             <div className="w-full h-px bg-bg-fy"></div>
 
-            <div className="flex justify-between mt-1 px-3.5 pb-3.5">
+            <div className="flex items-center justify-between px-3.5 pb-3">
               <div className="flex items-center gap-5">
                 <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
                 <Trash className="text-red-600 cursor-pointer hover:opacity-80" />

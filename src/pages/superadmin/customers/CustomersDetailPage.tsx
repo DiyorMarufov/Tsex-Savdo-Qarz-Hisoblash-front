@@ -28,7 +28,7 @@ const CustomersDetailPage = () => {
 
   return (
     <>
-      <span className="text-[20px]">Aliyev Dilshod ni tranzaksiyalari</span>
+      <span className="text-[20px] font-medium text-[#4B5563]">Aliyev Dilshod ni tranzaksiyalari</span>
       <div className="max-[500px]:hidden">
         <ProTable
           dataSource={fakeTransactionData}
@@ -51,7 +51,7 @@ const CustomersDetailPage = () => {
             className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]"
           >
             <div className="">
-              <div className="flex justify-between items-center px-3.5 py-3">
+              <div className="flex justify-between items-center px-3.5 py-2">
                 <a className="text-[16px] font-bold text-green-600 w-fit">
                   {trd.customer.full_name}
                 </a>
@@ -71,7 +71,7 @@ const CustomersDetailPage = () => {
 
             <div className="w-full h-px bg-bg-fy"></div>
 
-            <div className="p-3.5 py-3 flex flex-col gap-3">
+            <div className="p-3.5 py-2.5 flex flex-col gap-3">
               <div className="grid grid-cols-2 gap-3">
                 <div className="flex flex-col justify-start w-1/2">
                   <span className="text-[15px] font-medium text-[#6B7280]">
@@ -150,7 +150,7 @@ const CustomersDetailPage = () => {
                 </div>
               </div>
 
-              <div className="flex justify-between mt-1">
+              <div className="flex justify-between items-center mt-1 pb-[1.5px]">
                 <div className="flex items-center gap-5">
                   <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
                   <Trash className="text-red-600 cursor-pointer hover:opacity-80" />
