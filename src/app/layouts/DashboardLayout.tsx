@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../store";
 import { jwtDecode } from "jwt-decode";
 import {
+  AdminSidebarNavigation,
   SuperadminSidebarNavigation,
   type SidebarNavItem,
 } from "../../shared/config/routes";
@@ -29,7 +30,9 @@ const DashboardLayout: React.FC = () => {
     case "superadmin":
       menuItems = SuperadminSidebarNavigation;
       break;
-
+    case "admin":
+      menuItems = AdminSidebarNavigation;
+      break;
     default:
       break;
   }
@@ -56,10 +59,12 @@ const DashboardLayout: React.FC = () => {
             }}
             className="max-[701px]:hidden! max-[701px]:transition-all!"
           />
-          <div className="w-full flex justify-center max-[701px]:justify-start max-[701px]:pl-6.5">
+          <div className="w-full flex justify-center max-[701px]:justify-start max-[701px]:pl-3.5">
             <div className="flex items-center gap-3">
               <img src={logo} className="w-10 h-10" alt="" />
-              <span className="text-[25px] font-bold max-[250px]:text-[20px]">Savdo tizimi</span>
+              <span className="text-[25px] font-bold max-[250px]:text-[20px]">
+                Savdo tizimi
+              </span>
             </div>
           </div>
         </Header>
