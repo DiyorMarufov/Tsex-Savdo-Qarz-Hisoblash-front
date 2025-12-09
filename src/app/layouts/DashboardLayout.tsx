@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Button, Layout } from "antd";
 import { Outlet, useNavigate } from "react-router-dom";
-import Sidebar from "../../widgets/superadmin/sidebar/Sidebar";
 import { useSelector } from "react-redux";
 import type { RootState } from "../store";
 import { jwtDecode } from "jwt-decode";
@@ -12,6 +11,7 @@ import {
 } from "../../shared/config/routes";
 import BottomNav from "../../widgets/bottomNav/BottomNav";
 import logo from "../../shared/assets/logo/Background.svg";
+import Sidebar from "../../widgets/sidebar/Sidebar";
 
 const { Header, Content } = Layout;
 

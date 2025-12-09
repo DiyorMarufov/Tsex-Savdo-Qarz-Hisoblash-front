@@ -33,8 +33,8 @@ const LoginForm = () => {
         const decoded: any = jwtDecode(accessToken);
         const role = decoded?.role;
 
-        if (role !== "superadmin") {
-          handleApiError("Superadmin huquqiga ega emassiz", "top");
+        if (role !== "superadmin" && role !== "admin") {
+          handleApiError("Platformaga kirish huquqiga ega emassiz", "top");
           return;
         }
         dispatch(setToken(accessToken));

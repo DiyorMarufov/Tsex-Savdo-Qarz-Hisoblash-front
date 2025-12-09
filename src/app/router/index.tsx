@@ -1,6 +1,25 @@
 import { lazy, memo } from "react";
 import { useRoutes } from "react-router-dom";
 
+const AdminSettingsPage = lazy(
+  () => import("../../pages/admin/settings/SettingsPage")
+);
+const AdminReportsPage = lazy(
+  () => import("../../pages/admin/reports/ReportsPage")
+);
+const AdminTsexesPage = lazy(
+  () => import("../../pages/admin/tsexes/TsexesPage")
+);
+const AdminCustomersPage = lazy(
+  () => import("../../pages/admin/customers/CustomersPage")
+);
+const AdminSalesPage = lazy(() => import("../../pages/admin/sales/SalesPage"));
+const AdminProductsPage = lazy(
+  () => import("../../pages/admin/products/ProductsPage")
+);
+const AdminDashboardPage = lazy(
+  () => import("../../pages/admin/dashboard/DashboardPage")
+);
 const TsexesTransactions = lazy(
   () => import("../../pages/superadmin/tsexes/TsexesTransactions")
 );
@@ -107,6 +126,40 @@ const Router = () => {
                 {
                   path: "settings",
                   element: <SettingsPage />,
+                },
+              ],
+            },
+            {
+              path: "admin",
+              element: <AdminGuard allowedRoles={["superadmin", "admin"]} />,
+              children: [
+                {
+                  index: true,
+                  element: <AdminDashboardPage />,
+                },
+                {
+                  path: "products",
+                  element: <AdminProductsPage />,
+                },
+                {
+                  path: "sales",
+                  element: <AdminSalesPage />,
+                },
+                {
+                  path: "customers",
+                  element: <AdminCustomersPage />,
+                },
+                {
+                  path: "tsexes",
+                  element: <AdminTsexesPage />,
+                },
+                {
+                  path: "reports",
+                  element: <AdminReportsPage />,
+                },
+                {
+                  path: "settings",
+                  element: <AdminSettingsPage />,
                 },
               ],
             },

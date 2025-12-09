@@ -2,13 +2,11 @@ import { Menu } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { memo, type FC } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import type { RootState } from "../../../app/store";
 import { useSelector } from "react-redux";
 import { jwtDecode } from "jwt-decode";
-import {
-  SuperadminSidebarNavigation,
-  type SidebarNavItem,
-} from "../../../shared/config/routes";
+import type { RootState } from "../../app/store";
+import { AdminSidebarNavigation, SuperadminSidebarNavigation, type SidebarNavItem } from "../../shared/config/routes";
+
 
 interface Props {
   collapsed: boolean;
@@ -28,7 +26,9 @@ const Sidebar: FC<Props> = ({ collapsed }) => {
     case "superadmin":
       menuItems = SuperadminSidebarNavigation;
       break;
-
+    case "admin":
+      menuItems = AdminSidebarNavigation;
+      break;
     default:
       break;
   }

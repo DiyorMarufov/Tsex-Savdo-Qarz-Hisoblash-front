@@ -4,6 +4,7 @@ import {
   Package,
   Repeat,
   Settings,
+  ShoppingBag,
   Store,
   Users,
 } from "lucide-react";
@@ -62,6 +63,51 @@ export const SuperadminSidebarNavigation: SidebarNavItem[] = [
   {
     id: 8,
     to: "/superadmin/settings",
+    label: "Sozlamalar",
+    icon: <Settings className="w-5 h-5" />,
+  },
+];
+
+export const AdminSidebarNavigation: SidebarNavItem[] = [
+  {
+    id: 1,
+    to: "/admin",
+    label: "Boshqaruv Paneli",
+    icon: <LayoutDashboard className="w-5 h-5" />,
+  },
+  {
+    id: 2,
+    to: "/admin/products",
+    label: "Mahsulotlar",
+    icon: <Package className="w-5 h-5" />,
+  },
+  {
+    id: 3,
+    to: "/admin/sales",
+    label: "Sotuvlar",
+    icon: <ShoppingBag className="w-5 h-5" />,
+  },
+  {
+    id: 4,
+    to: "/admin/customers",
+    label: "Mijozlar",
+    icon: <Users className="w-5 h-5" />,
+  },
+  {
+    id: 5,
+    to: "/admin/tsexes",
+    label: "Tsexlar",
+    icon: <Repeat className="w-5 h-5" />,
+  },
+  {
+    id: 6,
+    to: "/admin/reports",
+    label: "Hisobotlar",
+    icon: <ChartBar className="w-5 h-5" />,
+  },
+  {
+    id: 7,
+    to: "/admin/settings",
     label: "Sozlamalar",
     icon: <Settings className="w-5 h-5" />,
   },
