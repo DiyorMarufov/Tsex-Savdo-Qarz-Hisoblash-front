@@ -40,7 +40,9 @@ const AdminProductsAddPage = () => {
     },
   };
 
-  const onFinish: FormProps<FieldType>["onFinish"] = (values: FieldType) => {};
+  const onFinish: FormProps<FieldType>["onFinish"] = (values: FieldType) => {
+    console.log(values)
+  };
   return (
     <div className="w-full">
       <LargeTitle title="Yengi mahsulot qo'shish" />
