@@ -6,7 +6,6 @@ import { useUser } from "../api/useAuth/useUser";
 import { useApiNotification } from "../../../shared/hooks/api-notification/useApiNotification";
 import { jwtDecode } from "jwt-decode";
 import { setToken } from "../model/authModel";
-import { useForm } from "antd/es/form/Form";
 
 type FieldType = {
   phone_number: string;
@@ -18,7 +17,7 @@ const { Item } = Form;
 const LoginForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [form] = useForm();
+  const [form] = Form.useForm();
 
   const { handleApiError } = useApiNotification();
   const { signIn } = useUser();
