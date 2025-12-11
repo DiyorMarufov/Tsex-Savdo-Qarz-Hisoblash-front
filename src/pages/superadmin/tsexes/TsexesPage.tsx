@@ -51,9 +51,8 @@ const TsexesPage = () => {
   const handleOpenDetail = (id: string) => {
     navigate(`transactions/${id}`);
   };
-
-  if (pathname.startsWith("/superadmin/tsexes/transactions")) return <Outlet />;
   // HanleOpenDetail ends
+  if (pathname.startsWith("/superadmin/tsexes/transactions")) return <Outlet />;
 
   return (
     <div>
