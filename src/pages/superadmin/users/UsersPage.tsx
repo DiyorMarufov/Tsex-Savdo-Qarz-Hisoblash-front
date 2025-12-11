@@ -72,7 +72,7 @@ const UsersPage = () => {
         </div>
       </div>
 
-      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-3 p-3.5 flex items-center gap-3 max-[900px]:flex-wrap">
+      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-2 p-3.5 flex items-center gap-3 max-[900px]:flex-wrap">
         <SearchInput
           placeholder="Ismi yoki telefon raqami bo'yicha qidirish"
           className="h-12! min-[900px]:w-[50%]! bg-bg-ty! text-[17px]!"

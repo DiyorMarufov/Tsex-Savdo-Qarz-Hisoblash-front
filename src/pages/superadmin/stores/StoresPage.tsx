@@ -20,7 +20,7 @@ const StoresPage = () => {
         <LargeTitle title="Do'konlar" />
       </div>
 
-      <div className="mt-3 rounded-[12px] border border-e-bg-fy bg-[#ffffff] p-3.5">
+      <div className="mt-2 rounded-[12px] border border-e-bg-fy bg-[#ffffff] p-3.5">
         <SearchInput
           placeholder="Do'kon nomi yoki manzili bo'yicha qidirish"
           className="h-12! bg-bg-ty! text-[17px]!"
