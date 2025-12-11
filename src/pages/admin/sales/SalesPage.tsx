@@ -1,6 +1,6 @@
 import { memo, useRef, useState } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Button from "../../../shared/ui/Button/Button";
 import { Edit, Plus } from "lucide-react";
 import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
@@ -28,6 +28,7 @@ type filterFieldType = {
 const AdminSalesPage = () => {
   const [filterOpen, setFilterOpen] = useState<boolean>(false);
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const [detailOpen, setdetailOpen] = useState<boolean>(false);
   const saleId = useRef<string | null>(null);
   const [form] = Form.useForm();
@@ -58,6 +59,8 @@ const AdminSalesPage = () => {
     setdetailOpen(false);
   };
   // Sale Items detail ends
+
+  if (pathname.startsWith("/admin/sales/")) return <Outlet />;
   return (
     <div>
       <div className="flex justify-between gap-3">
