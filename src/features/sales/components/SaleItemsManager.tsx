@@ -26,7 +26,7 @@ const SaleItemsManager = () => {
   };
   // Sale Items detail ends
   return (
-    <div className="flex flex-col gap-2 bg-[#ffffff] p-4 rounded-[5px]">
+    <div className="flex flex-col gap-2 bg-[#ffffff] p-4 border border-bg-fy rounded-[5px] overflow-hidden">
       <span className="text-[18px] text-[#232E2F]">Sotuvdagi mahsulotlar</span>
       <div className="flex flex-col gap-1">
         <span className="text-[16px] text-[#232E2F]">Mahsulot</span>

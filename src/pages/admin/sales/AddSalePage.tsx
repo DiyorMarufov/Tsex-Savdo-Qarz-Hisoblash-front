@@ -22,7 +22,7 @@ const AdminAddSalePage = () => {
         </div>
       </div>
 
-      <div className="flex items-start gap-8 mt-5 max-[1750px]:flex-col">
+      <div className="flex items-start gap-8 mt-2 max-[1750px]:flex-col">
         <div className="flex flex-col gap-5 w-[1200px] max-[1750px]:w-full">
           <ClientInfoForm />
 

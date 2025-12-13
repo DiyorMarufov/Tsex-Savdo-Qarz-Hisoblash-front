@@ -6,7 +6,7 @@ const AdminProductsAddPage = () => {
   return (
     <div className="w-full">
       <LargeTitle title="Yengi mahsulot qo'shish" />
-      <div className="flex justify-center items-center min-[500px]:h-[77vh] max-[500px]:mt-1.5">
+      <div className="flex justify-center items-center min-[700px]:h-[77vh] max-[700px]:mt-2">
         <ProductsCreate />
       </div>
     </div>

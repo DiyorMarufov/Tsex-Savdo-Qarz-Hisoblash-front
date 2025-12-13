@@ -4,8 +4,8 @@ import { memo } from "react";
 
 const ClientInfoForm = () => {
   return (
-    <div>
-      <div className="flex flex-col justify-end gap-2 bg-[#ffffff] p-4 rounded-[5px]">
+    <div className="border border-bg-fy rounded-[5px] overflow-hidden">
+      <div className="flex flex-col justify-end gap-2 bg-[#ffffff] p-4">
         <span className="text-[18px] text-[#232E2F]">Mijoz ma'lumotlari</span>
         <div className="flex items-end w-full gap-5">
           <div className="w-full flex flex-col gap-1">

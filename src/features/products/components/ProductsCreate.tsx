@@ -208,10 +208,6 @@ const ProductsCreate = () => {
           <p className="ant-upload-text text-gray-700 font-medium">
             Click or drag file to upload your store image
           </p>
-          <p className="ant-upload-hint text-gray-500 text-sm">
-            You can upload a single or multiple files. Avoid uploading
-            restricted data.
-          </p>
         </Dragger>
       </div>
 
