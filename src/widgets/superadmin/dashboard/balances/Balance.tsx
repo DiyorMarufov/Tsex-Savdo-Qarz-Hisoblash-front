@@ -6,6 +6,7 @@ import { useTsex } from "../../../../shared/lib/apis/tsexes/useTsex";
 import DashboardBalanceSkeleton from "../../../../shared/ui/Skeletons/DashboardBalanceSkeleton/DashboardBalanceSkeleton";
 import StatCard from "../../../dashboard/StatCard/StatCard";
 import CountUp from "react-countup";
+import { formatUnitOfMeasurement } from "../../../../shared/lib/functions/formatUnitOfMeasurement";
 
 const Balances = () => {
   const { getTotalSales } = useSale();
@@ -83,17 +84,7 @@ const Balances = () => {
             separator=" "
             decimal="."
             decimals={1}
-            suffix={`${
-              Math.floor(Math.abs(totalDebt)) > 0.1 &&
-              Math.floor(Math.abs(totalDebt)) < 1
-                ? "K"
-                : Math.floor(Math.abs(totalDebt)) > 1 &&
-                  Math.floor(Math.abs(totalDebt)) < 100
-                ? "M"
-                : Math.floor(Math.abs(totalDebt)) > 100
-                ? "B"
-                : ""
-            } UZS`}
+            suffix={`${formatUnitOfMeasurement(totalDebt)} UZS`}
           />
         </span>
       </div>

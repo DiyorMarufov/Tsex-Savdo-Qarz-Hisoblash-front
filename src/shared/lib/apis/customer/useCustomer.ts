@@ -13,5 +13,14 @@ export const useCustomer = () => {
       staleTime: 1000 * 60 * 5,
       gcTime: 1000 * 60 * 10,
     });
-  return { getTotalCustomerBalance };
+
+  const getMostDebtorCustomers = () =>
+    useQuery<IResponseData>({
+      queryKey: [customer, "mostDebtorCustomers"],
+      queryFn: () => api.get("customers/most-debtor").then((res) => res.data),
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 10,
+    });
+  return { getTotalCustomerBalance, getMostDebtorCustomers };
 };

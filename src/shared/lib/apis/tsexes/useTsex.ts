@@ -13,5 +13,14 @@ export const useTsex = () => {
       staleTime: 1000 * 60 * 5,
       gcTime: 1000 * 60 * 10,
     });
-  return { getTotalTsexBalance };
+
+  const getMostDebtorTsexes = () =>
+    useQuery<IResponseData>({
+      queryKey: [tsex, "mostDebtorTsexes"],
+      queryFn: () => api.get("tsexes/most-debtor").then((res) => res.data),
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 10,
+    });
+  return { getTotalTsexBalance, getMostDebtorTsexes };
 };

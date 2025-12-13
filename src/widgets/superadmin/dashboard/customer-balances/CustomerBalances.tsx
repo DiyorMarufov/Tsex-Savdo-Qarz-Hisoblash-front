@@ -1,6 +1,16 @@
 import { memo } from "react";
+import { useCustomer } from "../../../../shared/lib/apis/customer/useCustomer";
+import DashboardUserSkeleton from "../../../../shared/ui/Skeletons/DashboardBalanceSkeleton/DashboardUserSkeleton";
 
 const CustomerBalances = () => {
+  const { getMostDebtorCustomers } = useCustomer();
+  // MostDebtorCustomer starts
+  const { data: allDebtorCustomers, isLoading } = getMostDebtorCustomers();
+  const debtorCustomers = allDebtorCustomers?.data;
+  // MostDebtorCustomer ends
+
+  if (isLoading) return <DashboardUserSkeleton />;
+
   return (
     <div className="flex flex-col gap-4 px-5 py-4 bg-[#ffffff] rounded-2xl border border-[#E2E8F0]">
       <span className="text-[20px] text-bg-py font-bold">
@@ -8,30 +18,16 @@ const CustomerBalances = () => {
       </span>
 
       <div className="flex flex-col gap-3 overflow-y-auto h-[150px]">
-        <div className="flex justify-between">
-          <span className="font-medium text-[17px] text-[#6B7280]">
-            Alisher Valiyev
-          </span>
-          <span className="text-[16px] font-bold text-red-500">5.8M UZS</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="font-medium text-[17px] text-[#6B7280]">
-            Salima Azimova
-          </span>
-          <span className="text-[16px] font-bold text-red-500">5.8M UZS</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="font-medium text-[17px] text-[#6B7280]">
-            Zuhriddin Akromaliyev
-          </span>
-          <span className="text-[16px] font-bold text-red-500">5.8M UZS</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="font-medium text-[17px] text-[#6B7280]">
-            Muhriddin Muhriddinov
-          </span>
-          <span className="text-[16px] font-bold text-red-500">5.8M UZS</span>
-        </div>
+        {debtorCustomers?.map((cr: any) => (
+          <div key={cr?.id} className="flex justify-between">
+            <span className="font-medium text-[17px] text-[#6B7280]">
+              {cr?.full_name}
+            </span>
+            <span className="text-[16px] font-bold text-red-500">
+              -{cr?.balance} UZS
+            </span>
+          </div>
+        ))}
       </div>
     </div>
   );

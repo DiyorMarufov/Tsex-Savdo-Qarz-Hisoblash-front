@@ -1,6 +1,6 @@
 import { memo } from "react";
 import CountUp from "react-countup";
-import { formatUnitOfMeasurement } from "../../../shared/lib/functions/formatUnitOfMeasurement";
+import { getUnitOfMeasurement } from "../../../shared/lib/functions/getUnitOfMeasurement";
 
 interface StatCardProps {
   title: string;
@@ -27,6 +27,7 @@ const StatCard: React.FC<StatCardProps> = ({
       <span
         className={`text-[32px] font-bold ${valueColor} max-[560px]:text-[25px] max-[480px]:text-[20px]`}
       >
+        {isValueNegative ? "-" : null}
         <CountUp
           start={0}
           end={value}
@@ -34,7 +35,7 @@ const StatCard: React.FC<StatCardProps> = ({
           separator=" "
           decimal="."
           decimals={1}
-          suffix={`${formatUnitOfMeasurement(rawValue)} ${suffix}`}
+          suffix={`${getUnitOfMeasurement(rawValue)} ${suffix}`}
         />
       </span>
     </div>
