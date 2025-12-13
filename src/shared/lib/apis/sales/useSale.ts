@@ -13,5 +13,14 @@ export const useSale = () => {
       staleTime: 1000 * 60 * 5,
       gcTime: 1000 * 60 * 10,
     });
-  return { getTotalSales };
+
+  const getWeeklySale = () =>
+    useQuery<IResponseData>({
+      queryKey: [sale, "weeklySale"],
+      queryFn: () => api.get("sales/weekly-sale").then((res) => res.data),
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 10,
+    });
+  return { getTotalSales, getWeeklySale };
 };

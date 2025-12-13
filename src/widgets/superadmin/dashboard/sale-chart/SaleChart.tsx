@@ -8,17 +8,17 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { useSale } from "../../../../shared/lib/apis/sales/useSale";
+import DashboardChartSaleSkeleton from "../../../../shared/ui/Skeletons/DashboardBalanceSkeleton/DashboardChartSaleSkeleton";
 
 const SaleChart = () => {
-  const data = [
-    { name: "TUE", users: 20000 },
-    { name: "WED", users: 15000 },
-    { name: "THUR", users: 40000 },
-    { name: "FRI", users: 5000 },
-    { name: "SAT", users: 42000 },
-    { name: "SUN", users: 62000 },
+  const { getWeeklySale } = useSale();
+  // Weekly sale starts
+  const { data: weeklySale, isLoading } = getWeeklySale();
+  const data = weeklySale?.data;
+  // Weekly sale ends
 
-  ];
+  if(isLoading) return <DashboardChartSaleSkeleton/>
 
   return (
     <ResponsiveContainer width="100%" height={500} className="px-4 py-2">
@@ -38,7 +38,7 @@ const SaleChart = () => {
         <Tooltip />
         <Area
           type="monotone"
-          dataKey="users"
+          dataKey="sotuvlar"
           stroke="#6C63FF"
           strokeWidth={2}
           fill="url(#colorVisitors)"
