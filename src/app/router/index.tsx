@@ -152,6 +152,7 @@ const Router = () => {
                   element: <AdminProductsPage />,
                   children: [
                     { path: "add", element: <AdminProductsAddPage /> },
+                    { path: ":id", element: <ProductDetailPage /> },
                   ],
                 },
                 {

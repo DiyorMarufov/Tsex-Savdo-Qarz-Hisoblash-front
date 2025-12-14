@@ -3,23 +3,36 @@ import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
 import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
 import Filter from "../../../shared/ui/Filter/Filter";
 import { ProTable } from "@ant-design/pro-components";
-
-import { Edit, Plus, Trash } from "lucide-react";
-import { Pagination } from "antd";
-import {
-  columns,
-  fakeProducts,
-  type ProductTableListItem,
-} from "../../superadmin/products/model/product-table-model";
+import { Plus } from "lucide-react";
 import Button from "../../../shared/ui/Button/Button";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import {
+  productColumns,
+  type ProductTableListItem,
+} from "../../superadmin/products/model/product-table-model";
+import { Image, Button as AntdButton } from "antd";
+import { useProduct } from "../../../shared/lib/apis/products/useProduct";
 
 const AdminProductsPage = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const { getAllProducts } = useProduct();
   useEffect(() => {
     window.scroll({ top: 0 });
   }, []);
+
+  // Products start
+  const { data: allProducts } = getAllProducts();
+  const products = allProducts?.data;
+  // Products end
+
+  // Product detail starts
+  const handleProductDetailOpen = (id: string) => {
+    navigate(`${id}`);
+  };
+  // Product detail ends
+
+  if (pathname.startsWith(`/superadmin/products/`)) return <Outlet />;
 
   if (pathname.startsWith("/admin/products/")) return <Outlet />;
   return (
@@ -60,13 +73,13 @@ const AdminProductsPage = () => {
 
       <div className="max-[500px]:hidden mt-4">
         <ProTable
-          dataSource={fakeProducts}
+          dataSource={products}
           rowKey="id"
           pagination={{
             showSizeChanger: true,
             responsive: false,
           }}
-          columns={columns}
+          columns={productColumns(handleProductDetailOpen)}
           search={false}
           dateFormatter="string"
           headerTitle="Mahsulotlar"
@@ -74,96 +87,45 @@ const AdminProductsPage = () => {
         />
       </div>
 
-      <div className="min-[500px]:hidden flex flex-col gap-5 mt-4">
-        {fakeProducts.map((pr: ProductTableListItem) => (
+      <div className="min-[500px]:hidden grid grid-cols-2 gap-5 mt-4 max-[330px]:grid-cols-1">
+        {products?.map((pr: ProductTableListItem) => (
           <div
             key={pr.id}
             className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]"
           >
-            <div className="flex justify-between px-3.5 py-2.5">
-              <a className="text-[16px] font-bold">{pr.name}</a>
-              <span className="text-[14px] font-bold text-[#6B7280]">
-                {pr.brand}
+            <div className="p-2.5 flex justify-center items-center">
+              {/* @ts-ignore */}
+              <Image
+                src={pr.images[0].image_url}
+                className="w-full rounded-[5px] object-contain h-[130px]!"
+              />
+            </div>
+            <div className="flex flex-col gap-1 justify-between px-3.5 py-2.5">
+              <div className="flex flex-col">
+                <a className="text-[16px] font-bold">{pr.name}</a>
+                <span className="text-[14px] font-bold text-[#6B7280]">
+                  {pr.brand}
+                </span>
+              </div>
+              <span className="text-[17px] text-green-500 font-bold">
+                {pr.price.toLocaleString()}
               </span>
             </div>
 
             <div className="w-full h-px bg-bg-fy"></div>
 
-            <div className="px-3.5 py-2.5 flex flex-col gap-3">
-              <div className="grid grid-cols-2 gap-3">
-                <div className="flex flex-col justify-start w-1/2">
-                  <span className="text-[15px] font-medium text-[#6B7280]">
-                    Narxi
-                  </span>
-                  <span className="text-[16px] font-bold text-green-600">
-                    {pr.price.toLocaleString()}
-                  </span>
-                </div>
-                <div className="flex flex-col justify-start w-1/2">
-                  <span className="text-[15px] font-medium text-[#6B7280]">
-                    Miqdori
-                  </span>
-                  <span className="text-[16px] font-bold text-[#4B5563]">
-                    {pr.quantity}
-                  </span>
-                </div>
-                <div className="flex flex-col justify-start w-1/2">
-                  <span className="text-[15px] font-medium text-[#6B7280] whitespace-nowrap">
-                    Pochkadagi soni
-                  </span>
-                  <span className="text-[16px] font-bold text-[#4B5563]">
-                    {pr.unit_in_package}
-                  </span>
-                </div>
-                <div className="flex flex-col justify-start w-1/2">
-                  <span className="text-[15px] font-medium text-[#6B7280]">
-                    O'lchami
-                  </span>
-                  <span className="text-[16px] font-bold text-[#4B5563]">
-                    {pr.size}
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex flex-col">
-                <div>
-                  <span className="font-medium text-[#6B7280] text-[15px]">
-                    Do'kon / Tsex
-                  </span>
-                </div>
-                <div className="w-full">
-                  <span className="text-[16px] font-bold text-[#4B5563]">
-                    {pr.shop.name} / <span>{pr.tsex.name}</span>
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex flex-col">
-                <div>
-                  <span className="font-medium text-[#6B7280] text-[15px]">
-                    Kim kiritgan / Sana
-                  </span>
-                </div>
-                <div>
-                  <span className="text-[16px] font-bold text-[#4B5563]">
-                    {pr.created_by.full_name} /{" "}
-                    <span>{pr.created_at.toLocaleString("uz-UZ")}</span>
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex justify-end pb-px">
-                <div className="flex items-center gap-5">
-                  <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
-                  <Trash className="text-red-600 cursor-pointer hover:opacity-80" />
-                </div>
+            <div className="mt-1 px-3.5 pt-2 pb-3">
+              <div className="flex justify-end">
+                <AntdButton
+                  className="bg-[#1D4ED8]! text-white!"
+                  onClick={() => handleProductDetailOpen(pr.id)}
+                >
+                  Batafsil
+                </AntdButton>
               </div>
             </div>
           </div>
         ))}
-        <div className="flex justify-center">
-          <Pagination />
-        </div>
       </div>
     </div>
   );

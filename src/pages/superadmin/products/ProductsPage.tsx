@@ -9,7 +9,6 @@ import {
 } from "./model/product-table-model";
 import { Image, Pagination, Button as AntdButton } from "antd";
 import { useProduct } from "../../../shared/lib/apis/products/useProduct";
-import { Edit } from "lucide-react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 const ProductsPage = () => {
@@ -97,11 +96,8 @@ const ProductsPage = () => {
 
             <div className="w-full h-px bg-bg-fy"></div>
 
-            <div className="flex justify-between mt-1 px-3.5 pt-2 pb-3">
-              <div className="flex items-center gap-5">
-                <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
-              </div>
-              <div>
+            <div className="mt-1 px-3.5 pt-2 pb-3">
+              <div className="flex justify-end">
                 <AntdButton
                   className="bg-[#1D4ED8]! text-white!"
                   onClick={() => handleProductDetailOpen(pr.id)}
