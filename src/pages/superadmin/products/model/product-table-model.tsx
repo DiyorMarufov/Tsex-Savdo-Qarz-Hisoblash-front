@@ -1,4 +1,5 @@
 import type { ProColumns } from "@ant-design/pro-table";
+import { Image } from "antd";
 import { Edit, Trash } from "lucide-react";
 
 export type ProductTableListItem = {
@@ -6,81 +7,62 @@ export type ProductTableListItem = {
   name: string;
   brand: string;
   price: number;
-  quantity: number;
-  unit_in_package: number;
-  size: string;
-  shop: any;
-  tsex: any;
-  created_by: any;
+  images: [{ id: string; image_url: string }];
   created_at: Date;
-  actions: any;
 };
 
-export const columns: ProColumns<ProductTableListItem>[] = [
+export const productColumns = (
+  handleOpenDetail: any
+): ProColumns<ProductTableListItem>[] => [
+  {
+    title: "Rasm",
+    dataIndex: "image",
+    key: "product_image",
+    width: 80,
+    fixed: "left",
+    render: (_, record) => (
+      <Image
+        src={record.images[0].image_url || "https://via.placeholder.com/50"}
+        alt={record.name}
+        style={{
+          width: "40px",
+          height: "40px",
+        }}
+      />
+    ),
+  },
   {
     title: "Nomi",
     dataIndex: "name",
-    width: 120,
-    fixed: "left",
+    width: 150,
     render: (_, record) => <a>{record.name}</a>,
   },
   {
     title: "Brendi",
     dataIndex: "brand",
-    width: 110,
+    width: 120,
   },
   {
     title: "Narxi",
     dataIndex: "price",
-    width: 100,
-    align: "right",
-    render: (_, record) => <div className="text-green-600 font-bold">{record.price.toLocaleString()}</div>,
-  },
-  {
-    title: "Miqdori",
-    dataIndex: "quantity",
-    width: 70,
-    align: "right",
-  },
-  {
-    title: "Pochkadagi soni",
-    dataIndex: "unit_in_package",
-    width: 130,
-    align: "right",
-  },
-  {
-    title: "O‘lchami",
-    dataIndex: "size",
-    width: 100,
-  },
-  {
-    title: "Do‘kon",
-    dataIndex: ["shop", "name"],
     width: 120,
-    render: (_, record) => record.shop?.name ?? "-",
-  },
-  {
-    title: "Tsex",
-    dataIndex: ["tsex", "name"],
-    width: 120,
-    render: (_, record) => record.tsex?.name ?? "-",
-  },
-  {
-    title: "Kim kiritgan",
-    dataIndex: ["created_by", "full_name"],
-    width: 140,
-    render: (_, record) => record.created_by?.full_name ?? "-",
+    render: (_, record) => (
+      <div className="text-green-600 font-bold">
+        {record.price.toLocaleString()}
+      </div>
+    ),
   },
   {
     title: "Kiritilgan sana",
     dataIndex: "created_at",
     width: 160,
     valueType: "dateTime",
+    sorter: true,
   },
   {
     key: 11,
     title: "Amallar",
-    width: 150,
+    width: 100,
     valueType: "option",
     render: (_) => (
       <div className="flex gap-3">
@@ -89,77 +71,17 @@ export const columns: ProColumns<ProductTableListItem>[] = [
       </div>
     ),
   },
-];
-
-export const fakeProducts: ProductTableListItem[] = [
   {
-    id: "1",
-    name: "Sport krossovka",
-    brand: "Nike Air Max",
-    price: 450000,
-    quantity: 35,
-    unit_in_package: 1,
-    size: "39-43",
-    shop: { name: "Sneaker Store" },
-    tsex: { name: "Krossovka tsexi" },
-    created_by: { full_name: "Diyor Marufov" },
-    created_at: new Date("2024-11-15T11:20:00"),
-    actions: {},
-  },
-  {
-    id: "2",
-    name: "Qishki etik",
-    brand: "Columbia",
-    price: 720000,
-    quantity: 18,
-    unit_in_package: 1,
-    size: "39-43",
-    shop: { name: "Winter Shoes" },
-    tsex: { name: "Etik tsexi" },
-    created_by: { full_name: "Admin User" },
-    created_at: new Date("2024-11-10T09:50:00"),
-    actions: {},
-  },
-  {
-    id: "3",
-    name: "Dukli tapochka",
-    brand: "Lider",
-    price: 38000,
-    quantity: 150,
-    unit_in_package: 10,
-    size: "39-43",
-    shop: { name: "Home Market" },
-    tsex: { name: "Tapochka tsexi" },
-    created_by: { full_name: "Sardor Bek" },
-    created_at: new Date("2024-11-12T15:10:00"),
-    actions: {},
-  },
-  {
-    id: "4",
-    name: "Erkaklar tuflisi",
-    brand: "Bata",
-    price: 260000,
-    quantity: 25,
-    unit_in_package: 1,
-    size: "39-43",
-    shop: { name: "Classic Shoes" },
-    tsex: { name: "Tufli tsexi" },
-    created_by: { full_name: "Diyor Marufov" },
-    created_at: new Date("2024-11-11T13:05:00"),
-    actions: {},
-  },
-  {
-    id: "5",
-    name: "Ayollar krossovkasi",
-    brand: "Adidas",
-    price: 390000,
-    quantity: 40,
-    unit_in_package: 1,
-    size: "39-43",
-    shop: { name: "Sneaker Store" },
-    tsex: { name: "Krossovka tsexi" },
-    created_by: { full_name: "Admin User" },
-    created_at: new Date("2024-11-05T17:30:00"),
-    actions: {},
+    title: "",
+    key: "",
+    width: 70,
+    render: (_, record) => (
+      <div
+        className="text-[15px] text-green-500 cursor-pointer hover:opacity-80"
+        onClick={() => handleOpenDetail(record.id)}
+      >
+        Batafsil
+      </div>
+    ),
   },
 ];

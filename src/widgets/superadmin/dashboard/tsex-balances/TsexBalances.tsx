@@ -15,16 +15,22 @@ const TsexBalances = () => {
       <span className="text-[20px] text-bg-py font-bold">Tsexlar bo'yicha</span>
 
       <div className="flex flex-col gap-3 overflow-y-auto h-[150px]">
-        {debtorTsexes?.map((ts: any) => (
-          <div key={ts?.id} className="flex justify-between">
-            <span className="font-medium text-[17px] text-[#6B7280]">
-              {ts?.name}
-            </span>
-            <span className="text-[16px] font-bold text-red-500">
-              -{ts?.balance} UZS
-            </span>
+        {debtorTsexes && debtorTsexes?.length > 0 ? (
+          debtorTsexes?.map((ts: any) => (
+            <div key={ts?.id} className="flex justify-between">
+              <span className="font-medium text-[17px] text-[#6B7280]">
+                {ts?.name}
+              </span>
+              <span className="text-[16px] font-bold text-red-500">
+                -{ts?.balance} UZS
+              </span>
+            </div>
+          ))
+        ) : (
+          <div className="text-[19px] text-red-500 flex justify-center items-center h-[11vh]">
+            Qarzdor tsexlar hozircha yo'q
           </div>
-        ))}
+        )}
       </div>
     </div>
   );

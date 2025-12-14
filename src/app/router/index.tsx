@@ -45,6 +45,9 @@ const DashboardPage = lazy(
   () => import("../../pages/superadmin/dashboard/DashboardPage")
 );
 const AuthGuard = lazy(() => import("../providers/router/guards/AuthGuard"));
+const ProductDetailPage = lazy(
+  () => import("../../pages/superadmin/products/ProductDetailPage")
+);
 const ProductsPage = lazy(
   () => import("../../pages/superadmin/products/ProductsPage")
 );
@@ -87,6 +90,7 @@ const Router = () => {
                 {
                   path: "products",
                   element: <ProductsPage />,
+                  children: [{ path: ":id", element: <ProductDetailPage /> }],
                 },
                 {
                   path: "stores",

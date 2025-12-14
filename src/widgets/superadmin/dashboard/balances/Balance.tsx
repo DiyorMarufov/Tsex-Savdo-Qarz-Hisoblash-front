@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { useSale } from "../../../../shared/lib/apis/sales/useSale";
 import { formatBalance } from "../../../../shared/lib/functions/formatBalance";
-import { useCustomer } from "../../../../shared/lib/apis/customer/useCustomer";
+import { useCustomer } from "../../../../shared/lib/apis/customers/useCustomer";
 import { useTsex } from "../../../../shared/lib/apis/tsexes/useTsex";
 import DashboardBalanceSkeleton from "../../../../shared/ui/Skeletons/DashboardBalanceSkeleton/DashboardBalanceSkeleton";
 import StatCard from "../../../dashboard/StatCard/StatCard";

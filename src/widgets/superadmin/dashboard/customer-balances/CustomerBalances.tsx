@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { useCustomer } from "../../../../shared/lib/apis/customer/useCustomer";
+import { useCustomer } from "../../../../shared/lib/apis/customers/useCustomer";
 import DashboardUserSkeleton from "../../../../shared/ui/Skeletons/DashboardBalanceSkeleton/DashboardUserSkeleton";
 
 const CustomerBalances = () => {
@@ -18,16 +18,22 @@ const CustomerBalances = () => {
       </span>
 
       <div className="flex flex-col gap-3 overflow-y-auto h-[150px]">
-        {debtorCustomers?.map((cr: any) => (
-          <div key={cr?.id} className="flex justify-between">
-            <span className="font-medium text-[17px] text-[#6B7280]">
-              {cr?.full_name}
-            </span>
-            <span className="text-[16px] font-bold text-red-500">
-              -{cr?.balance} UZS
-            </span>
+        {debtorCustomers && debtorCustomers?.length > 0 ? (
+          debtorCustomers?.map((cr: any) => (
+            <div key={cr?.id} className="flex justify-between">
+              <span className="font-medium text-[17px] text-[#6B7280]">
+                {cr?.full_name}
+              </span>
+              <span className="text-[16px] font-bold text-red-500">
+                -{cr?.balance} UZS
+              </span>
+            </div>
+          ))
+        ) : (
+          <div className="text-[19px] text-red-500 flex justify-center items-center h-[11vh]">
+            Qarzdor mijozlar hozircha yo'q
           </div>
-        ))}
+        )}
       </div>
     </div>
   );
