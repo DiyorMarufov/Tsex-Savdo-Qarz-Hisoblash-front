@@ -8,3 +8,11 @@ export interface IResponseData {
   message: string;
   data: any[];
 }
+
+export interface ProductQueryParams {
+  page?: number;
+  limit?: number;
+  search?: string;
+  shopId?: string;
+  tsexId?: string;
+}

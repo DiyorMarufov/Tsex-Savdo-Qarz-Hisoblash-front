@@ -4,10 +4,10 @@ import { api } from "../../../../features/auth/api";
 export const product = "product";
 
 export const useProduct = () => {
-  const getAllProducts = () =>
+  const getAllProducts = (params?: any) =>
     useQuery({
-      queryKey: [product, "all-products"],
-      queryFn: () => api.get("products").then((res) => res.data),
+      queryKey: [product, "all-products", params],
+      queryFn: () => api.get("products", { params }).then((res) => res.data),
       refetchOnWindowFocus: false,
       staleTime: 1000 * 60 * 5,
       gcTime: 1000 * 60 * 10,
@@ -17,6 +17,7 @@ export const useProduct = () => {
     useQuery({
       queryKey: [product, id],
       queryFn: () => api.get(`products/${id}`).then((res) => res.data),
+      enabled: !!id,
       refetchOnWindowFocus: false,
       staleTime: Infinity,
       gcTime: 1000 * 60 * 10,

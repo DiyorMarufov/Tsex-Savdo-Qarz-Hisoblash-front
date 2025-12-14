@@ -22,5 +22,18 @@ export const useTsex = () => {
       staleTime: 1000 * 60 * 5,
       gcTime: 1000 * 60 * 10,
     });
-  return { getTotalTsexBalance, getMostDebtorTsexes };
+
+  const getAllTsexesForProductsFilter = () =>
+    useQuery<IResponseData>({
+      queryKey: [tsex, "tsexes-filter"],
+      queryFn: () => api.get("tsexes/filter").then((res) => res.data),
+      refetchOnWindowFocus: false,
+      staleTime: Infinity,
+      gcTime: 1000 * 60 * 10 * 6 * 24 * 30,
+    });
+  return {
+    getTotalTsexBalance,
+    getMostDebtorTsexes,
+    getAllTsexesForProductsFilter,
+  };
 };

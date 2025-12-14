@@ -4,15 +4,24 @@ import { memo, type FC } from "react";
 
 interface Props {
   placeholder: string;
+  value?: string;
+  onChange?: (value: string) => void;
   className?: string;
 }
 
-const SearchInput: FC<Props> = ({ placeholder, className = "" }) => {
+const SearchInput: FC<Props> = ({
+  placeholder,
+  value,
+  onChange,
+  className = "",
+}) => {
   return (
     <Input
       placeholder={placeholder}
-      className={`${className}`}
-      prefix={<Search className="mr-1.5"/>}
+      className={className}
+      value={value}
+      onChange={(e) => onChange && onChange(e.target.value)}
+      prefix={<Search className="mr-1.5" />}
     />
   );
 };
