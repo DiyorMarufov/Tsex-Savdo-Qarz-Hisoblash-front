@@ -1,9 +1,12 @@
 import { memo, useEffect } from "react";
 import { useProduct } from "../../../shared/lib/apis/products/useProduct";
-import { useParams } from "react-router-dom";
-import { Image } from "antd";
+import { useNavigate, useParams } from "react-router-dom";
+import { Button, Image } from "antd";
+import ProductDetailCardSkeleton from "../../../shared/ui/Skeletons/Products/ProductDetailCardSkeleton";
+import { ArrowLeft, Edit, Trash } from "lucide-react";
 
 const ProductDetailPage = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const { getProductById } = useProduct();
 
@@ -15,7 +18,7 @@ const ProductDetailPage = () => {
   }, []);
 
   if (isLoading) {
-    return <div className="text-center py-10">Mahsulot yuklanmoqda...</div>;
+    return <ProductDetailCardSkeleton />;
   }
 
   if (isError || !product) {
@@ -28,7 +31,8 @@ const ProductDetailPage = () => {
 
   return (
     <div className="mx-auto bg-white rounded-[5px]">
-      <div className="flex items-center justify-center p-4 border-b">
+      <div className="flex items-center justify-center p-4 border-b relative">
+        <ArrowLeft className="absolute left-3 cursor-pointer hover:opacity-80" onClick={() => navigate(-1)} />
         <h2 className="text-[18px] font-semibold">Mahsulot Tafsilotlari</h2>
       </div>
 
@@ -61,10 +65,8 @@ const ProductDetailPage = () => {
                 value={product.unit_in_package || "—"}
               />
               <InfoRow label="O‘lchami" value={product.size || "—"} />
-              <InfoRow
-                label="Do‘kon / Tsex"
-                value={product.shop?.name || "—"}
-              />
+              <InfoRow label="Do‘kon" value={`${product.shop?.name}` || "—"} />
+              <InfoRow label="Tsex" value={`${product.tsex?.name}` || "—"} />
               <InfoRow
                 label="Kim kiritgan"
                 value={product.user?.full_name || "—"}
@@ -76,6 +78,14 @@ const ProductDetailPage = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div className="grid grid-cols-2 gap-3 px-4 pb-4 justify-end">
+        <Button className="bg-green-500! text-white! h-9!">
+          <Edit />
+        </Button>
+        <Button className="bg-red-500! text-white! h-9!">
+          <Trash />
+        </Button>
       </div>
     </div>
   );

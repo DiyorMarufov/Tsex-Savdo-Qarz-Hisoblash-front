@@ -23,7 +23,7 @@ const AdminProductsPage = () => {
 
   // Products start
   const { data: allProducts } = getAllProducts();
-  const products = allProducts?.data;
+  const products = allProducts?.data?.data;
   // Products end
 
   // Product detail starts

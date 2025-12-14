@@ -10,6 +10,7 @@ import {
 import { Image, Pagination, Button as AntdButton } from "antd";
 import { useProduct } from "../../../shared/lib/apis/products/useProduct";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import ProductCardSkeleton from "../../../shared/ui/Skeletons/Products/ProductCardSkeleton";
 
 const ProductsPage = () => {
   const navigate = useNavigate();
@@ -21,8 +22,8 @@ const ProductsPage = () => {
   }, []);
 
   // Products start
-  const { data: allProducts } = getAllProducts();
-  const products = allProducts?.data;
+  const { data: allProducts, isLoading: productLoading } = getAllProducts();
+  const products = allProducts?.data?.data;
   // Products end
 
   // Product detail starts
@@ -66,51 +67,55 @@ const ProductsPage = () => {
           dateFormatter="string"
           headerTitle="Mahsulotlar"
           scroll={{ x: "max-content" }}
+          loading={productLoading}
         />
       </div>
 
-      <div className="min-[500px]:hidden grid grid-cols-2 gap-5 mt-4 max-[330px]:grid-cols-1">
-        {products?.map((pr: ProductTableListItem) => (
-          <div
-            key={pr.id}
-            className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]"
-          >
-            <div className="p-2.5 flex justify-center items-center">
-              {/* @ts-ignore */}
-              <Image
-                src={pr.images[0].image_url}
-                className="w-full rounded-[5px] object-contain h-[130px]!"
-              />
-            </div>
-            <div className="flex flex-col gap-1 justify-between px-3.5 py-2.5">
-              <div className="flex flex-col">
-                <a className="text-[16px] font-bold">{pr.name}</a>
-                <span className="text-[14px] font-bold text-[#6B7280]">
-                  {pr.brand}
+      <div className="min-[500px]:hidden mt-4">
+        {productLoading && <ProductCardSkeleton />}
+        <div className="grid grid-cols-2 gap-5 max-[330px]:grid-cols-1">
+          {products?.map((pr: ProductTableListItem) => (
+            <div
+              key={pr.id}
+              className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]"
+            >
+              <div className="p-2.5 flex justify-center items-center">
+                {/* @ts-ignore */}
+                <Image
+                  src={pr.images[0].image_url}
+                  className="w-full rounded-[5px] object-contain h-[130px]!"
+                />
+              </div>
+              <div className="flex flex-col gap-1 justify-between px-3.5 py-2.5">
+                <div className="flex flex-col">
+                  <a className="text-[16px] font-bold">{pr.name}</a>
+                  <span className="text-[14px] font-bold text-[#6B7280]">
+                    {pr.brand}
+                  </span>
+                </div>
+                <span className="text-[17px] text-green-500 font-bold">
+                  {pr.price.toLocaleString()}
                 </span>
               </div>
-              <span className="text-[17px] text-green-500 font-bold">
-                {pr.price.toLocaleString()}
-              </span>
-            </div>
 
-            <div className="w-full h-px bg-bg-fy"></div>
+              <div className="w-full h-px bg-bg-fy"></div>
 
-            <div className="mt-1 px-3.5 pt-2 pb-3">
-              <div className="flex justify-end">
-                <AntdButton
-                  className="bg-[#1D4ED8]! text-white!"
-                  onClick={() => handleProductDetailOpen(pr.id)}
-                >
-                  Batafsil
-                </AntdButton>
+              <div className="mt-1 px-3.5 pt-2 pb-3">
+                <div className="flex justify-end">
+                  <AntdButton
+                    className="bg-[#1D4ED8]! text-white!"
+                    onClick={() => handleProductDetailOpen(pr.id)}
+                  >
+                    Batafsil
+                  </AntdButton>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
-      <div className="flex mt-4 justify-center">
-        <Pagination />
+          ))}
+        </div>
+        <div className="flex mt-4 justify-center">
+          <Pagination />
+        </div>
       </div>
     </div>
   );

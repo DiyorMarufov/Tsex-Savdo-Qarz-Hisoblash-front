@@ -1,12 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { api } from "../../../../features/auth/api";
-import type { IResponseData } from "../../types";
 
 export const product = "product";
 
 export const useProduct = () => {
   const getAllProducts = () =>
-    useQuery<IResponseData>({
+    useQuery({
       queryKey: [product, "all-products"],
       queryFn: () => api.get("products").then((res) => res.data),
       refetchOnWindowFocus: false,
