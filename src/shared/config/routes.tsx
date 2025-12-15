@@ -32,7 +32,7 @@ export const SuperadminSidebarNavigation: SidebarNavItem[] = [
   },
   {
     id: 3,
-    to: "/superadmin/stores",
+    to: "/superadmin/shops",
     label: "Do'konlar",
     icon: <Store className="w-5 h-5" />,
   },

@@ -15,7 +15,7 @@ import { debounce } from "../../../shared/lib/functions/debounce";
 import type { ProductQueryParams } from "../../../shared/lib/types";
 import { useParamsHook } from "../../../shared/hooks/params/useParams";
 import { useTsex } from "../../../shared/lib/apis/tsexes/useTsex";
-import { useShop } from "../../../shared/lib/apis/stores/useStore";
+import { useShop } from "../../../shared/lib/apis/shops/useShop";
 
 const ProductsPage = () => {
   const navigate = useNavigate();

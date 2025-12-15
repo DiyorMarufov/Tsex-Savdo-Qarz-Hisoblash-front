@@ -5,6 +5,15 @@ import type { IResponseData } from "../../types";
 export const shop = "shop";
 
 export const useShop = () => {
+  const getAllShops = () =>
+    useQuery<IResponseData>({
+      queryKey: [shop, "all-shops"],
+      queryFn: () => api.get("shops").then((res) => res.data),
+      refetchOnWindowFocus: false,
+      staleTime: Infinity,
+      gcTime: 1000 * 60 * 10 * 6 * 24 * 30,
+    });
+
   const getAllShopsForProductsFilter = () =>
     useQuery<IResponseData>({
       queryKey: [shop, "shops-filter"],
@@ -13,5 +22,5 @@ export const useShop = () => {
       staleTime: Infinity,
       gcTime: 1000 * 60 * 10 * 6 * 24 * 30,
     });
-  return { getAllShopsForProductsFilter };
+  return { getAllShops, getAllShopsForProductsFilter };
 };

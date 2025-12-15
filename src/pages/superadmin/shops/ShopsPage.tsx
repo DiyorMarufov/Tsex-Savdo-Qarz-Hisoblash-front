@@ -3,17 +3,26 @@ import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
 import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
 import ProTable from "@ant-design/pro-table";
 import {
-  fakeStores,
   storesColumns,
   type StoresTableListItem,
-} from "./model/stores-table-model";
+} from "./model/shops-table-model";
 import { Edit, Trash } from "lucide-react";
 import { Pagination } from "antd";
+import { useShop } from "../../../shared/lib/apis/shops/useShop";
+import ShopCardSkeleton from "../../../shared/ui/Skeletons/Shops/ShopCardSkeleton";
 
 const StoresPage = () => {
+  const { getAllShops } = useShop();
+
   useEffect(() => {
     window.scroll({ top: 0 });
   }, []);
+
+  // Shops start
+  const { data: allShops, isLoading: shopsLoading } = getAllShops();
+  const shops = allShops?.data;
+
+  // Shops end
   return (
     <div>
       <div>
@@ -29,7 +38,7 @@ const StoresPage = () => {
 
       <div className="max-[500px]:hidden mt-4">
         <ProTable
-          dataSource={fakeStores}
+          dataSource={shops}
           rowKey="id"
           pagination={{
             showSizeChanger: true,
@@ -40,20 +49,22 @@ const StoresPage = () => {
           dateFormatter="string"
           headerTitle="Do'konlar"
           scroll={{ x: "max-content" }}
+          loading={shopsLoading}
         />
       </div>
 
+      {shopsLoading && <ShopCardSkeleton />}
       <div className="min-[500px]:hidden flex flex-col gap-5 mt-4">
-        {fakeStores.map((st: StoresTableListItem) => (
+        {shops?.map((st: StoresTableListItem) => (
           <div
             key={st.id}
             className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]"
           >
             <div className="px-3.5 py-2.5 flex justify-between">
               <div className="flex flex-col gap-1">
-                <a className="text-[16px] font-bold">{st.name}</a>
+                <a className="text-[16px] font-bold">{st?.name}</a>
                 <span className="font-bold text-[15px] text-[#4B5563]">
-                  {st.address}
+                  {st?.address}
                 </span>
               </div>
               <div className="flex items-center gap-5">
@@ -68,7 +79,7 @@ const StoresPage = () => {
               <span className="text-[15px] font-medium text-[#6B7280]">
                 Kiritilgan sana:{" "}
                 <span className="text-[16px] font-bold text-[#4B5563]">
-                  {st.created_at.toLocaleString("uz-UZ")}
+                  {new Date(st.created_at)?.toLocaleString("uz-UZ")}
                 </span>
               </span>
             </div>

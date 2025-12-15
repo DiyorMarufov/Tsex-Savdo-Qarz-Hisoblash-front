@@ -1,6 +1,9 @@
 import { lazy, memo } from "react";
 import { useRoutes } from "react-router-dom";
 
+const NotFoundPage = lazy(
+  () => import("../../shared/ui/NotFound/NotFoundPage")
+);
 const AdminSettingsPage = lazy(
   () => import("../../pages/admin/settings/SettingsPage")
 );
@@ -51,8 +54,8 @@ const ProductDetailPage = lazy(
 const ProductsPage = lazy(
   () => import("../../pages/superadmin/products/ProductsPage")
 );
-const StoresPage = lazy(
-  () => import("../../pages/superadmin/stores/StoresPage")
+const ShopsPage = lazy(
+  () => import("../../pages/superadmin/shops/ShopsPage")
 );
 const TsexesPage = lazy(
   () => import("../../pages/superadmin/tsexes/TsexesPage")
@@ -93,8 +96,8 @@ const Router = () => {
                   children: [{ path: ":id", element: <ProductDetailPage /> }],
                 },
                 {
-                  path: "stores",
-                  element: <StoresPage />,
+                  path: "shops",
+                  element: <ShopsPage />,
                 },
                 {
                   path: "tsexes",
@@ -181,6 +184,10 @@ const Router = () => {
           ],
         },
       ],
+    },
+    {
+      path: "*",
+      element: <NotFoundPage />,
     },
   ]);
   return routes;
