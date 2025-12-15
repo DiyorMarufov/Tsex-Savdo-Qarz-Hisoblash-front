@@ -17,7 +17,7 @@ export const useShop = () => {
   const getAllShopsForProductsFilter = () =>
     useQuery<IResponseData>({
       queryKey: [shop, "shops-filter"],
-      queryFn: () => api.get("shops/filter").then((res) => res.data),
+      queryFn: () => api.get("shops/filters/list").then((res) => res.data),
       refetchOnWindowFocus: false,
       staleTime: Infinity,
       gcTime: 1000 * 60 * 10 * 6 * 24 * 30,

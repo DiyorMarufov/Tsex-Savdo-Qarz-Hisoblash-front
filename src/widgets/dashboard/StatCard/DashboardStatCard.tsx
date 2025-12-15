@@ -10,7 +10,7 @@ interface StatCardProps {
   isValueNegative?: boolean;
 }
 
-const StatCard: React.FC<StatCardProps> = ({
+const DashboardStatCard: React.FC<StatCardProps> = ({
   title,
   value,
   rawValue,
@@ -42,4 +42,4 @@ const StatCard: React.FC<StatCardProps> = ({
   );
 };
 
-export default memo(StatCard);
+export default memo(DashboardStatCard);

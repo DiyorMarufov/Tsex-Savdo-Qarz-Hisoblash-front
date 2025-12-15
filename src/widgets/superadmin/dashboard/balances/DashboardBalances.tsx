@@ -4,11 +4,11 @@ import { formatBalance } from "../../../../shared/lib/functions/formatBalance";
 import { useCustomer } from "../../../../shared/lib/apis/customers/useCustomer";
 import { useTsex } from "../../../../shared/lib/apis/tsexes/useTsex";
 import DashboardBalanceSkeleton from "../../../../shared/ui/Skeletons/DashboardBalanceSkeleton/DashboardBalanceSkeleton";
-import StatCard from "../../../dashboard/StatCard/StatCard";
+import DashboardStatCard from "../../../dashboard/StatCard/DashboardStatCard";
 import CountUp from "react-countup";
 import { formatUnitOfMeasurement } from "../../../../shared/lib/functions/formatUnitOfMeasurement";
 
-const Balances = () => {
+const DashboardBalances = () => {
   const { getTotalSales } = useSale();
   const { getTotalTsexBalance } = useTsex();
   const { getTotalCustomerBalance } = useCustomer();
@@ -61,7 +61,7 @@ const Balances = () => {
 
   return (
     <div className="grid grid-cols-4 gap-6 max-[1350px]:grid-cols-3 max-[1070px]:grid-cols-2 max-[380px]:grid-cols-1">
-      <StatCard
+      <DashboardStatCard
         title="Umumiy Savdo"
         value={formattedSale}
         suffix="UZS"
@@ -88,7 +88,7 @@ const Balances = () => {
           />
         </span>
       </div>
-      <StatCard
+      <DashboardStatCard
         title="Tsexlar Balansi"
         value={formattedTsexBalance}
         suffix="UZS"
@@ -96,7 +96,7 @@ const Balances = () => {
         isValueNegative={formattedTsexBalance > 0}
       />
 
-      <StatCard
+      <DashboardStatCard
         title="Mijozlar balansi"
         value={formattedCustomerBalance}
         suffix="UZS"
@@ -107,4 +107,4 @@ const Balances = () => {
   );
 };
 
-export default memo(Balances);
+export default memo(DashboardBalances);

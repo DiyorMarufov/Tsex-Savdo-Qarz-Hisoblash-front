@@ -11,8 +11,8 @@ import {
   type TsexTableListItem,
 } from "./model/tsexes-model";
 import { Form, Input, Modal, Select, type FormProps } from "antd";
-import CountUp from "react-countup";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import TsexesBalances from "../../../widgets/superadmin/tsexes/balances/TsexesBalances";
 
 type FieldType = {
   tsex_id: string;
@@ -73,57 +73,7 @@ const TsexesPage = () => {
         </div>
       </div>
 
-      <div className="mt-2 grid grid-cols-3 gap-5 max-[1250px]:grid-cols-2 max-[500px]:grid-cols-1">
-        <div className="border border-bg-fy bg-[#ffffff] rounded-2xl p-7 flex flex-col gap-1 max-[500px]:items-center">
-          <span className="text-[22px] font-medium text-bg-py max-[900px]:text-[20px] max-[500px]:text-[17px]">
-            Jami haqdorlik
-          </span>
-          <span className="font-bold text-[30px] text-green-600 max-[900px]:text-[25px] max-[500px]:text-[22px]">
-            <CountUp
-              start={0}
-              end={15200000}
-              duration={2.5}
-              separator=","
-              decimal="."
-              suffix=" UZS"
-            />
-          </span>
-        </div>
-        <div className="border border-bg-fy bg-[#ffffff] rounded-2xl p-7 flex flex-col gap-1 max-[500px]:items-center">
-          <span className="text-[22px] font-medium text-bg-py max-[900px]:text-[20px] max-[500px]:text-[17px]">
-            Jami qarzdorlik
-          </span>
-          <span className="font-bold text-[30px] text-red-600 max-[900px]:text-[25px] max-[500px]:text-[22px]">
-            <CountUp
-              start={0}
-              end={-15200000}
-              duration={2.5}
-              separator=","
-              decimal="."
-              suffix=" UZS"
-            />
-          </span>
-        </div>
-        <div
-          className="border border-[#e5e5e5] bg-white rounded-2xl p-7 flex flex-col gap-1
-                max-[1250px]:col-span-2 max-[1250px]:items-center
-                max-[500px]:col-span-1"
-        >
-          <span className="text-[22px] font-medium text-bg-py max-[900px]:text-[20px] max-[500px]:text-[17px]">
-            Umumiy balans
-          </span>
-          <span className="font-bold text-[30px] text-green-600 max-[900px]:text-[25px] max-[500px]:text-[22px]">
-            <CountUp
-              start={0}
-              end={15200000}
-              duration={2.5}
-              separator=","
-              decimal="."
-              suffix=" UZS"
-            />
-          </span>
-        </div>
-      </div>
+      <TsexesBalances />
 
       <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-6 p-3.5 flex items-center gap-5 max-[960px]:flex-wrap">
         <SearchInput

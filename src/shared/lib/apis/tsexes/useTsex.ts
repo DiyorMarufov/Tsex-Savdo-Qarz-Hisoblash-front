@@ -8,7 +8,7 @@ export const useTsex = () => {
   const getTotalTsexBalance = () =>
     useQuery<IResponseData>({
       queryKey: [tsex, "totalBalance"],
-      queryFn: () => api.get("tsexes/total-balance").then((res) => res.data),
+      queryFn: () => api.get("tsexes/balances/total").then((res) => res.data),
       refetchOnWindowFocus: false,
       staleTime: 1000 * 60 * 5,
       gcTime: 1000 * 60 * 10,
@@ -17,7 +17,7 @@ export const useTsex = () => {
   const getMostDebtorTsexes = () =>
     useQuery<IResponseData>({
       queryKey: [tsex, "mostDebtorTsexes"],
-      queryFn: () => api.get("tsexes/most-debtor").then((res) => res.data),
+      queryFn: () => api.get("tsexes/debtors/top").then((res) => res.data),
       refetchOnWindowFocus: false,
       staleTime: 1000 * 60 * 5,
       gcTime: 1000 * 60 * 10,
@@ -26,14 +26,47 @@ export const useTsex = () => {
   const getAllTsexesForProductsFilter = () =>
     useQuery<IResponseData>({
       queryKey: [tsex, "tsexes-filter"],
-      queryFn: () => api.get("tsexes/filter").then((res) => res.data),
+      queryFn: () => api.get("tsexes/filters/list").then((res) => res.data),
       refetchOnWindowFocus: false,
       staleTime: Infinity,
       gcTime: 1000 * 60 * 10 * 6 * 24 * 30,
+    });
+
+  const getCreditorTotalBalance = () =>
+    useQuery<IResponseData>({
+      queryKey: [tsex, "creditor-total-balance"],
+      queryFn: () =>
+        api.get("tsexes/balances/creditor-total").then((res) => res.data),
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 10,
+    });
+
+  const getDebtorTotalBalance = () =>
+    useQuery<IResponseData>({
+      queryKey: [tsex, "debtor-total-balance"],
+      queryFn: () =>
+        api.get("tsexes/balances/debtor-total").then((res) => res.data),
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 10,
+    });
+
+  const getNetTotalBalance = () =>
+    useQuery<IResponseData>({
+      queryKey: [tsex, "net-total-balance"],
+      queryFn: () =>
+        api.get("tsexes/balances/net-total").then((res) => res.data),
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 10,
     });
   return {
     getTotalTsexBalance,
     getMostDebtorTsexes,
     getAllTsexesForProductsFilter,
+    getCreditorTotalBalance,
+    getDebtorTotalBalance,
+    getNetTotalBalance,
   };
 };

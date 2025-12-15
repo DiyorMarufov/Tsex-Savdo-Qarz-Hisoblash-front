@@ -1,6 +1,6 @@
 import { memo, useEffect } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
-import Balances from "../../../widgets/superadmin/dashboard/balances/Balance";
+import DashboardBalances from "../../../widgets/superadmin/dashboard/balances/DashboardBalances";
 import SaleChart from "../../../widgets/superadmin/dashboard/sale-chart/SaleChart";
 import CustomerBalances from "../../../widgets/superadmin/dashboard/customer-balances/CustomerBalances";
 import TsexBalances from "../../../widgets/superadmin/dashboard/tsex-balances/TsexBalances";
@@ -13,7 +13,7 @@ const DashboardPage = () => {
     <div>
       <LargeTitle title="Boshqaruv paneli" />
       <div className="mt-2">
-        <Balances />
+        <DashboardBalances />
       </div>
 
       <div className="mt-8 flex gap-6 max-[1350px]:flex-col">
