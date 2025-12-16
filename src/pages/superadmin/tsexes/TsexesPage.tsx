@@ -83,6 +83,7 @@ const TsexesPage = () => {
     created_at: new Date(as?.created_at).toLocaleString("uz-UZ"),
   }));
   const total = allTsexes?.data?.total || 0;
+  // TsexData ends
 
   // PageChange starts
   const handlePageChange = (newPage: number, newPageSize?: number) => {
@@ -124,7 +125,6 @@ const TsexesPage = () => {
   };
   // Search ends
 
-  // TsexData ends
   if (pathname.startsWith("/superadmin/tsexes/transactions")) return <Outlet />;
 
   return (
@@ -180,91 +180,97 @@ const TsexesPage = () => {
 
       <div className="min-[500px]:hidden flex flex-col gap-5 mt-4">
         {tsexLoading && <TsexDataCardSkeleton />}
-        {tsexes?.map((ts: TsexTableListItem) => (
-          <div
-            key={ts?.id}
-            className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]"
-          >
-            <div className="flex flex-col">
-              <div className="grid grid-cols-2 gap-3 px-3.5 py-2.5">
-                <div className="flex flex-col justify-start">
-                  <span className="text-[15px] font-medium text-[#6B7280]">
-                    Nomi
-                  </span>
-                  <a className="text-[16px] font-bold text-green-600">
-                    {ts?.name}
-                  </a>
-                </div>
-                <div className="flex flex-col justify-start">
-                  <span className="text-[15px] font-medium text-[#6B7280]">
-                    Tsex Manager
-                  </span>
-                  <span className="text-[16px] font-bold text-[#4B5563]">
-                    {ts?.tsex}
-                  </span>
-                </div>
-                <div className="flex flex-col justify-start">
-                  <span className="text-[15px] font-medium text-[#6B7280] whitespace-nowrap">
-                    Balansi
-                  </span>
-                  {ts?.balance > 0 ? (
-                    <span className="text-[16px] font-bold text-red-500">
-                      -{ts?.balance.toLocaleString()}
+        {tsexes && tsexes?.length > 0 ? (
+          tsexes?.map((ts: TsexTableListItem) => (
+            <div
+              key={ts?.id}
+              className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]"
+            >
+              <div className="flex flex-col">
+                <div className="grid grid-cols-2 gap-3 px-3.5 py-2.5">
+                  <div className="flex flex-col justify-start">
+                    <span className="text-[15px] font-medium text-[#6B7280]">
+                      Nomi
                     </span>
-                  ) : (
-                    <span className="text-[16px] font-bold text-green-500">
-                      {ts?.balance.toLocaleString()}
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-3 pb-2.5">
-                <div className="flex flex-col px-3.5">
-                  <div>
-                    <span className="font-medium text-[#6B7280] text-[15px]">
-                      Oxirgi operatsiya
-                    </span>
+                    <a className="text-[16px] font-bold text-green-600">
+                      {ts?.name}
+                    </a>
                   </div>
-                  <div>
+                  <div className="flex flex-col justify-start">
+                    <span className="text-[15px] font-medium text-[#6B7280]">
+                      Tsex Manager
+                    </span>
                     <span className="text-[16px] font-bold text-[#4B5563]">
-                      {ts?.last_operation}
+                      {ts?.tsex}
                     </span>
+                  </div>
+                  <div className="flex flex-col justify-start">
+                    <span className="text-[15px] font-medium text-[#6B7280] whitespace-nowrap">
+                      Balansi
+                    </span>
+                    {ts?.balance > 0 ? (
+                      <span className="text-[16px] font-bold text-red-500">
+                        -{ts?.balance.toLocaleString()}
+                      </span>
+                    ) : (
+                      <span className="text-[16px] font-bold text-green-500">
+                        {ts?.balance.toLocaleString()}
+                      </span>
+                    )}
                   </div>
                 </div>
 
-                <div className="flex flex-col px-3.5">
+                <div className="flex flex-col gap-3 pb-2.5">
+                  <div className="flex flex-col px-3.5">
+                    <div>
+                      <span className="font-medium text-[#6B7280] text-[15px]">
+                        Oxirgi operatsiya
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-[16px] font-bold text-[#4B5563]">
+                        {ts?.last_operation}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col px-3.5">
+                    <div>
+                      <span className="font-medium text-[#6B7280] text-[15px]">
+                        Kiritilgan sana
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-[16px] font-bold text-[#4B5563]">
+                        {ts?.created_at.toLocaleString("uz-UZ")}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="w-full h-px bg-bg-fy"></div>
+
+                <div className="flex justify-between mt-1 px-3.5 pt-2 pb-3">
+                  <div className="flex items-center gap-5">
+                    <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
+                  </div>
                   <div>
-                    <span className="font-medium text-[#6B7280] text-[15px]">
-                      Kiritilgan sana
-                    </span>
+                    <AntdButton
+                      className="bg-[#1D4ED8]! text-white!"
+                      onClick={() => handleOpenDetail(ts.id)}
+                    >
+                      Batafsil
+                    </AntdButton>
                   </div>
-                  <div>
-                    <span className="text-[16px] font-bold text-[#4B5563]">
-                      {ts?.created_at.toLocaleString("uz-UZ")}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="w-full h-px bg-bg-fy"></div>
-
-              <div className="flex justify-between mt-1 px-3.5 pt-2 pb-3">
-                <div className="flex items-center gap-5">
-                  <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
-                </div>
-                <div>
-                  <AntdButton
-                    className="bg-[#1D4ED8]! text-white!"
-                    onClick={() => handleOpenDetail(ts.id)}
-                  >
-                    Batafsil
-                  </AntdButton>
                 </div>
               </div>
             </div>
+          ))
+        ) : (
+          <div className="flex justify-center items-center h-[20vh] text-red-500 text-[19px] col-span-2">
+            Hozircha ma'lumot yo'q
           </div>
-        ))}
+        )}
         <div className="flex justify-center">
           <Pagination
             current={query.page}
