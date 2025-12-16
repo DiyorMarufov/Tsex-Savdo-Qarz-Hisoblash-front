@@ -60,7 +60,6 @@ export const productColumns = (
     sorter: true,
   },
   {
-    key: 11,
     title: "Amallar",
     width: 100,
     valueType: "option",

@@ -16,3 +16,10 @@ export interface QueryParams {
   shopId?: string;
   tsexId?: string;
 }
+
+export interface TsexTransactionsType {
+  partial_payment: string;
+  payment: string;
+  avans: string;
+  product_supply: string;
+}
