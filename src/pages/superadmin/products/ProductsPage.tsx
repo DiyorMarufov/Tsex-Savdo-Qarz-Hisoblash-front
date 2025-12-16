@@ -12,7 +12,7 @@ import { useProduct } from "../../../shared/lib/apis/products/useProduct";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import ProductCardSkeleton from "../../../shared/ui/Skeletons/Products/ProductCardSkeleton";
 import { debounce } from "../../../shared/lib/functions/debounce";
-import type { ProductQueryParams } from "../../../shared/lib/types";
+import type { QueryParams } from "../../../shared/lib/types";
 import { useParamsHook } from "../../../shared/hooks/params/useParams";
 import { useTsex } from "../../../shared/lib/apis/tsexes/useTsex";
 import { useShop } from "../../../shared/lib/apis/shops/useShop";
@@ -33,7 +33,7 @@ const ProductsPage = () => {
   }, []);
 
   // Query starts
-  const query: ProductQueryParams = useMemo(() => {
+  const query: QueryParams = useMemo(() => {
     const page = Number(getParam("page")) || 1;
     const limit = Number(getParam("limit")) || 10;
     const search = getParam("search") || undefined;

@@ -49,10 +49,7 @@ const DashboardBalances = () => {
 
   if (isAnyLoading) {
     return (
-      <div className="grid grid-cols-4 gap-6 max-[1350px]:grid-cols-3 max-[1070px]:grid-cols-2 max-[380px]:grid-cols-1">
-        <DashboardBalanceSkeleton />
-        <DashboardBalanceSkeleton />
-        <DashboardBalanceSkeleton />
+      <div className="grid grid-cols-4 gap-6 max-[1350px]:grid-cols-3 max-[1100px]:grid-cols-2 max-[380px]:grid-cols-1">
         <DashboardBalanceSkeleton />
       </div>
     );
@@ -60,7 +57,7 @@ const DashboardBalances = () => {
   // Loading ends
 
   return (
-    <div className="grid grid-cols-4 gap-6 max-[1350px]:grid-cols-3 max-[1070px]:grid-cols-2 max-[380px]:grid-cols-1">
+    <div className="grid grid-cols-4 gap-6 max-[1350px]:grid-cols-3 max-[1100px]:grid-cols-2 max-[380px]:grid-cols-1">
       <DashboardStatCard
         title="Umumiy Savdo"
         value={formattedSale}

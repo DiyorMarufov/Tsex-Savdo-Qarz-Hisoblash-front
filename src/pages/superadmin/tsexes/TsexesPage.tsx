@@ -1,18 +1,19 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
 import { Button as AntdButton, Pagination } from "antd";
 import Button from "../../../shared/ui/Button/Button";
 import { Edit, Plus } from "lucide-react";
 import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
 import ProTable from "@ant-design/pro-table";
-import {
-  fakeTsexData,
-  tsexColumns,
-  type TsexTableListItem,
-} from "./model/tsexes-model";
+import { tsexColumns, type TsexTableListItem } from "./model/tsexes-model";
 import { Form, Input, Modal, Select, type FormProps } from "antd";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import TsexesBalances from "../../../widgets/superadmin/tsexes/balances/TsexesBalances";
+import { useTsex } from "../../../shared/lib/apis/tsexes/useTsex";
+import { useParamsHook } from "../../../shared/hooks/params/useParams";
+import type { QueryParams } from "../../../shared/lib/types";
+import { debounce } from "../../../shared/lib/functions/debounce";
+import TsexDataCardSkeleton from "../../../shared/ui/Skeletons/Tsexes/TsexDataCardSkeleton";
 
 type FieldType = {
   tsex_id: string;
@@ -26,9 +27,25 @@ const TsexesPage = () => {
   const { pathname } = useLocation();
   const [form] = Form.useForm();
 
+  const { getParam, setParams, removeParam } = useParamsHook();
+  const [localSearch, setLocalSearch] = useState(getParam("search") || "");
+
+  const { getAllTsexes } = useTsex();
+
   useEffect(() => {
     window.scroll({ top: 0 });
   }, []);
+
+  // Query starts
+  const query: QueryParams = useMemo(() => {
+    const page = Number(getParam("page")) || 1;
+    const limit = Number(getParam("limit")) || 5;
+    const search = getParam("search") || undefined;
+
+    return { page, limit, search };
+  }, [getParam]);
+  // Query ends
+
   // Add Modal starts
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -52,6 +69,62 @@ const TsexesPage = () => {
     navigate(`transactions/${id}`);
   };
   // HanleOpenDetail ends
+
+  // TsexData starts
+  const { data: allTsexes, isLoading: tsexLoading } = getAllTsexes(query);
+  const tsexes = allTsexes?.data?.data?.map((as: any) => ({
+    id: as?.id,
+    name: as?.name,
+    tsex: as?.manager?.full_name,
+    balance: as?.balance,
+    last_operation: as?.last_transaction?.display
+      ? as?.last_transaction?.display
+      : "Hozircha yo'q",
+    created_at: new Date(as?.created_at).toLocaleString("uz-UZ"),
+  }));
+  const total = allTsexes?.data?.total || 0;
+
+  // PageChange starts
+  const handlePageChange = (newPage: number, newPageSize?: number) => {
+    const updateParams: { page?: number; limit?: number } = {};
+
+    if (newPage > 1) {
+      updateParams.page = newPage;
+    }
+
+    if (newPageSize && newPageSize !== 5) {
+      updateParams.limit = newPageSize;
+    }
+
+    setParams(updateParams);
+
+    if (newPage === 1) {
+      removeParam("page");
+    }
+    if (newPageSize === 5 && getParam("limit")) {
+      removeParam("limit");
+    }
+  };
+  // PageChange ends
+
+  // Search starts
+  const debouncedSetSearchQuery = useCallback(
+    debounce((nextValue: string) => {
+      setParams({
+        search: nextValue || "",
+        page: 1,
+      });
+    }, 500),
+    [setParams]
+  );
+
+  const handleSearchChange = (value: string) => {
+    setLocalSearch(value);
+    debouncedSetSearchQuery(value);
+  };
+  // Search ends
+
+  // TsexData ends
   if (pathname.startsWith("/superadmin/tsexes/transactions")) return <Outlet />;
 
   return (
@@ -79,28 +152,37 @@ const TsexesPage = () => {
         <SearchInput
           placeholder="Tsex nomi yoki operatsiya bo'yicha qidirish"
           className="h-12! bg-bg-ty! text-[17px]!"
+          value={localSearch}
+          onChange={handleSearchChange}
         />
       </div>
 
       <div className="mt-4 max-[500px]:hidden">
         <ProTable
-          dataSource={fakeTsexData}
+          dataSource={tsexes}
           rowKey="id"
           pagination={{
             showSizeChanger: true,
             responsive: false,
+            current: query.page,
+            pageSize: query.limit,
+            total,
+            onChange: handlePageChange,
+            pageSizeOptions: [5, 10],
           }}
           columns={tsexColumns(handleOpenDetail)}
           search={false}
           dateFormatter="string"
           scroll={{ x: "max-content" }}
+          loading={tsexLoading}
         />
       </div>
 
       <div className="min-[500px]:hidden flex flex-col gap-5 mt-4">
-        {fakeTsexData.map((ts: TsexTableListItem) => (
+        {tsexLoading && <TsexDataCardSkeleton />}
+        {tsexes?.map((ts: TsexTableListItem) => (
           <div
-            key={ts.id}
+            key={ts?.id}
             className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]"
           >
             <div className="flex flex-col">
@@ -110,7 +192,7 @@ const TsexesPage = () => {
                     Nomi
                   </span>
                   <a className="text-[16px] font-bold text-green-600">
-                    {ts.name}
+                    {ts?.name}
                   </a>
                 </div>
                 <div className="flex flex-col justify-start">
@@ -118,20 +200,20 @@ const TsexesPage = () => {
                     Tsex Manager
                   </span>
                   <span className="text-[16px] font-bold text-[#4B5563]">
-                    {ts.tsex.name}
+                    {ts?.tsex}
                   </span>
                 </div>
                 <div className="flex flex-col justify-start">
                   <span className="text-[15px] font-medium text-[#6B7280] whitespace-nowrap">
                     Balansi
                   </span>
-                  {ts.balance > 0 ? (
+                  {ts?.balance > 0 ? (
                     <span className="text-[16px] font-bold text-red-500">
-                      -{ts.balance.toLocaleString()}
+                      -{ts?.balance.toLocaleString()}
                     </span>
                   ) : (
                     <span className="text-[16px] font-bold text-green-500">
-                      {ts.balance.toLocaleString()}
+                      {ts?.balance.toLocaleString()}
                     </span>
                   )}
                 </div>
@@ -146,7 +228,7 @@ const TsexesPage = () => {
                   </div>
                   <div>
                     <span className="text-[16px] font-bold text-[#4B5563]">
-                      {ts.last_operation}
+                      {ts?.last_operation}
                     </span>
                   </div>
                 </div>
@@ -159,7 +241,7 @@ const TsexesPage = () => {
                   </div>
                   <div>
                     <span className="text-[16px] font-bold text-[#4B5563]">
-                      {ts.created_at.toLocaleString("uz-UZ")}
+                      {ts?.created_at.toLocaleString("uz-UZ")}
                     </span>
                   </div>
                 </div>
@@ -184,7 +266,13 @@ const TsexesPage = () => {
           </div>
         ))}
         <div className="flex justify-center">
-          <Pagination />
+          <Pagination
+            current={query.page}
+            pageSize={query.limit}
+            onChange={handlePageChange}
+            total={total}
+            showSizeChanger
+          />
         </div>
       </div>
 

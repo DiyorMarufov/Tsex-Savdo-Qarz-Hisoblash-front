@@ -5,15 +5,21 @@ interface Props {
   title: string;
   value: number;
   isValueNegative?: boolean;
+  isColSpan?: boolean;
 }
 
 const TsexesStatCard: FC<Props> = ({
   title,
   value,
   isValueNegative = false,
+  isColSpan = false,
 }) => {
   return (
-    <div className="border border-bg-fy bg-[#ffffff] rounded-2xl p-7 flex flex-col gap-1 max-[500px]:items-center">
+    <div
+      className={`border border-bg-fy bg-[#ffffff] rounded-2xl p-7 flex flex-col gap-1 max-[500px]:items-center ${
+        isColSpan ? "max-[1250px]:col-span-2 max-[1250px]:items-center max-[500px]:col-span-1" : null
+      }`}
+    >
       <span className="text-[22px] font-medium text-bg-py max-[900px]:text-[20px] max-[500px]:text-[17px]">
         {title}
       </span>

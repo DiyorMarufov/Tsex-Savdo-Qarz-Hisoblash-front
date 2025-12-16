@@ -9,7 +9,7 @@ export interface IResponseData {
   data: any[];
 }
 
-export interface ProductQueryParams {
+export interface QueryParams {
   page?: number;
   limit?: number;
   search?: string;

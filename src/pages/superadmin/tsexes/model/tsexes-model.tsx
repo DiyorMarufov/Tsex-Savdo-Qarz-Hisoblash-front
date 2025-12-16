@@ -8,7 +8,6 @@ export type TsexTableListItem = {
   balance: number;
   last_operation: string;
   created_at: Date;
-  details?: string;
 };
 
 export const tsexColumns = (
@@ -23,9 +22,9 @@ export const tsexColumns = (
   },
   {
     title: "Tsex Manager",
-    dataIndex: ["tsex", "name"],
+    dataIndex: ["tsex"],
     width: 150,
-    render: (_, record) => record.tsex?.name ?? "-",
+    render: (_, record) => record.tsex ?? "-",
   },
   {
     title: "Balans",
@@ -81,48 +80,5 @@ export const tsexColumns = (
         Batafsil
       </div>
     ),
-  },
-];
-
-export const fakeTsexData: TsexTableListItem[] = [
-  {
-    id: "1",
-    name: "Krossovka tsexi",
-    tsex: { name: "Krossovka tsexi" },
-    balance: 15000000,
-    last_operation: "To'lov (2024-07-25) +1,500,000 UZS",
-    created_at: new Date("2024-11-15T11:20:00"),
-  },
-  {
-    id: "2",
-    name: "Etik tsexi",
-    tsex: { name: "Etik tsexi" },
-    balance: 8400000,
-    last_operation: "To'lov (2024-07-25) +1,500,000 UZS",
-    created_at: new Date("2024-11-10T09:50:00"),
-  },
-  {
-    id: "3",
-    name: "Tapochka tsexi",
-    tsex: { name: "Tapochka tsexi" },
-    balance: 4200000,
-    last_operation: "To'lov (2024-07-25) +1,500,000 UZS",
-    created_at: new Date("2024-11-12T15:10:00"),
-  },
-  {
-    id: "4",
-    name: "Tufli tsexi",
-    tsex: { name: "Tufli tsexi" },
-    balance: 12600000,
-    last_operation: "To'lov (2024-07-25) +1,500,000 UZS",
-    created_at: new Date("2024-11-11T13:05:00"),
-  },
-  {
-    id: "5",
-    name: "Sport poyabzal tsexi",
-    tsex: { name: "Sport poyabzal tsexi" },
-    balance: 9700000,
-    last_operation: "To'lov (2024-07-25) +1,500,000 UZS",
-    created_at: new Date("2024-11-05T17:30:00"),
   },
 ];

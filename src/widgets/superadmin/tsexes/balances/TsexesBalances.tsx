@@ -22,8 +22,6 @@ const TsexBalances = () => {
     return (
       <div className="mt-2 grid grid-cols-3 gap-5 max-[1250px]:grid-cols-2 max-[500px]:grid-cols-1">
         <TsexCardSkeleton />
-        <TsexCardSkeleton />
-        <TsexCardSkeleton />
       </div>
     );
   }
@@ -40,6 +38,7 @@ const TsexBalances = () => {
         title=" Umumiy balans"
         value={Number(net)}
         isValueNegative={Number(net) > 0}
+        isColSpan
       />
     </div>
   );

@@ -61,6 +61,15 @@ export const useTsex = () => {
       staleTime: 1000 * 60 * 5,
       gcTime: 1000 * 60 * 10,
     });
+
+  const getAllTsexes = (params: any) =>
+    useQuery({
+      queryKey: [tsex, "all-tsex", params],
+      queryFn: () => api.get("tsexes", { params }).then((res) => res.data),
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 10,
+    });
   return {
     getTotalTsexBalance,
     getMostDebtorTsexes,
@@ -68,5 +77,6 @@ export const useTsex = () => {
     getCreditorTotalBalance,
     getDebtorTotalBalance,
     getNetTotalBalance,
+    getAllTsexes,
   };
 };
