@@ -180,7 +180,7 @@ const TsexesTransactions = () => {
                       Izoh
                     </span>
                     <span className="text-[16px] font-bold text-[#4B5563]">
-                      {dt.description}
+                      {dt.description ? dt.description : "Izoh yo'q"}
                     </span>
                   </div>
                 </div>
@@ -190,7 +190,7 @@ const TsexesTransactions = () => {
                       {dt.created_by}
                     </span>
                     <span className="text-[#6D7482] font-bold text-[15px]">
-                      {dt.created_at.toLocaleString("uz-UZ")}
+                      {new Date(dt.created_at).toLocaleString("uz-UZ")}
                     </span>
                   </div>
 

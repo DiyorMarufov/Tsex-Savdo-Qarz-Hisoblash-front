@@ -14,11 +14,13 @@ import { useParamsHook } from "../../../shared/hooks/params/useParams";
 import type { QueryParams } from "../../../shared/lib/types";
 import { debounce } from "../../../shared/lib/functions/debounce";
 import TsexDataCardSkeleton from "../../../shared/ui/Skeletons/Tsexes/TsexDataCardSkeleton";
+import { useTsexTransaction } from "../../../shared/lib/apis/tsex-transactions/useTsexTransaction";
+import { useApiNotification } from "../../../shared/hooks/api-notification/useApiNotification";
 
 type FieldType = {
   tsex_id: string;
   type: "partial_payment" | "payment" | "avans";
-  amount: number;
+  amount: string;
   description?: string;
 };
 
@@ -30,7 +32,9 @@ const TsexesPage = () => {
   const { getParam, setParams, removeParam } = useParamsHook();
   const [localSearch, setLocalSearch] = useState(getParam("search") || "");
 
-  const { getAllTsexes } = useTsex();
+  const { getAllTsexes, getAllTsexesForProductsFilter } = useTsex();
+  const { createTsexTransaction } = useTsexTransaction();
+  const { handleApiError, handleSuccess } = useApiNotification();
 
   useEffect(() => {
     window.scroll({ top: 0 });
@@ -60,7 +64,154 @@ const TsexesPage = () => {
 
   // Add transaction starts
   const onFinish: FormProps<FieldType>["onFinish"] = (values: FieldType) => {
-    console.log("Success:", values);
+    const { tsex_id, type, amount, description } = values;
+    const data = {
+      tsex_id,
+      type,
+      amount: Number(amount.replace(/\D/g, "")),
+      description,
+    };
+    switch (type) {
+      case "payment":
+        createTsexTransaction.mutate(
+          { data, type: "full-payment" },
+          {
+            onSuccess: () => {
+              handleCancel();
+              form.resetFields();
+              handleSuccess("Muvaffaqiyatli to'lov qilindi");
+            },
+            onError: (err: any) => {
+              const msg = err?.response?.data?.message;
+              switch (msg) {
+                case "Amount must be greater than zero":
+                  handleApiError(
+                    "Summa 0 dan katta bo'lishi kerak",
+                    "topRight"
+                  );
+                  break;
+
+                case "Doesn't have debt":
+                  handleApiError("Bu tsexdan qarzingiz yo'q", "topRight");
+                  break;
+
+                case "Full payment must exactly match the current balance":
+                  handleApiError(
+                    "Miqdor tsex hisobi bilan teng bo'lishi kerak",
+                    "topRight"
+                  );
+                  break;
+
+                case "User not registered":
+                  handleApiError(
+                    "Foydalanuvchi ro'yxatdan o'tmagan",
+                    "topRight"
+                  );
+                  break;
+
+                case "Only superadmin has access":
+                  handleApiError("Superadmin huquqiga ega emassiz", "topRight");
+                  break;
+                default:
+                  handleApiError("Server xatosi", "topRight");
+                  break;
+              }
+            },
+          }
+        );
+        break;
+
+      case "partial_payment":
+        createTsexTransaction.mutate(
+          { data, type: "partial-payment" },
+          {
+            onSuccess: () => {
+              handleCancel();
+              form.resetFields();
+              handleSuccess("Muvaffaqiyatli to'lov qilindi");
+            },
+            onError: (err: any) => {
+              const msg = err?.response?.data?.message;
+              switch (msg) {
+                case "Amount must be greater than zero":
+                  handleApiError(
+                    "Summa 0 dan katta bo'lishi kerak",
+                    "topRight"
+                  );
+                  break;
+
+                case "Doesn't have debt":
+                  handleApiError("Bu tsexdan qarzingiz yo'q", "topRight");
+                  break;
+
+                case "Can't exceed the main balance":
+                  handleApiError(
+                    "Miqdor tsex hisobidan oshib ketmasligi kerak",
+                    "topRight"
+                  );
+                  break;
+
+                case "User not registered":
+                  handleApiError(
+                    "Foydalanuvchi ro'yxatdan o'tmagan",
+                    "topRight"
+                  );
+                  break;
+
+                case "Only superadmin has access":
+                  handleApiError("Superadmin huquqiga ega emassiz", "topRight");
+                  break;
+                default:
+                  handleApiError("Server xatosi", "topRight");
+                  break;
+              }
+            },
+          }
+        );
+        break;
+
+      case "avans":
+        createTsexTransaction.mutate(
+          { data, type: "avans-payment" },
+          {
+            onSuccess: () => {
+              handleCancel();
+              form.resetFields();
+              handleSuccess("Muvaffaqiyatli to'lov qilindi");
+            },
+            onError: (err: any) => {
+              const msg = err?.response?.data?.message;
+              switch (msg) {
+                case "Amount must be greater than zero":
+                  handleApiError(
+                    "Summa 0 dan katta bo'lishi kerak",
+                    "topRight"
+                  );
+                  break;
+
+                case "Avans can only be paid when balance is zero":
+                  handleApiError("Birinchi qarzingizni to'lang", "topRight");
+                  break;
+
+                case "User not registered":
+                  handleApiError(
+                    "Foydalanuvchi ro'yxatdan o'tmagan",
+                    "topRight"
+                  );
+                  break;
+
+                case "Only superadmin has access":
+                  handleApiError("Superadmin huquqiga ega emassiz", "topRight");
+                  break;
+                default:
+                  handleApiError("Server xatosi", "topRight");
+                  break;
+              }
+            },
+          }
+        );
+        break;
+    }
   };
   // Add transaction ends
 
@@ -124,6 +275,29 @@ const TsexesPage = () => {
     debouncedSetSearchQuery(value);
   };
   // Search ends
+
+  // Options start
+  const tsexesFilter = getAllTsexesForProductsFilter().data;
+  const tsexesOptions = tsexesFilter?.data?.map((ts) => ({
+    value: ts?.id,
+    label: ts?.name,
+  }));
+
+  const paymentOptions = [
+    {
+      value: "payment",
+      label: "to'liq to'lov",
+    },
+    {
+      value: "partial_payment",
+      label: "qisman to'lov",
+    },
+    {
+      value: "avans",
+      label: "qo'shimcha to'lov",
+    },
+  ];
+  // Options end
 
   if (pathname.startsWith("/superadmin/tsexes/transactions")) return <Outlet />;
 
@@ -210,11 +384,11 @@ const TsexesPage = () => {
                     </span>
                     {ts?.balance > 0 ? (
                       <span className="text-[16px] font-bold text-red-500">
-                        -{ts?.balance.toLocaleString()}
+                        -{Math.abs(ts?.balance).toLocaleString()}
                       </span>
                     ) : (
                       <span className="text-[16px] font-bold text-green-500">
-                        {ts?.balance.toLocaleString()}
+                        {Math.abs(ts?.balance).toLocaleString()}
                       </span>
                     )}
                   </div>
@@ -318,7 +492,7 @@ const TsexesPage = () => {
                   },
                 ]}
               >
-                <Select className="h-10!" />
+                <Select className="h-10!" options={tsexesOptions} />
               </Form.Item>
             </div>
 
@@ -335,7 +509,7 @@ const TsexesPage = () => {
                   },
                 ]}
               >
-                <Select className="h-10!" />
+                <Select className="h-10!" options={paymentOptions} />
               </Form.Item>
             </div>
 
@@ -349,8 +523,14 @@ const TsexesPage = () => {
                     message: "To'lov summasi kiritilishi shart!",
                   },
                 ]}
+                normalize={(v) => {
+                  if (!v) return v;
+
+                  const onlyNums = v.replace(/[^\d]/g, "");
+                  return Number(onlyNums).toLocaleString();
+                }}
               >
-                <Input className="h-10!" placeholder="0.00 UZS" />
+                <Input className="h-10!" placeholder="0.00" />
               </Form.Item>
             </div>
 
