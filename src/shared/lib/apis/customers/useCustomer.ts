@@ -8,7 +8,8 @@ export const useCustomer = () => {
   const getTotalCustomerBalance = () =>
     useQuery<IResponseData>({
       queryKey: [customer, "totalBalance"],
-      queryFn: () => api.get("customers/balances/total").then((res) => res.data),
+      queryFn: () =>
+        api.get("customers/balances/total").then((res) => res.data),
       refetchOnWindowFocus: false,
       staleTime: 1000 * 60 * 5,
       gcTime: 1000 * 60 * 10,
@@ -22,5 +23,41 @@ export const useCustomer = () => {
       staleTime: 1000 * 60 * 5,
       gcTime: 1000 * 60 * 10,
     });
-  return { getTotalCustomerBalance, getMostDebtorCustomers };
+
+  const getCustomerCreditorTotalBalance = () =>
+    useQuery<IResponseData>({
+      queryKey: [customer, "creditor-total-balance"],
+      queryFn: () =>
+        api.get("customers/balances/creditor-total").then((res) => res.data),
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 10,
+    });
+
+  const getCustomerDebtorTotalBalance = () =>
+    useQuery<IResponseData>({
+      queryKey: [customer, "debtor-total-balance"],
+      queryFn: () =>
+        api.get("customers/balances/debtor-total").then((res) => res.data),
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 10,
+    });
+
+  const getCustomerNetTotalBalance = () =>
+    useQuery<IResponseData>({
+      queryKey: [customer, "net-total-balance"],
+      queryFn: () =>
+        api.get("customers/balances/net-total").then((res) => res.data),
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 10,
+    });
+  return {
+    getTotalCustomerBalance,
+    getMostDebtorCustomers,
+    getCustomerCreditorTotalBalance,
+    getCustomerDebtorTotalBalance,
+    getCustomerNetTotalBalance,
+  };
 };

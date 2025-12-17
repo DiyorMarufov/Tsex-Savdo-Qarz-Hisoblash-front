@@ -32,7 +32,7 @@ export const useTsex = () => {
       gcTime: 1000 * 60 * 10 * 6 * 24 * 30,
     });
 
-  const getCreditorTotalBalance = () =>
+  const getTsexCreditorTotalBalance = () =>
     useQuery<IResponseData>({
       queryKey: [tsex, "creditor-total-balance"],
       queryFn: () =>
@@ -42,7 +42,7 @@ export const useTsex = () => {
       gcTime: 1000 * 60 * 10,
     });
 
-  const getDebtorTotalBalance = () =>
+  const getTsexDebtorTotalBalance = () =>
     useQuery<IResponseData>({
       queryKey: [tsex, "debtor-total-balance"],
       queryFn: () =>
@@ -52,7 +52,7 @@ export const useTsex = () => {
       gcTime: 1000 * 60 * 10,
     });
 
-  const getNetTotalBalance = () =>
+  const getTsexNetTotalBalance = () =>
     useQuery<IResponseData>({
       queryKey: [tsex, "net-total-balance"],
       queryFn: () =>
@@ -74,9 +74,9 @@ export const useTsex = () => {
     getTotalTsexBalance,
     getMostDebtorTsexes,
     getAllTsexesForProductsFilter,
-    getCreditorTotalBalance,
-    getDebtorTotalBalance,
-    getNetTotalBalance,
+    getTsexCreditorTotalBalance,
+    getTsexDebtorTotalBalance,
+    getTsexNetTotalBalance,
     getAllTsexes,
   };
 };

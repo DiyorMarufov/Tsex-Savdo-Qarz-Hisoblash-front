@@ -22,6 +22,8 @@ export const useTsexTransaction = () => {
       });
       client.invalidateQueries({ queryKey: ["tsex", "debtor-total-balance"] });
       client.invalidateQueries({ queryKey: ["tsex", "net-total-balance"] });
+      client.invalidateQueries({ queryKey: ["tsex", "totalBalance"] });
+      client.invalidateQueries({ queryKey: ["tsex", "mostDebtorTsexes"] });
     },
   });
 

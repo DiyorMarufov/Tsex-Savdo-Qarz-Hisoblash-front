@@ -1,17 +1,17 @@
 import { memo } from "react";
 import { useTsex } from "../../../../shared/lib/apis/tsexes/useTsex";
 import TsexCardSkeleton from "../../../../shared/ui/Skeletons/Tsexes/TsexCardSkeleton";
-import TsexesStatCard from "../StatCard/TsexesStatCard";
+import TsexesStatCard from "../statCard/TsexesStatCard";
 
 const TsexBalances = () => {
-  const { getCreditorTotalBalance, getDebtorTotalBalance, getNetTotalBalance } =
+  const { getTsexCreditorTotalBalance, getTsexDebtorTotalBalance, getTsexNetTotalBalance } =
     useTsex();
   // TsexStatCard starts
   const { data: creditorTotalBalance, isLoading: creditorLoading } =
-    getCreditorTotalBalance();
+    getTsexCreditorTotalBalance();
   const { data: debtorTotalBalance, isLoading: debtorLoading } =
-    getDebtorTotalBalance();
-  const { data: netTotalBalance, isLoading: netLoading } = getNetTotalBalance();
+    getTsexDebtorTotalBalance();
+  const { data: netTotalBalance, isLoading: netLoading } = getTsexNetTotalBalance();
 
   const creditor = creditorTotalBalance?.data;
   const debtor = debtorTotalBalance?.data;

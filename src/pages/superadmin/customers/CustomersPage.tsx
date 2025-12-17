@@ -18,8 +18,8 @@ import {
   fakeCustomerData,
   type CustomersListItemsType,
 } from "./model/customers-model";
-import CountUp from "react-countup";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import CustomersStatCard from "../../../widgets/superadmin/customers/statCard/CustomersStatCard";
 
 type transcationFieldType = {
   customer_id: string;
@@ -166,56 +166,13 @@ const CustomersPage = () => {
       </div>
 
       <div className="mt-3 grid grid-cols-3 gap-5 max-[1250px]:grid-cols-2 max-[500px]:grid-cols-1">
-        <div className="border border-bg-fy bg-[#ffffff] rounded-2xl p-7 flex flex-col gap-1 max-[500px]:items-center">
-          <span className="text-[22px] font-medium text-bg-py max-[900px]:text-[20px] max-[500px]:text-[17px]">
-            Jami haqdorlik
-          </span>
-          <span className="font-bold text-[30px] text-green-600 max-[900px]:text-[25px] max-[500px]:text-[22px]">
-            <CountUp
-              start={0}
-              end={15200000}
-              duration={2.5}
-              separator=","
-              decimal="."
-              suffix=" UZS"
-            />
-          </span>
-        </div>
-        <div className="border border-bg-fy bg-[#ffffff] rounded-2xl p-7 flex flex-col gap-1 max-[500px]:items-center">
-          <span className="text-[22px] font-medium text-bg-py max-[900px]:text-[20px] max-[500px]:text-[17px]">
-            Jami qarzdorlik
-          </span>
-          <span className="font-bold text-[30px] text-red-600 max-[900px]:text-[25px] max-[500px]:text-[22px]">
-            <CountUp
-              start={0}
-              end={-15200000}
-              duration={2.5}
-              separator=","
-              decimal="."
-              suffix=" UZS"
-            />
-          </span>
-        </div>
-        <div
-          className="border border-[#e5e5e5] bg-white rounded-2xl p-7 flex flex-col gap-1
-                max-[1250px]:col-span-2 max-[1250px]:items-center
-                max-[500px]:col-span-1"
-        >
-          <span className="text-[22px] font-medium text-bg-py max-[900px]:text-[20px] max-[500px]:text-[17px]">
-            Umumiy balans
-          </span>
-          <span className="font-bold text-[30px] text-green-600 max-[900px]:text-[25px] max-[500px]:text-[22px]">
-            +
-            <CountUp
-              start={0}
-              end={15200000}
-              duration={2.5}
-              separator=","
-              decimal="."
-              suffix=" UZS"
-            />
-          </span>
-        </div>
+        <CustomersStatCard title="Jami haqdorlik" value={15200000} />
+        <CustomersStatCard
+          title="Jami qarzdorlik"
+          value={15200000}
+          isValueNegative
+        />
+        <CustomersStatCard title="Umumiy balans" value={15200000} />
       </div>
 
       <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-6 p-3.5 flex items-center gap-3 max-[960px]:flex-wrap">
@@ -254,14 +211,8 @@ const CustomersPage = () => {
           >
             <div className="flex justify-between items-center gap-3 pt-2.5 px-3.5">
               <div className="flex flex-col items-start">
-                <a
-                  className="text-[16px] font-bold"
-                >
-                  {cs.full_name}
-                </a>
-                <span
-                  className="text-[15px] font-bold text-[#64748B]"
-                >
+                <a className="text-[16px] font-bold">{cs.full_name}</a>
+                <span className="text-[15px] font-bold text-[#64748B]">
                   {cs.region}
                 </span>
               </div>
@@ -280,36 +231,29 @@ const CustomersPage = () => {
 
             <div className="flex flex-col px-3.5">
               <div className="flex justify-between gap-3">
-                <span
-                  className="text-[15px] font-medium text-[#6B7280]"
-                >
+                <span className="text-[15px] font-medium text-[#6B7280]">
                   Telefon raqami
                 </span>
-                <span
-                  className="text-[16px] font-bold text-[#4B5563]"
-                >
+                <span className="text-[16px] font-bold text-[#4B5563]">
                   {cs.phone_number}
                 </span>
               </div>
               <div className="flex justify-between gap-3">
-                <span
-                  className="text-[15px] font-medium text-[#6B7280]"
-                >
+                <span className="text-[15px] font-medium text-[#6B7280]">
                   Oxirgi tranzaksiya
                 </span>
-                <span
-                  className="text-[16px] font-bold text-[#4B5563]"
-                >
+                <span className="text-[16px] font-bold text-[#4B5563]">
                   {cs.last_transaction.toLocaleString("uz-UZ")}
                 </span>
               </div>
               <div className="flex justify-between gap-3">
-                <span title="Kiritilgan sana" className="text-[15px] font-medium text-[#6B7280]">
+                <span
+                  title="Kiritilgan sana"
+                  className="text-[15px] font-medium text-[#6B7280]"
+                >
                   Kiritilgan sana
                 </span>
-                <span
-                  className="text-[16px] font-bold text-[#4B5563]"
-                >
+                <span className="text-[16px] font-bold text-[#4B5563]">
                   {cs.created_at.toLocaleString("uz-UZ")}
                 </span>
               </div>
