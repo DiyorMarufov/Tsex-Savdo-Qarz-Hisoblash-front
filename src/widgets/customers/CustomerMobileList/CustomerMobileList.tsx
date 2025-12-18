@@ -49,8 +49,7 @@ const CustomerMobileList = ({
             pageSize={pageSize}
             total={total}
             onChange={onPageChange}
-            showSizeChanger={false}
-            size="small"
+            showSizeChanger
           />
         </div>
       )}

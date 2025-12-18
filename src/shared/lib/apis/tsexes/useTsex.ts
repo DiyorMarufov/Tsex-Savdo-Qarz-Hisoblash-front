@@ -29,7 +29,7 @@ export const useTsex = () => {
       queryFn: () => api.get("tsexes/filters/list").then((res) => res.data),
       refetchOnWindowFocus: false,
       staleTime: Infinity,
-      gcTime: 1000 * 60 * 10 * 6 * 24 * 30,
+      gcTime: Infinity,
     });
 
   const getTsexCreditorTotalBalance = () =>

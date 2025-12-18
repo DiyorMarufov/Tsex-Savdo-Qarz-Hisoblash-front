@@ -231,7 +231,7 @@ const TsexesPage = () => {
     last_operation: as?.last_transaction?.display
       ? as?.last_transaction?.display
       : "Hozircha yo'q",
-    created_at: new Date(as?.created_at).toLocaleString("uz-UZ"),
+    created_at: as?.created_at,
   }));
   const total = allTsexes?.data?.total || 0;
   // TsexData ends

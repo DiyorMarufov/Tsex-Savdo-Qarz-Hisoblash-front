@@ -42,7 +42,7 @@ const TsexMobileList = ({
             pageSize={pageSize}
             onChange={onPageChange}
             total={total}
-            showSizeChanger={false}
+            showSizeChanger
           />
         </div>
       )}

@@ -88,9 +88,9 @@ const CustomersPage = () => {
   const handleOpenDetail = (id: string) => {
     navigate(`detail/${id}`);
   };
-
   // Detail ends
-
+  
+  
   if (pathname.startsWith("/superadmin/customers/detail/")) return <Outlet />;
 
   return (

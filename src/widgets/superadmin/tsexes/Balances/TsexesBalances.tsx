@@ -1,17 +1,21 @@
 import { memo } from "react";
 import { useTsex } from "../../../../shared/lib/apis/tsexes/useTsex";
-import TsexCardSkeleton from "../../../../shared/ui/Skeletons/Tsexes/TsexCardSkeleton";
+import TsexAndCustomerCardSkeleton from "../../../../shared/ui/Skeletons/Tsexes/TsexAndCustomerCardSkeleton";
 import TsexesStatCard from "../StatCard/TsexesStatCard";
 
 const TsexBalances = () => {
-  const { getTsexCreditorTotalBalance, getTsexDebtorTotalBalance, getTsexNetTotalBalance } =
-    useTsex();
+  const {
+    getTsexCreditorTotalBalance,
+    getTsexDebtorTotalBalance,
+    getTsexNetTotalBalance,
+  } = useTsex();
   // TsexStatCard starts
   const { data: creditorTotalBalance, isLoading: creditorLoading } =
     getTsexCreditorTotalBalance();
   const { data: debtorTotalBalance, isLoading: debtorLoading } =
     getTsexDebtorTotalBalance();
-  const { data: netTotalBalance, isLoading: netLoading } = getTsexNetTotalBalance();
+  const { data: netTotalBalance, isLoading: netLoading } =
+    getTsexNetTotalBalance();
 
   const creditor = creditorTotalBalance?.data;
   const debtor = debtorTotalBalance?.data;
@@ -19,11 +23,7 @@ const TsexBalances = () => {
 
   const anyIsLoading = creditorLoading || debtorLoading || netLoading;
   if (anyIsLoading) {
-    return (
-      <div className="mt-2 grid grid-cols-3 gap-5 max-[1250px]:grid-cols-2 max-[500px]:grid-cols-1">
-        <TsexCardSkeleton />
-      </div>
-    );
+    return <TsexAndCustomerCardSkeleton />;
   }
   // TsexStatCard ends
   return (

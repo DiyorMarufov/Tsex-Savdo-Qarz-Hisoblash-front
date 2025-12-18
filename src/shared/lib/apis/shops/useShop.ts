@@ -11,7 +11,7 @@ export const useShop = () => {
       queryFn: () => api.get("shops").then((res) => res.data),
       refetchOnWindowFocus: false,
       staleTime: Infinity,
-      gcTime: 1000 * 60 * 10 * 6 * 24 * 30,
+      gcTime: Infinity,
     });
 
   const getAllShopsForProductsFilter = () =>
@@ -20,7 +20,7 @@ export const useShop = () => {
       queryFn: () => api.get("shops/filters/list").then((res) => res.data),
       refetchOnWindowFocus: false,
       staleTime: Infinity,
-      gcTime: 1000 * 60 * 10 * 6 * 24 * 30,
+      gcTime: Infinity,
     });
   return { getAllShops, getAllShopsForProductsFilter };
 };

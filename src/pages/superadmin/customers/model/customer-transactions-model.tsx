@@ -41,11 +41,11 @@ export const transactionColumns = (
     valueEnum: {
       borrowing: { text: "Qarz olish", status: "Error" },
       borrow_more: { text: "Qoʻshimcha qarz", status: "Error" },
-      repayment: { text: "Qaytarish", status: "Success" },
+      repayment: { text: "Qisman qaytarish", status: "Success" },
       paid_off: { text: "Toʻliq yopish", status: "Success" },
       lending: { text: "Qarz berish", status: "Warning" },
       lend_more: { text: "Qoʻshimcha berish", status: "Warning" },
-      received: { text: "Qaytarib olish", status: "Success" },
+      received: { text: "Qabul qilish", status: "Success" },
     },
   },
   {
@@ -55,7 +55,6 @@ export const transactionColumns = (
     align: "right",
     sorter: true,
     render: (_, record) => {
-      // Pul miqdorini formatlash
       const formattedAmount = record.amount.toLocaleString("uz-UZ");
       return (
         <span className="font-bold text-green-600">{formattedAmount}</span>
@@ -65,7 +64,7 @@ export const transactionColumns = (
   {
     title: "Tugash Sanasi",
     dataIndex: "due_date",
-    valueType: "date", // Ant Design DatePicker bilan mos keladi
+    valueType: "date", 
     width: 130,
     sorter: true,
   },
@@ -92,15 +91,15 @@ export const transactionColumns = (
     dataIndex: "status",
     width: 90,
     valueEnum: {
-      open: { text: "Ochiq", status: "Processing" }, // Davom etayotgan tranzaksiya
-      closed: { text: "Yopilgan", status: "Success" }, // Yakunlangan tranzaksiya
+      open: { text: "Ochiq", status: "Processing" }, 
+      closed: { text: "Yopilgan", status: "Success" }, 
     },
   },
   {
     title: "Izoh",
     dataIndex: "description",
     width: 250,
-    ellipsis: true, // Uzun matnni qisqartirish
+    ellipsis: true,
     search: false,
   },
   {
