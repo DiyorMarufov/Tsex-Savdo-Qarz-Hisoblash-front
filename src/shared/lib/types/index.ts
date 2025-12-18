@@ -23,3 +23,8 @@ export interface TsexTransactionsType {
   avans: string;
   product_supply: string;
 }
+
+export interface Option {
+  value: string;
+  label: string;
+}

@@ -1,8 +1,8 @@
 import { memo, useEffect } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
-import AdminBalances from "../../../widgets/admin/dashboard/balances/Balance";
-import AdminSaleChart from "../../../widgets/admin/dashboard/sale-chart/SaleChart";
-import AdminTsexBalances from "../../../widgets/admin/dashboard/tsex-balances/TsexBalances";
+import AdminBalances from "../../../widgets/admin/dashboard/Balances/Balance";
+import AdminSaleChart from "../../../widgets/admin/dashboard/Sale-chart/SaleChart";
+import AdminTsexBalances from "../../../widgets/admin/dashboard/Tsex-balances/TsexBalances";
 import { Select } from "antd";
 
 const AdminDashboardPage = () => {

@@ -11,7 +11,6 @@ import {
 } from "antd";
 import { ArrowDown, ArrowUp, Edit, Plus, Trash } from "lucide-react";
 import Button from "../../../shared/ui/Button/Button";
-import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
 import ProTable from "@ant-design/pro-table";
 import {
   customerColumns,
@@ -19,7 +18,8 @@ import {
   type CustomersListItemsType,
 } from "./model/customers-model";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import CustomersStatCard from "../../../widgets/superadmin/customers/statCard/CustomersStatCard";
+import CustomersBalances from "../../../widgets/superadmin/customers/Balances/CustomersBalances";
+import CustomerFilters from "../../../widgets/customers/CustomerFilters/CustomerFilters";
 
 type transcationFieldType = {
   customer_id: string;
@@ -165,28 +165,9 @@ const CustomersPage = () => {
         </div>
       </div>
 
-      <div className="mt-3 grid grid-cols-3 gap-5 max-[1250px]:grid-cols-2 max-[500px]:grid-cols-1">
-        <CustomersStatCard title="Jami haqdorlik" value={15200000} />
-        <CustomersStatCard
-          title="Jami qarzdorlik"
-          value={15200000}
-          isValueNegative
-        />
-        <CustomersStatCard title="Umumiy balans" value={15200000} />
-      </div>
+      <CustomersBalances />
 
-      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-6 p-3.5 flex items-center gap-3 max-[960px]:flex-wrap">
-        <SearchInput
-          placeholder="Tsex nomi yoki operatsiya bo'yicha qidirish"
-          className="h-12! bg-bg-ty! text-[17px]!"
-        />
-        <div className="max-[960px]:w-full">
-          <Select
-            className="h-12! bg-bg-ty! text-[17px]! w-[300px] max-[960px]:w-full!"
-            placeholder="Viloyat/Shahar"
-          />
-        </div>
-      </div>
+      <CustomerFilters regionOptions={[]} />
 
       <div className="mt-4 max-[500px]:hidden">
         <ProTable

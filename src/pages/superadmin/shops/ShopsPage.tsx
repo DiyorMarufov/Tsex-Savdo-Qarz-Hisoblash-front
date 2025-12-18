@@ -2,14 +2,9 @@ import { memo, useEffect } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
 import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
 import ProTable from "@ant-design/pro-table";
-import {
-  storesColumns,
-  type StoresTableListItem,
-} from "./model/shops-table-model";
-import { Edit, Trash } from "lucide-react";
-import { Pagination } from "antd";
+import { storesColumns } from "./model/shops-table-model";
 import { useShop } from "../../../shared/lib/apis/shops/useShop";
-import ShopCardSkeleton from "../../../shared/ui/Skeletons/Shops/ShopCardSkeleton";
+import ShopsMobileList from "../../../widgets/superadmin/shops/ShopsMobileList/ShopsMobileList";
 
 const StoresPage = () => {
   const { getAllShops } = useShop();
@@ -53,42 +48,7 @@ const StoresPage = () => {
         />
       </div>
 
-      {shopsLoading && <ShopCardSkeleton />}
-      <div className="min-[500px]:hidden flex flex-col gap-5 mt-4">
-        {shops?.map((st: StoresTableListItem) => (
-          <div
-            key={st.id}
-            className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]"
-          >
-            <div className="px-3.5 py-2.5 flex justify-between">
-              <div className="flex flex-col gap-1">
-                <a className="text-[16px] font-bold">{st?.name}</a>
-                <span className="font-bold text-[15px] text-[#4B5563]">
-                  {st?.address}
-                </span>
-              </div>
-              <div className="flex items-center gap-5">
-                <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
-                <Trash className="text-red-600 cursor-pointer hover:opacity-80" />
-              </div>
-            </div>
-
-            <div className="w-full h-px bg-bg-fy"></div>
-
-            <div className="px-3.5 py-2.5">
-              <span className="text-[15px] font-medium text-[#6B7280]">
-                Kiritilgan sana:{" "}
-                <span className="text-[16px] font-bold text-[#4B5563]">
-                  {new Date(st.created_at)?.toLocaleString("uz-UZ")}
-                </span>
-              </span>
-            </div>
-          </div>
-        ))}
-        <div className="flex justify-center">
-          <Pagination />
-        </div>
-      </div>
+      <ShopsMobileList data={shops} isLoading={shopsLoading} />
     </div>
   );
 };

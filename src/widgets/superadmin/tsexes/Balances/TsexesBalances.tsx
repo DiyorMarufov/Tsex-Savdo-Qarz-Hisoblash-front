@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { useTsex } from "../../../../shared/lib/apis/tsexes/useTsex";
 import TsexCardSkeleton from "../../../../shared/ui/Skeletons/Tsexes/TsexCardSkeleton";
-import TsexesStatCard from "../statCard/TsexesStatCard";
+import TsexesStatCard from "../StatCard/TsexesStatCard";
 
 const TsexBalances = () => {
   const { getTsexCreditorTotalBalance, getTsexDebtorTotalBalance, getTsexNetTotalBalance } =

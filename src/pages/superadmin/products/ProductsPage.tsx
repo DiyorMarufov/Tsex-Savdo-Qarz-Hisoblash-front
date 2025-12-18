@@ -1,21 +1,16 @@
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
-import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
-import Filter from "../../../shared/ui/Filter/Filter";
 import { ProTable } from "@ant-design/pro-components";
-import {
-  productColumns,
-  type ProductTableListItem,
-} from "./model/product-table-model";
-import { Image, Pagination, Button as AntdButton } from "antd";
+import { productColumns } from "./model/product-table-model";
 import { useProduct } from "../../../shared/lib/apis/products/useProduct";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import ProductCardSkeleton from "../../../shared/ui/Skeletons/Products/ProductCardSkeleton";
 import { debounce } from "../../../shared/lib/functions/debounce";
 import type { QueryParams } from "../../../shared/lib/types";
 import { useParamsHook } from "../../../shared/hooks/params/useParams";
 import { useTsex } from "../../../shared/lib/apis/tsexes/useTsex";
 import { useShop } from "../../../shared/lib/apis/shops/useShop";
+import ProductFilters from "../../../widgets/products/ProductFIlters/ProductFilters";
+import ProductMobileList from "../../../widgets/products/ProductMobileList/ProductMobileList";
 
 const ProductsPage = () => {
   const navigate = useNavigate();
@@ -135,30 +130,15 @@ const ProductsPage = () => {
     <div>
       <LargeTitle title="Mahsulotlar" />
 
-      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-2 p-3.5 flex items-center gap-4 max-[900px]:flex-wrap">
-        <SearchInput
-          placeholder="Mahsulot nomi,brandi bo'yicha qidirish"
-          className="h-12! min-[900px]:w-[50%]! bg-bg-ty! text-[16px]!"
-          value={localSearch}
-          onChange={handleSearchChange}
-        />
-        <div className="flex gap-4 min-[900px]:w-[50%] max-[900px]:w-full max-[400px]:flex-wrap">
-          <Filter
-            placeholder="Barcha do'konlar"
-            className="h-12! min-[900px]:w-[50%]! max-[900px]:w-full! custom-select"
-            options={shopsOptions}
-            value={query.shopId}
-            onChange={(val) => handleFilterChange("shopId", val)}
-          />
-          <Filter
-            placeholder="Barcha tsexlar"
-            className="h-12! min-[900px]:w-[50%]! max-[900px]:w-full! custom-select"
-            options={tsexesOptions}
-            value={query.tsexId}
-            onChange={(val) => handleFilterChange("tsexId", val)}
-          />
-        </div>
-      </div>
+      <ProductFilters
+        localSearch={localSearch}
+        onFilterChange={handleFilterChange}
+        onSearchChange={handleSearchChange}
+        shopsOptions={shopsOptions}
+        tsexesOptions={tsexesOptions}
+        shopId={query.shopId}
+        tsexId={query.tsexId}
+      />
 
       <div className="max-[500px]:hidden mt-4">
         <ProTable
@@ -181,64 +161,15 @@ const ProductsPage = () => {
         />
       </div>
 
-      <div className="min-[500px]:hidden mt-4">
-        {productLoading && <ProductCardSkeleton />}
-        <div className="grid grid-cols-2 gap-5 max-[330px]:grid-cols-1">
-          {products && products?.length > 0 ? (
-            products?.map((pr: ProductTableListItem) => (
-              <div
-                key={pr.id}
-                className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]"
-              >
-                <div className="p-2.5 flex justify-center items-center">
-                  {/* @ts-ignore */}
-                  <Image
-                    src={pr.images[0].image_url}
-                    className="w-full rounded-[5px] object-contain h-[130px]!"
-                  />
-                </div>
-                <div className="flex flex-col gap-1 justify-between px-3.5 py-2.5">
-                  <div className="flex flex-col">
-                    <a className="text-[16px] font-bold">{pr.name}</a>
-                    <span className="text-[14px] font-bold text-[#6B7280]">
-                      {pr.brand}
-                    </span>
-                  </div>
-                  <span className="text-[17px] text-green-500 font-bold">
-                    {pr.price.toLocaleString()}
-                  </span>
-                </div>
-
-                <div className="w-full h-px bg-bg-fy"></div>
-
-                <div className="mt-1 px-3.5 pt-2 pb-3">
-                  <div className="flex justify-end">
-                    <AntdButton
-                      className="bg-[#1D4ED8]! text-white!"
-                      onClick={() => handleProductDetailOpen(pr.id)}
-                    >
-                      Batafsil
-                    </AntdButton>
-                  </div>
-                </div>
-              </div>
-            ))
-          ) : (
-            <div className="flex justify-center items-center h-[20vh] text-red-500 text-[19px] col-span-2">
-              Hozircha ma'lumot yo'q
-            </div>
-          )}
-        </div>
-        <div className="flex mt-4 justify-center">
-          <Pagination
-            current={query.page}
-            pageSize={query.limit}
-            onChange={handlePageChange}
-            total={total}
-            showSizeChanger
-          />
-        </div>
-      </div>
+      <ProductMobileList
+        products={products}
+        currentPage={Number(query.page)}
+        pageSize={Number(query.limit)}
+        total={total}
+        onPageChange={handlePageChange}
+        isLoading={productLoading}
+        onDetail={handleProductDetailOpen}
+      />
     </div>
   );
 };
