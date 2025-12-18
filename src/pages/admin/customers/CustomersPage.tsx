@@ -2,8 +2,7 @@ import ProTable from "@ant-design/pro-table";
 import { memo, useState } from "react";
 import {
   customerColumns,
-  fakeCustomerData,
-  type CustomersListItemsType,
+  // type CustomersListItemsType,
 } from "../../superadmin/customers/model/customers-model";
 import { useNavigate } from "react-router-dom";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
@@ -17,7 +16,8 @@ import {
   Input,
 } from "antd";
 import Button from "../../../shared/ui/Button/Button";
-import { Edit, Plus, Trash } from "lucide-react";
+// import { Edit, Trash } from "lucide-react";
+import { Plus } from "lucide-react";
 
 type newCustomerFieldType = {
   full_name: string;
@@ -85,7 +85,7 @@ const AdminCustomersPage = () => {
       </div>
       <div className="mt-4 max-[500px]:hidden">
         <ProTable
-          dataSource={fakeCustomerData}
+          // dataSource={fakeCustomerData}
           rowKey="id"
           pagination={{
             showSizeChanger: true,
@@ -98,7 +98,7 @@ const AdminCustomersPage = () => {
         />
       </div>
 
-      <div className="mt-4 min-[500px]:hidden flex flex-col gap-5">
+      {/* <div className="mt-4 min-[500px]:hidden flex flex-col gap-5">
         {fakeCustomerData.map((cs: CustomersListItemsType) => (
           <div
             key={cs.id}
@@ -172,7 +172,7 @@ const AdminCustomersPage = () => {
             </div>
           </div>
         ))}
-      </div>
+      </div> */}
 
       <Modal
         centered
@@ -212,7 +212,7 @@ const AdminCustomersPage = () => {
                   },
                 ]}
               >
-                <Input className="h-10!" placeholder="To'liq ismi"/>
+                <Input className="h-10!" placeholder="To'liq ismi" />
               </Form.Item>
             </div>
 
