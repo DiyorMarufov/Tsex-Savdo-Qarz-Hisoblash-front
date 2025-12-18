@@ -2,6 +2,7 @@ import { memo } from "react";
 import { Pagination } from "antd";
 import CustomerCard from "../../../shared/ui/CustomerCard/CustomerCard";
 import type { CustomersListItemsType } from "../../../pages/superadmin/customers/model/customers-model";
+import CustomerCardSkeleton from "../../../shared/ui/Skeletons/Customers/CustomerCardSkeleton";
 
 interface CustomerMobileListProps {
   data: CustomersListItemsType[];
@@ -22,12 +23,8 @@ const CustomerMobileList = ({
   onPageChange,
   onDetail,
 }: CustomerMobileListProps) => {
-  if (loading && data.length === 0) {
-    return (
-      <div className="flex justify-center items-center h-[20vh]">
-        Yuklanmoqda...
-      </div>
-    );
+  if (loading) {
+    return <CustomerCardSkeleton />;
   }
 
   return (
@@ -37,8 +34,8 @@ const CustomerMobileList = ({
           <CustomerCard key={cs.id} cs={cs} onDetail={onDetail} />
         ))
       ) : (
-        <div className="flex justify-center items-center h-[20vh] text-red-500 text-[18px] bg-white rounded-xl border border-dashed border-red-200">
-          Mijozlar topilmadi
+        <div className="flex justify-center items-center h-[20vh] text-red-500 text-[19px] col-span-2">
+          Hozircha ma'lumot yo'q
         </div>
       )}
 

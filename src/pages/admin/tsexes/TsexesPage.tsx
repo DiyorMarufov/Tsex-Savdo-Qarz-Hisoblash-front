@@ -12,8 +12,8 @@ import { useParamsHook } from "../../../shared/hooks/params/useParams";
 import { useTsex } from "../../../shared/lib/apis/tsexes/useTsex";
 import type { QueryParams } from "../../../shared/lib/types";
 import { debounce } from "../../../shared/lib/functions/debounce";
-import TsexDataCardSkeleton from "../../../shared/ui/Skeletons/Tsexes/TsexDataCardSkeleton";
 import { Edit } from "lucide-react";
+import TsexCardSkeleton from "../../../shared/ui/Skeletons/Tsexes/TsexCardSkeleton";
 
 const AdminTsexesPage = () => {
   const navigate = useNavigate();
@@ -130,7 +130,7 @@ const AdminTsexesPage = () => {
       </div>
 
       <div className="min-[500px]:hidden flex flex-col gap-5 mt-4">
-        {tsexLoading && <TsexDataCardSkeleton />}
+        {tsexLoading && <TsexCardSkeleton />}
         {tsexes && tsexes?.length > 0 ? (
           tsexes?.map((ts: TsexTableListItem) => (
             <div
@@ -152,7 +152,7 @@ const AdminTsexesPage = () => {
                       Tsex Manager
                     </span>
                     <span className="text-[16px] font-bold text-[#4B5563]">
-                      {ts?.tsex}
+                      {ts?.manager.full_name}
                     </span>
                   </div>
                   <div className="flex flex-col justify-start">
@@ -180,7 +180,7 @@ const AdminTsexesPage = () => {
                     </div>
                     <div>
                       <span className="text-[16px] font-bold text-[#4B5563]">
-                        {ts?.last_operation}
+                        {ts?.last_transaction}
                       </span>
                     </div>
                   </div>

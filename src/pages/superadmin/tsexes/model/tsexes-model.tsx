@@ -4,9 +4,9 @@ import { Edit, Trash } from "lucide-react";
 export type TsexTableListItem = {
   id: string;
   name: string;
-  tsex: any;
+  manager: { full_name: string };
   balance: number;
-  last_operation: string;
+  last_transaction: string;
   created_at: Date;
 };
 
@@ -22,9 +22,9 @@ export const tsexColumns = (
   },
   {
     title: "Tsex Manager",
-    dataIndex: ["tsex"],
+    dataIndex: ["manager", "full_name"],
     width: 150,
-    render: (_, record) => record.tsex ?? "-",
+    render: (_, record) => record.manager.full_name ?? "-",
   },
   {
     title: "Balans",
@@ -44,10 +44,10 @@ export const tsexColumns = (
   },
   {
     title: "Oxirgi operatsiya",
-    dataIndex: "last_operation",
+    dataIndex: "last_transaction",
     width: 160,
     render: (_, record) => (
-      <div className="text-[#688C74]">{record.last_operation}</div>
+      <div className="text-[#688C74]">{record.last_transaction ? record.last_transaction : "Hozircha yo'q"}</div>
     ),
   },
   {

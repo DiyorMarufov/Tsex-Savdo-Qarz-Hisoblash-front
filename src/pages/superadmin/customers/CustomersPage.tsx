@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
 import {
   Button as AntdButton,
@@ -9,17 +9,18 @@ import {
   Select,
   type FormProps,
 } from "antd";
-import { ArrowDown, ArrowUp, Edit, Plus, Trash } from "lucide-react";
+import { ArrowDown, ArrowUp, Plus } from "lucide-react";
 import Button from "../../../shared/ui/Button/Button";
 import ProTable from "@ant-design/pro-table";
-import {
-  customerColumns,
-  fakeCustomerData,
-  type CustomersListItemsType,
-} from "./model/customers-model";
+import { customerColumns } from "./model/customers-model";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import CustomersBalances from "../../../widgets/superadmin/customers/Balances/CustomersBalances";
 import CustomerFilters from "../../../widgets/customers/CustomerFilters/CustomerFilters";
+import { useCustomer } from "../../../shared/lib/apis/customers/useCustomer";
+import CustomerMobileList from "../../../widgets/customers/CustomerMobileList/CustomerMobileList";
+import type { QueryParams } from "../../../shared/lib/types";
+import { useParamsHook } from "../../../shared/hooks/params/useParams";
+import { debounce } from "../../../shared/lib/functions/debounce";
 
 type transcationFieldType = {
   customer_id: string;
@@ -41,6 +42,10 @@ const CustomersPage = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const { pathname } = useLocation();
+
+  const { getAllCustomers } = useCustomer();
+  const { getParam, setParams, removeParam } = useParamsHook();
+  const [localSearch, setLocalSearch] = useState(getParam("search") || "");
 
   useEffect(() => {
     window.scroll({ top: 0 });
@@ -89,8 +94,64 @@ const CustomersPage = () => {
     navigate(`detail/${id}`);
   };
   // Detail ends
-  
-  
+
+  // Query starts
+  const query: QueryParams = useMemo(() => {
+    const page = Number(getParam("page")) || 1;
+    const limit = Number(getParam("limit")) || 5;
+    const search = getParam("search") || undefined;
+
+    return { page, limit, search };
+  }, [getParam]);
+  // Query ends
+
+  // CustomerData starts
+  const { data: allCustomers, isLoading: customerLoading } =
+    getAllCustomers(query);
+  const customers = allCustomers?.data?.data;
+  const total = allCustomers?.data?.total || 0;
+  // CustomerData ends
+
+  // PageChange starts
+  const handlePageChange = (newPage: number, newPageSize?: number) => {
+    const updateParams: { page?: number; limit?: number } = {};
+
+    if (newPage > 1) {
+      updateParams.page = newPage;
+    }
+
+    if (newPageSize && newPageSize !== 5) {
+      updateParams.limit = newPageSize;
+    }
+
+    setParams(updateParams);
+
+    if (newPage === 1) {
+      removeParam("page");
+    }
+    if (newPageSize === 5 && getParam("limit")) {
+      removeParam("limit");
+    }
+  };
+  // PageChange ends
+
+  // Search starts
+  const debouncedSetSearchQuery = useCallback(
+    debounce((nextValue: string) => {
+      setParams({
+        search: nextValue || "",
+        page: 1,
+      });
+    }, 500),
+    [setParams]
+  );
+
+  const handleSearchChange = (value: string) => {
+    setLocalSearch(value);
+    debouncedSetSearchQuery(value);
+  };
+  // Search ends
+
   if (pathname.startsWith("/superadmin/customers/detail/")) return <Outlet />;
 
   return (
@@ -167,98 +228,41 @@ const CustomersPage = () => {
 
       <CustomersBalances />
 
-      <CustomerFilters regionOptions={[]} />
+      <CustomerFilters
+        regionOptions={[]}
+        onSearchChange={handleSearchChange}
+        searchValue={localSearch}
+      />
 
       <div className="mt-4 max-[500px]:hidden">
         <ProTable
-          dataSource={fakeCustomerData}
+          dataSource={customers}
           rowKey="id"
           pagination={{
             showSizeChanger: true,
             responsive: false,
+            current: query.page,
+            pageSize: query.limit,
+            total,
+            onChange: handlePageChange,
           }}
           columns={customerColumns(handleOpenDetail)}
           search={false}
           dateFormatter="string"
           scroll={{ x: "max-content" }}
+          loading={customerLoading}
         />
       </div>
 
-      <div className="mt-4 min-[500px]:hidden flex flex-col gap-5">
-        {fakeCustomerData.map((cs: CustomersListItemsType) => (
-          <div
-            key={cs.id}
-            className="flex flex-col gap-3 border border-bg-fy bg-[#ffffff] rounded-[12px] overflow-hidden"
-          >
-            <div className="flex justify-between items-center gap-3 pt-2.5 px-3.5">
-              <div className="flex flex-col items-start">
-                <a className="text-[16px] font-bold">{cs.full_name}</a>
-                <span className="text-[15px] font-bold text-[#64748B]">
-                  {cs.region}
-                </span>
-              </div>
-              <div className="flex flex-col items-end">
-                {cs.balance > 0 ? (
-                  <span className="text-[16px] font-bold text-red-500">
-                    -{Math.abs(cs.balance).toLocaleString()}
-                  </span>
-                ) : (
-                  <span className="text-[16px] font-bold text-green-500">
-                    {Math.abs(cs.balance).toLocaleString()}
-                  </span>
-                )}
-              </div>
-            </div>
-
-            <div className="flex flex-col px-3.5">
-              <div className="flex justify-between gap-3">
-                <span className="text-[15px] font-medium text-[#6B7280]">
-                  Telefon raqami
-                </span>
-                <span className="text-[16px] font-bold text-[#4B5563]">
-                  {cs.phone_number}
-                </span>
-              </div>
-              <div className="flex justify-between gap-3">
-                <span className="text-[15px] font-medium text-[#6B7280]">
-                  Oxirgi tranzaksiya
-                </span>
-                <span className="text-[16px] font-bold text-[#4B5563]">
-                  {cs.last_transaction.toLocaleString("uz-UZ")}
-                </span>
-              </div>
-              <div className="flex justify-between gap-3">
-                <span
-                  title="Kiritilgan sana"
-                  className="text-[15px] font-medium text-[#6B7280]"
-                >
-                  Kiritilgan sana
-                </span>
-                <span className="text-[16px] font-bold text-[#4B5563]">
-                  {cs.created_at.toLocaleString("uz-UZ")}
-                </span>
-              </div>
-            </div>
-
-            <div className="w-full h-px bg-bg-fy"></div>
-
-            <div className="flex items-center justify-between px-3.5 pb-3">
-              <div className="flex items-center gap-5">
-                <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
-                <Trash className="text-red-600 cursor-pointer hover:opacity-80" />
-              </div>
-              <div>
-                <AntdButton
-                  className="bg-[#1D4ED8]! text-white!"
-                  onClick={() => handleOpenDetail(cs.id as string)}
-                >
-                  Batafsil
-                </AntdButton>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+      <CustomerMobileList
+        data={customers}
+        onDetail={handleOpenDetail}
+        currentPage={query.page}
+        pageSize={query.limit}
+        total={total}
+        onPageChange={handlePageChange}
+        loading={customerLoading}
+      />
 
       <Modal
         centered

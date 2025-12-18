@@ -24,7 +24,7 @@ const TsexCard = ({ ts, onDetail }: TsexCardProps) => {
               Tsex Manager
             </span>
             <span className="text-[16px] font-bold text-[#4B5563] truncate">
-              {ts?.tsex}
+              {ts?.manager.full_name}
             </span>
           </div>
           <div className="flex flex-col justify-start">
@@ -49,7 +49,7 @@ const TsexCard = ({ ts, onDetail }: TsexCardProps) => {
               Oxirgi operatsiya
             </span>
             <span className="text-[16px] font-bold text-[#4B5563]">
-              {ts?.last_operation}
+              {ts?.last_transaction ? ts?.last_transaction : "Hozircha yo'q"}
             </span>
           </div>
 
@@ -58,7 +58,7 @@ const TsexCard = ({ ts, onDetail }: TsexCardProps) => {
               Kiritilgan sana
             </span>
             <span className="text-[16px] font-bold text-[#4B5563]">
-              {ts.created_at.toLocaleString("uz-UZ")}
+              {new Date(ts.created_at).toLocaleString("uz-UZ")}
             </span>
           </div>
         </div>

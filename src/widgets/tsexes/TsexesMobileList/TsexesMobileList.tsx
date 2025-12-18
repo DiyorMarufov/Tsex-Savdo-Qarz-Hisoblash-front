@@ -1,8 +1,8 @@
 import { memo } from "react";
 import { Pagination } from "antd";
-import TsexDataCardSkeleton from "../../../shared/ui/Skeletons/Tsexes/TsexDataCardSkeleton";
 import type { TsexTableListItem } from "../../../pages/superadmin/tsexes/model/tsexes-model";
 import TsexCard from "../../../shared/ui/TsexCard/TsexCard";
+import TsexCardSkeleton from "../../../shared/ui/Skeletons/Tsexes/TsexCardSkeleton";
 
 interface TsexMobileListProps {
   data: TsexTableListItem[] | undefined;
@@ -23,7 +23,7 @@ const TsexMobileList = ({
   onPageChange,
   onDetail,
 }: TsexMobileListProps) => {
-  if (loading) return <TsexDataCardSkeleton />;
+  if (loading) return <TsexCardSkeleton />;
 
   return (
     <div className="min-[500px]:hidden flex flex-col gap-5 mt-4">

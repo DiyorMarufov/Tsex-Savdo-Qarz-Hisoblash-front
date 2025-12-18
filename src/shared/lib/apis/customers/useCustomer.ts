@@ -53,11 +53,21 @@ export const useCustomer = () => {
       staleTime: 1000 * 60 * 5,
       gcTime: 1000 * 60 * 10,
     });
+
+  const getAllCustomers = (params?: any) =>
+    useQuery({
+      queryKey: [customer, "all-customers", params],
+      queryFn: () => api.get("customers", { params }).then((res) => res.data),
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 10,
+    });
   return {
     getTotalCustomerBalance,
     getMostDebtorCustomers,
     getCustomerCreditorTotalBalance,
     getCustomerDebtorTotalBalance,
     getCustomerNetTotalBalance,
+    getAllCustomers,
   };
 };

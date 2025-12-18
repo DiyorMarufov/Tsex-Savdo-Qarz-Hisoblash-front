@@ -223,16 +223,7 @@ const TsexesPage = () => {
 
   // TsexData starts
   const { data: allTsexes, isLoading: tsexLoading } = getAllTsexes(query);
-  const tsexes = allTsexes?.data?.data?.map((as: any) => ({
-    id: as?.id,
-    name: as?.name,
-    tsex: as?.manager?.full_name,
-    balance: as?.balance,
-    last_operation: as?.last_transaction?.display
-      ? as?.last_transaction?.display
-      : "Hozircha yo'q",
-    created_at: as?.created_at,
-  }));
+  const tsexes = allTsexes?.data?.data
   const total = allTsexes?.data?.total || 0;
   // TsexData ends
 
