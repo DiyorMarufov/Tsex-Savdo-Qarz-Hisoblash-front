@@ -1,12 +1,11 @@
 import { memo, useEffect, useRef, useState } from "react";
 import ProTable from "@ant-design/pro-table";
-import {
-  fakeTransactionDetailData,
-  transactionDetailColumns,
-  type CustomerTranscationDetailListItemsType,
-} from "./model/customer-transactions-detail-model";
-import { ArrowDown, ArrowUp, CheckCircle, Edit, Trash } from "lucide-react";
+import { transactionDetailColumns } from "./model/customer-transactions-detail-model";
+import { ArrowDown, ArrowUp, CheckCircle } from "lucide-react";
 import { Modal, type FormProps, Button as AntdButton, Form, Input } from "antd";
+import { useCustomerTransaction } from "../../../shared/lib/apis/customer-transactions/useCustomerTransaction";
+import { useParams } from "react-router-dom";
+import CustomerTransactionDetailMobileList from "../../../widgets/customers/CustomerTransactionDetailMobileList/CustomerTransactionDetailMobileList";
 
 type transcationFieldType = {
   amount: number;
@@ -17,6 +16,10 @@ const CustomerTransactionDetails = () => {
   const [transactionOpen, setTransactionOpen] = useState<boolean>(false);
   const transactionType = useRef<"borrow_more" | "receive" | null>(null);
   const [form] = Form.useForm();
+  const { id } = useParams();
+
+  const { getCustomerTransactionsDetailByParentTransactionId } =
+    useCustomerTransaction();
 
   useEffect(() => {
     window.scroll({ top: 0 });
@@ -45,9 +48,19 @@ const CustomerTransactionDetails = () => {
   };
   // Transaction ends
 
+  // CustomerTransactionDetail starts
+  const {
+    data: customerTransactionDetails,
+    isLoading: customerTransactionDetailLoading,
+  } = getCustomerTransactionsDetailByParentTransactionId(id as string);
+  const transactionDetails = customerTransactionDetails?.data?.data;
+  // CustomerTransactionDetail ends
+
   return (
     <div className="flex flex-col gap-5">
-      <span className="text-[20px] font-medium text-[#4B5563]">Aliyev Dilshod ni tranzaksiyalari</span>
+      <span className="text-[20px] font-medium text-[#4B5563]">
+        Aliyev Dilshod ni tranzaksiyalari
+      </span>
       <div className="grid grid-cols-3 gap-8 px-3">
         <div className="flex flex-col items-center cursor-pointer text-green-600 hover:text-green-700 transition duration-150">
           <div
@@ -82,7 +95,7 @@ const CustomerTransactionDetails = () => {
       </div>
       <div className="mt-2 max-[500px]:hidden">
         <ProTable
-          dataSource={fakeTransactionDetailData}
+          dataSource={transactionDetails}
           rowKey="id"
           pagination={{
             showSizeChanger: true,
@@ -92,168 +105,14 @@ const CustomerTransactionDetails = () => {
           search={false}
           dateFormatter="string"
           scroll={{ x: "max-content" }}
+          loading={customerTransactionDetailLoading}
         />
       </div>
 
-      <div>
-        <div className="min-[500px]:hidden flex flex-col gap-5 mt-4">
-          {fakeTransactionDetailData.map(
-            (trd: CustomerTranscationDetailListItemsType) => (
-              <div
-                key={trd.id}
-                className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]"
-              >
-                <div className="">
-                  <div className="flex justify-between gap-3 px-3.5 py-2.5">
-                    <a className="text-[16px] font-bold text-green-600">
-                      {trd.customer.full_name}
-                    </a>
-                    <div className="flex justify-between items-center whitespace-nowrap">
-                      <span className="text-[12px] font-bold">
-                        {(() => {
-                          let text;
-                          let bgColor;
-                          let textColor;
-
-                          switch (trd.type) {
-                            case "borrow_more":
-                              text = "Qo'shimcha qarz olish";
-                              bgColor = "bg-red-100";
-                              textColor = "text-red-600";
-                              break;
-                            case "lend_more":
-                              text = "Qo'shimcha qarz berish";
-                              bgColor = "bg-blue-100";
-                              textColor = "text-blue-600";
-                              break;
-                            case "repayment":
-                              text = "Qarzni qaytarish";
-                              bgColor = "bg-green-100";
-                              textColor = "text-green-600";
-                              break;
-                            case "received":
-                              text = "Qarzni qabul qilish";
-                              bgColor = "bg-green-100";
-                              textColor = "text-green-600";
-                              break;
-                            case "paid_off":
-                              text = "To'liq to'landi";
-                              bgColor = "bg-green-700";
-                              textColor = "text-white";
-                              break;
-                            default:
-                              text = trd.type;
-                              bgColor = "bg-gray-200";
-                              textColor = "text-gray-600";
-                          }
-
-                          return (
-                            <span
-                              className={`${bgColor} rounded-full ${textColor} px-2 py-1 whitespace-nowrap`}
-                            >
-                              {text}
-                            </span>
-                          );
-                        })()}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="w-full h-px bg-bg-fy"></div>
-
-                <div className="px-3.5 py-2.5 flex flex-col gap-3">
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="flex flex-col justify-start w-1/2">
-                      <span className="text-[15px] font-medium text-[#6B7280]">
-                        Miqdor
-                      </span>
-                      <span className="text-[16px] font-bold text-green-600">
-                        {trd.amount.toLocaleString()}
-                      </span>
-                    </div>
-                    <div className="flex flex-col justify-start">
-                      <span className="text-[15px] font-medium text-[#6B7280]">
-                        Keyingi Balans
-                      </span>
-                      {trd.balance_after > 0 ? (
-                        <span className="text-[16px] font-bold text-red-500">
-                          -{Math.abs(trd.balance_after).toLocaleString()}
-                        </span>
-                      ) : (
-                        <span className="text-[16px] font-bold text-green-500">
-                          {Math.abs(trd.balance_after).toLocaleString()}
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex flex-col justify-start">
-                      <span className="text-[15px] font-medium text-[#6B7280]">
-                        Tugash sanasi
-                      </span>
-                      <span className="text-[16px] font-bold text-[#4B5563]">
-                        {trd.due_date.toLocaleString("uz-UZ")}
-                      </span>
-                    </div>
-                    <div className="flex flex-col justify-start">
-                      <span className="text-[15px] font-medium text-[#6B7280]">
-                        Holati
-                      </span>
-                      <div className="flex items-center gap-2">
-                        <div
-                          className={`h-3 w-3 rounded-full ${
-                            trd.status === "open"
-                              ? "bg-green-500"
-                              : "bg-gray-400"
-                          }`}
-                        ></div>
-
-                        <span className="text-[16px] font-bold text-[#4B5563]">
-                          {trd.status === "open" ? "Ochiq" : "Yopilgan"}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col">
-                    <div>
-                      <span className="font-medium text-[#6B7280] text-[15px]">
-                        Izoh
-                      </span>
-                    </div>
-                    <div>
-                      <span className="text-[16px] font-bold text-[#4B5563]">
-                        {" "}
-                        {trd.description}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col">
-                    <div>
-                      <span className="font-medium text-[#6B7280] text-[15px]">
-                        Kiritilgan sana
-                      </span>
-                    </div>
-                    <div>
-                      <span className="text-[16px] font-bold text-[#4B5563]">
-                        {" "}
-                        {trd.created_at.toLocaleString("uz-UZ")}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="flex justify-end mt-1 pb-[1.5px]">
-                    <div className="flex items-center gap-5">
-                      <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
-                      <Trash className="text-red-600 cursor-pointer hover:opacity-80" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )
-          )}
-        </div>
-      </div>
+      <CustomerTransactionDetailMobileList
+        data={transactionDetails}
+        loading={customerTransactionDetailLoading}
+      />
 
       <Modal
         centered

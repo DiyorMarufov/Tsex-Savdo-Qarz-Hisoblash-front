@@ -20,7 +20,7 @@ export const useCustomerTransaction = () => {
   const getCustomerTransactionsDetailByParentTransactionId = (
     parent_transaction_id: string
   ) =>
-    useQuery<IResponseData>({
+    useQuery({
       queryKey: [
         customer_transaction,
         "customer-transactions-parent-id",
