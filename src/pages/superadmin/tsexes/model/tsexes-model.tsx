@@ -30,7 +30,6 @@ export const tsexColumns = (
     title: "Balans",
     dataIndex: "balance",
     width: 100,
-    align: "right",
     render: (_, record) => {
       const balanceAmount = record.balance;
       const formattedAmount = Math.abs(balanceAmount).toLocaleString("uz-UZ");

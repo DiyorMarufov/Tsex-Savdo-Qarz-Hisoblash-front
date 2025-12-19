@@ -17,7 +17,7 @@ export const transactionDetailColumns: ProColumns<CustomerTranscationDetailListI
   [
     {
       title: "Mijoz F.I.",
-      dataIndex: ["customer", "full_name"], // Nested field
+      dataIndex: ["customer", "full_name"],
       width: 120,
       sorter: true,
       search: false,
@@ -44,10 +44,8 @@ export const transactionDetailColumns: ProColumns<CustomerTranscationDetailListI
       title: "Miqdor (UZS)",
       dataIndex: "amount",
       width: 120,
-      align: "right",
       sorter: true,
       render: (_, record) => {
-        // Pul miqdorini formatlash
         const formattedAmount = record.amount.toLocaleString("uz-UZ");
         return (
           <span className="font-bold text-green-600">{formattedAmount}</span>
@@ -57,7 +55,7 @@ export const transactionDetailColumns: ProColumns<CustomerTranscationDetailListI
     {
       title: "Tugash Sanasi",
       dataIndex: "due_date",
-      valueType: "date", // Ant Design DatePicker bilan mos keladi
+      valueType: "date",
       width: 130,
       sorter: true,
     },
@@ -70,9 +68,9 @@ export const transactionDetailColumns: ProColumns<CustomerTranscationDetailListI
         const balanceAmount = record.balance_after;
         const formattedAmount = Math.abs(balanceAmount).toLocaleString("uz-UZ");
 
-        if (balanceAmount > 0) {
+        if (balanceAmount < 0) {
           return (
-            <div className="text-red-600 font-bold">- {formattedAmount}</div>
+            <div className="text-red-600 font-bold">-{formattedAmount}</div>
           );
         }
 
@@ -86,15 +84,15 @@ export const transactionDetailColumns: ProColumns<CustomerTranscationDetailListI
       dataIndex: "status",
       width: 90,
       valueEnum: {
-        open: { text: "Ochiq", status: "Processing" }, // Davom etayotgan tranzaksiya
-        closed: { text: "Yopilgan", status: "Success" }, // Yakunlangan tranzaksiya
+        open: { text: "Ochiq", status: "Processing" },
+        closed: { text: "Yopilgan", status: "Success" },
       },
     },
     {
       title: "Izoh",
       dataIndex: "description",
       width: 250,
-      ellipsis: true, // Uzun matnni qisqartirish
+      ellipsis: true,
       search: false,
     },
     {

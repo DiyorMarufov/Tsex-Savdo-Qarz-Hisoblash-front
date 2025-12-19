@@ -25,7 +25,7 @@ export const transactionColumns = (
 ): ProColumns<CustomerTranscationsListItemsType>[] => [
   {
     title: "Mijoz F.I.",
-    dataIndex: ["customer", "full_name"], // Nested field
+    dataIndex: ["customer", "full_name"],
     width: 120,
     sorter: true,
     search: false,
@@ -40,19 +40,13 @@ export const transactionColumns = (
     onFilter: true,
     valueEnum: {
       borrowing: { text: "Qarz olish", status: "Error" },
-      borrow_more: { text: "Qoʻshimcha qarz", status: "Error" },
-      repayment: { text: "Qisman qaytarish", status: "Success" },
-      paid_off: { text: "Toʻliq yopish", status: "Success" },
       lending: { text: "Qarz berish", status: "Warning" },
-      lend_more: { text: "Qoʻshimcha berish", status: "Warning" },
-      received: { text: "Qabul qilish", status: "Success" },
     },
   },
   {
     title: "Miqdor (UZS)",
     dataIndex: "amount",
     width: 120,
-    align: "right",
     sorter: true,
     render: (_, record) => {
       const formattedAmount = record.amount.toLocaleString("uz-UZ");
@@ -64,7 +58,7 @@ export const transactionColumns = (
   {
     title: "Tugash Sanasi",
     dataIndex: "due_date",
-    valueType: "date", 
+    valueType: "date",
     width: 130,
     sorter: true,
   },
@@ -77,9 +71,9 @@ export const transactionColumns = (
       const balanceAmount = record.balance_after;
       const formattedAmount = Math.abs(balanceAmount).toLocaleString("uz-UZ");
 
-      if (balanceAmount > 0) {
+      if (balanceAmount < 0) {
         return (
-          <div className="text-red-600 font-bold">- {formattedAmount}</div>
+          <div className="text-red-600 font-bold">-{formattedAmount}</div>
         );
       }
 
@@ -91,8 +85,8 @@ export const transactionColumns = (
     dataIndex: "status",
     width: 90,
     valueEnum: {
-      open: { text: "Ochiq", status: "Processing" }, 
-      closed: { text: "Yopilgan", status: "Success" }, 
+      open: { text: "Ochiq", status: "Processing" },
+      closed: { text: "Yopilgan", status: "Success" },
     },
   },
   {

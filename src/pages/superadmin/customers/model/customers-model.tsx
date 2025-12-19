@@ -1,5 +1,6 @@
 import type { ProColumns } from "@ant-design/pro-table";
 import { Edit, Trash } from "lucide-react";
+import { formatPhoneNumber } from "../../../../shared/lib/functions/formatPhoneNumber";
 
 export type CustomersListItemsType = {
   id?: string;
@@ -25,6 +26,7 @@ export const customerColumns = (
     title: "Telefon Raqami",
     dataIndex: "phone_number",
     width: 150,
+    render: (_,record) => formatPhoneNumber(record.phone_number),
   },
   {
     title: "Viloyat/Shahar",
@@ -37,12 +39,11 @@ export const customerColumns = (
     title: "Balans (UZS)",
     dataIndex: "balance",
     width: 150,
-    align: "right",
     render: (_, record) => {
       const balanceAmount = record.balance;
       const formattedAmount = Math.abs(balanceAmount).toLocaleString("uz-UZ");
 
-      if (balanceAmount > 0) {
+      if (balanceAmount < 0) {
         return <div className="text-red-600 font-bold">-{formattedAmount}</div>;
       }
 

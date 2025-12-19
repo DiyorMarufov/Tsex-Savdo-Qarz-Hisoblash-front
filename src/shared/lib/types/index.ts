@@ -15,6 +15,7 @@ export interface QueryParams {
   search?: string;
   shopId?: string;
   tsexId?: string;
+  region?: string;
 }
 
 export interface TsexTransactionsType {

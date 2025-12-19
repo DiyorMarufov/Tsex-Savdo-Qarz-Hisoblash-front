@@ -36,7 +36,7 @@ const CustomerTransactionDetails = lazy(
   () => import("../../pages/superadmin/customers/CustomerTransactionDetails")
 );
 const CustomersDetailPage = lazy(
-  () => import("../../pages/superadmin/customers/CustomersDetailPage")
+  () => import("../../pages/superadmin/customers/CustomerTransactionsPage")
 );
 const LoginPage = lazy(() => import("../../pages/login/LoginPage"));
 const DashboardLayout = lazy(() => import("../layouts/DashboardLayout"));

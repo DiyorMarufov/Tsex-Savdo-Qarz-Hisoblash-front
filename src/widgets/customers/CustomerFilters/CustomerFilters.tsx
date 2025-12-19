@@ -1,13 +1,13 @@
 import { memo } from "react";
 import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
-import { Select } from "antd";
 import type { Option } from "../../../shared/lib/types";
+import Filter from "../../../shared/ui/Filter/Filter";
 
 interface CustomerFiltersProps {
-  searchValue?: string;
-  onSearchChange?: (value: string) => void;
-  regionValue?: string;
-  onRegionChange?: (value: string) => void;
+  searchValue: string;
+  onSearchChange: (value: string) => void;
+  regionValue: string;
+  onRegionChange: (key: string, value: string) => void;
   regionOptions: Option[];
 }
 
@@ -27,16 +27,12 @@ const CustomerFilters = ({
         onChange={onSearchChange}
       />
       <div className="max-[960px]:w-full">
-        <Select
-          className="h-12! bg-bg-ty! text-[17px]! w-[300px] max-[960px]:w-full!"
-          placeholder="Viloyat/Shahar"
-          allowClear
+        <Filter
+          className="h-12! bg-bg-ty! text-[17px]! w-[300px] max-[960px]:w-full! custom-select"
+          placeholder="Barcha shaharlar/viloyatlar"
           value={regionValue}
-          onChange={onRegionChange}
-          options={[
-            { value: "", label: "Barcha shaharlar/viloyatlar" },
-            ...regionOptions,
-          ]}
+          onChange={(val) => onRegionChange("region", val)}
+          options={regionOptions}
         />
       </div>
     </div>

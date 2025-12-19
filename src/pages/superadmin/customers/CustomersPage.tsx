@@ -21,6 +21,7 @@ import CustomerMobileList from "../../../widgets/customers/CustomerMobileList/Cu
 import type { QueryParams } from "../../../shared/lib/types";
 import { useParamsHook } from "../../../shared/hooks/params/useParams";
 import { debounce } from "../../../shared/lib/functions/debounce";
+import { customerRegions } from "../../../shared/lib/constants";
 
 type transcationFieldType = {
   customer_id: string;
@@ -100,8 +101,9 @@ const CustomersPage = () => {
     const page = Number(getParam("page")) || 1;
     const limit = Number(getParam("limit")) || 5;
     const search = getParam("search") || undefined;
+    const region = getParam("region") || undefined;
 
-    return { page, limit, search };
+    return { page, limit, search, region };
   }, [getParam]);
   // Query ends
 
@@ -151,6 +153,15 @@ const CustomersPage = () => {
     debouncedSetSearchQuery(value);
   };
   // Search ends
+
+  // Filter starts
+  const handleFilterChange = (key: string, value: string) => {
+    setParams({
+      [key]: value || "",
+      page: 1,
+    });
+  };
+  // Filter ends
 
   if (pathname.startsWith("/superadmin/customers/detail/")) return <Outlet />;
 
@@ -229,9 +240,14 @@ const CustomersPage = () => {
       <CustomersBalances />
 
       <CustomerFilters
-        regionOptions={[]}
+        regionOptions={[
+          { value: "", label: "Barcha shaharlar/viloyatlar" },
+          ...(customerRegions || []),
+        ]}
         onSearchChange={handleSearchChange}
         searchValue={localSearch}
+        regionValue={query.region || ""}
+        onRegionChange={handleFilterChange}
       />
 
       <div className="mt-4 max-[500px]:hidden">

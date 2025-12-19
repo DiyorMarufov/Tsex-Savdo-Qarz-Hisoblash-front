@@ -2,6 +2,7 @@ import { memo } from "react";
 import { Button as AntdButton } from "antd";
 import { Edit, Trash } from "lucide-react";
 import type { CustomersListItemsType } from "../../../pages/superadmin/customers/model/customers-model";
+import { formatPhoneNumber } from "../../lib/functions/formatPhoneNumber";
 
 interface Props {
   cs: CustomersListItemsType;
@@ -33,7 +34,7 @@ const CustomerCard = ({ cs, onDetail }: Props) => {
             <span className="text-[15px] font-medium text-[#6B7280] whitespace-nowrap">
               Balansi
             </span>
-            {cs.balance > 0 ? (
+            {cs.balance < 0 ? (
               <span className="text-[16px] font-bold text-red-500">
                 -{Math.abs(cs.balance).toLocaleString()}
               </span>
@@ -48,7 +49,7 @@ const CustomerCard = ({ cs, onDetail }: Props) => {
               Telefon
             </span>
             <span className="text-[16px] font-bold text-[#4B5563] truncate">
-              {cs.phone_number}
+              {formatPhoneNumber(cs.phone_number)}
             </span>
           </div>
         </div>

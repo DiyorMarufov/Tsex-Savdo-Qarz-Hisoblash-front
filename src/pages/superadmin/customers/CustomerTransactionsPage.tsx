@@ -1,26 +1,35 @@
 import ProTable from "@ant-design/pro-table";
 import { memo, useEffect } from "react";
 import {
-  fakeTransactionData,
   transactionColumns,
   type CustomerTranscationsListItemsType,
 } from "./model/customer-transactions-model";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Edit, Trash } from "lucide-react";
 import { Button as AntdButton } from "antd";
+import { useCustomerTransaction } from "../../../shared/lib/apis/customer-transactions/useCustomerTransaction";
 
 const CustomersDetailPage = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const { id } = useParams();
+  const { getCustomerTransactionsByCustomerId } = useCustomerTransaction();
 
   useEffect(() => {
     window.scroll({ top: 0 });
   }, []);
+
   // CustomerTransaction detail starts
   const handleOpenTransactionDetail = (id: string) => {
     navigate(`transaction/${id}`);
   };
   // CustomerTransaction detail ends
+
+  // CustomerTransaction starts
+  const { data: customerTransactions, isLoading: customerTransactionLoading } =
+    getCustomerTransactionsByCustomerId(id as string);
+  const transactions = customerTransactions?.data;
+  // CustomerTransaction ends
 
   if (pathname.includes("/transaction/")) {
     return <Outlet />;
@@ -28,10 +37,12 @@ const CustomersDetailPage = () => {
 
   return (
     <>
-      <span className="text-[20px] font-medium text-[#4B5563]">Aliyev Dilshod ni tranzaksiyalari</span>
+      <span className="text-[20px] font-medium text-[#4B5563]">
+        Aliyev Dilshod ni tranzaksiyalari
+      </span>
       <div className="max-[500px]:hidden">
         <ProTable
-          dataSource={fakeTransactionData}
+          dataSource={transactions}
           rowKey="id"
           pagination={{
             showSizeChanger: true,
@@ -41,11 +52,12 @@ const CustomersDetailPage = () => {
           search={false}
           dateFormatter="string"
           scroll={{ x: "max-content" }}
+          loading={customerTransactionLoading}
         />
       </div>
 
       <div className="min-[500px]:hidden flex flex-col gap-5 mt-3">
-        {fakeTransactionData.map((trd: CustomerTranscationsListItemsType) => (
+        {transactions?.map((trd: CustomerTranscationsListItemsType) => (
           <div
             key={trd.id}
             className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]"
@@ -86,7 +98,7 @@ const CustomersDetailPage = () => {
                   <span className="text-[15px] font-medium text-[#6B7280]">
                     Keyingi Balans
                   </span>
-                  {trd.balance_after > 0 ? (
+                  {trd.balance_after < 0 ? (
                     <span className="text-[16px] font-bold text-red-500">
                       -{Math.abs(trd.balance_after).toLocaleString()}
                     </span>
