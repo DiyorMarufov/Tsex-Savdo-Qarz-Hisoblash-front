@@ -1,14 +1,6 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
-import {
-  Button as AntdButton,
-  DatePicker,
-  Form,
-  Input,
-  Modal,
-  Select,
-  type FormProps,
-} from "antd";
+import { Button as AntdButton, Form, type FormProps } from "antd";
 import { ArrowDown, ArrowUp, Plus } from "lucide-react";
 import Button from "../../../shared/ui/Button/Button";
 import ProTable from "@ant-design/pro-table";
@@ -18,35 +10,28 @@ import CustomersBalances from "../../../widgets/superadmin/customers/Balances/Cu
 import CustomerFilters from "../../../widgets/customers/CustomerFilters/CustomerFilters";
 import { useCustomer } from "../../../shared/lib/apis/customers/useCustomer";
 import CustomerMobileList from "../../../widgets/customers/CustomerMobileList/CustomerMobileList";
-import type { QueryParams } from "../../../shared/lib/types";
+import type {
+  newCustomerFieldType,
+  QueryParams,
+  transactionFieldType,
+} from "../../../shared/lib/types";
 import { useParamsHook } from "../../../shared/hooks/params/useParams";
 import { debounce } from "../../../shared/lib/functions/debounce";
 import { customerRegions } from "../../../shared/lib/constants";
-
-type transcationFieldType = {
-  customer_id: string;
-  amount: number;
-  due_date?: Date;
-  description?: string;
-};
-
-type newCustomerFieldType = {
-  full_name: string;
-  phone_number: string;
-  region: string;
-};
+import CustomerTransactionModal from "../../../widgets/superadmin/customers/CustomerTransactionModal/CustomerTransactionModal";
+import AddCustomerModal from "../../../widgets/superadmin/customers/AddCustomerModal/AddCustomerModal";
 
 const CustomersPage = () => {
   const [transactionOpen, setTransactionOpen] = useState<boolean>(false);
   const transactionType = useRef<"lend" | "borrow" | null>(null);
   const [newCustomerOpen, setNewCustomerOpen] = useState<boolean>(false);
-  const [form] = Form.useForm();
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
   const { getAllCustomers } = useCustomer();
   const { getParam, setParams, removeParam } = useParamsHook();
   const [localSearch, setLocalSearch] = useState(getParam("search") || "");
+  const [form] = Form.useForm();
 
   useEffect(() => {
     window.scroll({ top: 0 });
@@ -67,8 +52,8 @@ const CustomersPage = () => {
     setTransactionOpen(false);
   };
 
-  const transactionOnFinish: FormProps<transcationFieldType>["onFinish"] = (
-    values: transcationFieldType
+  const transactionOnFinish: FormProps<transactionFieldType>["onFinish"] = (
+    values: transactionFieldType
   ) => {
     console.log("Success:", values);
   };
@@ -83,8 +68,8 @@ const CustomersPage = () => {
     setNewCustomerOpen(false);
   };
 
-  const newCustomerOnFinish: FormProps<transcationFieldType>["onFinish"] = (
-    values: transcationFieldType
+  const newCustomerOnFinish: FormProps<newCustomerFieldType>["onFinish"] = (
+    values: newCustomerFieldType
   ) => {
     console.log("Success:", values);
   };
@@ -280,179 +265,28 @@ const CustomersPage = () => {
         loading={customerLoading}
       />
 
-      <Modal
-        centered
-        title={
-          transactionType.current === "lend" ? "Qarz berish" : "Qarz olish"
-        }
-        closable={{ "aria-label": "Custom Close Button" }}
+      <CustomerTransactionModal
         open={transactionOpen}
         onCancel={handleCancelTransaction}
-        footer={
-          <div className="flex gap-2 justify-end">
-            <AntdButton
-              className="bg-red-500! text-white!"
-              onClick={handleCancelTransaction}
-            >
-              Bekor qilish
-            </AntdButton>
-            <AntdButton
-              onClick={() => form.submit()}
-              className="bg-green-500! text-white!"
-            >
-              Tasdiqlash
-            </AntdButton>
-          </div>
-        }
-      >
-        <div className="mt-6">
-          <Form name="basic" onFinish={transactionOnFinish} form={form}>
-            <div>
-              <span className="flex mb-1 font-medium text-[15px]">Mijoz</span>
-              <Form.Item<transcationFieldType>
-                name="customer_id"
-                rules={[
-                  {
-                    required: true,
-                    message: "Sotib olunivchi tanlanishi shart!",
-                  },
-                ]}
-              >
-                <Select className="h-10!" />
-              </Form.Item>
-            </div>
+        onFinish={transactionOnFinish}
+        type={transactionType.current}
+        form={form}
+      />
 
-            <div>
-              <span className="flex mb-1 font-medium text-[15px]">
-                To'lov summasi
-              </span>
-              <Form.Item<transcationFieldType>
-                name="amount"
-                rules={[
-                  {
-                    required: true,
-                    message: "To'lov summasi kiritilishi shart!",
-                  },
-                ]}
-              >
-                <Input className="h-10!" placeholder="0.00 UZS" />
-              </Form.Item>
-            </div>
+      <CustomerTransactionModal
+        open={transactionOpen}
+        onCancel={handleCancelTransaction}
+        onFinish={transactionOnFinish}
+        type={transactionType.current}
+        form={form}
+      />
 
-            <div>
-              <span className="flex mb-1 font-medium text-[15px]">
-                Qaytarish muddati (ixtiyoriy)
-              </span>
-              <Form.Item<transcationFieldType>
-                name="due_date"
-                className="w-full!"
-              >
-                <DatePicker
-                  className="h-10! w-full"
-                  placeholder="YYYY-MM-DD"
-                  inputReadOnly={true}
-                />
-              </Form.Item>
-            </div>
-
-            <div>
-              <span className="flex mb-1 font-medium text-[15px]">
-                Izoh (ixtiyoriy)
-              </span>
-              <Form.Item<transcationFieldType> name="description">
-                <Input.TextArea
-                  className="h-17!"
-                  autoSize={false}
-                  placeholder="Izoh"
-                />
-              </Form.Item>
-            </div>
-          </Form>
-        </div>
-      </Modal>
-
-      <Modal
-        centered
-        title="Yengi mijoz qo'shish"
-        closable={{ "aria-label": "Custom Close Button" }}
+      <AddCustomerModal
         open={newCustomerOpen}
         onCancel={handleCancelNewCustomer}
-        footer={
-          <div className="flex gap-2 justify-end">
-            <AntdButton
-              className="bg-red-500! text-white!"
-              onClick={handleCancelNewCustomer}
-            >
-              Bekor qilish
-            </AntdButton>
-            <AntdButton
-              onClick={() => form.submit()}
-              className="bg-green-500! text-white!"
-            >
-              Tasdiqlash
-            </AntdButton>
-          </div>
-        }
-      >
-        <div className="mt-6">
-          <Form name="basic" onFinish={newCustomerOnFinish} form={form}>
-            <div>
-              <span className="flex mb-1 font-medium text-[15px]">
-                To'liq ismi
-              </span>
-              <Form.Item<newCustomerFieldType>
-                name="full_name"
-                rules={[
-                  {
-                    required: true,
-                    message: "To'liq ism kiritilishi shart!",
-                  },
-                ]}
-              >
-                <Input className="h-10!" placeholder="To'liq ism" />
-              </Form.Item>
-            </div>
-
-            <div>
-              <span className="flex mb-1 font-medium text-[15px]">
-                Tel raqami
-              </span>
-              <Form.Item<newCustomerFieldType>
-                name="phone_number"
-                rules={[
-                  {
-                    required: true,
-                    message: "Tel raqam kiritilishi shart!",
-                  },
-                ]}
-              >
-                <Input className="h-10!" placeholder="+998" />
-              </Form.Item>
-            </div>
-
-            <div>
-              <span className="flex mb-1 font-medium text-[15px]">
-                Viloyat/Shahar
-              </span>
-              <Form.Item<newCustomerFieldType>
-                name="region"
-                className="w-full!"
-                rules={[
-                  {
-                    required: true,
-                    message: "Viloyat yoki shahar tanlanishi shart!",
-                  },
-                ]}
-              >
-                <Select
-                  className="h-10! w-full"
-                  placeholder="Viloyat/Shahar tanlash"
-                />
-              </Form.Item>
-            </div>
-          </Form>
-        </div>
-      </Modal>
+        onFinish={newCustomerOnFinish}
+        form={form}
+      />
     </div>
   );
 };

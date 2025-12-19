@@ -1,4 +1,3 @@
-import { memo } from "react";
 import {
   Modal,
   Form,
@@ -6,33 +5,45 @@ import {
   Input,
   DatePicker,
   Button as AntdButton,
+  type FormProps,
   type FormInstance,
 } from "antd";
-import type { Option } from "../../../../shared/lib/types";
+import { memo, useEffect } from "react";
+import type {
+  Option,
+  transactionFieldType,
+} from "../../../../shared/lib/types";
 
-interface Props {
-  isOpen: boolean;
+interface TransactionModalProps {
+  open: boolean;
   onCancel: () => void;
-  onFinish: (values: any) => void;
-  form: FormInstance;
   type: "lend" | "borrow" | null;
-  customerOptions?: Option[];
+  onFinish: FormProps<transactionFieldType>["onFinish"];
+  customers?: Option[];
+  form: FormInstance;
 }
 
 const CustomerTransactionModal = ({
-  isOpen,
+  open,
   onCancel,
-  onFinish,
-  form,
   type,
-  customerOptions,
-}: Props) => {
+  onFinish,
+  customers,
+  form,
+}: TransactionModalProps) => {
+  useEffect(() => {
+    if (!open) {
+      form.resetFields();
+    }
+  }, [open, form]);
+
   return (
     <Modal
       centered
       title={type === "lend" ? "Qarz berish" : "Qarz olish"}
-      open={isOpen}
+      open={open}
       onCancel={onCancel}
+      destroyOnHidden
       footer={
         <div className="flex gap-2 justify-end">
           <AntdButton className="bg-red-500! text-white!" onClick={onCancel}>
@@ -48,44 +59,63 @@ const CustomerTransactionModal = ({
       }
     >
       <div className="mt-6">
-        <Form layout="vertical" onFinish={onFinish} form={form}>
-          <Form.Item
-            label="Mijoz"
-            name="customer_id"
-            rules={[{ required: true, message: "Mijoz tanlanishi shart!" }]}
-          >
-            <Select
-              className="h-10!"
-              options={customerOptions}
-              placeholder="Mijozni tanlang"
-            />
-          </Form.Item>
+        <Form name="transactionForm" onFinish={onFinish} form={form}>
+          <div>
+            <span className="flex mb-1 font-medium text-[15px]">Mijoz</span>
+            <Form.Item<transactionFieldType>
+              name="customer_id"
+              rules={[{ required: true, message: "Mijoz tanlanishi shart!" }]}
+            >
+              <Select
+                className="h-10!"
+                options={customers}
+                placeholder="Mijozni tanlang"
+              />
+            </Form.Item>
+          </div>
 
-          <Form.Item
-            label="To'lov summasi"
-            name="amount"
-            rules={[
-              { required: true, message: "To'lov summasi kiritilishi shart!" },
-            ]}
-          >
-            <Input className="h-10!" placeholder="0.00 UZS" />
-          </Form.Item>
+          <div>
+            <span className="flex mb-1 font-medium text-[15px]">
+              To'lov summasi
+            </span>
+            <Form.Item<transactionFieldType>
+              name="amount"
+              rules={[
+                {
+                  required: true,
+                  message: "To'lov summasi kiritilishi shart!",
+                },
+              ]}
+            >
+              <Input className="h-10!" placeholder="0.00 UZS" type="number" />
+            </Form.Item>
+          </div>
 
-          <Form.Item label="Qaytarish muddati (ixtiyoriy)" name="due_date">
-            <DatePicker
-              className="h-10! w-full"
-              placeholder="YYYY-MM-DD"
-              inputReadOnly={true}
-            />
-          </Form.Item>
+          <div>
+            <span className="flex mb-1 font-medium text-[15px]">
+              Qaytarish muddati (ixtiyoriy)
+            </span>
+            <Form.Item<transactionFieldType> name="due_date">
+              <DatePicker
+                className="h-10! w-full"
+                placeholder="YYYY-MM-DD"
+                inputReadOnly
+              />
+            </Form.Item>
+          </div>
 
-          <Form.Item label="Izoh (ixtiyoriy)" name="description">
-            <Input.TextArea
-              className="h-17!"
-              autoSize={false}
-              placeholder="Izoh"
-            />
-          </Form.Item>
+          <div>
+            <span className="flex mb-1 font-medium text-[15px]">
+              Izoh (ixtiyoriy)
+            </span>
+            <Form.Item<transactionFieldType> name="description">
+              <Input.TextArea
+                className="h-17!"
+                autoSize={false}
+                placeholder="Izoh"
+              />
+            </Form.Item>
+          </div>
         </Form>
       </div>
     </Modal>

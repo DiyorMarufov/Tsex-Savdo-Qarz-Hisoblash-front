@@ -59,7 +59,10 @@ const CustomerTransactionDetails = () => {
   return (
     <div className="flex flex-col gap-5">
       <span className="text-[20px] font-medium text-[#4B5563]">
-        Aliyev Dilshod ni tranzaksiyalari
+        {customerTransactionDetails?.[0]?.customer.full_name
+          ? customerTransactionDetails?.[0]?.customer.full_name
+          : "Hozircha no'malum"}{" "}
+        ni tranzaksiyalari
       </span>
       <div className="grid grid-cols-3 gap-8 px-3">
         <div className="flex flex-col items-center cursor-pointer text-green-600 hover:text-green-700 transition duration-150">

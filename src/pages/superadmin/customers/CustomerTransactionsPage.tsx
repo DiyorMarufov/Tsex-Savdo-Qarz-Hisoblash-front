@@ -34,8 +34,8 @@ const CustomersDetailPage = () => {
   return (
     <>
       <span className="text-[20px] font-medium text-[#4B5563]">
-        {transactions?.[0].customer.full_name
-          ? transactions?.[0].customer.full_name
+        {transactions?.[0]?.customer.full_name
+          ? transactions?.[0]?.customer.full_name
           : "Hozircha no'malum"}{" "}
         ni tranzaksiyalari
       </span>

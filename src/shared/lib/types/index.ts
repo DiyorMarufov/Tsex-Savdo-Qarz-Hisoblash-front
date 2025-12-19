@@ -29,3 +29,16 @@ export interface Option {
   value: string;
   label: string;
 }
+
+export type transactionFieldType = {
+  customer_id: string;
+  amount: number;
+  due_date?: Date;
+  description?: string;
+};
+
+export type newCustomerFieldType = {
+  full_name: string;
+  phone_number: string;
+  region: string;
+};
