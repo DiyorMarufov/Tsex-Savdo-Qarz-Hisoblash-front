@@ -7,7 +7,7 @@ export const sale = "sale";
 export const useSale = () => {
   const getTotalSales = () =>
     useQuery<IResponseData>({
-      queryKey: [sale, "totalSales"],
+      queryKey: [sale, "total-sales"],
       queryFn: () => api.get("sales/total-sale").then((res) => res.data),
       refetchOnWindowFocus: false,
       staleTime: 1000 * 60 * 5,
@@ -16,7 +16,7 @@ export const useSale = () => {
 
   const getWeeklySale = () =>
     useQuery<IResponseData>({
-      queryKey: [sale, "weeklySale"],
+      queryKey: [sale, "weekly-sale"],
       queryFn: () => api.get("sales/weekly-sale").then((res) => res.data),
       refetchOnWindowFocus: false,
       staleTime: 1000 * 60 * 5,

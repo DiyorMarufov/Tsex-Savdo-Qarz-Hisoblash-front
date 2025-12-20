@@ -6,7 +6,7 @@ import {
   Button as AntdButton,
   type FormInstance,
 } from "antd";
-import { memo, useEffect } from "react";
+import { memo } from "react";
 import type { Option } from "../../../../shared/lib/types";
 
 interface TsexTransactionModalProps {
@@ -30,19 +30,12 @@ const TsexTransactionModal = ({
     { value: "avans", label: "qo'shimcha to'lov" },
   ];
 
-  useEffect(() => {
-    if (!isOpen) {
-      form.resetFields();
-    }
-  }, [isOpen, form]);
-
   return (
     <Modal
       centered
       title="To'lov qilish"
       open={isOpen}
       onCancel={onCancel}
-      destroyOnClose
       footer={
         <div className="flex gap-2 justify-end">
           <AntdButton className="bg-red-500! text-white!" onClick={onCancel}>
@@ -98,7 +91,7 @@ const TsexTransactionModal = ({
                 v
                   ? String(v)
                       .replace(/[^\d]/g, "")
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   : v
               }
             >

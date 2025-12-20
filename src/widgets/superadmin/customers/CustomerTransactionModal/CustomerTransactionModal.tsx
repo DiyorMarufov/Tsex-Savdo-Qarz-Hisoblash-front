@@ -72,7 +72,7 @@ const CustomerTransactionModal = ({
             <span className="flex mb-1 font-medium text-[15px]">
               To'lov summasi
             </span>
-            <Form.Item<transactionFieldType>
+            <Form.Item
               name="amount"
               rules={[
                 {
@@ -84,11 +84,11 @@ const CustomerTransactionModal = ({
                 v
                   ? String(v)
                       .replace(/[^\d]/g, "")
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   : v
               }
             >
-              <Input className="h-10!" placeholder="0.00 UZS" />
+              <Input className="h-10!" placeholder="0,00 UZS" />
             </Form.Item>
           </div>
 

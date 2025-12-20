@@ -21,7 +21,7 @@ export const useCustomer = () => {
   });
   const getTotalCustomerBalance = () =>
     useQuery<IResponseData>({
-      queryKey: [customer, "totalBalance"],
+      queryKey: [customer, "customer-total-balance"],
       queryFn: () =>
         api.get("customers/balances/total").then((res) => res.data),
       refetchOnWindowFocus: false,
@@ -31,7 +31,7 @@ export const useCustomer = () => {
 
   const getMostDebtorCustomers = () =>
     useQuery<IResponseData>({
-      queryKey: [customer, "mostDebtorCustomers"],
+      queryKey: [customer, "most-debtor-customers"],
       queryFn: () => api.get("customers/debtors/top").then((res) => res.data),
       refetchOnWindowFocus: false,
       staleTime: 1000 * 60 * 5,

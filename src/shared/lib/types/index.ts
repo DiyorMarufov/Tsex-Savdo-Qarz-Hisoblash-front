@@ -32,7 +32,7 @@ export interface Option {
 
 export type transactionFieldType = {
   customer_id: string;
-  amount: number;
+  amount: any;
   due_date?: Date;
   description?: string;
 };

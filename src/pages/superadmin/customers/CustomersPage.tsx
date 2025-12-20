@@ -23,6 +23,7 @@ import CustomerTransactionModal from "../../../widgets/superadmin/customers/Cust
 import AddCustomerModal from "../../../widgets/superadmin/customers/AddCustomerModal/AddCustomerModal";
 import { useApiNotification } from "../../../shared/hooks/api-notification/useApiNotification";
 import { formatPhoneNumber } from "../../../shared/lib/functions/formatPhoneNumber";
+import { useCustomerTransaction } from "../../../shared/lib/apis/customer-transactions/useCustomerTransaction";
 
 const CustomersPage = () => {
   const [transactionOpen, setTransactionOpen] = useState<boolean>(false);
@@ -37,6 +38,7 @@ const CustomersPage = () => {
   const [form] = Form.useForm();
 
   const { createCustomer, getAllCustomersForTransaction } = useCustomer();
+  const { createLend, createBorrow } = useCustomerTransaction();
   const { handleApiError, handleSuccess } = useApiNotification();
 
   useEffect(() => {
@@ -61,7 +63,82 @@ const CustomersPage = () => {
   const transactionOnFinish: FormProps<transactionFieldType>["onFinish"] = (
     values: transactionFieldType
   ) => {
-    console.log("Success:", values);
+    const { customer_id, amount, description, due_date } = values;
+    const data = {
+      customer_id,
+      amount: Number(amount.replace(/\D/g, "")),
+      due_date,
+      description,
+    };
+    switch (transactionType.current) {
+      case "lend":
+        createLend.mutate(data, {
+          onSuccess: () => {
+            handleCancelTransaction();
+            form.resetFields();
+            handleSuccess("Muvaffaqiyatli qarz berildi");
+          },
+          onError: (err: any) => {
+            const status = err?.response?.data?.statusCode;
+            const msg = err?.response?.data?.message;
+
+            if (status === 404 && msg?.startsWith("Customer with ID")) {
+              handleApiError(`Bunday mijoz mavjud emas`, "topRight");
+              return;
+            } else if (
+              status === 409 &&
+              msg === "This customer already has an active transaction"
+            ) {
+              handleApiError("Mijoz aktiv tranzaksiyaga ega", "topRight");
+              return;
+            } else if (status === 404 && msg.startsWith("User with ID")) {
+              handleApiError("Superadmin mavjud emas", "topRight");
+              return;
+            } else if (status === 400 && msg === "Can't create past due_date") {
+              handleApiError("Eski sanani tanlab bo'lmaydi", "topRight");
+              return;
+            } else {
+              handleApiError("Serverda xato", "topRight");
+              return;
+            }
+          },
+        });
+        break;
+
+      case "borrow":
+        createBorrow.mutate(data, {
+          onSuccess: () => {
+            handleCancelTransaction();
+            form.resetFields();
+            handleSuccess("Muvaffaqiyatli qarz olindi");
+          },
+          onError: (err: any) => {
+            const status = err?.response?.data?.statusCode;
+            const msg = err?.response?.data?.message;
+
+            if (status === 404 && msg?.startsWith("Customer with ID")) {
+              handleApiError(`Bunday mijoz mavjud emas`, "topRight");
+              return;
+            } else if (
+              status === 409 &&
+              msg === "This customer already has an active transaction"
+            ) {
+              handleApiError("Mijoz aktiv tranzaksiyaga ega", "topRight");
+              return;
+            } else if (status === 404 && msg.startsWith("User with ID")) {
+              handleApiError("Superadmin mavjud emas", "topRight");
+              return;
+            } else if (status === 400 && msg === "Can't create past due_date") {
+              handleApiError("Eski sanani tanlab bo'lmaydi", "topRight");
+              return;
+            } else {
+              handleApiError("Serverda xato", "topRight");
+              return;
+            }
+          },
+        });
+        break;
+    }
   };
   // Transaction ends
 
@@ -90,7 +167,7 @@ const CustomersPage = () => {
         handleSuccess("Mijoz muvaffaqiyatli yaratildi");
       },
       onError: (err: any) => {
-        const status = err?.status;
+        const status = err?.response?.data?.statusCode;
         switch (status) {
           case 409:
             handleApiError(

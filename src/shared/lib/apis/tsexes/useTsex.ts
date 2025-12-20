@@ -7,7 +7,7 @@ export const tsex = "tsex";
 export const useTsex = () => {
   const getTotalTsexBalance = () =>
     useQuery<IResponseData>({
-      queryKey: [tsex, "totalBalance"],
+      queryKey: [tsex, "total-balance"],
       queryFn: () => api.get("tsexes/balances/total").then((res) => res.data),
       refetchOnWindowFocus: false,
       staleTime: 1000 * 60 * 5,
@@ -16,7 +16,7 @@ export const useTsex = () => {
 
   const getMostDebtorTsexes = () =>
     useQuery<IResponseData>({
-      queryKey: [tsex, "mostDebtorTsexes"],
+      queryKey: [tsex, "most-debtor-tsexes"],
       queryFn: () => api.get("tsexes/debtors/top").then((res) => res.data),
       refetchOnWindowFocus: false,
       staleTime: 1000 * 60 * 5,
