@@ -113,7 +113,7 @@ const TsexesPage = () => {
                   handleApiError("Superadmin huquqiga ega emassiz", "topRight");
                   break;
                 default:
-                  handleApiError("Server xatosi", "topRight");
+                  handleApiError("Serverda xato", "topRight");
                   break;
               }
             },
@@ -162,7 +162,7 @@ const TsexesPage = () => {
                   handleApiError("Superadmin huquqiga ega emassiz", "topRight");
                   break;
                 default:
-                  handleApiError("Server xatosi", "topRight");
+                  handleApiError("Serverda xato", "topRight");
                   break;
               }
             },
@@ -204,7 +204,7 @@ const TsexesPage = () => {
                   handleApiError("Superadmin huquqiga ega emassiz", "topRight");
                   break;
                 default:
-                  handleApiError("Server xatosi", "topRight");
+                  handleApiError("Serverda xato", "topRight");
                   break;
               }
             },

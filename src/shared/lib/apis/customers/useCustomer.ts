@@ -1,10 +1,24 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "../../../../features/auth/api";
-import type { IResponseData } from "../../types";
+import type { IResponseData, newCustomerFieldType } from "../../types";
 
 export const customer = "customer";
 
 export const useCustomer = () => {
+  const client = useQueryClient();
+
+  const createCustomer = useMutation({
+    mutationFn: (data: newCustomerFieldType) =>
+      api.post("customers", data).then((res) => res.data),
+    onSuccess: () => {
+      client.invalidateQueries({
+        queryKey: [customer, "all-customers"],
+      });
+      client.invalidateQueries({
+        queryKey: [customer, "all-customers-for-transaction"],
+      });
+    },
+  });
   const getTotalCustomerBalance = () =>
     useQuery<IResponseData>({
       queryKey: [customer, "totalBalance"],
@@ -62,12 +76,24 @@ export const useCustomer = () => {
       staleTime: 1000 * 60 * 5,
       gcTime: 1000 * 60 * 10,
     });
+
+  const getAllCustomersForTransaction = () =>
+    useQuery<IResponseData>({
+      queryKey: [customer, "all-customers-for-transaction"],
+      queryFn: () =>
+        api.get("customers/transactions/list").then((res) => res.data),
+      refetchOnWindowFocus: false,
+      staleTime: Infinity,
+      gcTime: Infinity,
+    });
   return {
+    createCustomer,
     getTotalCustomerBalance,
     getMostDebtorCustomers,
     getCustomerCreditorTotalBalance,
     getCustomerDebtorTotalBalance,
     getCustomerNetTotalBalance,
     getAllCustomers,
+    getAllCustomersForTransaction,
   };
 };

@@ -8,7 +8,7 @@ import {
   type FormProps,
   type FormInstance,
 } from "antd";
-import { memo, useEffect } from "react";
+import { memo } from "react";
 import type {
   Option,
   transactionFieldType,
@@ -19,7 +19,7 @@ interface TransactionModalProps {
   onCancel: () => void;
   type: "lend" | "borrow" | null;
   onFinish: FormProps<transactionFieldType>["onFinish"];
-  customers?: Option[];
+  customers: Option[];
   form: FormInstance;
 }
 
@@ -31,12 +31,6 @@ const CustomerTransactionModal = ({
   customers,
   form,
 }: TransactionModalProps) => {
-  useEffect(() => {
-    if (!open) {
-      form.resetFields();
-    }
-  }, [open, form]);
-
   return (
     <Modal
       centered
@@ -86,8 +80,15 @@ const CustomerTransactionModal = ({
                   message: "To'lov summasi kiritilishi shart!",
                 },
               ]}
+              normalize={(v) =>
+                v
+                  ? String(v)
+                      .replace(/[^\d]/g, "")
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+                  : v
+              }
             >
-              <Input className="h-10!" placeholder="0.00 UZS" type="number" />
+              <Input className="h-10!" placeholder="0.00 UZS" />
             </Form.Item>
           </div>
 

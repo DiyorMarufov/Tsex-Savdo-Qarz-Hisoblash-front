@@ -12,6 +12,7 @@ import { useCustomer } from "../../../shared/lib/apis/customers/useCustomer";
 import CustomerMobileList from "../../../widgets/customers/CustomerMobileList/CustomerMobileList";
 import type {
   newCustomerFieldType,
+  Option,
   QueryParams,
   transactionFieldType,
 } from "../../../shared/lib/types";
@@ -20,6 +21,8 @@ import { debounce } from "../../../shared/lib/functions/debounce";
 import { customerRegions } from "../../../shared/lib/constants";
 import CustomerTransactionModal from "../../../widgets/superadmin/customers/CustomerTransactionModal/CustomerTransactionModal";
 import AddCustomerModal from "../../../widgets/superadmin/customers/AddCustomerModal/AddCustomerModal";
+import { useApiNotification } from "../../../shared/hooks/api-notification/useApiNotification";
+import { formatPhoneNumber } from "../../../shared/lib/functions/formatPhoneNumber";
 
 const CustomersPage = () => {
   const [transactionOpen, setTransactionOpen] = useState<boolean>(false);
@@ -32,6 +35,9 @@ const CustomersPage = () => {
   const { getParam, setParams, removeParam } = useParamsHook();
   const [localSearch, setLocalSearch] = useState(getParam("search") || "");
   const [form] = Form.useForm();
+
+  const { createCustomer, getAllCustomersForTransaction } = useCustomer();
+  const { handleApiError, handleSuccess } = useApiNotification();
 
   useEffect(() => {
     window.scroll({ top: 0 });
@@ -71,7 +77,34 @@ const CustomersPage = () => {
   const newCustomerOnFinish: FormProps<newCustomerFieldType>["onFinish"] = (
     values: newCustomerFieldType
   ) => {
-    console.log("Success:", values);
+    const { full_name, phone_number, region } = values;
+    const data = {
+      full_name,
+      phone_number: phone_number.split(" ").join(""),
+      region,
+    };
+    createCustomer.mutate(data, {
+      onSuccess: () => {
+        handleCancelNewCustomer();
+        form.resetFields();
+        handleSuccess("Mijoz muvaffaqiyatli yaratildi");
+      },
+      onError: (err: any) => {
+        const status = err?.status;
+        switch (status) {
+          case 409:
+            handleApiError(
+              `${phone_number} raqamli foydalanuvchi mavjud`,
+              "topRight"
+            );
+            break;
+
+          default:
+            handleApiError("Serverda xato", "topRight");
+            break;
+        }
+      },
+    });
   };
   // New Customer ends
 
@@ -148,7 +181,27 @@ const CustomersPage = () => {
   };
   // Filter ends
 
-  if (pathname.startsWith("/superadmin/customers/transaction/")) return <Outlet />;
+  // Customers list fro transaction starts
+  const { data: allCustomersList } = getAllCustomersForTransaction();
+  const customerOptions: Option[] =
+    allCustomersList?.data.map((cs: any) => ({
+      value: cs.id,
+      label: (
+        <div className="flex items-center justify-between w-full gap-4">
+          <span className="font-medium text-slate-800 truncate">
+            {cs.full_name}
+          </span>
+          <span className="text-[12px] text-slate-400 font-normal tabular-nums shrink-0">
+            {formatPhoneNumber(cs.phone_number)}
+          </span>
+        </div>
+      ),
+    })) || [];
+
+  // Customers list fro transaction ends
+
+  if (pathname.startsWith("/superadmin/customers/transaction/"))
+    return <Outlet />;
 
   return (
     <div>
@@ -270,14 +323,7 @@ const CustomersPage = () => {
         onCancel={handleCancelTransaction}
         onFinish={transactionOnFinish}
         type={transactionType.current}
-        form={form}
-      />
-
-      <CustomerTransactionModal
-        open={transactionOpen}
-        onCancel={handleCancelTransaction}
-        onFinish={transactionOnFinish}
-        type={transactionType.current}
+        customers={customerOptions}
         form={form}
       />
 
