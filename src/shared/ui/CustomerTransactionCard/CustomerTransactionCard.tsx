@@ -5,7 +5,7 @@ import type { CustomerTranscationsListItemsType } from "../../../pages/superadmi
 
 interface TransactionCardProps {
   trd: CustomerTranscationsListItemsType;
-  onDetail: (id: string) => void;
+  onDetail: (id: string, type: "lending" | "borrowing") => void;
 }
 
 const CustomerTransactionCard = ({ trd, onDetail }: TransactionCardProps) => {
@@ -107,7 +107,9 @@ const CustomerTransactionCard = ({ trd, onDetail }: TransactionCardProps) => {
           </div>
           <AntdButton
             className="bg-[#1D4ED8]! text-white!"
-            onClick={() => onDetail(trd.id as string)}
+            onClick={() =>
+              onDetail(trd.id as string, trd.type as "lending" | "borrowing")
+            }
           >
             Batafsil
           </AntdButton>

@@ -4,6 +4,7 @@ import { transactionColumns } from "./model/customer-transactions-model";
 import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useCustomerTransaction } from "../../../shared/lib/apis/customer-transactions/useCustomerTransaction";
 import CustomerTransactionMobileList from "../../../widgets/superadmin/customers/CustomerTransactionMobileList/CustomerTransactionMobileList";
+import NameSkeleton from "../../../shared/ui/Skeletons/NameSkeleton/NameSkeleton";
 
 const CustomersDetailPage = () => {
   const navigate = useNavigate();
@@ -16,8 +17,8 @@ const CustomersDetailPage = () => {
   }, []);
 
   // CustomerTransaction detail starts
-  const handleOpenTransactionDetail = (id: string) => {
-    navigate(`transaction/${id}`);
+  const handleOpenTransactionDetail = (id: string, type: "lending" | "borrowing") => {
+    navigate(`detail/${id}?type=${type}`);
   };
   // CustomerTransaction detail ends
 
@@ -27,18 +28,22 @@ const CustomersDetailPage = () => {
   const transactions = customerTransactions?.data;
   // CustomerTransaction ends
 
-  if (pathname.includes("/transaction/")) {
+  if (pathname.includes("/detail/")) {
     return <Outlet />;
   }
 
   return (
-    <>
-      <span className="text-[20px] font-medium text-[#4B5563]">
-        {transactions?.[0]?.customer.full_name
-          ? transactions?.[0]?.customer.full_name
-          : "Hozircha no'malum"}{" "}
-        ni tranzaksiyalari
-      </span>
+    <div>
+      {customerTransactionLoading ? (
+        <NameSkeleton />
+      ) : (
+        <span className="text-[20px] font-medium text-[#4B5563]">
+          {transactions?.[0]?.customer.full_name
+            ? transactions?.[0]?.customer.full_name
+            : "Hozircha no'malum"}{" "}
+          ni tranzaksiyalari
+        </span>
+      )}
       <div className="max-[500px]:hidden">
         <ProTable
           dataSource={transactions}
@@ -60,7 +65,7 @@ const CustomersDetailPage = () => {
         transactions={transactions}
         loading={customerTransactionLoading}
       />
-    </>
+    </div>
   );
 };
 

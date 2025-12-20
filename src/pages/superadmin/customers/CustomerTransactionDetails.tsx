@@ -1,11 +1,13 @@
 import { memo, useEffect, useRef, useState } from "react";
 import ProTable from "@ant-design/pro-table";
 import { transactionDetailColumns } from "./model/customer-transactions-detail-model";
-import { ArrowDown, ArrowUp, CheckCircle } from "lucide-react";
 import { Modal, type FormProps, Button as AntdButton, Form, Input } from "antd";
 import { useCustomerTransaction } from "../../../shared/lib/apis/customer-transactions/useCustomerTransaction";
 import { useParams } from "react-router-dom";
 import CustomerTransactionDetailMobileList from "../../../widgets/customers/CustomerTransactionDetailMobileList/CustomerTransactionDetailMobileList";
+import NameSkeleton from "../../../shared/ui/Skeletons/NameSkeleton/NameSkeleton";
+import { useParamsHook } from "../../../shared/hooks/params/useParams";
+import CustomerTransactionDetailTransactions from "../../../widgets/superadmin/customers/CustomerTransactionDetailTransactions/CustomerTransactionDetailTransactions";
 
 type transcationFieldType = {
   amount: number;
@@ -17,6 +19,9 @@ const CustomerTransactionDetails = () => {
   const transactionType = useRef<"borrow_more" | "receive" | null>(null);
   const [form] = Form.useForm();
   const { id } = useParams();
+  const { getParam } = useParamsHook();
+
+  const type = getParam("type") || "";
 
   const { getCustomerTransactionsDetailByParentTransactionId } =
     useCustomerTransaction();
@@ -46,6 +51,11 @@ const CustomerTransactionDetails = () => {
   ) => {
     console.log("Success:", values);
   };
+
+  const handleFinish = () => {
+    console.log("Tugatish jarayoni boshlandi");
+    // Agar tugatish uchun ham modal ochmoqchi bo'lsangiz, shu yerda open qilasiz
+  };
   // Transaction ends
 
   // CustomerTransactionDetail starts
@@ -58,44 +68,24 @@ const CustomerTransactionDetails = () => {
 
   return (
     <div className="flex flex-col gap-5">
-      <span className="text-[20px] font-medium text-[#4B5563]">
-        {customerTransactionDetails?.[0]?.customer.full_name
-          ? customerTransactionDetails?.[0]?.customer.full_name
-          : "Hozircha no'malum"}{" "}
-        ni tranzaksiyalari
-      </span>
-      <div className="grid grid-cols-3 gap-8 px-3">
-        <div className="flex flex-col items-center cursor-pointer text-green-600 hover:text-green-700 transition duration-150">
-          <div
-            className="p-3 border-2 border-green-600 rounded-full bg-green-100/50"
-            onClick={handleBorrowMore}
-          >
-            <ArrowUp className="h-8 w-8" />
-          </div>
-          <span className="text-sm font-medium mt-1 text-center">
-            Koproq qarz berish
-          </span>
-        </div>
+      {customerTransactionDetailLoading ? (
+        <NameSkeleton />
+      ) : (
+        <span className="text-[20px] font-medium text-[#4B5563]">
+          {customerTransactionDetails?.[0]?.customer.full_name
+            ? customerTransactionDetails?.[0]?.customer.full_name
+            : "Hozircha no'malum"}{" "}
+          ni tranzaksiyalari
+        </span>
+      )}
 
-        <div className="flex flex-col items-center cursor-pointer text-red-600 hover:text-red-700 transition duration-150">
-          <div
-            className="p-3 border-2 border-red-600 rounded-full bg-red-100/50"
-            onClick={handleReceive}
-          >
-            <ArrowDown className="h-8 w-8" />
-          </div>
-          <span className="text-sm font-medium mt-1 text-center">
-            Qabul qilish
-          </span>
-        </div>
+      <CustomerTransactionDetailTransactions
+        type={type}
+        handleActionMore={handleBorrowMore}
+        handlePayment={handleReceive}
+        handleFinish={handleFinish}
+      />
 
-        <div className="flex flex-col items-center cursor-pointer text-blue-600 hover:text-blue-700 transition duration-150">
-          <div className="p-3 border-2 border-blue-600 rounded-full bg-blue-100/50">
-            <CheckCircle className="h-8 w-8" />
-          </div>
-          <span className="text-sm font-medium mt-1 text-center">Tugatish</span>
-        </div>
-      </div>
       <div className="mt-2 max-[500px]:hidden">
         <ProTable
           dataSource={transactionDetails}

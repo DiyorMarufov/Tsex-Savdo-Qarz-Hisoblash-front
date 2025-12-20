@@ -6,6 +6,7 @@ import {
   Button as AntdButton,
   type FormInstance,
 } from "antd";
+import { memo, useEffect } from "react";
 import type { Option } from "../../../../shared/lib/types";
 
 interface TsexTransactionModalProps {
@@ -29,12 +30,19 @@ const TsexTransactionModal = ({
     { value: "avans", label: "qo'shimcha to'lov" },
   ];
 
+  useEffect(() => {
+    if (!isOpen) {
+      form.resetFields();
+    }
+  }, [isOpen, form]);
+
   return (
     <Modal
       centered
       title="To'lov qilish"
       open={isOpen}
       onCancel={onCancel}
+      destroyOnClose
       footer={
         <div className="flex gap-2 justify-end">
           <AntdButton className="bg-red-500! text-white!" onClick={onCancel}>
@@ -50,38 +58,70 @@ const TsexTransactionModal = ({
       }
     >
       <div className="mt-6">
-        <Form onFinish={onFinish} form={form} layout="vertical">
-          <Form.Item name="tsex_id" label="Tsex" rules={[{ required: true }]}>
-            <Select className="h-10!" options={tsexesOptions} />
-          </Form.Item>
-          <Form.Item
-            name="type"
-            label="To'lov turi"
-            rules={[{ required: true }]}
-          >
-            <Select className="h-10!" options={paymentOptions} />
-          </Form.Item>
-          <Form.Item
-            name="amount"
-            label="Summa"
-            rules={[{ required: true }]}
-            normalize={(v) =>
-              v ? Number(v.replace(/[^\d]/g, "")).toLocaleString() : v
-            }
-          >
-            <Input className="h-10!" placeholder="0.00" />
-          </Form.Item>
-          <Form.Item name="description" label="Izoh (ixtiyoriy)">
-            <Input.TextArea
-              className="h-17!"
-              autoSize={false}
-              placeholder="Izoh"
-            />
-          </Form.Item>
+        <Form onFinish={onFinish} form={form}>
+          <div>
+            <span className="flex mb-1 font-medium text-[15px]">Tsex</span>
+            <Form.Item
+              name="tsex_id"
+              rules={[{ required: true, message: "Tsex tanlanishi shart!" }]}
+            >
+              <Select
+                className="h-10!"
+                options={tsexesOptions}
+                placeholder="Tsexni tanlang"
+              />
+            </Form.Item>
+          </div>
+
+          <div>
+            <span className="flex mb-1 font-medium text-[15px]">
+              To'lov turi
+            </span>
+            <Form.Item
+              name="type"
+              rules={[{ required: true, message: "To'lov turi shart!" }]}
+            >
+              <Select
+                className="h-10!"
+                options={paymentOptions}
+                placeholder="To'lov turini tanlang"
+              />
+            </Form.Item>
+          </div>
+
+          <div>
+            <span className="flex mb-1 font-medium text-[15px]">Summa</span>
+            <Form.Item
+              name="amount"
+              rules={[{ required: true, message: "Summa kiritilishi shart!" }]}
+              normalize={(v) =>
+                v
+                  ? String(v)
+                      .replace(/[^\d]/g, "")
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+                  : v
+              }
+            >
+              <Input className="h-10!" placeholder="0.00 UZS" />
+            </Form.Item>
+          </div>
+
+          <div>
+            <span className="flex mb-1 font-medium text-[15px]">
+              Izoh (ixtiyoriy)
+            </span>
+            <Form.Item name="description">
+              <Input.TextArea
+                className="h-17!"
+                autoSize={false}
+                placeholder="Izoh yozing"
+              />
+            </Form.Item>
+          </div>
         </Form>
       </div>
     </Modal>
   );
 };
 
-export default TsexTransactionModal;
+export default memo(TsexTransactionModal);

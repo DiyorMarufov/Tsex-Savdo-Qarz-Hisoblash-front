@@ -35,7 +35,7 @@ const TsexesTransactions = lazy(
 const CustomerTransactionDetails = lazy(
   () => import("../../pages/superadmin/customers/CustomerTransactionDetails")
 );
-const CustomersDetailPage = lazy(
+const CustomersTransactionPage = lazy(
   () => import("../../pages/superadmin/customers/CustomerTransactionsPage")
 );
 const LoginPage = lazy(() => import("../../pages/login/LoginPage"));
@@ -117,11 +117,11 @@ const Router = () => {
                       element: <CustomersPage />,
                     },
                     {
-                      path: "detail/:id",
-                      element: <CustomersDetailPage />,
+                      path: "transaction/:id",
+                      element: <CustomersTransactionPage />,
                       children: [
                         {
-                          path: "transaction/:id",
+                          path: "detail/:id",
                           element: <CustomerTransactionDetails />,
                         },
                       ],

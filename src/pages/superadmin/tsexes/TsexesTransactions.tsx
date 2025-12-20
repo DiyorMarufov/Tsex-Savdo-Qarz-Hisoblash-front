@@ -14,6 +14,7 @@ import type {
 } from "../../../shared/lib/types";
 import TsexTransactionCardSkeleton from "../../../shared/ui/Skeletons/TsexTranscations/TsexTransactionCardSkeleton";
 import { useParamsHook } from "../../../shared/hooks/params/useParams";
+import NameSkeleton from "../../../shared/ui/Skeletons/NameSkeleton/NameSkeleton";
 
 const tsexTransactionsTypeUzbek: TsexTransactionsType = {
   partial_payment: "Qisman to'lov",
@@ -85,9 +86,13 @@ const TsexesTransactions = () => {
   const tsexName = tsexTransactions?.[0]?.tsex;
   return (
     <div>
-      <div className="pb-3 text-[20px] font-medium text-[#4B5563]">
-        {tsexName ? tsexName : "Hozircha no'malum"} tsexning tranzaksiyalari
-      </div>
+      {tsexTranscationLoading ? (
+        <NameSkeleton />
+      ) : (
+        <div className="pb-3 text-[20px] font-medium text-[#4B5563]">
+          {tsexName ? tsexName : "Hozircha no'malum"} tsexning tranzaksiyalari
+        </div>
+      )}
       <ProTable
         dataSource={tsexTransactions}
         rowKey="id"

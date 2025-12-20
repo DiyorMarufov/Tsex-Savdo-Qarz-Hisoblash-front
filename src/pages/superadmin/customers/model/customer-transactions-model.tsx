@@ -4,14 +4,7 @@ import { Edit, Trash } from "lucide-react";
 export type CustomerTranscationsListItemsType = {
   id?: string;
   customer: any;
-  type:
-    | "borrowing"
-    | "borrow_more"
-    | "repayment"
-    | "paid_off"
-    | "lending"
-    | "lend_more"
-    | "received";
+  type: "borrowing" | "lending";
   amount: number;
   due_date: Date;
   description: string;
@@ -72,9 +65,7 @@ export const transactionColumns = (
       const formattedAmount = Math.abs(balanceAmount).toLocaleString("uz-UZ");
 
       if (balanceAmount < 0) {
-        return (
-          <div className="text-red-600 font-bold">-{formattedAmount}</div>
-        );
+        return <div className="text-red-600 font-bold">-{formattedAmount}</div>;
       }
 
       return <div className="text-green-600 font-bold">{formattedAmount}</div>;
@@ -120,7 +111,7 @@ export const transactionColumns = (
     render: (_, record) => (
       <div
         className="text-[15px] text-green-500 cursor-pointer hover:opacity-80"
-        onClick={() => handleOpenTransactionDetail(record.id)}
+        onClick={() => handleOpenTransactionDetail(record.id, record.type)}
       >
         Batafsil
       </div>

@@ -77,7 +77,7 @@ const CustomersPage = () => {
 
   // Detail starts
   const handleOpenDetail = (id: string) => {
-    navigate(`detail/${id}`);
+    navigate(`transaction/${id}`);
   };
   // Detail ends
 
@@ -148,7 +148,7 @@ const CustomersPage = () => {
   };
   // Filter ends
 
-  if (pathname.startsWith("/superadmin/customers/detail/")) return <Outlet />;
+  if (pathname.startsWith("/superadmin/customers/transaction/")) return <Outlet />;
 
   return (
     <div>

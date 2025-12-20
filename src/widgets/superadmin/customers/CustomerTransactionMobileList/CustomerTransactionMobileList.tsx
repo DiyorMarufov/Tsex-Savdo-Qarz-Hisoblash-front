@@ -6,7 +6,7 @@ import CustomerCardSkeleton from "../../../../shared/ui/Skeletons/Customers/Cust
 interface TransactionMobileListProps {
   transactions: CustomerTranscationsListItemsType[] | undefined;
   loading: boolean;
-  handleOpenTransactionDetail: (id: string) => void;
+  handleOpenTransactionDetail: (id: string, type: "lending" | "borrowing") => void;
 }
 
 const TransactionMobileList = ({
