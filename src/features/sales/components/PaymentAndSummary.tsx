@@ -29,7 +29,7 @@ const PaymentAndSummary = () => {
             To'langan summa
           </span>
           <Form.Item>
-            <Input className="h-10!" placeholder="0.00 UZS" />
+            <Input className="h-10!" placeholder="0,00 UZS" />
           </Form.Item>
         </div>
 

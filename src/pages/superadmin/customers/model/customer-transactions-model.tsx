@@ -99,8 +99,8 @@ export const transactionColumns = (
     valueType: "option",
     render: (_) => (
       <div className="flex gap-3">
-        <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
-        <Trash className="text-red-600 cursor-pointer hover:opacity-80" />
+        <Edit className="text-green-600 cursor-pointer hover:opacity-80 w-6 h-6" />
+        <Trash className="text-red-600 cursor-pointer hover:opacity-80 w-6 h-6" />
       </div>
     ),
   },

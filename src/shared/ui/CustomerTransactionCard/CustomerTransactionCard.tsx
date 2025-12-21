@@ -11,7 +11,7 @@ interface TransactionCardProps {
 const CustomerTransactionCard = ({ trd, onDetail }: TransactionCardProps) => {
   return (
     <div className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]">
-      <div className="flex justify-between items-center px-3.5 py-2">
+      <div className="flex justify-between items-center px-3.5 py-2.5">
         <a className="text-[16px] font-bold text-green-600 w-fit">
           {trd.customer.full_name}
         </a>
@@ -42,7 +42,7 @@ const CustomerTransactionCard = ({ trd, onDetail }: TransactionCardProps) => {
           </div>
           <div className="flex flex-col">
             <span className="text-[15px] font-medium text-[#6B7280]">
-              Balans
+              Keyingi Balans
             </span>
             <span
               className={`text-[16px] font-bold ${
@@ -94,15 +94,15 @@ const CustomerTransactionCard = ({ trd, onDetail }: TransactionCardProps) => {
           </span>
         </div>
 
-        <div className="flex justify-between items-center mt-1">
+        <div className="flex justify-between items-center">
           <div className="flex items-center gap-5">
             <Edit
               size={20}
-              className="text-green-600 cursor-pointer hover:opacity-80"
+              className="text-green-600 cursor-pointer hover:opacity-80 w-6 h-6"
             />
             <Trash
               size={20}
-              className="text-red-600 cursor-pointer hover:opacity-80"
+              className="text-red-600 cursor-pointer hover:opacity-80 w-6 h-6"
             />
           </div>
           <AntdButton

@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
 import { Button as AntdButton, Form, type FormProps } from "antd";
 import { ArrowDown, ArrowUp, Plus } from "lucide-react";
@@ -27,7 +27,9 @@ import { useCustomerTransaction } from "../../../shared/lib/apis/customer-transa
 
 const CustomersPage = () => {
   const [transactionOpen, setTransactionOpen] = useState<boolean>(false);
-  const transactionType = useRef<"lend" | "borrow" | null>(null);
+  const [transactionType, setTransactionType] = useState<
+    "lend" | "borrow" | null
+  >(null);
   const [newCustomerOpen, setNewCustomerOpen] = useState<boolean>(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -46,17 +48,17 @@ const CustomersPage = () => {
   }, []);
   // Transaction starts
   const handleLend = () => {
-    transactionType.current = "lend";
+    setTransactionType("lend");
     setTransactionOpen(true);
   };
 
   const handleBorrow = () => {
-    transactionType.current = "borrow";
+    setTransactionType("borrow");
     setTransactionOpen(true);
   };
 
   const handleCancelTransaction = () => {
-    transactionType.current = null;
+    setTransactionType(null);
     setTransactionOpen(false);
   };
 
@@ -70,7 +72,7 @@ const CustomersPage = () => {
       due_date,
       description,
     };
-    switch (transactionType.current) {
+    switch (transactionType) {
       case "lend":
         createLend.mutate(data, {
           onSuccess: () => {
@@ -291,6 +293,8 @@ const CustomersPage = () => {
           <AntdButton
             className="py-5! rounded-[10px]! bg-[#E5E7EB]! max-[1300px]:w-full"
             onClick={handleLend}
+            disabled={createLend.isPending}
+            loading={createLend.isPending}
           >
             {" "}
             <ArrowDown />
@@ -299,6 +303,8 @@ const CustomersPage = () => {
           <AntdButton
             className="py-5! rounded-[10px]! bg-[#E5E7EB]! max-[1300px]:w-full"
             onClick={handleBorrow}
+            disabled={createBorrow.isPending}
+            loading={createBorrow.isPending}
           >
             {" "}
             <ArrowUp />
@@ -307,6 +313,8 @@ const CustomersPage = () => {
           <Button
             className="rounded-[10px]! max-[1300px]:w-full max-[830px]:col-span-2! max-[365px]:col-span-1!"
             onClick={handleNewCustomer}
+            disabled={createCustomer.isPending}
+            loading={createCustomer.isPending}
           >
             <Plus />
             Yangi mijoz
@@ -399,7 +407,7 @@ const CustomersPage = () => {
         open={transactionOpen}
         onCancel={handleCancelTransaction}
         onFinish={transactionOnFinish}
-        type={transactionType.current}
+        type={transactionType}
         customers={customerOptions}
         form={form}
       />

@@ -30,7 +30,7 @@ const DashboardStatCard: React.FC<StatCardProps> = ({
         {isValueNegative ? "-" : null}
         <CountUp
           start={0}
-          end={value}
+          end={Math.abs(value)}
           duration={2.5}
           separator=" "
           decimal="."

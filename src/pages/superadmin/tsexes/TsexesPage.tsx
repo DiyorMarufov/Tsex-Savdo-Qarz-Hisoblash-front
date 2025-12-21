@@ -223,7 +223,7 @@ const TsexesPage = () => {
 
   // TsexData starts
   const { data: allTsexes, isLoading: tsexLoading } = getAllTsexes(query);
-  const tsexes = allTsexes?.data?.data
+  const tsexes = allTsexes?.data?.data;
   const total = allTsexes?.data?.total || 0;
   // TsexData ends
 
@@ -345,6 +345,7 @@ const TsexesPage = () => {
         onFinish={onFinish}
         form={form}
         tsexesOptions={tsexesOptions as Option[]}
+        pending={createTsexTransaction.isPending}
       />
     </div>
   );

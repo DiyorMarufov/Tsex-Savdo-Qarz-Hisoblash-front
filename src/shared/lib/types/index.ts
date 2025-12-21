@@ -42,3 +42,15 @@ export type newCustomerFieldType = {
   phone_number: string;
   region: string;
 };
+
+export type CustomerTransactionDetailType =
+  | "lend-more"
+  | "receive"
+  | "borrow-more"
+  | "repayment";
+
+export interface CustomerTransactionDetailDataType {
+  transaction_id: string;
+  amount: any;
+  description?: string;
+}

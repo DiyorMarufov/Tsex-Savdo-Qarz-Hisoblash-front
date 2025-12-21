@@ -2,13 +2,25 @@ import { memo } from "react";
 import type { CustomerTranscationDetailListItemsType } from "../../../pages/superadmin/customers/model/customer-transactions-detail-model";
 import CustomerTransactionDetailCard from "../../../shared/ui/CustomerTransactionDetailCard/CustomerTransactionDetailCard";
 import CustomerTransactionDetailCardSkeleton from "../../../shared/ui/Skeletons/Customers/CustomerTransactionDetailCardSkeleton";
+import { Pagination } from "antd";
 
 interface Props {
   data: CustomerTranscationDetailListItemsType[] | undefined;
   loading: boolean;
+  total: number;
+  currentPage: number;
+  pageSize: number;
+  onPageChange: (page: number, pageSize?: number) => void;
 }
 
-const CustomerTransactionDetailMobileList = ({ data, loading }: Props) => {
+const CustomerTransactionDetailMobileList = ({
+  data,
+  loading,
+  total,
+  currentPage,
+  pageSize,
+  onPageChange,
+}: Props) => {
   if (loading) return <CustomerTransactionDetailCardSkeleton />;
   return (
     <div className="min-[500px]:hidden flex flex-col gap-5 mt-4">
@@ -19,6 +31,17 @@ const CustomerTransactionDetailMobileList = ({ data, loading }: Props) => {
       ) : (
         <div className="flex justify-center items-center h-[20vh] text-red-500 text-[19px]">
           Hozircha ma'lumot yo'q
+        </div>
+      )}
+      {total > 0 && (
+        <div className="flex justify-center mt-2">
+          <Pagination
+            current={currentPage}
+            pageSize={pageSize}
+            onChange={onPageChange}
+            total={total}
+            showSizeChanger
+          />
         </div>
       )}
     </div>

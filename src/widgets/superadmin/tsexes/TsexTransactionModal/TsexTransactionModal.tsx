@@ -15,6 +15,7 @@ interface TsexTransactionModalProps {
   onFinish: (values: any) => void;
   form: FormInstance;
   tsexesOptions: Option[];
+  pending: boolean;
 }
 
 const TsexTransactionModal = ({
@@ -23,6 +24,7 @@ const TsexTransactionModal = ({
   onFinish,
   form,
   tsexesOptions,
+  pending,
 }: TsexTransactionModalProps) => {
   const paymentOptions = [
     { value: "payment", label: "to'liq to'lov" },
@@ -44,6 +46,8 @@ const TsexTransactionModal = ({
           <AntdButton
             onClick={() => form.submit()}
             className="bg-green-500! text-white!"
+            loading={pending}
+            disabled={pending}
           >
             Tasdiqlash
           </AntdButton>
@@ -95,7 +99,7 @@ const TsexTransactionModal = ({
                   : v
               }
             >
-              <Input className="h-10!" placeholder="0.00 UZS" />
+              <Input className="h-10!" placeholder="0,00 UZS" />
             </Form.Item>
           </div>
 

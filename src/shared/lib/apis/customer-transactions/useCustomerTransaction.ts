@@ -1,6 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "../../../../features/auth/api";
-import type { IResponseData, transactionFieldType } from "../../types";
+import type {
+  CustomerTransactionDetailDataType,
+  CustomerTransactionDetailType,
+  IResponseData,
+  transactionFieldType,
+} from "../../types";
 import { customer } from "../customers/useCustomer";
 
 export const customer_transaction = "customer_transaction";
@@ -52,6 +57,44 @@ export const useCustomerTransaction = () => {
         queryKey: [customer, "customer-transactions"],
       });
       client.invalidateQueries({
+        queryKey: [customer, "customer-transactions-parent-id"],
+      });
+      client.invalidateQueries({
+        queryKey: [customer, "customer-total-balance"],
+      });
+      client.invalidateQueries({
+        queryKey: [customer, "most-debtor-customers"],
+      });
+    },
+  });
+
+  const createLendOrBorrowTransaction = useMutation({
+    mutationFn: ({
+      data,
+      type,
+    }: {
+      data: CustomerTransactionDetailDataType;
+      type: CustomerTransactionDetailType;
+    }) =>
+      api.post(`customer-transactions/${type}`, data).then((res) => res.data),
+    onSuccess: () => {
+      client.invalidateQueries({
+        queryKey: [customer, "creditor-total-balance"],
+      });
+      client.invalidateQueries({
+        queryKey: [customer, "debtor-total-balance"],
+      });
+      client.invalidateQueries({
+        queryKey: [customer, "net-total-balance"],
+      });
+      client.invalidateQueries({ queryKey: [customer, "all-customers"] });
+      client.invalidateQueries({
+        queryKey: [customer_transaction, "customer-transactions"],
+      });
+      client.invalidateQueries({
+        queryKey: [customer_transaction, "customer-transactions-parent-id"],
+      });
+      client.invalidateQueries({
         queryKey: [customer, "customer-total-balance"],
       });
       client.invalidateQueries({
@@ -92,6 +135,7 @@ export const useCustomerTransaction = () => {
   return {
     createLend,
     createBorrow,
+    createLendOrBorrowTransaction,
     getCustomerTransactionsByCustomerId,
     getCustomerTransactionsDetailByParentTransactionId,
   };

@@ -1,20 +1,15 @@
 import ProTable from "@ant-design/pro-table";
 import { memo, useEffect, useMemo } from "react";
-import {
-  tsexTransactionsColumns,
-  type TsexTransactionsTableListItem,
-} from "./model/tsexes-transactions-model";
-import { Pagination } from "antd";
-import { Edit } from "lucide-react";
+import { tsexTransactionsColumns } from "./model/tsexes-transactions-model";
 import { useParams } from "react-router-dom";
 import { useTsexTransaction } from "../../../shared/lib/apis/tsex-transactions/useTsexTransaction";
 import type {
   QueryParams,
   TsexTransactionsType,
 } from "../../../shared/lib/types";
-import TsexTransactionCardSkeleton from "../../../shared/ui/Skeletons/TsexTranscations/TsexTransactionCardSkeleton";
 import { useParamsHook } from "../../../shared/hooks/params/useParams";
 import NameSkeleton from "../../../shared/ui/Skeletons/NameSkeleton/NameSkeleton";
+import TsexTransactionMobileList from "../../../widgets/tsexes/TsexTransactionsMobileList/TsexTransactionMobileList";
 
 const tsexTransactionsTypeUzbek: TsexTransactionsType = {
   partial_payment: "Qisman to'lov",
@@ -112,115 +107,14 @@ const TsexesTransactions = () => {
         loading={tsexTranscationLoading}
       />
 
-      <div className="min-[500px]:hidden flex flex-col gap-5">
-        {tsexTranscationLoading && <TsexTransactionCardSkeleton />}
-        {tsexTransactions && tsexTransactions?.length > 0 ? (
-          tsexTransactions?.map((dt: TsexTransactionsTableListItem) => (
-            <div
-              key={dt.id}
-              className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px] overflow-hidden"
-            >
-              <div className="px-3.5 py-2.5 flex justify-between items-center">
-                <a className="text-[16px] font-bold">{dt.tsex}</a>
-                <span className="text-[12px] font-bold">
-                  {(() => {
-                    switch (dt.type) {
-                      case "To'liq to'lov":
-                        return (
-                          <span className="bg-green-100 rounded-full text-green-500 px-2 py-1">
-                            To'liq To'lov
-                          </span>
-                        );
-                      case "Qisman to'lov":
-                        return (
-                          <span className="bg-yellow-100 rounded-full text-yellow-500 px-2 py-1">
-                            Qisman To'lov
-                          </span>
-                        );
-                      case "Qo'shimcha to'lov":
-                        return (
-                          <span className="bg-blue-100 rounded-full text-blue-500 px-2 py-1">
-                            Avans (Oldindan)
-                          </span>
-                        );
-                      case "Mol olish":
-                        return (
-                          <span className="bg-red-100 rounded-full text-red-500 px-2 py-1">
-                            Mol Olish
-                          </span>
-                        );
-                      default:
-                        return dt.type;
-                    }
-                  })()}
-                </span>
-              </div>
-              <div className="w-full h-px bg-bg-fy"></div>
-              <div className="flex flex-col gap-3">
-                <div className="grid grid-cols-2 gap-3 px-3.5 py-2.5">
-                  <div className="flex flex-col w-1/2 justify-start">
-                    <span className="text-[15px] font-medium text-[#6B7280]">
-                      Miqdori
-                    </span>
-                    <span className="text-[16px] font-bold text-green-600">
-                      {dt.amount.toLocaleString()}
-                    </span>
-                  </div>
-                  <div className="flex flex-col items-end">
-                    <span className="text-[15px] font-medium text-[#6B7280] whitespace-nowrap">
-                      Balans (Keyin)
-                    </span>
-                    {dt.balance_after > 0 ? (
-                      <span className="text-[16px] font-bold text-red-500">
-                        -{dt.balance_after.toLocaleString()}
-                      </span>
-                    ) : (
-                      <span className="text-[16px] font-bold text-green-500">
-                        {dt.balance_after.toLocaleString()}
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex flex-col col-span-2">
-                    <span className="text-[15px] font-medium text-[#6B7280]">
-                      Izoh
-                    </span>
-                    <span className="text-[16px] font-bold text-[#4B5563]">
-                      {dt.description ? dt.description : "Izoh yo'q"}
-                    </span>
-                  </div>
-                </div>
-                <div className="flex justify-between items-center bg-bg-ty px-3.5">
-                  <div className="py-2 flex flex-col">
-                    <span className="text-[#6D7482] font-bold text-[15px]">
-                      {dt.created_by}
-                    </span>
-                    <span className="text-[#6D7482] font-bold text-[15px]">
-                      {new Date(dt.created_at).toLocaleString("uz-UZ")}
-                    </span>
-                  </div>
-
-                  <div>
-                    <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))
-        ) : (
-          <div className="flex justify-center items-center h-[20vh] text-red-500 text-[19px] col-span-2">
-            Hozircha ma'lumot yo'q
-          </div>
-        )}
-        <div className="flex justify-center">
-          <Pagination
-            current={query.page}
-            pageSize={query.limit}
-            onChange={handlePageChange}
-            total={total}
-            showSizeChanger
-          />
-        </div>
-      </div>
+      <TsexTransactionMobileList
+        transactions={tsexTransactions}
+        loading={tsexTranscationLoading}
+        currentPage={Number(query.page)}
+        pageSize={Number(query.limit)}
+        total={total}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 };

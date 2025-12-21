@@ -80,29 +80,6 @@ const CustomerTransactionDetailCard = ({ trd }: TransactionDetailCardProps) => {
               {Math.abs(trd.balance_after).toLocaleString()}
             </span>
           </div>
-          <div className="flex flex-col">
-            <span className="text-[15px] font-medium text-[#6B7280]">
-              Tugash sanasi
-            </span>
-            <span className="text-[16px] font-bold text-[#4B5563]">
-              {new Date(trd.due_date).toLocaleDateString("uz-UZ")}
-            </span>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-[15px] font-medium text-[#6B7280]">
-              Holati
-            </span>
-            <div className="flex items-center gap-2">
-              <div
-                className={`h-3 w-3 rounded-full ${
-                  trd.status === "open" ? "bg-green-500" : "bg-gray-400"
-                }`}
-              />
-              <span className="text-[16px] font-bold text-[#4B5563]">
-                {trd.status === "open" ? "Ochiq" : "Yopilgan"}
-              </span>
-            </div>
-          </div>
         </div>
 
         <div className="flex flex-col">
@@ -125,11 +102,11 @@ const CustomerTransactionDetailCard = ({ trd }: TransactionDetailCardProps) => {
           <div className="flex items-center gap-5">
             <Edit
               size={20}
-              className="text-green-600 cursor-pointer hover:opacity-80"
+              className="text-green-600 cursor-pointer hover:opacity-80 w-6 h-6"
             />
             <Trash
               size={20}
-              className="text-red-600 cursor-pointer hover:opacity-80"
+              className="text-red-600 cursor-pointer hover:opacity-80 w-6 h-6"
             />
           </div>
         </div>

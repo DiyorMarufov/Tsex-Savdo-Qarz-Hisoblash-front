@@ -1,60 +1,200 @@
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import ProTable from "@ant-design/pro-table";
 import { transactionDetailColumns } from "./model/customer-transactions-detail-model";
-import { Modal, type FormProps, Button as AntdButton, Form, Input } from "antd";
+import { type FormProps, Form } from "antd";
 import { useCustomerTransaction } from "../../../shared/lib/apis/customer-transactions/useCustomerTransaction";
 import { useParams } from "react-router-dom";
 import CustomerTransactionDetailMobileList from "../../../widgets/customers/CustomerTransactionDetailMobileList/CustomerTransactionDetailMobileList";
 import NameSkeleton from "../../../shared/ui/Skeletons/NameSkeleton/NameSkeleton";
 import { useParamsHook } from "../../../shared/hooks/params/useParams";
 import CustomerTransactionDetailTransactions from "../../../widgets/superadmin/customers/CustomerTransactionDetailTransactions/CustomerTransactionDetailTransactions";
-
-type transcationFieldType = {
-  amount: number;
-  description?: string;
-};
+import CustomerTransactionDetailModal from "../../../widgets/superadmin/customers/CustomerTransactionDetailModal/CustomerTransactionDetailModal";
+import type {
+  CustomerTransactionDetailDataType,
+  CustomerTransactionDetailType,
+  QueryParams,
+} from "../../../shared/lib/types";
+import { useApiNotification } from "../../../shared/hooks/api-notification/useApiNotification";
 
 const CustomerTransactionDetails = () => {
   const [transactionOpen, setTransactionOpen] = useState<boolean>(false);
-  const transactionType = useRef<"borrow_more" | "receive" | null>(null);
+  const [modalType, setModalType] =
+    useState<CustomerTransactionDetailType | null>(null);
   const [form] = Form.useForm();
   const { id } = useParams();
-  const { getParam } = useParamsHook();
+  const { getParam, setParams, removeParam } = useParamsHook();
 
   const type = getParam("type") || "";
 
-  const { getCustomerTransactionsDetailByParentTransactionId } =
-    useCustomerTransaction();
+  const {
+    getCustomerTransactionsDetailByParentTransactionId,
+    createLendOrBorrowTransaction,
+  } = useCustomerTransaction();
+  const { handleApiError, handleSuccess } = useApiNotification();
 
   useEffect(() => {
     window.scroll({ top: 0 });
   }, []);
 
-  // Transaction starts
-  const handleBorrowMore = () => {
-    transactionType.current = "borrow_more";
-    setTransactionOpen(true);
-  };
+  // Query starts
+  const query: QueryParams = useMemo(() => {
+    const page = Number(getParam("page")) || 1;
+    const limit = Number(getParam("limit")) || 5;
 
-  const handleReceive = () => {
-    transactionType.current = "receive";
+    return { page, limit };
+  }, [getParam]);
+  // Query ends
+
+  // Transaction starts
+  const openTransactionModal = (type: CustomerTransactionDetailType) => {
+    setModalType(type);
     setTransactionOpen(true);
   };
 
   const handleCancelTransaction = () => {
-    transactionType.current = null;
+    setModalType(null);
     setTransactionOpen(false);
   };
 
-  const transactionOnFinish: FormProps<transcationFieldType>["onFinish"] = (
-    values: transcationFieldType
-  ) => {
-    console.log("Success:", values);
-  };
+  const transactionOnFinish: FormProps<CustomerTransactionDetailDataType>["onFinish"] =
+    (values: CustomerTransactionDetailDataType) => {
+      const { amount, description } = values;
+      const data: CustomerTransactionDetailDataType = {
+        transaction_id: id as string,
+        amount: Number(amount.replace(/\D/g, "")),
+        description,
+      };
+      switch (modalType) {
+        case "lend-more":
+          createLendOrBorrowTransaction.mutate(
+            { data, type: modalType },
+            {
+              onSuccess: () => {
+                handleCancelTransaction();
+                form.resetFields();
+                handleSuccess("Muvaffaqiyatli ko'proq qarz berildi");
+              },
+              onError: (err: any) => {
+                const status = err?.response?.data?.statusCode;
+                const msg = err?.response?.data?.message;
+
+                if (
+                  status === 404 &&
+                  msg.startsWith("CustomerTransaction with ID")
+                ) {
+                  handleApiError("Bunday tranzaksiya mavjud emas", "topRight");
+                  return;
+                } else if (status === 404 && msg.startsWith("User with ID")) {
+                  handleApiError("Superadmin mavjud emas");
+                  return;
+                } else {
+                  handleApiError("Serverda xato");
+                  return;
+                }
+              },
+            }
+          );
+          break;
+
+        case "receive":
+          createLendOrBorrowTransaction.mutate(
+            { data, type: modalType },
+            {
+              onSuccess: () => {
+                handleCancelTransaction();
+                form.resetFields();
+                handleSuccess("Muvaffaqiyatli qabul qilindi");
+              },
+              onError: (err: any) => {
+                const status = err?.response?.data?.statusCode;
+                const msg = err?.response?.data?.message;
+
+                if (
+                  status === 404 &&
+                  msg.startsWith("CustomerTransaction with ID")
+                ) {
+                  handleApiError("Bunday tranzaksiya mavjud emas", "topRight");
+                  return;
+                } else if (status === 404 && msg.startsWith("User with ID")) {
+                  handleApiError("Superadmin mavjud emas");
+                  return;
+                } else {
+                  handleApiError("Serverda xato");
+                  return;
+                }
+              },
+            }
+          );
+          break;
+
+        case "borrow-more":
+          createLendOrBorrowTransaction.mutate(
+            { data, type: modalType },
+            {
+              onSuccess: () => {
+                handleCancelTransaction();
+                form.resetFields();
+                handleSuccess("Muvaffaqiyatli koproq qarz olindi");
+              },
+              onError: (err: any) => {
+                const status = err?.response?.data?.statusCode;
+                const msg = err?.response?.data?.message;
+
+                if (
+                  status === 404 &&
+                  msg.startsWith("CustomerTransaction with ID")
+                ) {
+                  handleApiError("Bunday tranzaksiya mavjud emas", "topRight");
+                  return;
+                } else if (status === 404 && msg.startsWith("User with ID")) {
+                  handleApiError("Superadmin mavjud emas");
+                  return;
+                } else {
+                  handleApiError("Serverda xato");
+                  return;
+                }
+              },
+            }
+          );
+          break;
+
+        case "repayment":
+          createLendOrBorrowTransaction.mutate(
+            { data, type: modalType },
+            {
+              onSuccess: () => {
+                handleCancelTransaction();
+                form.resetFields();
+                handleSuccess("Muvaffaqiyatli qisman qarz to'landi");
+              },
+              onError: (err: any) => {
+                const status = err?.response?.data?.statusCode;
+                const msg = err?.response?.data?.message;
+
+                if (
+                  status === 404 &&
+                  msg.startsWith("CustomerTransaction with ID")
+                ) {
+                  handleApiError("Bunday tranzaksiya mavjud emas", "topRight");
+                  return;
+                } else if (status === 404 && msg.startsWith("User with ID")) {
+                  handleApiError("Superadmin mavjud emas");
+                  return;
+                } else {
+                  handleApiError("Serverda xato");
+                  return;
+                }
+              },
+            }
+          );
+          break;
+        default:
+          break;
+      }
+    };
 
   const handleFinish = () => {
     console.log("Tugatish jarayoni boshlandi");
-    // Agar tugatish uchun ham modal ochmoqchi bo'lsangiz, shu yerda open qilasiz
   };
   // Transaction ends
 
@@ -64,7 +204,31 @@ const CustomerTransactionDetails = () => {
     isLoading: customerTransactionDetailLoading,
   } = getCustomerTransactionsDetailByParentTransactionId(id as string);
   const transactionDetails = customerTransactionDetails?.data?.data;
+  const total = customerTransactionDetails?.data?.total || 0;
   // CustomerTransactionDetail ends
+
+  // PageChange starts
+  const handlePageChange = (newPage: number, newPageSize?: number) => {
+    const updateParams: { page?: number; limit?: number } = {};
+
+    if (newPage > 1) {
+      updateParams.page = newPage;
+    }
+
+    if (newPageSize && newPageSize !== 5) {
+      updateParams.limit = newPageSize;
+    }
+
+    setParams(updateParams);
+
+    if (newPage === 1) {
+      removeParam("page");
+    }
+    if (newPageSize === 5 && getParam("limit")) {
+      removeParam("limit");
+    }
+  };
+  // PageChange ends
 
   return (
     <div className="flex flex-col gap-5">
@@ -72,8 +236,8 @@ const CustomerTransactionDetails = () => {
         <NameSkeleton />
       ) : (
         <span className="text-[20px] font-medium text-[#4B5563]">
-          {customerTransactionDetails?.[0]?.customer.full_name
-            ? customerTransactionDetails?.[0]?.customer.full_name
+          {transactionDetails?.[0]?.customer.full_name
+            ? transactionDetails?.[0]?.customer.full_name
             : "Hozircha no'malum"}{" "}
           ni tranzaksiyalari
         </span>
@@ -81,8 +245,14 @@ const CustomerTransactionDetails = () => {
 
       <CustomerTransactionDetailTransactions
         type={type}
-        handleActionMore={handleBorrowMore}
-        handlePayment={handleReceive}
+        handleActionMore={() =>
+          openTransactionModal(
+            type === "borrowing" ? "borrow-more" : "lend-more"
+          )
+        }
+        handlePayment={() =>
+          openTransactionModal(type === "borrowing" ? "repayment" : "receive")
+        }
         handleFinish={handleFinish}
       />
 
@@ -93,6 +263,10 @@ const CustomerTransactionDetails = () => {
           pagination={{
             showSizeChanger: true,
             responsive: false,
+            current: query.page,
+            pageSize: query.limit,
+            total,
+            onChange: handlePageChange,
           }}
           columns={transactionDetailColumns}
           search={false}
@@ -105,65 +279,20 @@ const CustomerTransactionDetails = () => {
       <CustomerTransactionDetailMobileList
         data={transactionDetails}
         loading={customerTransactionDetailLoading}
+        total={total}
+        currentPage={Number(query.page)}
+        pageSize={Number(query.limit)}
+        onPageChange={handlePageChange}
       />
 
-      <Modal
-        centered
-        title={"Koproq qarz berish"}
-        closable={{ "aria-label": "Custom Close Button" }}
+      <CustomerTransactionDetailModal
         open={transactionOpen}
         onCancel={handleCancelTransaction}
-        footer={
-          <div className="flex gap-2 justify-end">
-            <AntdButton
-              className="bg-red-500! text-white!"
-              onClick={handleCancelTransaction}
-            >
-              Bekor qilish
-            </AntdButton>
-            <AntdButton
-              onClick={() => form.submit()}
-              className="bg-green-500! text-white!"
-            >
-              Tasdiqlash
-            </AntdButton>
-          </div>
-        }
-      >
-        <div className="mt-6">
-          <Form name="basic" onFinish={transactionOnFinish} form={form}>
-            <div>
-              <span className="flex mb-1 font-medium text-[15px]">
-                To'lov summasi
-              </span>
-              <Form.Item<transcationFieldType>
-                name="amount"
-                rules={[
-                  {
-                    required: true,
-                    message: "To'lov summasi kiritilishi shart!",
-                  },
-                ]}
-              >
-                <Input className="h-10!" placeholder="0.00 UZS" />
-              </Form.Item>
-            </div>
-
-            <div>
-              <span className="flex mb-1 font-medium text-[15px]">
-                Izoh (ixtiyoriy)
-              </span>
-              <Form.Item<transcationFieldType> name="description">
-                <Input.TextArea
-                  className="h-17!"
-                  autoSize={false}
-                  placeholder="Izoh"
-                />
-              </Form.Item>
-            </div>
-          </Form>
-        </div>
-      </Modal>
+        onFinish={transactionOnFinish}
+        form={form}
+        type={modalType as CustomerTransactionDetailType}
+        loading={createLendOrBorrowTransaction.isPending}
+      />
     </div>
   );
 };
