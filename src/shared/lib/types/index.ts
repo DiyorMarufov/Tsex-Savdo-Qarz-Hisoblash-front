@@ -28,7 +28,7 @@ export interface TsexTransactionsType {
 }
 
 export interface Option {
-  value: string;
+  value: any;
   label: any;
 }
 

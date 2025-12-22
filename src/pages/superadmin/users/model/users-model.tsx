@@ -1,11 +1,18 @@
 import type { ProColumns } from "@ant-design/pro-table";
 import { Edit, Trash } from "lucide-react";
+import { formatPhoneNumber } from "../../../../shared/lib/functions/formatPhoneNumber";
 
 export type UsersTableListItem = {
   id?: string;
   full_name: string;
   phone_number: string;
-  roles: { name: string };
+  roles: Array<{
+    id: string;
+    role: {
+      id: string;
+      name: string;
+    };
+  }>;
   is_active: boolean;
   created_at: Date;
 };
@@ -23,15 +30,16 @@ export const userColumns: ProColumns<UsersTableListItem>[] = [
     title: "Telefon Raqami",
     dataIndex: "phone_number",
     width: 150,
-    search: false, // Telefon raqamida to'liq qidiruv shart emas
+    search: false,
+    render: (_, record) => formatPhoneNumber(record.phone_number),
   },
   {
     title: "Roli",
-    dataIndex: ["roles", "name"], // Roles obyekti ichidagi name
+    dataIndex: ["roles", "name"],
     width: 120,
     filters: true,
     onFilter: true,
-    render: (_, record) => record.roles?.name ?? "-",
+    render: (_, record) => record.roles?.[0].role.name ?? "-",
   },
   {
     title: "Faolligi",
@@ -63,7 +71,7 @@ export const userColumns: ProColumns<UsersTableListItem>[] = [
     title: "Ro'yxatga Olingan Sana",
     dataIndex: "created_at",
     width: 160,
-    valueType: "dateTime", // Sana va Vaqtni ko'rsatadi
+    valueType: "dateTime",
     sorter: true,
     search: false,
   },
@@ -83,43 +91,42 @@ export const userColumns: ProColumns<UsersTableListItem>[] = [
 
 export const fakeUsers: UsersTableListItem[] = [
   {
-    id: "u1",
+    id: "550e8400-e29b-41d4-a716-446655440000",
     full_name: "Tolibov Dilshod",
     phone_number: "+998 90 123 00 01",
-    roles: { name: "Administrator" },
+    roles: [
+      {
+        id: "721a3642-2d8e-4f51-92b1-6a2d9c445101",
+        role: { id: "a1b2c3d4-e5f6-4a5b-bcde-f12345678901", name: "ADMIN" },
+      },
+    ],
     is_active: true,
     created_at: new Date("2024-01-10T10:00:00"),
   },
   {
-    id: "u2",
+    id: "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
     full_name: "Karimova Shoira",
     phone_number: "+998 91 222 33 44",
-    roles: { name: "Menejer" },
+    roles: [
+      {
+        id: "8c9d0e1f-2a3b-4c5d-6e7f-8a9b0c1d2e3f",
+        role: { id: "b2c3d4e5-f6a7-4b6c-cdef-012345678902", name: "MANAGER" },
+      },
+    ],
     is_active: true,
     created_at: new Date("2024-05-20T14:30:00"),
   },
   {
-    id: "u3",
+    id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
     full_name: "Saidov G'ayrat",
     phone_number: "+998 93 555 66 77",
-    roles: { name: "Ishchi" },
-    is_active: false, // Nofaol foydalanuvchi
+    roles: [
+      {
+        id: "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+        role: { id: "c3d4e5f6-a7b8-4c9d-def0-123456789003", name: "USER" },
+      },
+    ],
+    is_active: false,
     created_at: new Date("2023-11-01T09:15:00"),
-  },
-  {
-    id: "u4",
-    full_name: "Valiyeva Gulnora",
-    phone_number: "+998 94 888 99 00",
-    roles: { name: "Menejer" },
-    is_active: true,
-    created_at: new Date("2024-06-25T17:50:00"),
-  },
-  {
-    id: "u5",
-    full_name: "Aliyev Jasur",
-    phone_number: "+998 99 111 22 33",
-    roles: { name: "Ishchi" },
-    is_active: true,
-    created_at: new Date("2024-03-05T11:20:00"),
   },
 ];

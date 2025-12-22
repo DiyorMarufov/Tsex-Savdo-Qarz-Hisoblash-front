@@ -19,5 +19,14 @@ export const useUser = () => {
       gcTime: 1000 * 60 * 10,
     });
 
-  return { signIn, getUser };
+  const getAllUsers = (params?: any) =>
+    useQuery({
+      queryKey: [user, "all-users", params],
+      queryFn: () => api.get("users", { params }).then((res) => res.data),
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 10,
+    });
+
+  return { signIn, getUser, getAllUsers };
 };

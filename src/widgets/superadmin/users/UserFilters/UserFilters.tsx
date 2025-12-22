@@ -4,13 +4,13 @@ import SearchInput from "../../../../shared/ui/SearchInput/SearchInput";
 import Filter from "../../../../shared/ui/Filter/Filter";
 
 interface UserFiltersProps {
-  localSearch?: string;
-  onSearchChange?: (value: string) => void;
+  localSearch: string;
+  onSearchChange: (value: string) => void;
   role?: string;
   status?: string;
-  roleOptions?: Option[];
-  statusOptions?: Option[];
-  onFilterChange?: (key: "role" | "status", value: string) => void;
+  roleOptions: Option[];
+  statusOptions: Option[];
+  onFilterChange: (key: "role" | "status", value: string) => void;
 }
 
 const UserFilters = ({
@@ -20,7 +20,7 @@ const UserFilters = ({
   status,
   roleOptions,
   statusOptions,
-//   onFilterChange,
+  onFilterChange,
 }: UserFiltersProps) => {
   return (
     <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-2 p-3.5 flex items-center gap-3 max-[900px]:flex-wrap">
@@ -32,18 +32,18 @@ const UserFilters = ({
       />
       <div className="flex gap-3 min-[900px]:w-[50%] max-[900px]:w-full max-[370px]:flex-wrap">
         <Filter
-          placeholder="Rol bo'yicha"
+          placeholder="Barcha rollar"
           className="h-12! min-[900px]:w-[50%]! max-[900px]:w-full! custom-select"
           options={roleOptions}
           value={role}
-        //   onChange={(val) => onFilterChange("role", val)}
+          onChange={(val) => onFilterChange("role", val)}
         />
         <Filter
-          placeholder="Status bo'yicha"
+          placeholder="Barcha statuslar"
           className="h-12! min-[900px]:w-[50%]! max-[900px]:w-full! custom-select"
           options={statusOptions}
           value={status}
-        //   onChange={(val) => onFilterChange("status", val)}
+          onChange={(val) => onFilterChange("status", val)}
         />
       </div>
     </div>
