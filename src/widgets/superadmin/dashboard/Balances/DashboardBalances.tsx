@@ -35,13 +35,14 @@ const DashboardBalances = () => {
 
   // Total debt starts
   const tsexBalance =
-    formattedTsexBalance > 0 ? -formattedTsexBalance : formattedTsexBalance;
+    formattedTsexBalance < 0
+      ? Math.abs(formattedTsexBalance)
+      : formattedTsexBalance;
   const customerBalance =
     formattedCustomerBalance < 0
       ? -formattedCustomerBalance
-      : formattedCustomerBalance;
+      : Math.abs(formattedCustomerBalance);
   const totalDebt = tsexBalance + customerBalance;
-
   // Total debt ends
 
   // Loading starts

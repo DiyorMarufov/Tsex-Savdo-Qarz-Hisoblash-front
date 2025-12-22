@@ -15,6 +15,8 @@ export interface QueryParams {
   search?: string;
   shopId?: string;
   tsexId?: string;
+  role?: string;
+  status?:string
   region?: string;
 }
 
