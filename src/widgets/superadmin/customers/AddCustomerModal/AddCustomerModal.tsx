@@ -9,12 +9,12 @@ import {
 } from "antd";
 import { memo } from "react";
 import { customerRegions } from "../../../../shared/lib/constants";
-import type { newCustomerFieldType } from "../../../../shared/lib/types";
+import type { NewCustomerFieldType } from "../../../../shared/lib/types";
 
 interface AddCustomerModalProps {
   open: boolean;
   onCancel: () => void;
-  onFinish: FormProps<newCustomerFieldType>["onFinish"];
+  onFinish: FormProps<NewCustomerFieldType>["onFinish"];
   form: FormInstance;
   loading: boolean;
 }
@@ -62,7 +62,7 @@ const AddCustomerModal = ({
             <span className="flex mb-1 font-medium text-[15px]">
               To'liq ismi
             </span>
-            <Form.Item<newCustomerFieldType>
+            <Form.Item<NewCustomerFieldType>
               name="full_name"
               rules={[
                 { required: true, message: "To'liq ism kiritilishi shart!" },
@@ -76,7 +76,7 @@ const AddCustomerModal = ({
             <span className="flex mb-1 font-medium text-[15px]">
               Tel raqami
             </span>
-            <Form.Item<newCustomerFieldType>
+            <Form.Item<NewCustomerFieldType>
               name="phone_number"
               rules={[
                 { required: true, message: "Tel raqam kiritilishi shart!" },
@@ -114,7 +114,7 @@ const AddCustomerModal = ({
             <span className="flex mb-1 font-medium text-[15px]">
               Viloyat/Shahar
             </span>
-            <Form.Item<newCustomerFieldType>
+            <Form.Item<NewCustomerFieldType>
               name="region"
               rules={[{ required: true, message: "Viloyat tanlanishi shart!" }]}
             >

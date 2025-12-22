@@ -58,3 +58,58 @@ export const customerRegions: Option[] = [
     label: "Republic of Karakalpakstan",
   },
 ];
+
+export const roleOptions: Option[] = [
+  {
+    value: "",
+    label: "Barcha rollar",
+  },
+  {
+    value: "admin",
+    label: "Admin",
+  },
+  {
+    value: "seller",
+    label: "Sotuvchi",
+  },
+  {
+    value: "tsex_manager",
+    label: "Tsex boshqaruvchi",
+  },
+];
+
+export const statusOptions: Option[] = [
+  {
+    value: "",
+    label: "Barcha statuslar",
+  },
+  {
+    value: "true",
+    label: "Aktiv",
+  },
+  {
+    value: "false",
+    label: "Inaktiv",
+  },
+];
+
+export const roleUserCreationOptions: Option[] = [
+  {
+    value: "admin",
+    label: "Admin",
+  },
+  {
+    value: "seller",
+    label: "Sotuvchi",
+  },
+  {
+    value: "tsex_manager",
+    label: "Tsex boshqaruvchi",
+  },
+];
+
+export const roleTranslationToUzbek: Record<string, string> = {
+  admin: "Admin",
+  seller: "Sotuvchi",
+  tsex_manager: "Tsex boshqaruvchi",
+};

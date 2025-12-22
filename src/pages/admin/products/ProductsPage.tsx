@@ -82,7 +82,6 @@ const AdminProductsPage = () => {
           columns={productColumns(handleProductDetailOpen)}
           search={false}
           dateFormatter="string"
-          headerTitle="Mahsulotlar"
           scroll={{ x: "max-content" }}
         />
       </div>

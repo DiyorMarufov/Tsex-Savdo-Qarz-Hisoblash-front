@@ -1,6 +1,7 @@
 import type { ProColumns } from "@ant-design/pro-table";
 import { Edit, Trash } from "lucide-react";
 import { formatPhoneNumber } from "../../../../shared/lib/functions/formatPhoneNumber";
+import { roleTranslationToUzbek } from "../../../../shared/lib/constants";
 
 export type UsersTableListItem = {
   id?: string;
@@ -39,7 +40,10 @@ export const userColumns: ProColumns<UsersTableListItem>[] = [
     width: 120,
     filters: true,
     onFilter: true,
-    render: (_, record) => record.roles?.[0].role.name ?? "-",
+    render: (_, record) =>
+      roleTranslationToUzbek[
+        record.roles?.[0].role.name as keyof typeof roleTranslationToUzbek
+      ] ?? "-",
   },
   {
     title: "Faolligi",

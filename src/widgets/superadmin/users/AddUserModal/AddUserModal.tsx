@@ -1,12 +1,13 @@
 import { Modal, Form, Input, Select, Button as AntdButton } from "antd";
 import { memo } from "react";
+import { roleUserCreationOptions } from "../../../../shared/lib/constants";
 
 interface UserFormModalProps {
   open: boolean;
   onCancel: () => void;
   onFinish: (values: any) => void;
   form: any;
-  loading?: boolean;
+  loading: boolean;
 }
 
 const AddUserModal = ({
@@ -29,6 +30,7 @@ const AddUserModal = ({
             Bekor qilish
           </AntdButton>
           <AntdButton
+            disabled={loading}
             loading={loading}
             onClick={() => form.submit()}
             className="bg-green-500! text-white!"
@@ -39,7 +41,12 @@ const AddUserModal = ({
       }
     >
       <div className="mt-6">
-        <Form name="basic" onFinish={onFinish} form={form}>
+        <Form
+          name="basic"
+          onFinish={onFinish}
+          form={form}
+          initialValues={{ phone_number: "+998 " }}
+        >
           <div>
             <span className="flex mb-1 font-medium text-[15px]">
               To'liq ismi
@@ -53,7 +60,7 @@ const AddUserModal = ({
                 },
               ]}
             >
-              <Input className="h-10!" />
+              <Input className="h-10!" placeholder="To'liq ism" />
             </Form.Item>
           </div>
 
@@ -70,7 +77,31 @@ const AddUserModal = ({
                 },
               ]}
             >
-              <Input className="h-10!" />
+              <Input
+                className="h-10!"
+                placeholder="+998"
+                maxLength={17}
+                onChange={(e) => {
+                  if (!e.target.value.startsWith("+998")) {
+                    e.target.value =
+                      "+998" + e.target.value.replace(/\D/g, "").slice(0, 9);
+                  }
+
+                  const numbers = e.target.value.replace(/\D/g, "").slice(3);
+                  let formatted = "+998";
+
+                  if (numbers.length > 0)
+                    formatted += " " + numbers.slice(0, 2);
+                  if (numbers.length > 2)
+                    formatted += " " + numbers.slice(2, 5);
+                  if (numbers.length > 5)
+                    formatted += " " + numbers.slice(5, 7);
+                  if (numbers.length > 7)
+                    formatted += " " + numbers.slice(7, 9);
+
+                  form.setFieldsValue({ phone_number: formatted });
+                }}
+              />
             </Form.Item>
           </div>
 
@@ -101,7 +132,11 @@ const AddUserModal = ({
                 },
               ]}
             >
-              <Select className="h-10!" />
+              <Select
+                className="h-10!"
+                options={roleUserCreationOptions}
+                placeholder="Rol tanlang"
+              />
             </Form.Item>
           </div>
         </Form>

@@ -16,7 +16,7 @@ export interface QueryParams {
   shopId?: string;
   tsexId?: string;
   role?: string;
-  status?:string
+  status?: string;
   region?: string;
 }
 
@@ -32,14 +32,14 @@ export interface Option {
   label: any;
 }
 
-export type transactionFieldType = {
+export type TransactionFieldType = {
   customer_id: string;
   amount: any;
   due_date?: Date;
   description?: string;
 };
 
-export type newCustomerFieldType = {
+export type NewCustomerFieldType = {
   full_name: string;
   phone_number: string;
   region: string;
@@ -56,3 +56,10 @@ export interface CustomerTransactionDetailDataType {
   amount: any;
   description?: string;
 }
+
+export type UserFieldType = {
+  full_name: string;
+  phone_number: string;
+  password: string;
+  role: "admin" | "tsex_manager";
+};

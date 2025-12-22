@@ -42,7 +42,6 @@ const StoresPage = () => {
           columns={storesColumns}
           search={false}
           dateFormatter="string"
-          headerTitle="Do'konlar"
           scroll={{ x: "max-content" }}
           loading={shopsLoading}
         />

@@ -11,14 +11,14 @@ import {
 import { memo } from "react";
 import type {
   Option,
-  transactionFieldType,
+  TransactionFieldType,
 } from "../../../../shared/lib/types";
 
 interface TransactionModalProps {
   open: boolean;
   onCancel: () => void;
   type: "lend" | "borrow" | null;
-  onFinish: FormProps<transactionFieldType>["onFinish"];
+  onFinish: FormProps<TransactionFieldType>["onFinish"];
   customers: Option[];
   form: FormInstance;
   loading: boolean;
@@ -60,7 +60,7 @@ const CustomerTransactionModal = ({
         <Form name="transactionForm" onFinish={onFinish} form={form}>
           <div>
             <span className="flex mb-1 font-medium text-[15px]">Mijoz</span>
-            <Form.Item<transactionFieldType>
+            <Form.Item<TransactionFieldType>
               name="customer_id"
               rules={[{ required: true, message: "Mijoz tanlanishi shart!" }]}
             >
@@ -100,7 +100,7 @@ const CustomerTransactionModal = ({
             <span className="flex mb-1 font-medium text-[15px]">
               Qaytarish muddati (ixtiyoriy)
             </span>
-            <Form.Item<transactionFieldType> name="due_date">
+            <Form.Item<TransactionFieldType> name="due_date">
               <DatePicker
                 className="h-10! w-full"
                 placeholder="YYYY-MM-DD"
@@ -113,7 +113,7 @@ const CustomerTransactionModal = ({
             <span className="flex mb-1 font-medium text-[15px]">
               Izoh (ixtiyoriy)
             </span>
-            <Form.Item<transactionFieldType> name="description">
+            <Form.Item<TransactionFieldType> name="description">
               <Input.TextArea
                 className="h-17!"
                 autoSize={false}

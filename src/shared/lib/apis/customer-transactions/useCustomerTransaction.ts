@@ -4,7 +4,7 @@ import type {
   CustomerTransactionDetailDataType,
   CustomerTransactionDetailType,
   IResponseData,
-  transactionFieldType,
+  TransactionFieldType,
 } from "../../types";
 import { customer } from "../customers/useCustomer";
 
@@ -14,7 +14,7 @@ export const useCustomerTransaction = () => {
   const client = useQueryClient();
 
   const createLend = useMutation({
-    mutationFn: (data: transactionFieldType) =>
+    mutationFn: (data: TransactionFieldType) =>
       api.post("customer-transactions/lend", data).then((res) => res.data),
     onSuccess: () => {
       client.invalidateQueries({
@@ -40,7 +40,7 @@ export const useCustomerTransaction = () => {
   });
 
   const createBorrow = useMutation({
-    mutationFn: (data: transactionFieldType) =>
+    mutationFn: (data: TransactionFieldType) =>
       api.post("customer-transactions/borrow", data).then((res) => res.data),
     onSuccess: () => {
       client.invalidateQueries({

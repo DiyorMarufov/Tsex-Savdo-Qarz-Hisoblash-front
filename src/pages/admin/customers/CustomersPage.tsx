@@ -18,12 +18,7 @@ import {
 import Button from "../../../shared/ui/Button/Button";
 // import { Edit, Trash } from "lucide-react";
 import { Plus } from "lucide-react";
-
-type newCustomerFieldType = {
-  full_name: string;
-  phone_number: string;
-  region: string;
-};
+import type { NewCustomerFieldType } from "../../../shared/lib/types";
 
 const AdminCustomersPage = () => {
   const [newCustomerOpen, setNewCustomerOpen] = useState<boolean>(false);
@@ -39,8 +34,8 @@ const AdminCustomersPage = () => {
     setNewCustomerOpen(false);
   };
 
-  const transactionOnFinish: FormProps<newCustomerFieldType>["onFinish"] = (
-    values: newCustomerFieldType
+  const transactionOnFinish: FormProps<NewCustomerFieldType>["onFinish"] = (
+    values: NewCustomerFieldType
   ) => {
     console.log("Success:", values);
   };
@@ -203,7 +198,7 @@ const AdminCustomersPage = () => {
               <span className="flex mb-1 font-medium text-[15px]">
                 Mijoz ismi
               </span>
-              <Form.Item<newCustomerFieldType>
+              <Form.Item<NewCustomerFieldType>
                 name="full_name"
                 rules={[
                   {
@@ -220,7 +215,7 @@ const AdminCustomersPage = () => {
               <span className="flex mb-1 font-medium text-[15px]">
                 Tel raqami
               </span>
-              <Form.Item<newCustomerFieldType>
+              <Form.Item<NewCustomerFieldType>
                 name="phone_number"
                 rules={[
                   {
@@ -237,7 +232,7 @@ const AdminCustomersPage = () => {
               <span className="flex mb-1 font-medium text-[15px]">
                 Viloyat/Shahar
               </span>
-              <Form.Item<newCustomerFieldType>
+              <Form.Item<NewCustomerFieldType>
                 name="region"
                 className="w-full!"
                 rules={[

@@ -11,10 +11,10 @@ import CustomerFilters from "../../../widgets/customers/CustomerFilters/Customer
 import { useCustomer } from "../../../shared/lib/apis/customers/useCustomer";
 import CustomerMobileList from "../../../widgets/customers/CustomerMobileList/CustomerMobileList";
 import type {
-  newCustomerFieldType,
+  NewCustomerFieldType,
   Option,
   QueryParams,
-  transactionFieldType,
+  TransactionFieldType,
 } from "../../../shared/lib/types";
 import { useParamsHook } from "../../../shared/hooks/params/useParams";
 import { debounce } from "../../../shared/lib/functions/debounce";
@@ -62,8 +62,8 @@ const CustomersPage = () => {
     setTransactionOpen(false);
   };
 
-  const transactionOnFinish: FormProps<transactionFieldType>["onFinish"] = (
-    values: transactionFieldType
+  const transactionOnFinish: FormProps<TransactionFieldType>["onFinish"] = (
+    values: TransactionFieldType
   ) => {
     const { customer_id, amount, description, due_date } = values;
     const data = {
@@ -153,8 +153,8 @@ const CustomersPage = () => {
     setNewCustomerOpen(false);
   };
 
-  const newCustomerOnFinish: FormProps<newCustomerFieldType>["onFinish"] = (
-    values: newCustomerFieldType
+  const newCustomerOnFinish: FormProps<NewCustomerFieldType>["onFinish"] = (
+    values: NewCustomerFieldType
   ) => {
     const { full_name, phone_number, region } = values;
     const data = {

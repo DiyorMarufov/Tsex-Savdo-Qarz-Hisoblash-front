@@ -1,10 +1,18 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "..";
-import type { IAuthUser } from "../../../../shared/lib/types";
+import type { IAuthUser, UserFieldType } from "../../../../shared/lib/types";
 
 export const user = "user";
 
 export const useUser = () => {
+  const client = useQueryClient();
+  const createUser = useMutation({
+    mutationFn: (data: UserFieldType) =>
+      api.post("users", data).then((res) => res.data),
+    onSuccess: () =>
+      client.invalidateQueries({ queryKey: [user, "all-users"] }),
+  });
+
   const signIn = useMutation({
     mutationFn: (data: IAuthUser) =>
       api.post("users/login", data).then((res) => res.data),
@@ -28,5 +36,5 @@ export const useUser = () => {
       gcTime: 1000 * 60 * 10,
     });
 
-  return { signIn, getUser, getAllUsers };
+  return { createUser, signIn, getUser, getAllUsers };
 };

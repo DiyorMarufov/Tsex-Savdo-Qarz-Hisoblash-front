@@ -2,6 +2,7 @@ import { Edit, Trash } from "lucide-react";
 import { memo } from "react";
 import type { UsersTableListItem } from "../../../pages/superadmin/users/model/users-model";
 import { formatPhoneNumber } from "../../lib/functions/formatPhoneNumber";
+import { roleTranslationToUzbek } from "../../lib/constants";
 
 interface UserMobileCardProps {
   user: UsersTableListItem;
@@ -29,7 +30,9 @@ const UserCard = ({ user }: UserMobileCardProps) => {
         <div className="flex justify-between items-center">
           <span className="font-medium text-[#6B7280] text-[15px]">Roli</span>
           <span className="text-[16px] font-bold text-[#4B5563]">
-            {user.roles[0].role.name}
+            {roleTranslationToUzbek[
+              user.roles[0].role.name as keyof typeof roleTranslationToUzbek
+            ] ?? "-"}
           </span>
         </div>
 

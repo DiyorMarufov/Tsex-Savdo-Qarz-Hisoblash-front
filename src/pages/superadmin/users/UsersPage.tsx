@@ -10,24 +10,20 @@ import UserMobileList from "../../../widgets/superadmin/users/UserMobileList/Use
 import AddUserModal from "../../../widgets/superadmin/users/AddUserModal/AddUserModal";
 import { useUser } from "../../../features/auth/api/useAuth/useUser";
 import { useParamsHook } from "../../../shared/hooks/params/useParams";
-import type { QueryParams } from "../../../shared/lib/types";
+import type { QueryParams, UserFieldType } from "../../../shared/lib/types";
 import { debounce } from "../../../shared/lib/functions/debounce";
-
-type userFieldType = {
-  full_name: string;
-  phone_number: string;
-  password: string;
-  role: "admin" | "tsex_manager";
-};
+import { roleOptions, statusOptions } from "../../../shared/lib/constants";
+import { useApiNotification } from "../../../shared/hooks/api-notification/useApiNotification";
 
 const UsersPage = () => {
   const [newUserOpen, setNewUserOpen] = useState<boolean>(false);
   const [form] = Form.useForm();
 
-  const { getAllUsers } = useUser();
+  const { getAllUsers, createUser } = useUser();
   const { getParam, setParams, removeParam } = useParamsHook();
-
   const [localSearch, setLocalSearch] = useState(getParam("search") || "");
+
+  const { handleApiError, handleSuccess } = useApiNotification();
 
   useEffect(() => {
     window.scroll({ top: 0 });
@@ -41,10 +37,38 @@ const UsersPage = () => {
     setNewUserOpen(false);
   };
 
-  const newUserOnFinish: FormProps<userFieldType>["onFinish"] = (
-    values: userFieldType
+  const newUserOnFinish: FormProps<UserFieldType>["onFinish"] = (
+    values: UserFieldType
   ) => {
-    console.log("Success:", values);
+    const { full_name, phone_number, password, role } = values;
+    const data = {
+      full_name,
+      phone_number: phone_number.split(" ").join(""),
+      password,
+      role,
+    };
+    createUser.mutate(data, {
+      onSuccess: () => {
+        handleCancelNewUser();
+        form.resetFields();
+        handleSuccess("Foydalanuvchi muvaffaqiyatli yaratildi");
+      },
+      onError: (err: any) => {
+        const status = err?.response?.data?.statusCode;
+        const msg = err?.response?.data?.message;
+
+        if (status === 409 && msg.startsWith("User with phone number")) {
+          handleApiError(
+            "Bunday tel raqamli yoki rolelik foydalanuvchi mavjud",
+            "topRight"
+          );
+          return;
+        } else {
+          handleApiError("Serverda xato", "topRight");
+          return;
+        }
+      },
+    });
   };
   // New user ends
 
@@ -115,40 +139,6 @@ const UsersPage = () => {
     });
   };
 
-  const roleOptions = [
-    {
-      value: "",
-      label: "Barcha rollar",
-    },
-    {
-      value: "admin",
-      label: "Admin",
-    },
-    {
-      value: "seller",
-      label: "Sotuvchi",
-    },
-    {
-      value: "tsex_manager",
-      label: "Tsex menejer",
-    },
-  ];
-
-  const statusOptions = [
-    {
-      value: "",
-      label: "Barcha statuslar",
-    },
-    {
-      value: "true",
-      label: "Aktiv",
-    },
-    {
-      value: "false",
-      label: "Inaktiv",
-    },
-  ];
-
   // Handle filter ends
 
   return (
@@ -195,11 +185,11 @@ const UsersPage = () => {
             pageSize: query.limit,
             total,
             onChange: handlePageChange,
+            pageSizeOptions: [5, 10, 20, 50, 100],
           }}
           columns={userColumns}
           search={false}
           dateFormatter="string"
-          headerTitle="Mahsulotlar"
           scroll={{ x: "max-content" }}
           loading={usersLoading}
         />
@@ -219,6 +209,7 @@ const UsersPage = () => {
         onCancel={handleCancelNewUser}
         onFinish={newUserOnFinish}
         form={form}
+        loading={createUser.isPending}
       />
     </div>
   );

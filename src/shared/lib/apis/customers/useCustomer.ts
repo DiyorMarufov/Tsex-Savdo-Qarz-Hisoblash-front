@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "../../../../features/auth/api";
-import type { IResponseData, newCustomerFieldType } from "../../types";
+import type { IResponseData, NewCustomerFieldType } from "../../types";
 
 export const customer = "customer";
 
@@ -8,7 +8,7 @@ export const useCustomer = () => {
   const client = useQueryClient();
 
   const createCustomer = useMutation({
-    mutationFn: (data: newCustomerFieldType) =>
+    mutationFn: (data: NewCustomerFieldType) =>
       api.post("customers", data).then((res) => res.data),
     onSuccess: () => {
       client.invalidateQueries({
