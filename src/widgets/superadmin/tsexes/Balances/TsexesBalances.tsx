@@ -18,7 +18,7 @@ const TsexBalances = () => {
     getTsexNetTotalBalance();
 
   const creditor = creditorTotalBalance?.data;
-  const debtor = debtorTotalBalance?.data;
+  const debtor = -(debtorTotalBalance?.data ?? 0);
   const net = netTotalBalance?.data;
 
   const anyIsLoading = creditorLoading || debtorLoading || netLoading;

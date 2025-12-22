@@ -21,6 +21,7 @@ interface TransactionModalProps {
   onFinish: FormProps<transactionFieldType>["onFinish"];
   customers: Option[];
   form: FormInstance;
+  loading: boolean;
 }
 
 const CustomerTransactionModal = ({
@@ -30,6 +31,7 @@ const CustomerTransactionModal = ({
   onFinish,
   customers,
   form,
+  loading,
 }: TransactionModalProps) => {
   return (
     <Modal
@@ -46,6 +48,8 @@ const CustomerTransactionModal = ({
           <AntdButton
             onClick={() => form.submit()}
             className="bg-green-500! text-white!"
+            disabled={loading}
+            loading={loading}
           >
             Tasdiqlash
           </AntdButton>

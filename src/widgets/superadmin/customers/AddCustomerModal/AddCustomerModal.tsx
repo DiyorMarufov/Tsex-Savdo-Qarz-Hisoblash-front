@@ -16,6 +16,7 @@ interface AddCustomerModalProps {
   onCancel: () => void;
   onFinish: FormProps<newCustomerFieldType>["onFinish"];
   form: FormInstance;
+  loading: boolean;
 }
 
 const AddCustomerModal = ({
@@ -23,6 +24,7 @@ const AddCustomerModal = ({
   onCancel,
   onFinish,
   form,
+  loading,
 }: AddCustomerModalProps) => {
   return (
     <Modal
@@ -39,6 +41,8 @@ const AddCustomerModal = ({
           <AntdButton
             onClick={() => form.submit()}
             className="bg-green-500! text-white!"
+            disabled={loading}
+            loading={loading}
           >
             Tasdiqlash
           </AntdButton>

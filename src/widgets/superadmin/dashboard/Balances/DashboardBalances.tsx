@@ -41,8 +41,9 @@ const DashboardBalances = () => {
       ? -formattedCustomerBalance
       : formattedCustomerBalance;
   const totalDebt = tsexBalance + customerBalance;
+
   // Total debt ends
-  
+
   // Loading starts
   const isAnyLoading =
     totalSalesLoading || totalTsexBalanceLoading || totalCustomerBalanceLoading;

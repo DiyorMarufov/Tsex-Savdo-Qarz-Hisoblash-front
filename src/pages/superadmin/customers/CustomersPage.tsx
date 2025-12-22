@@ -293,8 +293,6 @@ const CustomersPage = () => {
           <AntdButton
             className="py-5! rounded-[10px]! bg-[#E5E7EB]! max-[1300px]:w-full"
             onClick={handleLend}
-            disabled={createLend.isPending}
-            loading={createLend.isPending}
           >
             {" "}
             <ArrowDown />
@@ -303,8 +301,6 @@ const CustomersPage = () => {
           <AntdButton
             className="py-5! rounded-[10px]! bg-[#E5E7EB]! max-[1300px]:w-full"
             onClick={handleBorrow}
-            disabled={createBorrow.isPending}
-            loading={createBorrow.isPending}
           >
             {" "}
             <ArrowUp />
@@ -313,8 +309,6 @@ const CustomersPage = () => {
           <Button
             className="rounded-[10px]! max-[1300px]:w-full max-[830px]:col-span-2! max-[365px]:col-span-1!"
             onClick={handleNewCustomer}
-            disabled={createCustomer.isPending}
-            loading={createCustomer.isPending}
           >
             <Plus />
             Yangi mijoz
@@ -410,6 +404,7 @@ const CustomersPage = () => {
         type={transactionType}
         customers={customerOptions}
         form={form}
+        loading={createLend.isPending || createBorrow.isPending}
       />
 
       <AddCustomerModal
@@ -417,6 +412,7 @@ const CustomersPage = () => {
         onCancel={handleCancelNewCustomer}
         onFinish={newCustomerOnFinish}
         form={form}
+        loading={createCustomer.isPending}
       />
     </div>
   );
