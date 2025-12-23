@@ -2,12 +2,12 @@ import { memo, useRef, useState } from "react";
 import ProTable from "@ant-design/pro-table";
 import { fakeSales, salesColumns } from "./model/sales-model";
 import { fakeSalesItems } from "./model/sales-items-detail-model";
-import SalesReportFilter from "../../../widgets/reports/SalesReport/SalesReportFilter/SalesReportFilter";
 import SalesReportBalances from "../../../widgets/reports/SalesReport/SalesReportBalances/SalesReportBalances";
 import SalesReportChart from "../../../widgets/reports/SalesReport/SalesReportChart/SalesReportChart";
 import SalesReportMobileList from "../../../widgets/reports/SalesReport/SalesReportMobileList/SalesReportMobileList";
 import SaleItemDetailModal from "../../../widgets/reports/SalesReport/SaleItemDetailModal/SaleItemDetailModal";
 import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
+import ReportFilter from "../../../widgets/reports/SalesReport/ReportFilter/ReportFilter";
 
 const SalesReportPage = () => {
   const [detailOpen, setdetailOpen] = useState<boolean>(false);
@@ -25,13 +25,13 @@ const SalesReportPage = () => {
   // Sale Items detail ends
   return (
     <div className="flex flex-col gap-5">
-      <SalesReportFilter />
+      <ReportFilter />
 
       <SalesReportBalances />
 
       <SalesReportChart />
 
-      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-2 p-3.5">
+      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] p-3.5">
         <SearchInput
           placeholder="Do'kon,sotuvchi,mijoz bo'yicha qidirish"
           className="h-12! bg-bg-ty! text-[16px]!"

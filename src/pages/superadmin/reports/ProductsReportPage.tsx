@@ -1,7 +1,7 @@
 import { memo } from "react";
-import ProductsReportFilters from "../../../widgets/reports/ProductsRepor/ProductsReportFilters/ProductsReportFilters";
-import ProductReportChart from "../../../widgets/reports/ProductsRepor/ProductReportChart/ProductReportChart";
-import ProductReportBalances from "../../../widgets/reports/ProductsRepor/ProductReportBalances/ProductReportBalances";
+import ProductsReportFilters from "../../../widgets/reports/ProductsReport/ProductsReportFilters/ProductsReportFilters";
+import ProductReportChart from "../../../widgets/reports/ProductsReport/ProductReportChart/ProductReportChart";
+import ProductReportBalances from "../../../widgets/reports/ProductsReport/ProductReportBalances/ProductReportBalances";
 
 const ProductsReportPage = () => {
   return (

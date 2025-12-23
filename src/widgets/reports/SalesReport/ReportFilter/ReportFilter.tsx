@@ -2,7 +2,7 @@ import { Button, DatePicker } from "antd";
 import { Filter } from "lucide-react";
 import { memo } from "react";
 
-const SalesReportFilter = () => {
+const ReportFilter = () => {
   return (
     <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] p-3.5 flex items-center gap-3">
       <div className="flex items-center gap-3">
@@ -27,4 +27,4 @@ const SalesReportFilter = () => {
   );
 };
 
-export default memo(SalesReportFilter);
+export default memo(ReportFilter);
