@@ -1,5 +1,5 @@
 import { memo } from "react";
-import StatCard from "../../../shared/ui/StatCard/StatCard";
+import StatCard from "../../../../shared/ui/StatCard/StatCard";
 
 const SalesReportBalances = () => {
   return (

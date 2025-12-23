@@ -1,9 +1,10 @@
-import { memo } from 'react';
+import { memo } from "react";
+import ProductsReportFilters from "../../../widgets/reports/ProductsRepor/ProductsReportFilters/ProductsReportFilters";
 
 const ProductsReportPage = () => {
   return (
     <div>
-      <h2>ProductsReportPage</h2>
+      <ProductsReportFilters />
     </div>
   );
 };

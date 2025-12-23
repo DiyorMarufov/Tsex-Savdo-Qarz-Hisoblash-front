@@ -14,16 +14,49 @@ import "dayjs/locale/uz-latn";
 
 const rawData = {
   kun: [
-    { name: "00:00", value: 400 },
+    { name: "04:00", value: 400 },
+    { name: "05:00", value: 300 },
     { name: "06:00", value: 300 },
+    { name: "07:00", value: 300 },
+    { name: "08:00", value: 300 },
+    { name: "09:00", value: 300 },
+    { name: "10:00", value: 300 },
+    { name: "11:00", value: 300 },
     { name: "12:00", value: 700 },
-    { name: "18:00", value: 500 },
+    { name: "13:00", value: 500 },
   ],
   oy: [
-    { name: "1-hafta", value: 2000 },
-    { name: "2-hafta", value: 4500 },
-    { name: "3-hafta", value: 3000 },
-    { name: "4-hafta", value: 6000 },
+    { name: "1", value: 2000 },
+    { name: "2", value: 2500 },
+    { name: "3", value: 3200 },
+    { name: "4", value: 2800 },
+    { name: "5", value: 4500 },
+    { name: "6", value: 3000 },
+    { name: "7", value: 3500 },
+    { name: "8", value: 4000 },
+    { name: "9", value: 4800 },
+    { name: "10", value: 5200 },
+    { name: "11", value: 3000 },
+    { name: "12", value: 2800 },
+    { name: "13", value: 3600 },
+    { name: "14", value: 4200 },
+    { name: "15", value: 5000 },
+    { name: "16", value: 6000 },
+    { name: "17", value: 5500 },
+    { name: "18", value: 4500 },
+    { name: "19", value: 4000 },
+    { name: "20", value: 4200 },
+    { name: "21", value: 4800 },
+    { name: "22", value: 5100 },
+    { name: "23", value: 5800 },
+    { name: "24", value: 6200 },
+    { name: "25", value: 5500 },
+    { name: "26", value: 4800 },
+    { name: "27", value: 4300 },
+    { name: "28", value: 4000 },
+    { name: "29", value: 4500 },
+    { name: "30", value: 5200 },
+    { name: "31", value: 6500 },
   ],
   yil: [
     { name: "Yan", value: 12000 },
@@ -116,7 +149,7 @@ const SalesReportChart = ({ isAnimationActive = true }) => {
               dataKey="name"
               axisLine={false}
               tickLine={false}
-              tick={{ fill: "#94a3b8", fontSize: 10 }} 
+              tick={{ fill: "#94a3b8", fontSize: 10 }}
               dy={10}
             />
             <YAxis
@@ -136,7 +169,7 @@ const SalesReportChart = ({ isAnimationActive = true }) => {
               type="monotone"
               dataKey="value"
               stroke="#6366f1"
-              strokeWidth={2} 
+              strokeWidth={2}
               fillOpacity={1}
               fill="url(#colorValue)"
               animationDuration={800}

@@ -1,19 +1,13 @@
 import { memo, useRef, useState } from "react";
 import ProTable from "@ant-design/pro-table";
-import {
-  fakeSales,
-  salesColumns,
-  type SalesTableListItem,
-} from "./model/sales-model";
-import { Button as AntdButton, Button, DatePicker, Modal } from "antd";
-import {
-  fakeSalesItems,
-  salesItemColumns,
-  type SaleItemsTableListItem,
-} from "./model/sales-items-detail-model";
-import { Edit, Filter } from "lucide-react";
-import SalesReportBalances from "../../../widgets/reports/SalesReportBalances/SalesReportBalances";
-import SalesReportChart from "../../../widgets/reports/SalesReportChart/SalesReportChart";
+import { fakeSales, salesColumns } from "./model/sales-model";
+import { fakeSalesItems } from "./model/sales-items-detail-model";
+import SalesReportFilter from "../../../widgets/reports/SalesReport/SalesReportFilter/SalesReportFilter";
+import SalesReportBalances from "../../../widgets/reports/SalesReport/SalesReportBalances/SalesReportBalances";
+import SalesReportChart from "../../../widgets/reports/SalesReport/SalesReportChart/SalesReportChart";
+import SalesReportMobileList from "../../../widgets/reports/SalesReport/SalesReportMobileList/SalesReportMobileList";
+import SaleItemDetailModal from "../../../widgets/reports/SalesReport/SaleItemDetailModal/SaleItemDetailModal";
+import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
 
 const SalesReportPage = () => {
   const [detailOpen, setdetailOpen] = useState<boolean>(false);
@@ -31,30 +25,18 @@ const SalesReportPage = () => {
   // Sale Items detail ends
   return (
     <div className="flex flex-col gap-5">
-      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-2 p-3.5 flex items-center gap-3">
-        <div className="flex items-center gap-3">
-          <div className="w-full">
-            <DatePicker.RangePicker
-              showTime={{ format: "HH:mm" }}
-              format="YYYY-MM-DD HH:mm"
-              onChange={(value, dateString) => {
-                console.log("Selected Time: ", value);
-                console.log("Formatted Selected Time: ", dateString);
-              }}
-              className="h-10!"
-              inputReadOnly
-            />
-          </div>
-          <Button className="flex items-center justify-center gap-3 h-10!">
-            <Filter className="w-5 h-5" />
-            <span>Filterlarsh</span>
-          </Button>
-        </div>
-      </div>
+      <SalesReportFilter />
 
       <SalesReportBalances />
 
       <SalesReportChart />
+
+      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-2 p-3.5">
+        <SearchInput
+          placeholder="Do'kon,sotuvchi,mijoz bo'yicha qidirish"
+          className="h-12! bg-bg-ty! text-[16px]!"
+        />
+      </div>
 
       <div className="max-[500px]:hidden">
         <ProTable
@@ -81,228 +63,13 @@ const SalesReportPage = () => {
         />
       </div>
 
-      <div className="min-[500px]:hidden flex flex-col gap-5 mt-4">
-        {fakeSales.map((sl: SalesTableListItem) => (
-          <div
-            key={sl.id}
-            className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]"
-          >
-            <div className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]">
-              <div className="flex justify-between px-3.5 py-2.5">
-                <div className="flex flex-col">
-                  <span className="text-[15px] font-bold text-[#6B7280]">
-                    {sl.store.name}
-                  </span>
-                  <a className="text-[16px] font-bold">{sl.customer.name}</a>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div
-                    className={`px-2 rounded-full text-[16px] font-bold 
-    ${
-      sl.type === "full_payment"
-        ? "bg-green-100 text-green-700"
-        : sl.type === "partial_payment"
-        ? "bg-yellow-100 text-yellow-700"
-        : sl.type === "real"
-        ? "bg-blue-100 text-blue-700"
-        : "bg-gray-100 text-[#4B5563]"
-    }`}
-                  >
-                    <span className="text-[12px] font-bold">
-                      {sl.type === "full_payment"
-                        ? "To'liq to'lov"
-                        : sl.type === "partial_payment"
-                        ? "Qisman to'lov"
-                        : sl.type === "real"
-                        ? "Real"
-                        : sl.type}
-                    </span>
-                  </div>
-                </div>
-              </div>
+      <SalesReportMobileList data={fakeSales} onDetail={handleSaleItems} />
 
-              <div className="flex flex-col gap-3">
-                <div className="grid grid-cols-2 gap-3 px-3.5">
-                  <div className="flex flex-col justify-start">
-                    <span className="text-[15px] font-medium text-[#6B7280]">
-                      Summa
-                    </span>
-                    <span className="text-[16px] font-bold text-green-600">
-                      {sl.total_sum.toLocaleString()}
-                    </span>
-                  </div>
-                  <div className="flex flex-col justify-start">
-                    <span className="text-[15px] font-medium text-[#6B7280]">
-                      To'langan
-                    </span>
-                    <span className="text-[16px] font-bold text-green-600">
-                      {sl.paid_amount.toLocaleString()}
-                    </span>
-                  </div>
-                  <div className="flex flex-col justify-start">
-                    <span className="text-[15px] font-medium text-[#6B7280]">
-                      Qarz
-                    </span>
-                    {sl.debt > 0 ? (
-                      <span className="text-[16px] font-bold text-red-500">
-                        -{sl.debt.toLocaleString()}
-                      </span>
-                    ) : (
-                      <span className="text-[16px] font-bold text-red-500">
-                        {sl.debt.toLocaleString()}
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex flex-col justify-start">
-                    <span className="text-[15px] font-medium text-[#6B7280]">
-                      Sotuvchi
-                    </span>
-                    <span className="text-[16px] font-bold text-[#4B5563]">
-                      {sl.seller.name}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex flex-col justify-start px-3.5">
-                  <span className="text-[15px] font-medium text-[#6B7280]">
-                    Kiritilgan sana
-                  </span>
-                  <span className="text-[16px] font-bold text-[#4B5563]">
-                    {sl.created_at.toLocaleString("uz-UZ")}
-                  </span>
-                </div>
-
-                <div className="w-full h-px bg-bg-fy"></div>
-
-                <div className="flex justify-end px-3.5 pb-3">
-                  <div>
-                    <AntdButton
-                      className="bg-[#1D4ED8]! text-white!"
-                      onClick={() => handleSaleItems(sl.id as string)}
-                    >
-                      Batafsil
-                    </AntdButton>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <Modal
-        centered
-        className="w-[1000px]! custom-modal-bg"
-        styles={{
-          body: {
-            maxHeight: "79vh",
-            overflowY: "auto",
-          },
-        }}
-        title={
-          <div className="flex flex-col">
-            <div>Sotuv tavsilotlari</div>
-            <div className="flex gap-[3px] text-[#6C7381] text-[13px]">
-              <div>Sotuv ID: efaiejnfa</div>| <div>Mijoz: Kimdur</div>|
-              <div>Sana 25.05.2025</div>
-            </div>
-          </div>
-        }
-        closable={{ "aria-label": "Custom Close Button" }}
+      <SaleItemDetailModal
         open={detailOpen}
         onCancel={handleCancelSaleItems}
-        footer={
-          <div className="flex flex-col gap-4">
-            <div className="text-[17px] font-bold">
-              Umumiy summa: <span>15,000,000</span>
-            </div>
-            <div className="flex gap-2 justify-end">
-              <AntdButton
-                className="bg-red-500! text-white!"
-                onClick={handleCancelSaleItems}
-              >
-                Bekor qilish
-              </AntdButton>
-            </div>
-          </div>
-        }
-      >
-        <div className="max-[500px]:hidden">
-          <ProTable
-            dataSource={fakeSalesItems}
-            rowKey="id"
-            pagination={{
-              showSizeChanger: true,
-              responsive: false,
-            }}
-            columns={salesItemColumns}
-            search={false}
-            dateFormatter="string"
-            scroll={{ x: "max-content" }}
-          />
-        </div>
-
-        <div className="mt-4 min-[500px]:hidden flex flex-col gap-5">
-          {fakeSalesItems.map((sli: SaleItemsTableListItem) => (
-            <div
-              key={sli.id}
-              className="flex flex-col gap-3 border border-bg-fy bg-[#ffffff] rounded-[12px] overflow-hidden"
-            >
-              <div className="flex justify-between items-center gap-3 pt-3 px-3.5">
-                <div className="flex flex-col items-start">
-                  <span className="text-[15px] font-bold text-[#64748B]">
-                    Mahsulot
-                  </span>
-                  <a className="text-[16px] font-bold">{sli.product.name}</a>
-                </div>
-                <div className="flex flex-col items-end">
-                  <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
-                </div>
-              </div>
-
-              <div className="flex px-3.5">
-                <div className="flex flex-col w-1/2">
-                  <span className="text-[15px] font-medium text-[#6B7280]">
-                    Soni
-                  </span>
-                  <span className="text-[16px] font-bold text-[#4B5563]">
-                    {sli.quantity}
-                  </span>
-                </div>
-                <div className="flex flex-col w-1/2">
-                  <span className="text-[15px] font-medium text-[#6B7280]">
-                    Narxi
-                  </span>
-                  <span className="text-[16px] font-bold text-green-500">
-                    {sli.price.toLocaleString()}
-                  </span>
-                </div>
-              </div>
-
-              <div className="w-full h-px bg-bg-fy"></div>
-
-              <div className="flex px-3.5 pb-3">
-                <div className="flex flex-col w-1/2">
-                  <span className="text-[15px] font-medium text-[#6B7280]">
-                    Umumiy Summa
-                  </span>
-                  <span className="text-[16px] font-bold text-green-500">
-                    {sli.total_amount.toLocaleString()}
-                  </span>
-                </div>
-                <div className="flex flex-col w-1/2">
-                  <span className="text-[15px] font-medium text-[#6B7280]">
-                    Sotuv Sanasi
-                  </span>
-                  <span className="text-[15px] font-bold text-[#4B5563]">
-                    {sli.created_at.toLocaleString("uz-UZ")}
-                  </span>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </Modal>
+        data={fakeSalesItems}
+      />
     </div>
   );
 };
