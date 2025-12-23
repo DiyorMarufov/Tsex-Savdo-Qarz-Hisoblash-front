@@ -5,8 +5,9 @@ import { getUnitOfMeasurement } from "../../../shared/lib/functions/getUnitOfMea
 interface StatCardProps {
   title: string;
   value: number;
-  rawValue: string;
   suffix: string;
+  decimals?: number
+  rawValue?: string;
   isValueNegative?: boolean;
 }
 
@@ -15,6 +16,7 @@ const DashboardStatCard: React.FC<StatCardProps> = ({
   value,
   rawValue,
   suffix,
+  decimals,
   isValueNegative = false,
 }) => {
   const valueColor = isValueNegative ? "text-red-500" : "text-green-500";
@@ -34,8 +36,8 @@ const DashboardStatCard: React.FC<StatCardProps> = ({
           duration={2.5}
           separator=" "
           decimal="."
-          decimals={1}
-          suffix={`${getUnitOfMeasurement(rawValue)} ${suffix}`}
+          decimals={decimals}
+          suffix={`${getUnitOfMeasurement(rawValue as string)} ${suffix}`}
         />
       </span>
     </div>

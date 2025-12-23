@@ -8,7 +8,7 @@ interface Props {
   isColSpan?: boolean;
 }
 
-const CustomersStatCard: FC<Props> = ({
+const StatCard: FC<Props> = ({
   title,
   value,
   isValueNegative = false,
@@ -19,7 +19,7 @@ const CustomersStatCard: FC<Props> = ({
       className={`border border-bg-fy bg-[#ffffff] rounded-2xl p-7 flex flex-col gap-1 max-[500px]:items-center ${
         isColSpan
           ? "max-[1250px]:col-span-2 max-[1250px]:items-center max-[500px]:col-span-1"
-          : null
+          : ""
       }`}
     >
       <span className="text-[22px] font-medium text-bg-py max-[900px]:text-[20px] max-[500px]:text-[17px]">
@@ -43,4 +43,4 @@ const CustomersStatCard: FC<Props> = ({
   );
 };
 
-export default memo(CustomersStatCard);
+export default memo(StatCard);

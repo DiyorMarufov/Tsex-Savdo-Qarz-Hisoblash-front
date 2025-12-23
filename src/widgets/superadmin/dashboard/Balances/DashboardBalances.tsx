@@ -64,6 +64,7 @@ const DashboardBalances = () => {
         title="Umumiy Savdo"
         value={formattedSale}
         suffix="UZS"
+        decimals={1}
         rawValue={String(totalSales)}
       />
 
@@ -92,6 +93,7 @@ const DashboardBalances = () => {
         value={formattedTsexBalance}
         suffix="UZS"
         rawValue={String(totalTsexBalance)}
+        decimals={1}
         isValueNegative={formattedTsexBalance > 0}
       />
 
@@ -100,6 +102,7 @@ const DashboardBalances = () => {
         value={formattedCustomerBalance}
         suffix="UZS"
         rawValue={String(totalCustomerBalance)}
+        decimals={1}
         isValueNegative={formattedCustomerBalance < 0}
       />
     </div>

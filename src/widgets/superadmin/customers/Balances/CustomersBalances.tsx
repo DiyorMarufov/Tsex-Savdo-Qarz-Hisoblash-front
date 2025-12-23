@@ -1,7 +1,7 @@
 import { memo } from "react";
-import CustomersStatCard from "../StatCard/CustomersStatCard";
 import { useCustomer } from "../../../../shared/lib/apis/customers/useCustomer";
 import TsexAndCustomerCardSkeleton from "../../../../shared/ui/Skeletons/Tsexes/TsexAndCustomerCardSkeleton";
+import StatCard from "../../../../shared/ui/StatCard/StatCard";
 
 const CustomersBalances = () => {
   // CustomersStatCard start
@@ -29,13 +29,13 @@ const CustomersBalances = () => {
 
   return (
     <div className="mt-3 grid grid-cols-3 gap-5 max-[1250px]:grid-cols-2 max-[500px]:grid-cols-1">
-      <CustomersStatCard title="Jami haqdorlik" value={Number(creditor)} />
-      <CustomersStatCard
+      <StatCard title="Jami haqdorlik" value={Number(creditor)} />
+      <StatCard
         title="Jami qarzdorlik"
         value={Number(debtor)}
         isValueNegative
       />
-      <CustomersStatCard
+      <StatCard
         title="Umumiy balans"
         value={Number(net)}
         isValueNegative={Number(net) < 0}

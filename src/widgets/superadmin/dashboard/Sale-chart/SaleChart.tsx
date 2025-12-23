@@ -11,14 +11,14 @@ import {
 import { useSale } from "../../../../shared/lib/apis/sales/useSale";
 import DashboardChartSaleSkeleton from "../../../../shared/ui/Skeletons/DashboardBalanceSkeleton/DashboardChartSaleSkeleton";
 
-const SaleChart = () => {
+const SaleChart = ({ isAnimationActive = true }) => {
   const { getWeeklySale } = useSale();
   // Weekly sale starts
   const { data: weeklySale, isLoading } = getWeeklySale();
   const data = weeklySale?.data;
   // Weekly sale ends
 
-  if(isLoading) return <DashboardChartSaleSkeleton/>
+  if (isLoading) return <DashboardChartSaleSkeleton />;
 
   return (
     <ResponsiveContainer width="100%" height={500} className="px-4 py-2">
@@ -43,6 +43,8 @@ const SaleChart = () => {
           strokeWidth={2}
           fill="url(#colorVisitors)"
           activeDot={{ r: 5 }}
+          animationDuration={800}
+          isAnimationActive={isAnimationActive}
         />
       </AreaChart>
     </ResponsiveContainer>

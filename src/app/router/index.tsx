@@ -1,6 +1,18 @@
 import { lazy, memo } from "react";
 import { useRoutes } from "react-router-dom";
 
+const SalesReportPage = lazy(
+  () => import("../../pages/superadmin/reports/SalesReportPage")
+);
+const ProductsReportPage = lazy(
+  () => import("../../pages/superadmin/reports/ProductsReportPage")
+);
+const TsexesReportPage = lazy(
+  () => import("../../pages/superadmin/reports/TsexesReportPage")
+);
+const CustomersReportPage = lazy(
+  () => import("../../pages/superadmin/reports/CustomersReportPage")
+);
 const NotFoundPage = lazy(
   () => import("../../shared/ui/NotFound/NotFoundPage")
 );
@@ -54,9 +66,7 @@ const ProductDetailPage = lazy(
 const ProductsPage = lazy(
   () => import("../../pages/superadmin/products/ProductsPage")
 );
-const ShopsPage = lazy(
-  () => import("../../pages/superadmin/shops/ShopsPage")
-);
+const ShopsPage = lazy(() => import("../../pages/superadmin/shops/ShopsPage"));
 const TsexesPage = lazy(
   () => import("../../pages/superadmin/tsexes/TsexesPage")
 );
@@ -135,6 +145,24 @@ const Router = () => {
                 {
                   path: "reports",
                   element: <ReportsPage />,
+                  children: [
+                    {
+                      index: true,
+                      element: <SalesReportPage />,
+                    },
+                    {
+                      path: "products",
+                      element: <ProductsReportPage />,
+                    },
+                    {
+                      path: "tsexes",
+                      element: <TsexesReportPage />,
+                    },
+                    {
+                      path: "customers",
+                      element: <CustomersReportPage />,
+                    },
+                  ],
                 },
                 {
                   path: "settings",

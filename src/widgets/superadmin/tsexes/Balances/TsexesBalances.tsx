@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { useTsex } from "../../../../shared/lib/apis/tsexes/useTsex";
 import TsexAndCustomerCardSkeleton from "../../../../shared/ui/Skeletons/Tsexes/TsexAndCustomerCardSkeleton";
-import TsexesStatCard from "../StatCard/TsexesStatCard";
+import StatCard from "../../../../shared/ui/StatCard/StatCard";
 
 const TsexBalances = () => {
   const {
@@ -28,13 +28,13 @@ const TsexBalances = () => {
   // TsexStatCard ends
   return (
     <div className="mt-2 grid grid-cols-3 gap-5 max-[1250px]:grid-cols-2 max-[500px]:grid-cols-1">
-      <TsexesStatCard title="Jami haqdorlik" value={Number(creditor)} />
-      <TsexesStatCard
+      <StatCard title="Jami haqdorlik" value={Number(creditor)} />
+      <StatCard
         title="Jami qarzdorlik"
         value={Number(debtor)}
         isValueNegative
       />
-      <TsexesStatCard
+      <StatCard
         title="Umumiy balans"
         value={Number(net)}
         isValueNegative={Number(net) < 0}
