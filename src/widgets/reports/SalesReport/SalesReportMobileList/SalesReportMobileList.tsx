@@ -12,7 +12,7 @@ const SalesReportMobileList = ({
   onDetail,
 }: SalesReportMobileListProps) => {
   return (
-    <div className="min-[500px]:hidden flex flex-col gap-5 mt-4">
+    <div className="min-[500px]:hidden flex flex-col gap-5">
       {data.map((sl) => (
         <SaleReportCard key={sl.id} item={sl} onDetail={onDetail} />
       ))}

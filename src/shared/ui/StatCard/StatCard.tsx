@@ -6,6 +6,7 @@ interface Props {
   value: number;
   isValueNegative?: boolean;
   isColSpan?: boolean;
+  suffix?: string;
 }
 
 const StatCard: FC<Props> = ({
@@ -13,6 +14,7 @@ const StatCard: FC<Props> = ({
   value,
   isValueNegative = false,
   isColSpan = false,
+  suffix = " UZS",
 }) => {
   return (
     <div
@@ -36,7 +38,7 @@ const StatCard: FC<Props> = ({
           duration={2.5}
           separator=","
           decimal="."
-          suffix=" UZS"
+          suffix={suffix}
         />
       </span>
     </div>
