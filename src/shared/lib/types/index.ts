@@ -18,6 +18,8 @@ export interface QueryParams {
   role?: string;
   status?: string;
   region?: string;
+  startDate?: string;
+  endDate?: string;
 }
 
 export interface TsexTransactionsType {

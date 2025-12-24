@@ -23,11 +23,13 @@ export const useSale = () => {
       gcTime: 1000 * 60 * 10,
     });
 
-  const getSalesSummaryForReport = () =>
+  const getSalesSummaryForReport = (params?: any) =>
     useQuery({
-      queryKey: [sale, "sales-summary-for-report"],
+      queryKey: [sale, "sales-summary-for-report", params],
       queryFn: () =>
-        api.get("sales/reports/sales-summary").then((res) => res.data),
+        api
+          .get("sales/reports/sales-summary", { params })
+          .then((res) => res.data),
       refetchOnWindowFocus: false,
       staleTime: 1000 * 60 * 5,
       gcTime: 1000 * 60 * 10,

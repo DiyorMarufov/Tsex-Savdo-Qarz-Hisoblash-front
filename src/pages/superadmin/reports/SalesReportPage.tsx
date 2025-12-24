@@ -1,4 +1,4 @@
-import { memo, useRef, useState } from "react";
+import { memo, useCallback, useMemo, useRef, useState } from "react";
 import ProTable from "@ant-design/pro-table";
 import { fakeSales, salesColumns } from "./model/sales-model";
 import { fakeSalesItems } from "./model/sales-items-detail-model";
@@ -8,10 +8,25 @@ import SalesReportMobileList from "../../../widgets/reports/SalesReport/SalesRep
 import SaleItemDetailModal from "../../../widgets/reports/SalesReport/SaleItemDetailModal/SaleItemDetailModal";
 import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
 import ReportFilter from "../../../widgets/reports/SalesReport/ReportFilter/ReportFilter";
+import { useSale } from "../../../shared/lib/apis/sales/useSale";
+import { useParamsHook } from "../../../shared/hooks/params/useParams";
+import type { QueryParams } from "../../../shared/lib/types";
 
 const SalesReportPage = () => {
   const [detailOpen, setdetailOpen] = useState<boolean>(false);
   const saleId = useRef<string | null>(null);
+
+  const { getSalesSummaryForReport } = useSale();
+  const { getParam, setParam } = useParamsHook();
+
+  // Query starts
+  const query: QueryParams = useMemo(() => {
+    const startDate = getParam("startDate") || undefined;
+    const endDate = getParam("endDate") || undefined;
+
+    return { startDate, endDate };
+  }, [getParam]);
+  // Query ends
 
   // Sale Items detail starts
   const handleSaleItems = (id: string) => {
@@ -23,11 +38,45 @@ const SalesReportPage = () => {
     setdetailOpen(false);
   };
   // Sale Items detail ends
+
+  // SalesSummary starts
+  const { data: salesSummary, isLoading: salesReportLoading } =
+    getSalesSummaryForReport({
+      startDate: query.startDate,
+      endDate: query.endDate,
+    });
+  const summary = salesSummary?.data;
+
+  const totalSales = summary?.totalSales;
+  const paidTotal = summary?.paidTotal;
+  const unpaidTotal = summary?.unpaidTotal;
+  // SalesSummary ends
+
+  // Report Filter starts
+  const handleFilterChange = useCallback(
+    (dates: string[] | null) => {
+      if (dates) {
+        setParam("startDate", dates[0]);
+        setParam("endDate", dates[1]);
+      } else {
+        setParam("startDate", "");
+        setParam("endDate", "");
+      }
+    },
+    [setParam]
+  );
+  // Report Filter ends
+
   return (
     <div className="flex flex-col gap-5">
-      <ReportFilter />
+      <ReportFilter onFilter={handleFilterChange} />
 
-      <SalesReportBalances />
+      <SalesReportBalances
+        isLoading={salesReportLoading}
+        totalSales={totalSales}
+        paidTotal={paidTotal}
+        unpaidTotal={unpaidTotal}
+      />
 
       <SalesReportChart />
 
