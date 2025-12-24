@@ -1,29 +1,25 @@
 import { memo } from "react";
 import { useTsex } from "../../../../shared/lib/apis/tsexes/useTsex";
-import TsexAndCustomerCardSkeleton from "../../../../shared/ui/Skeletons/Tsexes/TsexAndCustomerCardSkeleton";
 import StatCard from "../../../../shared/ui/StatCard/StatCard";
+import BalanceCardSkeleton from "../../../../shared/ui/Skeletons/BalanceCardSkeleton/BalanceCardSkeleton";
 
 const TsexBalances = () => {
-  const {
-    getTsexCreditorTotalBalance,
-    getTsexDebtorTotalBalance,
-    getTsexNetTotalBalance,
-  } = useTsex();
+  const { getTsexBalanceSummary } = useTsex();
   // TsexStatCard starts
-  const { data: creditorTotalBalance, isLoading: creditorLoading } =
-    getTsexCreditorTotalBalance();
-  const { data: debtorTotalBalance, isLoading: debtorLoading } =
-    getTsexDebtorTotalBalance();
-  const { data: netTotalBalance, isLoading: netLoading } =
-    getTsexNetTotalBalance();
+  const { data: tsexBalancesSummary, isLoading: tsexBalancesLoading } =
+    getTsexBalanceSummary();
+  const tsexBalances = tsexBalancesSummary?.data;
 
-  const creditor = creditorTotalBalance?.data;
-  const debtor = -(debtorTotalBalance?.data ?? 0);
-  const net = netTotalBalance?.data;
+  const creditor = tsexBalances?.creditorTotalBalance;
+  const debtor = -(tsexBalances?.debtorTotalBalance ?? 0);
+  const net = tsexBalances?.netTotalBalance;
 
-  const anyIsLoading = creditorLoading || debtorLoading || netLoading;
-  if (anyIsLoading) {
-    return <TsexAndCustomerCardSkeleton />;
+  if (tsexBalancesLoading) {
+    return (
+      <div className="mt-2">
+        <BalanceCardSkeleton />
+      </div>
+    );
   }
   // TsexStatCard ends
   return (

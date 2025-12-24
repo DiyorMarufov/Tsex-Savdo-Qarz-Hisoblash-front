@@ -37,7 +37,7 @@ const CustomersReportChart = () => {
   return (
     <div className="bg-white rounded-xl border border-bg-fy w-full p-4 max-[500px]:p-3">
       <div className="flex flex-col gap-2 mb-5">
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col">
           <h3 className="text-lg font-bold text-slate-800 max-[500px]:text-[15px]">
             Mijozlar balansi holati
           </h3>

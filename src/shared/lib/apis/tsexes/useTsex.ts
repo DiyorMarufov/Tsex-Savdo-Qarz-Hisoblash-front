@@ -32,31 +32,10 @@ export const useTsex = () => {
       gcTime: Infinity,
     });
 
-  const getTsexCreditorTotalBalance = () =>
-    useQuery<IResponseData>({
-      queryKey: [tsex, "creditor-total-balance"],
-      queryFn: () =>
-        api.get("tsexes/balances/creditor-total").then((res) => res.data),
-      refetchOnWindowFocus: false,
-      staleTime: 1000 * 60 * 5,
-      gcTime: 1000 * 60 * 10,
-    });
-
-  const getTsexDebtorTotalBalance = () =>
-    useQuery<IResponseData>({
-      queryKey: [tsex, "debtor-total-balance"],
-      queryFn: () =>
-        api.get("tsexes/balances/debtor-total").then((res) => res.data),
-      refetchOnWindowFocus: false,
-      staleTime: 1000 * 60 * 5,
-      gcTime: 1000 * 60 * 10,
-    });
-
-  const getTsexNetTotalBalance = () =>
-    useQuery<IResponseData>({
-      queryKey: [tsex, "net-total-balance"],
-      queryFn: () =>
-        api.get("tsexes/balances/net-total").then((res) => res.data),
+  const getTsexBalanceSummary = () =>
+    useQuery({
+      queryKey: [tsex, "tsex-balance-summary"],
+      queryFn: () => api.get("tsexes/balances/summary").then((res) => res.data),
       refetchOnWindowFocus: false,
       staleTime: 1000 * 60 * 5,
       gcTime: 1000 * 60 * 10,
@@ -74,9 +53,7 @@ export const useTsex = () => {
     getTotalTsexBalance,
     getMostDebtorTsexes,
     getAllTsexesForProductsFilter,
-    getTsexCreditorTotalBalance,
-    getTsexDebtorTotalBalance,
-    getTsexNetTotalBalance,
+    getTsexBalanceSummary,
     getAllTsexes,
   };
 };

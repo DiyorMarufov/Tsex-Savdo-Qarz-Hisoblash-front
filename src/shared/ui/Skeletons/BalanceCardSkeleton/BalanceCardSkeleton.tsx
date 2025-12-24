@@ -1,8 +1,8 @@
 import { memo } from "react";
 
-const TsexAndCustomerCardSkeleton = () => {
+const BalanceCardSkeleton = () => {
   return (
-    <div className="mt-2 grid grid-cols-3 gap-5 max-[1250px]:grid-cols-2 max-[500px]:grid-cols-1">
+    <div className="grid grid-cols-3 gap-5 max-[1250px]:grid-cols-2 max-[500px]:grid-cols-1">
       {Array.from({ length: 3 }).map((_, inx: number) => (
         <div
           key={inx}
@@ -37,4 +37,4 @@ const TsexAndCustomerCardSkeleton = () => {
   );
 };
 
-export default memo(TsexAndCustomerCardSkeleton);
+export default memo(BalanceCardSkeleton);

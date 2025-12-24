@@ -1,34 +1,30 @@
 import { memo } from "react";
 import { useCustomer } from "../../../../shared/lib/apis/customers/useCustomer";
-import TsexAndCustomerCardSkeleton from "../../../../shared/ui/Skeletons/Tsexes/TsexAndCustomerCardSkeleton";
 import StatCard from "../../../../shared/ui/StatCard/StatCard";
+import BalanceCardSkeleton from "../../../../shared/ui/Skeletons/BalanceCardSkeleton/BalanceCardSkeleton";
 
 const CustomersBalances = () => {
   // CustomersStatCard start
-  const {
-    getCustomerCreditorTotalBalance,
-    getCustomerDebtorTotalBalance,
-    getCustomerNetTotalBalance,
-  } = useCustomer();
+  const { getCustomerBalanceSummary } = useCustomer();
 
-  const { data: creditorTotalBalance, isLoading: creditorLoading } =
-    getCustomerCreditorTotalBalance();
-  const { data: debtorTotalBalance, isLoading: debtorLoading } =
-    getCustomerDebtorTotalBalance();
-  const { data: netTotalBalance, isLoading: netLoading } =
-    getCustomerNetTotalBalance();
+  const { data: customerBalancesSummary, isLoading: customerBalanceLoading } =
+    getCustomerBalanceSummary();
+  const customerBalances = customerBalancesSummary?.data;
 
-  const creditor = creditorTotalBalance?.data;
-  const debtor = debtorTotalBalance?.data;
-  const net = netTotalBalance?.data;
+  const creditor = customerBalances?.creditorTotalBalance;
+  const debtor = customerBalances?.debtorTotalBalance;
+  const net = customerBalances?.netTotalBalance;
 
-  const anyLoading = creditorLoading || debtorLoading || netLoading;
-
-  if (anyLoading) return <TsexAndCustomerCardSkeleton />;
+  if (customerBalanceLoading)
+    return (
+      <div className="mt-2">
+        <BalanceCardSkeleton />
+      </div>
+    );
   // CustomersStatCard end
 
   return (
-    <div className="mt-3 grid grid-cols-3 gap-5 max-[1250px]:grid-cols-2 max-[500px]:grid-cols-1">
+    <div className="mt-2 grid grid-cols-3 gap-5 max-[1250px]:grid-cols-2 max-[500px]:grid-cols-1">
       <StatCard title="Jami haqdorlik" value={Number(creditor)} />
       <StatCard
         title="Jami qarzdorlik"

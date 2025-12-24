@@ -22,5 +22,15 @@ export const useSale = () => {
       staleTime: 1000 * 60 * 5,
       gcTime: 1000 * 60 * 10,
     });
-  return { getTotalSales, getWeeklySale };
+
+  const getSalesSummaryForReport = () =>
+    useQuery({
+      queryKey: [sale, "sales-summary-for-report"],
+      queryFn: () =>
+        api.get("sales/reports/sales-summary").then((res) => res.data),
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 10,
+    });
+  return { getTotalSales, getWeeklySale, getSalesSummaryForReport };
 };

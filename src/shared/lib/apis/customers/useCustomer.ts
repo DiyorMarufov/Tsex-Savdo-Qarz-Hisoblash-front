@@ -38,31 +38,11 @@ export const useCustomer = () => {
       gcTime: 1000 * 60 * 10,
     });
 
-  const getCustomerCreditorTotalBalance = () =>
-    useQuery<IResponseData>({
-      queryKey: [customer, "creditor-total-balance"],
+  const getCustomerBalanceSummary = () =>
+    useQuery({
+      queryKey: [customer, "customer-balance-summary"],
       queryFn: () =>
-        api.get("customers/balances/creditor-total").then((res) => res.data),
-      refetchOnWindowFocus: false,
-      staleTime: 1000 * 60 * 5,
-      gcTime: 1000 * 60 * 10,
-    });
-
-  const getCustomerDebtorTotalBalance = () =>
-    useQuery<IResponseData>({
-      queryKey: [customer, "debtor-total-balance"],
-      queryFn: () =>
-        api.get("customers/balances/debtor-total").then((res) => res.data),
-      refetchOnWindowFocus: false,
-      staleTime: 1000 * 60 * 5,
-      gcTime: 1000 * 60 * 10,
-    });
-
-  const getCustomerNetTotalBalance = () =>
-    useQuery<IResponseData>({
-      queryKey: [customer, "net-total-balance"],
-      queryFn: () =>
-        api.get("customers/balances/net-total").then((res) => res.data),
+        api.get("customers/balances/summary").then((res) => res.data),
       refetchOnWindowFocus: false,
       staleTime: 1000 * 60 * 5,
       gcTime: 1000 * 60 * 10,
@@ -90,9 +70,7 @@ export const useCustomer = () => {
     createCustomer,
     getTotalCustomerBalance,
     getMostDebtorCustomers,
-    getCustomerCreditorTotalBalance,
-    getCustomerDebtorTotalBalance,
-    getCustomerNetTotalBalance,
+    getCustomerBalanceSummary,
     getAllCustomers,
     getAllCustomersForTransaction,
   };
