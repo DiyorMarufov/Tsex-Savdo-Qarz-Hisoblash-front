@@ -24,7 +24,7 @@ const ReportFilter = ({ onFilter }: ReportFilterProps) => {
   return (
     <div className="rounded-[12px] border border-gray-100 bg-[#ffffff] p-3.5 flex items-center gap-3 shadow-sm">
       <div className="flex items-center gap-3 w-full">
-        <div className="flex-1">
+        <div className="">
           <DatePicker.RangePicker
             showTime={{ format: "HH:mm" }}
             format="YYYY-MM-DD HH:mm"
