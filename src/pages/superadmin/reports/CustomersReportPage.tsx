@@ -1,9 +1,15 @@
-import { memo } from 'react';
+import { memo } from "react";
+import CustomersReportBalances from "../../../widgets/reports/CustomersReport/CustomersReportBalances/CustomersReportBalances";
+import ReportFilter from "../../../widgets/reports/SalesReport/ReportFilter/ReportFilter";
+import CustomersReportChart from "../../../widgets/reports/CustomersReport/CustomersReportChart/CustomersReportChart";
 
 const CustomersReportPage = () => {
   return (
-    <div>
-      <h2>CustomersReportPage</h2>
+    <div className="flex flex-col gap-5">
+      <ReportFilter />
+      <CustomersReportBalances />
+
+      <CustomersReportChart />
     </div>
   );
 };
