@@ -11,75 +11,14 @@ import {
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
 import "dayjs/locale/uz-latn";
-
-const rawData = {
-  kun: [
-    { name: "04:00", value: 400 },
-    { name: "05:00", value: 300 },
-    { name: "06:00", value: 300 },
-    { name: "07:00", value: 300 },
-    { name: "08:00", value: 300 },
-    { name: "09:00", value: 300 },
-    { name: "10:00", value: 300 },
-    { name: "11:00", value: 300 },
-    { name: "12:00", value: 700 },
-    { name: "13:00", value: 500 },
-  ],
-  oy: [
-    { name: "1", value: 2000 },
-    { name: "2", value: 2500 },
-    { name: "3", value: 3200 },
-    { name: "4", value: 2800 },
-    { name: "5", value: 4500 },
-    { name: "6", value: 3000 },
-    { name: "7", value: 3500 },
-    { name: "8", value: 4000 },
-    { name: "9", value: 4800 },
-    { name: "10", value: 5200 },
-    { name: "11", value: 3000 },
-    { name: "12", value: 2800 },
-    { name: "13", value: 3600 },
-    { name: "14", value: 4200 },
-    { name: "15", value: 5000 },
-    { name: "16", value: 6000 },
-    { name: "17", value: 5500 },
-    { name: "18", value: 4500 },
-    { name: "19", value: 4000 },
-    { name: "20", value: 4200 },
-    { name: "21", value: 4800 },
-    { name: "22", value: 5100 },
-    { name: "23", value: 5800 },
-    { name: "24", value: 6200 },
-    { name: "25", value: 5500 },
-    { name: "26", value: 4800 },
-    { name: "27", value: 4300 },
-    { name: "28", value: 4000 },
-    { name: "29", value: 4500 },
-    { name: "30", value: 5200 },
-    { name: "31", value: 6500 },
-  ],
-  yil: [
-    { name: "Yan", value: 12000 },
-    { name: "Fev", value: 15000 },
-    { name: "Mar", value: 10000 },
-    { name: "Apr", value: 18000 },
-    { name: "May", value: 22000 },
-    { name: "Iyun", value: 20000 },
-    { name: "Iyul", value: 25000 },
-    { name: "Avg", value: 28000 },
-    { name: "Sen", value: 21000 },
-    { name: "Okt", value: 19000 },
-    { name: "Noy", value: 24000 },
-    { name: "Dek", value: 32000 },
-  ],
-};
+import { salesReportrawData } from "../../../../shared/lib/constants";
 
 const SalesReportChart = ({ isAnimationActive = true }) => {
-  const [filterType, setFilterType] = useState<"kun" | "oy" | "yil">("kun");
+  const [filterType, setFilterType] = useState<"day" | "month" | "year">("day");
   const [selectedDate, setSelectedDate] = useState(dayjs());
 
   const activeData = useMemo(
-    () => rawData[filterType],
+    () => salesReportrawData[filterType],
     [filterType, selectedDate]
   );
 
@@ -98,7 +37,7 @@ const SalesReportChart = ({ isAnimationActive = true }) => {
 
         <div className="flex items-center justify-between gap-3 max-[500px]:flex-col max-[500px]:items-stretch">
           <div className="flex bg-gray-100 p-1 rounded-lg shrink-0">
-            {(["kun", "oy", "yil"] as const).map((type) => (
+            {(["day", "month", "year"] as const).map((type) => (
               <button
                 key={type}
                 onClick={() => setFilterType(type)}
@@ -108,16 +47,16 @@ const SalesReportChart = ({ isAnimationActive = true }) => {
                     : "text-gray-500 hover:text-gray-700"
                 }`}
               >
-                {type === "kun" ? "Kunlik" : type === "oy" ? "Oylik" : "Yillik"}
+                {type === "day" ? "Kunlik" : type === "month" ? "Oylik" : "Yillik"}
               </button>
             ))}
           </div>
 
           <DatePicker
             picker={
-              filterType === "kun"
+              filterType === "day"
                 ? "date"
-                : filterType === "oy"
+                : filterType === "month"
                 ? "month"
                 : "year"
             }
@@ -129,55 +68,106 @@ const SalesReportChart = ({ isAnimationActive = true }) => {
         </div>
       </div>
 
-      <div className="h-[350px] w-full max-[500px]:h-[230px]">
+      <div className="h-[350px] w-full max-[500px]:h-[250px]">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={activeData}
             margin={{
               top: 10,
               right: 5,
-              left: -30,
+              left: 0,
               bottom: 0,
             }}
           >
             <defs>
-              <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3} />
+              <linearGradient id="colorSoni" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#6366f1" stopOpacity={0.2} />
                 <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
               </linearGradient>
+              <linearGradient id="colorSumma" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#10b981" stopOpacity={0.2} />
+                <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+              </linearGradient>
             </defs>
+
             <CartesianGrid
               strokeDasharray="3 3"
               vertical={false}
               stroke="#f1f5f9"
             />
+
             <XAxis
               dataKey="name"
               axisLine={false}
               tickLine={false}
               tick={{ fill: "#94a3b8", fontSize: 10 }}
               dy={10}
+              minTickGap={15}
             />
+
             <YAxis
+              yAxisId="left"
               axisLine={false}
               tickLine={false}
-              tick={{ fill: "#94a3b8", fontSize: 10 }}
+              tick={{ fill: "#10b981", fontSize: 9 }}
+              width={35}
+              tickFormatter={(value) => {
+                if (value >= 1000000000)
+                  return `${(value / 1000000000).toFixed(0)}B`;
+                if (value >= 1000000) return `${(value / 1000000).toFixed(0)}M`;
+                if (value >= 1000) return `${(value / 1000).toFixed(0)}K`;
+                return value;
+              }}
+            />
+
+            <YAxis
+              yAxisId="right"
+              orientation="right"
+              axisLine={false}
+              tickLine={false}
+              tick={{ fill: "#6366f1", fontSize: 9 }}
+              width={30}
+              tickFormatter={(value) => {
+                if (value >= 1000000) return `${(value / 1000000).toFixed(0)}M`;
+                if (value >= 1000) return `${(value / 1000).toFixed(0)}K`;
+                return value;
+              }}
             />
             <Tooltip
+              formatter={(value: number, name: string) => [
+                value.toLocaleString() + (name === "Summa" ? " so'm" : " ta"),
+                name,
+              ]}
               contentStyle={{
                 borderRadius: "12px",
                 border: "none",
                 boxShadow: "0 10px 15px -3px rgba(0,0,0,0.1)",
-                fontSize: "12px",
+                fontSize: "11px",
               }}
             />
+
             <Area
+              yAxisId="left"
               type="monotone"
-              dataKey="value"
-              stroke="#6366f1"
+              dataKey="Summa"
+              name="Summa"
+              stroke="#10b981"
               strokeWidth={2}
               fillOpacity={1}
-              fill="url(#colorValue)"
+              fill="url(#colorSumma)"
+              animationDuration={800}
+              isAnimationActive={isAnimationActive}
+            />
+
+            <Area
+              yAxisId="right"
+              type="monotone"
+              dataKey="Sotuvlar soni"
+              name="Sotuvlar"
+              stroke="#6366f1"
+              strokeWidth={1.5}
+              fillOpacity={1}
+              fill="url(#colorSoni)"
               animationDuration={800}
               isAnimationActive={isAnimationActive}
             />

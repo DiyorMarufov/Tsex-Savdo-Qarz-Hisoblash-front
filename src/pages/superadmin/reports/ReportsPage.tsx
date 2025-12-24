@@ -19,7 +19,7 @@ const ReportsPage = () => {
   }, []);
 
   return (
-    <div className="relative pb-11.5">
+    <div>
       <div>
         <LargeTitle title="Hisobotlar" />
       </div>

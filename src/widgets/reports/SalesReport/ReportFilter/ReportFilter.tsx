@@ -22,7 +22,7 @@ const ReportFilter = ({ onFilter }: ReportFilterProps) => {
   };
 
   return (
-    <div className="rounded-[12px] border border-gray-100 bg-[#ffffff] p-3.5 flex items-center gap-3 shadow-sm">
+    <div className="rounded-[12px] border border-bg-fy bg-[#ffffff] p-3.5 flex items-center gap-3">
       <div className="flex items-center gap-3 w-full">
         <div className="">
           <DatePicker.RangePicker
