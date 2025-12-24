@@ -88,25 +88,31 @@ const SalesReportChart = ({ isAnimationActive = true }) => {
   };
 
   return (
-    <div className="p-4 bg-white rounded-xl border border-bg-fy w-full max-[500px]:p-2 max-[500px]:rounded-lg">
-      <div className="flex items-center justify-between gap-4 mb-6 max-[500px]:flex-col max-[500px]:items-start max-[500px]:gap-3 max-[500px]:mb-4">
-        <div className="flex bg-gray-100 p-1 rounded-lg w-fit max-[500px]:w-full">
-          {(["kun", "oy", "yil"] as const).map((type) => (
-            <button
-              key={type}
-              onClick={() => setFilterType(type)}
-              className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all max-[500px]:flex-1 max-[500px]:text-xs ${
-                filterType === type
-                  ? "bg-white text-indigo-600 shadow-sm"
-                  : "text-gray-500 hover:text-gray-700"
-              }`}
-            >
-              {type === "kun" ? "Kunlik" : type === "oy" ? "Oylik" : "Yillik"}
-            </button>
-          ))}
+    <div className="p-4 bg-white rounded-xl border border-bg-fy w-full max-[500px]:p-3 max-[500px]:rounded-lg">
+      <div className="flex flex-col gap-2 mb-5">
+        <div className="flex flex-col gap-1">
+          <h3 className="text-lg font-bold text-slate-800 max-[500px]:text-[15px]">
+            Sotuvlar hisoboti
+          </h3>
         </div>
 
-        <div className="w-auto max-[500px]:w-full">
+        <div className="flex items-center justify-between gap-3 max-[500px]:flex-col max-[500px]:items-stretch">
+          <div className="flex bg-gray-100 p-1 rounded-lg shrink-0">
+            {(["kun", "oy", "yil"] as const).map((type) => (
+              <button
+                key={type}
+                onClick={() => setFilterType(type)}
+                className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all flex-1 min-w-20 ${
+                  filterType === type
+                    ? "bg-white text-indigo-600 shadow-sm"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                {type === "kun" ? "Kunlik" : type === "oy" ? "Oylik" : "Yillik"}
+              </button>
+            ))}
+          </div>
+
           <DatePicker
             picker={
               filterType === "kun"
@@ -118,7 +124,7 @@ const SalesReportChart = ({ isAnimationActive = true }) => {
             value={selectedDate}
             onChange={handleDateChange}
             allowClear={false}
-            className="w-44 h-10 border-gray-200 rounded-lg max-[500px]:w-full max-[500px]:h-9"
+            className="h-10 border-gray-200 rounded-lg w-44 max-[500px]:w-full"
           />
         </div>
       </div>

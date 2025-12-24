@@ -35,10 +35,10 @@ const CustomersReportChart = () => {
     if (date) setSelectedDate(date);
   };
   return (
-    <div className="bg-white rounded-xl border border-bg-fy w-full p-5">
-      <div className="flex justify-between max-[520px]:flex-col">
-        <div className="mb-2">
-          <h3 className="text-lg font-bold text-slate-800 max-[530px]:text-[15px]">
+    <div className="bg-white rounded-xl border border-bg-fy w-full p-4 max-[500px]:p-3">
+      <div className="flex flex-col gap-2 mb-5">
+        <div className="flex flex-col gap-1">
+          <h3 className="text-lg font-bold text-slate-800 max-[500px]:text-[15px]">
             Mijozlar balansi holati
           </h3>
           <p className="text-sm text-slate-500">
@@ -46,29 +46,30 @@ const CustomersReportChart = () => {
           </p>
         </div>
 
-        <div className="flex items-center gap-2 max-[520px]:w-full max-[520px]:flex-col">
-          <div className="flex bg-slate-100 p-1 rounded-lg max-[520px]:w-full">
+        <div className="flex items-center justify-between gap-3 max-[500px]:flex-col max-[500px]:items-stretch">
+          <div className="flex bg-gray-100 p-1 rounded-lg shrink-0">
             {(["oy", "yil"] as const).map((type) => (
               <button
                 key={type}
                 onClick={() => setFilterType(type)}
-                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all max-[520px]:flex-1 ${
+                className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all flex-1 min-w-20 ${
                   filterType === type
-                    ? "bg-white text-blue-600 shadow-sm"
-                    : "text-slate-500 hover:text-slate-700"
+                    ? "bg-white text-indigo-600 shadow-sm"
+                    : "text-gray-500 hover:text-gray-700"
                 }`}
               >
                 {type === "oy" ? "Oylik" : "Yillik"}
               </button>
             ))}
           </div>
+
           <DatePicker
             picker={filterType === "oy" ? "month" : "year"}
             value={selectedDate}
             onChange={handleDateChange}
             allowClear={false}
             size="middle"
-            className="border-slate-200 text-slate-700 w-32 max-[520px]:w-full"
+            className="border-slate-200 text-slate-700 w-44 h-10 max-[500px]:w-full"
           />
         </div>
       </div>
