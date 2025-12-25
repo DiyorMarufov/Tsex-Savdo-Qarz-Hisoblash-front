@@ -111,9 +111,9 @@ const AdminReportsPage = () => {
               <div className="flex justify-between px-3.5 py-2.5">
                 <div className="flex flex-col">
                   <span className="text-[15px] font-bold text-[#6B7280]">
-                    {sl.store.name}
+                    {sl.shop.name}
                   </span>
-                  <a className="text-[16px] font-bold">{sl.customer.name}</a>
+                  <a className="text-[16px] font-bold">{sl.customer.full_name}</a>
                 </div>
                 <div className="flex items-center gap-3">
                   <div
@@ -148,7 +148,7 @@ const AdminReportsPage = () => {
                       Summa
                     </span>
                     <span className="text-[16px] font-bold text-green-600">
-                      {sl.total_sum.toLocaleString()}
+                      {sl.total_amount.toLocaleString()}
                     </span>
                   </div>
                   <div className="flex flex-col justify-start">
@@ -178,7 +178,7 @@ const AdminReportsPage = () => {
                       Sotuvchi
                     </span>
                     <span className="text-[16px] font-bold text-[#4B5563]">
-                      {sl.seller.name}
+                      {sl.seller.full_name}
                     </span>
                   </div>
                 </div>
