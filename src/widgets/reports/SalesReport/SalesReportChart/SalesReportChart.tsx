@@ -13,7 +13,7 @@ import dayjs, { Dayjs } from "dayjs";
 import "dayjs/locale/uz-latn";
 import { useSale } from "../../../../shared/lib/apis/sales/useSale";
 import { useParamsHook } from "../../../../shared/hooks/params/useParams";
-import SalesReportChartSkeleton from "../../../../shared/ui/Skeletons/Reports/SalesReportChartSkeleton/SalesReportChartSkeleton";
+import SalesReportChartSkeleton from "../../../../shared/ui/Skeletons/Reports/SalesReport/SalesReportChartSkeleton/SalesReportChartSkeleton";
 
 const SalesReportChart = ({ isAnimationActive = true }) => {
   const { getParam, setParams } = useParamsHook();
