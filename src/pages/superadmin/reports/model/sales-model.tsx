@@ -2,11 +2,11 @@ import type { ProColumns } from "@ant-design/pro-table";
 
 export type SalesTableListItem = {
   id?: string;
-  store: { name: string };
-  seller: { name: string };
-  customer: { name: string };
+  shop: { name: string };
+  seller: { full_name: string };
+  customer: { full_name: string };
   type: "full_payment" | "partial_payment" | "real";
-  total_sum: number;
+  total_amount: number;
   paid_amount: number;
   debt: number;
   created_at: Date;
@@ -17,25 +17,25 @@ export const salesColumns = (
 ): ProColumns<SalesTableListItem>[] => [
   {
     title: "Do'kon",
-    dataIndex: ["store", "name"], // Store obyekti ichidagi name
+    dataIndex: ["shop", "name"],
     width: 120,
     fixed: "left",
     sorter: true,
-    render: (_, record) => <a>{record.store.name}</a>,
+    render: (_, record) => <a>{record.shop.name}</a>,
   },
   {
     title: "Sotuvchi",
-    dataIndex: ["seller", "name"], // Seller obyekti ichidagi name
+    dataIndex: ["seller", "name"],
     width: 150,
     sorter: true,
-    render: (_, record) => record.seller.name,
+    render: (_, record) => record.seller.full_name,
   },
   {
     title: "Mijoz",
-    dataIndex: ["customer", "name"], // Customer obyekti ichidagi name
+    dataIndex: ["customer", "name"],
     width: 150,
     sorter: true,
-    render: (_, record) => record.customer.name,
+    render: (_, record) => record.customer.full_name,
   },
   {
     title: "To'lov Turi",
@@ -52,7 +52,7 @@ export const salesColumns = (
         status: "Warning",
       },
       real: {
-        text: "Real", // real - odatda kredit/debt degan ma'noda ishlatiladi
+        text: "Real",
         status: "Error",
       },
     },
@@ -61,13 +61,13 @@ export const salesColumns = (
   },
   {
     title: "Summa",
-    dataIndex: "total_sum",
+    dataIndex: "total_amount",
     width: 120,
     sorter: true,
     hideInSearch: true,
     render: (_, record) => (
       <div className="text-green-600 font-bold">
-        {record.total_sum.toLocaleString()}
+        {record.total_amount.toLocaleString()}
       </div>
     ),
   },
@@ -95,7 +95,7 @@ export const salesColumns = (
       const formattedAmount = Math.abs(debtAmount).toLocaleString("uz-UZ");
 
       if (debtAmount > 0) {
-        return <div className="text-red-600">- {formattedAmount}</div>;
+        return <div className="text-red-600">-{formattedAmount}</div>;
       }
 
       return <div className="text-green-600">0</div>;
@@ -126,44 +126,44 @@ export const salesColumns = (
 export const fakeSales: SalesTableListItem[] = [
   {
     id: "s1",
-    store: { name: "Markaziy Do'kon" },
-    seller: { name: "Azizov Jamshid" },
-    customer: { name: "Qurbonov Dilshod" },
+    shop: { name: "Markaziy Do'kon" },
+    seller: { full_name: "Azizov Jamshid" },
+    customer: { full_name: "Qurbonov Dilshod" },
     type: "full_payment",
-    total_sum: 550000,
+    total_amount: 550000,
     paid_amount: 550000,
     debt: 0,
     created_at: new Date("2024-05-20T14:30:00"),
   },
   {
     id: "s2",
-    store: { name: "Filial 1" },
-    seller: { name: "Karimov Sherzod" },
-    customer: { name: "Aliyeva Sevara" },
+    shop: { name: "Filial 1" },
+    seller: { full_name: "Karimov Sherzod" },
+    customer: { full_name: "Aliyeva Sevara" },
     type: "partial_payment",
-    total_sum: 1200000,
+    total_amount: 1200000,
     paid_amount: 500000,
     debt: 700000,
     created_at: new Date("2024-05-20T14:30:00"),
   },
   {
     id: "s3",
-    store: { name: "Markaziy Do'kon" },
-    seller: { name: "Azizov Jamshid" },
-    customer: { name: "Valiyev G'ani" },
+    shop: { name: "Markaziy Do'kon" },
+    seller: { full_name: "Azizov Jamshid" },
+    customer: { full_name: "Valiyev G'ani" },
     type: "real",
-    total_sum: 300000,
+    total_amount: 300000,
     paid_amount: 0,
     debt: 300000,
     created_at: new Date("2024-05-20T14:30:00"),
   },
   {
     id: "s4",
-    store: { name: "Filial 2" },
-    seller: { name: "Soliyev Lola" },
-    customer: { name: "Hamidov Akmal" },
+    shop: { name: "Filial 2" },
+    seller: { full_name: "Soliyev Lola" },
+    customer: { full_name: "Hamidov Akmal" },
     type: "full_payment",
-    total_sum: 80000,
+    total_amount: 80000,
     paid_amount: 80000,
     debt: 0,
     created_at: new Date("2024-05-20T14:30:00"),

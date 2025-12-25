@@ -1,4 +1,4 @@
-import { useState, useMemo, memo } from "react";
+import { memo, useMemo } from "react";
 import {
   AreaChart,
   Area,
@@ -9,22 +9,54 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { DatePicker } from "antd";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import "dayjs/locale/uz-latn";
-import { salesReportrawData } from "../../../../shared/lib/constants";
+import { useSale } from "../../../../shared/lib/apis/sales/useSale";
+import { useParamsHook } from "../../../../shared/hooks/params/useParams";
+import SalesReportChartSkeleton from "../../../../shared/ui/Skeletons/Reports/SalesReportChartSkeleton/SalesReportChartSkeleton";
 
 const SalesReportChart = ({ isAnimationActive = true }) => {
-  const [filterType, setFilterType] = useState<"day" | "month" | "year">("day");
-  const [selectedDate, setSelectedDate] = useState(dayjs());
+  const { getParam, setParams } = useParamsHook();
+  const filterType = (getParam("type") as "day" | "month" | "year") || "day";
 
-  const activeData = useMemo(
-    () => salesReportrawData[filterType],
-    [filterType, selectedDate]
+  const dateParam = getParam("date");
+  const selectedDate = dateParam ? dayjs(dateParam) : dayjs();
+  const { getSalesStatisticsForReport } = useSale();
+
+  // SalesStatistics start
+  const query = useMemo(
+    () => ({
+      date: selectedDate.format("YYYY-MM-DD"),
+      type: filterType,
+    }),
+    [selectedDate, filterType]
   );
+  const { data: salesStatisticsReport, isLoading: salesStatisticsLoading } =
+    getSalesStatisticsForReport(query);
+  const statisticsReports = salesStatisticsReport?.data;
+  // SalesStatistics end
 
-  const handleDateChange = (date: any) => {
-    if (date) setSelectedDate(date);
+  // HandleDateChange starts
+  const handleFilterTypeChange = (type: "day" | "month" | "year") => {
+    setParams({
+      type,
+      date: selectedDate.format("YYYY-MM-DD"),
+    });
   };
+
+  const handleDateChange = (
+    date: Dayjs | null,
+    dateString: string | string[]
+  ) => {
+    if (date) {
+      setParams({
+        date: Array.isArray(dateString) ? dateString[0] : dateString,
+      });
+    }
+  };
+  // HandleDateChange ends
+
+  if (salesStatisticsLoading) return <SalesReportChartSkeleton />;
 
   return (
     <div className="p-4 bg-white rounded-xl border border-bg-fy w-full max-[500px]:p-3 max-[500px]:rounded-lg">
@@ -40,14 +72,18 @@ const SalesReportChart = ({ isAnimationActive = true }) => {
             {(["day", "month", "year"] as const).map((type) => (
               <button
                 key={type}
-                onClick={() => setFilterType(type)}
+                onClick={() => handleFilterTypeChange(type)}
                 className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all flex-1 min-w-20 ${
                   filterType === type
                     ? "bg-white text-indigo-600 shadow-sm"
                     : "text-gray-500 hover:text-gray-700"
                 }`}
               >
-                {type === "day" ? "Kunlik" : type === "month" ? "Oylik" : "Yillik"}
+                {type === "day"
+                  ? "Kunlik"
+                  : type === "month"
+                  ? "Oylik"
+                  : "Yillik"}
               </button>
             ))}
           </div>
@@ -63,6 +99,7 @@ const SalesReportChart = ({ isAnimationActive = true }) => {
             value={selectedDate}
             onChange={handleDateChange}
             allowClear={false}
+            inputReadOnly
             className="h-10 border-gray-200 rounded-lg w-44 max-[500px]:w-full"
           />
         </div>
@@ -71,7 +108,7 @@ const SalesReportChart = ({ isAnimationActive = true }) => {
       <div className="h-[350px] w-full max-[500px]:h-[250px]">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
-            data={activeData}
+            data={statisticsReports}
             margin={{
               top: 10,
               right: 5,

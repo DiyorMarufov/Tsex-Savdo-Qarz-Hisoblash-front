@@ -13,9 +13,9 @@ const SaleReportCard = ({ item, onDetail }: SaleReportCardProps) => {
       <div className="flex justify-between px-3.5 py-2.5">
         <div className="flex flex-col">
           <span className="text-[15px] font-bold text-[#6B7280]">
-            {item.store.name}
+            {item.shop.name}
           </span>
-          <a className="text-[16px] font-bold">{item.customer.name}</a>
+          <a className="text-[16px] font-bold">{item.customer.full_name}</a>
         </div>
         <div className="flex items-center gap-3">
           <div
@@ -50,7 +50,7 @@ const SaleReportCard = ({ item, onDetail }: SaleReportCardProps) => {
               Summa
             </span>
             <span className="text-[16px] font-bold text-green-600">
-              {item.total_sum.toLocaleString()}
+              {item.total_amount.toLocaleString()}
             </span>
           </div>
           <div className="flex flex-col justify-start">
@@ -78,7 +78,7 @@ const SaleReportCard = ({ item, onDetail }: SaleReportCardProps) => {
               Sotuvchi
             </span>
             <span className="text-[16px] font-bold text-[#4B5563]">
-              {item.seller.name}
+              {item.seller.full_name}
             </span>
           </div>
         </div>
@@ -88,7 +88,7 @@ const SaleReportCard = ({ item, onDetail }: SaleReportCardProps) => {
             Kiritilgan sana
           </span>
           <span className="text-[16px] font-bold text-[#4B5563]">
-            {item.created_at.toLocaleString("uz-UZ")}
+            {new Date(item.created_at).toLocaleString("uz-UZ")}
           </span>
         </div>
 

@@ -5,6 +5,15 @@ import type { IResponseData } from "../../types";
 export const sale = "sale";
 
 export const useSale = () => {
+  const getAllSales = (params?: any) =>
+    useQuery({
+      queryKey: [sale, "all-sales", params],
+      queryFn: () => api.get("sales", { params }).then((res) => res.data),
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 10,
+    });
+
   const getTotalSales = () =>
     useQuery<IResponseData>({
       queryKey: [sale, "total-sales"],
@@ -34,5 +43,23 @@ export const useSale = () => {
       staleTime: 1000 * 60 * 5,
       gcTime: 1000 * 60 * 10,
     });
-  return { getTotalSales, getWeeklySale, getSalesSummaryForReport };
+
+  const getSalesStatisticsForReport = (params?: any) =>
+    useQuery<IResponseData>({
+      queryKey: [sale, "sales-statistics-for-report", params],
+      queryFn: () =>
+        api
+          .get("sales/reports/sales-statistics", { params })
+          .then((res) => res.data),
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 10,
+    });
+  return {
+    getAllSales,
+    getTotalSales,
+    getWeeklySale,
+    getSalesSummaryForReport,
+    getSalesStatisticsForReport,
+  };
 };

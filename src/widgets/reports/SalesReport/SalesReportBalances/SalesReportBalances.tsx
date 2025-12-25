@@ -23,8 +23,8 @@ const SalesReportBalances = ({
       <StatCard title="To'langan summa" value={paidTotal} />
       <StatCard
         title="To'lanmagan summa"
-        value={unpaidTotal}
-        isValueNegative={unpaidTotal < 0}
+        value={-unpaidTotal}
+        isValueNegative={unpaidTotal > 0}
         isColSpan
       />
     </div>

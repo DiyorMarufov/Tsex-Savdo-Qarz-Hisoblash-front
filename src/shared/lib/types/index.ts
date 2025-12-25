@@ -18,8 +18,12 @@ export interface QueryParams {
   role?: string;
   status?: string;
   region?: string;
-  startDate?: string;
-  endDate?: string;
+  start?: any;
+  end?: any;
+  startStr?: any;
+  endStr?: any;
+  type?: "day" | "month" | "year";
+  date?: string | undefined;
 }
 
 export interface TsexTransactionsType {

@@ -1,12 +1,15 @@
 import { Button, DatePicker } from "antd";
 import { Filter } from "lucide-react";
 import { memo, useState } from "react";
+import { Dayjs } from "dayjs";
 
 interface ReportFilterProps {
   onFilter: (dates: string[] | null) => void;
+  start: Dayjs | undefined | null;
+  end: Dayjs | undefined | null;
 }
 
-const ReportFilter = ({ onFilter }: ReportFilterProps) => {
+const ReportFilter = ({ onFilter, start, end }: ReportFilterProps) => {
   const [selectedDates, setSelectedDates] = useState<string[] | null>(null);
 
   const handleRangeChange = (values: any, dateStrings: [string, string]) => {
@@ -24,7 +27,7 @@ const ReportFilter = ({ onFilter }: ReportFilterProps) => {
   return (
     <div className="rounded-[12px] border border-bg-fy bg-[#ffffff] p-3.5 flex items-center gap-3">
       <div className="flex items-center gap-3 w-full">
-        <div className="">
+        <div>
           <DatePicker.RangePicker
             showTime={{ format: "HH:mm" }}
             format="YYYY-MM-DD HH:mm"
@@ -32,6 +35,7 @@ const ReportFilter = ({ onFilter }: ReportFilterProps) => {
             className="h-11! w-full"
             inputReadOnly
             placeholder={["Boshlanish", "Tugash"]}
+            value={[start, end]}
           />
         </div>
         <Button
