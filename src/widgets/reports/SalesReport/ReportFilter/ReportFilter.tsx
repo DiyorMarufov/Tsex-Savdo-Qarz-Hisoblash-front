@@ -1,6 +1,5 @@
-import { Button, DatePicker } from "antd";
-import { Filter } from "lucide-react";
-import { memo, useState } from "react";
+import { DatePicker } from "antd";
+import { memo } from "react";
 import { Dayjs } from "dayjs";
 
 interface ReportFilterProps {
@@ -10,18 +9,12 @@ interface ReportFilterProps {
 }
 
 const ReportFilter = ({ onFilter, start, end }: ReportFilterProps) => {
-  const [selectedDates, setSelectedDates] = useState<string[] | null>(null);
-
   const handleRangeChange = (values: any, dateStrings: [string, string]) => {
     if (!values) {
-      setSelectedDates(null);
+      onFilter(null);
       return;
     }
-    setSelectedDates(dateStrings);
-  };
-
-  const handleSubmit = () => {
-    onFilter(selectedDates);
+    onFilter(dateStrings);
   };
 
   return (
@@ -38,14 +31,6 @@ const ReportFilter = ({ onFilter, start, end }: ReportFilterProps) => {
             value={[start, end]}
           />
         </div>
-        <Button
-          className="flex items-center justify-center gap-3 h-11!"
-          type="primary"
-          onClick={handleSubmit}
-        >
-          <Filter className="w-5 h-5" />
-          <span className="max-[420px]:hidden">Filterlash</span>
-        </Button>
       </div>
     </div>
   );
