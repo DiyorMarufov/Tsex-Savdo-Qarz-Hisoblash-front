@@ -32,18 +32,18 @@ const ProductFilters = ({
       />
       <div className="flex gap-4 min-[900px]:w-[50%] max-[900px]:w-full max-[400px]:flex-wrap">
         <Filter
-          placeholder="Barcha do'konlar"
-          className="h-12! min-[900px]:w-[50%]! max-[900px]:w-full! custom-select"
-          options={shopsOptions}
-          value={shopId}
-          onChange={(val) => onFilterChange("shopId", val)}
-        />
-        <Filter
           placeholder="Barcha tsexlar"
           className="h-12! min-[900px]:w-[50%]! max-[900px]:w-full! custom-select"
           options={tsexesOptions}
           value={tsexId}
           onChange={(val) => onFilterChange("tsexId", val)}
+        />
+        <Filter
+          placeholder="Barcha do'konlar"
+          className="h-12! min-[900px]:w-[50%]! max-[900px]:w-full! custom-select"
+          options={shopsOptions}
+          value={shopId}
+          onChange={(val) => onFilterChange("shopId", val)}
         />
       </div>
     </div>

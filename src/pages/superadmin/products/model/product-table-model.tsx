@@ -27,6 +27,7 @@ export const productColumns = (
         style={{
           width: "40px",
           height: "40px",
+          objectFit: "contain",
         }}
       />
     ),

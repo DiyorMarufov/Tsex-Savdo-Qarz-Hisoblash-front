@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import ProTable from "@ant-design/pro-table";
 import { salesColumns } from "./model/sales-model";
 import { fakeSalesItems } from "./model/sales-items-detail-model";
@@ -16,7 +16,7 @@ import { debounce } from "../../../shared/lib/functions/debounce";
 
 const SalesReportPage = () => {
   const [detailOpen, setdetailOpen] = useState<boolean>(false);
-  const saleId = useRef<string | null>(null);
+  const [saleId, setSaleId] = useState<string | null>(null);
 
   const { getSalesSummaryForReport } = useSale();
   const { getParam, setParam, setParams, removeParam } = useParamsHook();
@@ -48,7 +48,7 @@ const SalesReportPage = () => {
 
   // Sale Items detail starts
   const handleSaleItems = (id: string) => {
-    saleId.current = id;
+    setSaleId(id);
     setdetailOpen(true);
   };
 
@@ -136,6 +136,10 @@ const SalesReportPage = () => {
     debouncedSetSearchQuery(value);
   };
   // Search ends
+
+  // SaleItemData starts
+  console.log(saleId);
+  // SaleItemData ends
 
   return (
     <div className="flex flex-col gap-5">
