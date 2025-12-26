@@ -22,6 +22,8 @@ export interface QueryParams {
   end?: any;
   startStr?: any;
   endStr?: any;
+  startSale?: any;
+  endSale?: any;
   type?: "day" | "month" | "year";
   date?: string | undefined;
 }
