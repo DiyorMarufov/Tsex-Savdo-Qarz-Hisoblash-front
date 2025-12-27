@@ -1,4 +1,5 @@
 import type { ProColumns } from "@ant-design/pro-table";
+import { Image } from "antd";
 
 export type SalesTableListItem = {
   id?: string;
@@ -10,6 +11,7 @@ export type SalesTableListItem = {
   paid_amount: number;
   debt: number;
   created_at: Date;
+  images?: { id: string; image_url: string }[];
 };
 
 export const salesColumns = (
@@ -22,6 +24,28 @@ export const salesColumns = (
     fixed: "left",
     sorter: true,
     render: (_, record) => <a>{record.shop.name}</a>,
+  },
+  {
+    title: "Rasm",
+    dataIndex: "images",
+    width: 80,
+    hideInSearch: true,
+    render: (_, record) => {
+      const firstImage = record.images?.[0]?.image_url;
+      return (
+        <div>
+          {/* @ts-ignore */}
+          <Image
+            width={40}
+            height={40}
+            src={firstImage}
+            fallback="https://os.alipayobjects.com/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+            className="rounded-[10px] object-cover border border-gray-100"
+            preview={!!firstImage}
+          />
+        </div>
+      );
+    },
   },
   {
     title: "Sotuvchi",
