@@ -1,6 +1,7 @@
 import { lazy, memo } from "react";
 import { useRoutes } from "react-router-dom";
 
+const SaleItemReportPage = lazy(()=> import( "../../pages/superadmin/reports/SaleItemReportPage"));
 const SalesReportPage = lazy(
   () => import("../../pages/superadmin/reports/SalesReportPage")
 );
@@ -147,8 +148,14 @@ const Router = () => {
                   element: <ReportsPage />,
                   children: [
                     {
-                      index: true,
+                      path: "sale",
                       element: <SalesReportPage />,
+                      children: [
+                        {
+                          path: ":id",
+                          element: <SaleItemReportPage />,
+                        },
+                      ],
                     },
                     {
                       path: "products",

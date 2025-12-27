@@ -11,7 +11,7 @@ import {
 import "dayjs/locale/uz-latn";
 import { useSale } from "../../../../shared/lib/apis/sales/useSale";
 import { useParamsHook } from "../../../../shared/hooks/params/useParams";
-import SalesReportChartSkeleton from "../../../../shared/ui/Skeletons/Reports/SalesReport/SalesReportChartSkeleton/SalesReportChartSkeleton";
+import SalesReportChartSkeleton from "../../../../shared/ui/Skeletons/Reports/SalesReport/SalesReportChartSkeleton";
 
 interface SalesReportChartProps {
   startDate: string;

@@ -56,7 +56,7 @@ export const SuperadminSidebarNavigation: SidebarNavItem[] = [
   },
   {
     id: 7,
-    to: "/superadmin/reports",
+    to: "/superadmin/reports/sale",
     label: "Hisobotlar",
     icon: <ChartBar className="w-5 h-5" />,
   },

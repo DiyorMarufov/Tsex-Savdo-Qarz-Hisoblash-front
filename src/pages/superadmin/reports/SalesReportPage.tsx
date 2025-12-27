@@ -4,7 +4,6 @@ import { salesColumns } from "./model/sales-model";
 import SalesReportBalances from "../../../widgets/reports/SalesReport/SalesReportBalances/SalesReportBalances";
 import SalesReportChart from "../../../widgets/reports/SalesReport/SalesReportChart/SalesReportChart";
 import SalesReportMobileList from "../../../widgets/reports/SalesReport/SalesReportMobileList/SalesReportMobileList";
-import SaleItemDetailModal from "../../../widgets/reports/SalesReport/SaleItemDetailModal/SaleItemDetailModal";
 import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
 import ReportFilter from "../../../widgets/reports/SalesReport/ReportFilter/ReportFilter";
 import { useSale } from "../../../shared/lib/apis/sales/useSale";
@@ -12,18 +11,17 @@ import { useParamsHook } from "../../../shared/hooks/params/useParams";
 import dayjs from "dayjs";
 import type { QueryParams } from "../../../shared/lib/types";
 import { debounce } from "../../../shared/lib/functions/debounce";
-import { useSaleItem } from "../../../shared/lib/apis/sale-items/useSaleItem";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 const SalesReportPage = () => {
-  const [detailOpen, setdetailOpen] = useState<boolean>(false);
-  const [saleId, setSaleId] = useState<string | null>(null);
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   const { getSalesSummaryForReport } = useSale();
   const { getParam, setParam, setParams, removeParam } = useParamsHook();
   const [localSearch, setLocalSearch] = useState(getParam("search") || "");
 
   const { getAllSales } = useSale();
-  const { getSaleItemsBySaleId } = useSaleItem();
 
   // Query starts
   const query: QueryParams = useMemo(() => {
@@ -52,17 +50,7 @@ const SalesReportPage = () => {
   // Query ends
 
   // Sale Items detail starts
-  const handleSaleItems = (id: string) => {
-    setSaleId(id);
-    setdetailOpen(true);
-  };
-
-  const handleCancelSaleItems = () => {
-    setdetailOpen(false);
-    setSaleId(null);
-    removeParam("itemPage");
-    removeParam("itemLimit");
-  };
+  const handleSaleItems = (id: string) => navigate(`${id}`);
   // Sale Items detail ends
 
   // SalesSummary starts
@@ -72,7 +60,7 @@ const SalesReportPage = () => {
       endDate: query.endStr,
     });
   const summary = salesSummary?.data;
-
+  
   const totalSales = summary?.totalSales;
   const paidTotal = summary?.paidTotal;
   const unpaidTotal = summary?.unpaidTotal;
@@ -145,28 +133,7 @@ const SalesReportPage = () => {
   };
   // Search ends
 
-  // SaleItemData starts
-  const { data: allSaleItems, isLoading: saleItemLoading } =
-    getSaleItemsBySaleId(saleId as string);
-  const saleItems = allSaleItems?.data?.data;
-  const saleInfo = allSaleItems?.data?.saleInfo;
-  const saleItemsTotal = allSaleItems?.data?.total;
-  // SaleItemData ends
-
-  // ItemPageChange starts
-  const handleItemPageChange = (newPage: number, newPageSize?: number) => {
-    const updateParams: { itemPage?: number; itemLimit?: number } = {};
-
-    if (newPage > 1) updateParams.itemPage = newPage;
-    else removeParam("itemPage");
-
-    if (newPageSize && newPageSize !== 5) updateParams.itemLimit = newPageSize;
-    else if (newPageSize === 5) removeParam("itemLimit");
-
-    setParams(updateParams);
-  };
-  // ItemPageChange ends
-
+  if (pathname.startsWith("/superadmin/reports/sale/")) return <Outlet />;
   return (
     <div className="flex flex-col gap-5">
       <ReportFilter
@@ -221,18 +188,6 @@ const SalesReportPage = () => {
         pageSize={Number(query.limit)}
         onPageChange={handlePageChange}
         onDetail={handleSaleItems}
-      />
-
-      <SaleItemDetailModal
-        open={detailOpen}
-        onCancel={handleCancelSaleItems}
-        data={saleItems}
-        saleInfo={saleInfo}
-        loading={saleItemLoading}
-        total={saleItemsTotal}
-        currentPage={Number(query.itemPage)}
-        pageSize={Number(query.itemLimit)}
-        onPageChange={handleItemPageChange}
       />
     </div>
   );

@@ -1,8 +1,8 @@
 import { memo } from "react";
 import type { SalesTableListItem } from "../../../../pages/superadmin/reports/model/sales-model";
-import SaleReportCard from "../../../../shared/ui/SaleReportCard/SaleReportCard";
 import { Pagination } from "antd";
-import SalesReportCardSkeleton from "../../../../shared/ui/Skeletons/Reports/SalesReport/SalesReportChartSkeleton/SalesReportCardSkeleton";
+import SalesReportCardSkeleton from "../../../../shared/ui/Skeletons/Reports/SalesReport/SalesReportCardSkeleton";
+import SaleReportCard from "../../../../shared/ui/SaleReportCard/SaleReportCard";
 
 interface SalesReportMobileListProps {
   data: SalesTableListItem[];

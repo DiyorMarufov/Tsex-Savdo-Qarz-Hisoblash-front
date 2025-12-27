@@ -337,7 +337,7 @@ const AdminReportsPage = () => {
                   <span className="text-[15px] font-bold text-[#64748B]">
                     Mahsulot
                   </span>
-                  <a className="text-[16px] font-bold">{sli.product.name}</a>
+                  <a className="text-[16px] font-bold">{sli.product}</a>
                 </div>
                 <div className="flex flex-col items-end">
                   <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
@@ -358,7 +358,7 @@ const AdminReportsPage = () => {
                     Narxi
                   </span>
                   <span className="text-[16px] font-bold text-green-500">
-                    {sli.price.toLocaleString()}
+                    {sli.sale_price.toLocaleString()}
                   </span>
                 </div>
               </div>

@@ -1,8 +1,8 @@
 import { memo } from "react";
 import type { SaleItemsTableListItem } from "../../../../pages/superadmin/reports/model/sales-items-detail-model";
-import SaleItemCardReportSkeleton from "../../../../shared/ui/Skeletons/Reports/SalesReport/SalesReportChartSkeleton/SaleItemCardReportSkeleton";
-import SaleItemDetailCard from "../../../../shared/ui/SaleItemDetailCard/SaleItemDetailCard";
+import SaleItemCardReportSkeleton from "../../../../shared/ui/Skeletons/Reports/SalesReport/SaleItemCardReportSkeleton";
 import { Pagination } from "antd";
+import SaleItemReportCard from "../../../../shared/ui/SaleItemReportCard/SaleItemReportCard";
 
 interface SaleItemReportMobileListProps {
   data: SaleItemsTableListItem[];
@@ -26,10 +26,10 @@ const SaleItemReportMobileList = ({
       {loading ? (
         <SaleItemCardReportSkeleton />
       ) : (
-        <div className="mt-4 min-[500px]:hidden flex flex-col gap-5">
+        <div className="min-[500px]:hidden flex flex-col gap-5">
           {data && data.length > 0 ? (
             data?.map((item) => (
-              <SaleItemDetailCard key={item.id} item={item} />
+              <SaleItemReportCard key={item.id} item={item} />
             ))
           ) : (
             <div className="flex justify-center items-center h-[20vh] text-red-500 text-[19px] col-span-2">

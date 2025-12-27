@@ -4,7 +4,7 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Tabs } from "antd";
 
 const reportTabs = [
-  { key: "/superadmin/reports", label: "Sotuvlar" },
+  { key: "/superadmin/reports/sale", label: "Sotuvlar" },
   { key: "/superadmin/reports/products", label: "Mahsulotlar" },
   { key: "/superadmin/reports/tsexes", label: "Tsexlar" },
   { key: "/superadmin/reports/customers", label: "Mijozlar" },
@@ -18,6 +18,11 @@ const ReportsPage = () => {
     window.scroll({ top: 0 });
   }, []);
 
+  const getActiveKey = () => {
+    const activeTab = reportTabs.find((tab) => pathname.startsWith(tab.key));
+    return activeTab ? activeTab.key : reportTabs[0].key;
+  };
+
   return (
     <div>
       <div>
@@ -25,7 +30,7 @@ const ReportsPage = () => {
       </div>
 
       <Tabs
-        activeKey={pathname}
+        activeKey={getActiveKey()}
         items={reportTabs}
         onChange={(key) => navigate(key)}
       />

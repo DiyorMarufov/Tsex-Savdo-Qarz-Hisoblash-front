@@ -1,103 +1,127 @@
 import type { ProColumns } from "@ant-design/pro-table";
 
 export type SaleItemsTableListItem = {
-  id?: string;
-  product: any;
+  id: string;
+  product: string;
+  product_brand: string;
+  product_price: number;
+  product_unit_in_package: number;
   quantity: number;
-  price: number;
+  sale_price: number;
   total_amount: number;
-  created_at: Date;
+  created_at: string | Date;
 };
 
 export const salesItemColumns: ProColumns<SaleItemsTableListItem>[] = [
   {
     title: "Mahsulot",
-    dataIndex: ["product", "name"],
-    width: 120,
+    dataIndex: "product",
+    width: 160,
     fixed: "left",
     sorter: true,
-    render: (_, record) => <a>{record.product ?? "-"}</a>,
+    render: (_, record) => <a>{record.product}</a>,
+  },
+  {
+    title: "Brend",
+    dataIndex: "product_brand",
+    width: 130,
+    sorter: true,
+    render: (_, record) => record.product_brand,
   },
   {
     title: "Soni",
     dataIndex: "quantity",
     width: 100,
-    valueType: "digit", 
-    hideInSearch: true,
-  },
-  {
-    title: "Narxi",
-    dataIndex: "price",
-    width: 140,
     sorter: true,
     hideInSearch: true,
-    render: (_, record) => {
-      const formattedAmount = record.price.toLocaleString();
-      return (
-        <span className="font-bold text-green-600">{formattedAmount}</span>
-      );
-    },
+    render: (_, record) => record.quantity,
+  },
+  {
+    title: "Pochkada",
+    dataIndex: "product_unit_in_package",
+    width: 100,
+    sorter: true,
+    hideInSearch: true,
+    render: (_, record) => record.product_unit_in_package,
+  },
+  {
+    title: "Tannarxi",
+    dataIndex: "product_price",
+    width: 130,
+    sorter: true,
+    hideInSearch: true,
+    render: (_, record) => (
+      <div className="text-green-600 font-bold">
+        {record.product_price.toLocaleString()}
+      </div>
+    ),
+  },
+  {
+    title: "Sotuv Narxi",
+    dataIndex: "sale_price",
+    width: 130,
+    sorter: true,
+    hideInSearch: true,
+    render: (_, record) => (
+      <div className="text-green-600 font-bold">
+        {record.sale_price.toLocaleString()}
+      </div>
+    ),
   },
   {
     title: "Umumiy Summa",
     dataIndex: "total_amount",
-    width: 160,
+    width: 150,
     sorter: true,
+    hideInSearch: true,
     render: (_, record) => (
-      <span className="font-bold text-green-600">
+      <div className="text-green-600 font-bold">
         {record.total_amount.toLocaleString()}
-      </span>
+      </div>
     ),
   },
   {
     title: "Sotuv Sanasi",
     dataIndex: "created_at",
-    width: 180,
+    width: 170,
     valueType: "dateTime",
     sorter: true,
-    search: false,
+    hideInSearch: true,
   },
 ];
 
 export const fakeSalesItems: SaleItemsTableListItem[] = [
   {
-    id: "si1",
-    product: { name: "Samsung Galaxy S23", category: "Telefonlar" },
-    quantity: 1,
-    price: 9500000,
-    total_amount: 9500000,
-    created_at: new Date("2025-11-29T10:00:00"),
+    id: "fa552202-20ae-436c-a1c3-69918c43316c",
+    product: "Shoes Professional Sport",
+    product_brand: "Nike",
+    product_price: 130000,
+    product_unit_in_package: 5,
+    quantity: 10,
+    sale_price: 150000,
+    total_amount: 1500000,
+    created_at: "2025-12-25T04:59:12.984Z",
   },
   {
-    id: "si2",
-    product: { name: "Himoya Plenkasi", category: "Aksessuarlar" },
+    id: "ba112202-10ae-222c-a1c3-11118c43316c",
+    product: "Classic T-Shirt",
+    product_brand: "Adidas",
+    product_price: 80000,
+    product_unit_in_package: 10,
     quantity: 2,
-    price: 35000,
-    total_amount: 70000,
-    created_at: new Date("2025-11-29T10:01:00"),
+    sale_price: 95000,
+    total_amount: 190000,
+    created_at: "2025-12-26T10:20:00.000Z",
   },
   {
-    id: "si3",
-    product: { name: "HP ProBook Laptop", category: "Kompyuterlar" },
-    quantity: 1,
-    price: 15000000,
-    total_amount: 15000000,
-    created_at: new Date("2025-11-29T14:30:00"),
-  },
-  {
-    id: "si4",
-    product: { name: "USB-C kabel", category: "Aksessuarlar" },
+    id: "ca334402-30fe-444c-b2d4-22228c43316c",
+    product: "Running Shorts",
+    product_brand: "Puma",
+    product_price: 55000,
+    product_unit_in_package: 1,
     quantity: 5,
-    price: 15000,
-    total_amount: 75000,
-    created_at: new Date("2025-11-30T09:15:00"),
-  },
-  {
-    id: "si5",
-    product: { name: "Smart Watch T500", category: "Gadjetlar" },
-    quantity: 1,
-    price: 350000,
-    total_amount: 350000,
-    created_at: new Date("2025-11-30T11:05:00"),
+    sale_price: 75000,
+    total_amount: 375000,
+    created_at: "2025-12-27T11:15:00.000Z",
   },
 ];
