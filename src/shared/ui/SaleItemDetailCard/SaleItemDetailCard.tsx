@@ -11,7 +11,7 @@ const SaleItemDetailCard = ({ item }: SaleItemDetailCardProps) => {
       <div className="pt-3 px-3.5">
         <div className="flex flex-col items-start">
           <span className="text-[15px] font-bold text-[#64748B]">Mahsulot</span>
-          <a className="text-[16px] font-bold">{item.product.name}</a>
+          <a className="text-[16px] font-bold">{item.product}</a>
         </div>
       </div>
 

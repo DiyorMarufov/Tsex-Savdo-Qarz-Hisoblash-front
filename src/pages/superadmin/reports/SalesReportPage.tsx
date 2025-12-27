@@ -1,7 +1,6 @@
 import { memo, useCallback, useMemo, useState } from "react";
 import ProTable from "@ant-design/pro-table";
 import { salesColumns } from "./model/sales-model";
-import { fakeSalesItems } from "./model/sales-items-detail-model";
 import SalesReportBalances from "../../../widgets/reports/SalesReport/SalesReportBalances/SalesReportBalances";
 import SalesReportChart from "../../../widgets/reports/SalesReport/SalesReportChart/SalesReportChart";
 import SalesReportMobileList from "../../../widgets/reports/SalesReport/SalesReportMobileList/SalesReportMobileList";
@@ -13,6 +12,7 @@ import { useParamsHook } from "../../../shared/hooks/params/useParams";
 import dayjs from "dayjs";
 import type { QueryParams } from "../../../shared/lib/types";
 import { debounce } from "../../../shared/lib/functions/debounce";
+import { useSaleItem } from "../../../shared/lib/apis/sale-items/useSaleItem";
 
 const SalesReportPage = () => {
   const [detailOpen, setdetailOpen] = useState<boolean>(false);
@@ -23,6 +23,7 @@ const SalesReportPage = () => {
   const [localSearch, setLocalSearch] = useState(getParam("search") || "");
 
   const { getAllSales } = useSale();
+  const { getSaleItemsBySaleId } = useSaleItem();
 
   // Query starts
   const query: QueryParams = useMemo(() => {
@@ -32,6 +33,8 @@ const SalesReportPage = () => {
     const s = getParam("startDate");
     const e = getParam("endDate");
 
+    const itemPage = Number(getParam("itemPage")) || 1;
+    const itemLimit = Number(getParam("itemLimit")) || 5;
     return {
       page,
       limit,
@@ -42,6 +45,8 @@ const SalesReportPage = () => {
       endStr: e || dayjs().endOf("day").format("YYYY-MM-DD HH:mm:ss"),
       startSale: s,
       endSale: e,
+      itemPage,
+      itemLimit,
     };
   }, [getParam]);
   // Query ends
@@ -54,6 +59,9 @@ const SalesReportPage = () => {
 
   const handleCancelSaleItems = () => {
     setdetailOpen(false);
+    setSaleId(null);
+    removeParam("itemPage");
+    removeParam("itemLimit");
   };
   // Sale Items detail ends
 
@@ -138,8 +146,26 @@ const SalesReportPage = () => {
   // Search ends
 
   // SaleItemData starts
-  console.log(saleId);
+  const { data: allSaleItems, isLoading: saleItemLoading } =
+    getSaleItemsBySaleId(saleId as string);
+  const saleItems = allSaleItems?.data?.data;
+  const saleInfo = allSaleItems?.data?.saleInfo;
+  const saleItemsTotal = allSaleItems?.data?.total;
   // SaleItemData ends
+
+  // ItemPageChange starts
+  const handleItemPageChange = (newPage: number, newPageSize?: number) => {
+    const updateParams: { itemPage?: number; itemLimit?: number } = {};
+
+    if (newPage > 1) updateParams.itemPage = newPage;
+    else removeParam("itemPage");
+
+    if (newPageSize && newPageSize !== 5) updateParams.itemLimit = newPageSize;
+    else if (newPageSize === 5) removeParam("itemLimit");
+
+    setParams(updateParams);
+  };
+  // ItemPageChange ends
 
   return (
     <div className="flex flex-col gap-5">
@@ -200,7 +226,13 @@ const SalesReportPage = () => {
       <SaleItemDetailModal
         open={detailOpen}
         onCancel={handleCancelSaleItems}
-        data={fakeSalesItems}
+        data={saleItems}
+        saleInfo={saleInfo}
+        loading={saleItemLoading}
+        total={saleItemsTotal}
+        currentPage={Number(query.itemPage)}
+        pageSize={Number(query.itemLimit)}
+        onPageChange={handleItemPageChange}
       />
     </div>
   );
