@@ -33,14 +33,20 @@ const SalesReportPage = () => {
 
     const itemPage = Number(getParam("itemPage")) || 1;
     const itemLimit = Number(getParam("itemLimit")) || 5;
+
+    const isFirstLoad = s === null && e === null;
     return {
       page,
       limit,
       search,
-      start: s ? dayjs(s) : dayjs().startOf("day"),
-      end: e ? dayjs(e) : dayjs().endOf("day"),
-      startStr: s || dayjs().startOf("day").format("YYYY-MM-DD HH:mm:ss"),
-      endStr: e || dayjs().endOf("day").format("YYYY-MM-DD HH:mm:ss"),
+      start: isFirstLoad ? dayjs().startOf("day") : s ? dayjs(s) : null,
+      end: isFirstLoad ? dayjs().endOf("day") : e ? dayjs(e) : null,
+      startStr: isFirstLoad
+        ? dayjs().startOf("day").format("YYYY-MM-DD HH:mm:ss")
+        : s || "",
+      endStr: isFirstLoad
+        ? dayjs().endOf("day").format("YYYY-MM-DD HH:mm:ss")
+        : e || "",
       startSale: s,
       endSale: e,
       itemPage,
@@ -60,7 +66,7 @@ const SalesReportPage = () => {
       endDate: query.endStr,
     });
   const summary = salesSummary?.data;
-  
+
   const totalSales = summary?.totalSales;
   const paidTotal = summary?.paidTotal;
   const unpaidTotal = summary?.unpaidTotal;

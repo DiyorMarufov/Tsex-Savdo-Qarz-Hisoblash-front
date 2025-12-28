@@ -13,6 +13,27 @@ export const useProduct = () => {
       gcTime: 1000 * 60 * 10,
     });
 
+  const getProductsSummaryForReport = (params?: any) =>
+    useQuery({
+      queryKey: [product, "all-products-summary", params],
+      queryFn: () => api.get("products/reports/products-summary", { params }),
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 10,
+    });
+
+  const getAllProductsForProductsFilter = (params?: any) =>
+    useQuery({
+      queryKey: [product, "products-filter", params],
+      queryFn: () =>
+        api
+          .get("products/reports/filters-list", { params })
+          .then((res) => res.data),
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 10,
+    });
+
   const getProductById = (id: string) =>
     useQuery({
       queryKey: [product, id],
@@ -22,5 +43,10 @@ export const useProduct = () => {
       staleTime: Infinity,
       gcTime: 1000 * 60 * 10,
     });
-  return { getAllProducts, getProductById };
+  return {
+    getAllProducts,
+    getProductsSummaryForReport,
+    getAllProductsForProductsFilter,
+    getProductById,
+  };
 };

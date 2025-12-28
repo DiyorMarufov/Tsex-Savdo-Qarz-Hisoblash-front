@@ -59,7 +59,7 @@ const ProductDetailPage = () => {
 
             <div className="divide-y rounded-xl overflow-hidden">
               <InfoRow label="Narxi" value={`${price} UZS`} highlight />
-              <InfoRow label="Miqdori" value={product.quantity || "—"} />
+              <InfoRow label="Miqdori" value={product.quantity} />
               <InfoRow
                 label="Pochkadagi soni"
                 value={product.unit_in_package || "—"}
