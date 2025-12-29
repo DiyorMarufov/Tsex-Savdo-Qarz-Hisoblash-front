@@ -289,7 +289,7 @@ const CustomersPage = () => {
   return (
     <div>
       <div className="flex items-center justify-between gap-3 max-[1300px]:flex-wrap">
-        <div className="w-full max-[500px]:flex max-[500px]:justify-between">
+        <div className="max-[500px]:w-full max-[500px]:flex max-[500px]:justify-between">
           <div>
             <LargeTitle title="Mijozlar" />
           </div>
