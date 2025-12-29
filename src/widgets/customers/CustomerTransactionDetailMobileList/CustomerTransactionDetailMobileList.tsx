@@ -23,7 +23,7 @@ const CustomerTransactionDetailMobileList = ({
 }: Props) => {
   if (loading) return <CustomerTransactionDetailCardSkeleton />;
   return (
-    <div className="min-[500px]:hidden flex flex-col gap-5 mt-4">
+    <div className="min-[500px]:hidden flex flex-col gap-5">
       {data && data.length > 0 ? (
         data.map((trd) => (
           <CustomerTransactionDetailCard key={trd.id} trd={trd} />

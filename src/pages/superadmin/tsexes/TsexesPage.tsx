@@ -16,6 +16,7 @@ import { useTsexTransaction } from "../../../shared/lib/apis/tsex-transactions/u
 import { useApiNotification } from "../../../shared/hooks/api-notification/useApiNotification";
 import TsexesMobileList from "../../../widgets/tsexes/TsexesMobileList/TsexesMobileList";
 import TsexTransactionModal from "../../../widgets/superadmin/tsexes/TsexTransactionModal/TsexTransactionModal";
+import PlusButton from "../../../shared/ui/Button/PlusButton";
 
 type FieldType = {
   tsex_id: string;
@@ -279,17 +280,12 @@ const TsexesPage = () => {
   if (pathname.startsWith("/superadmin/tsexes/transactions")) return <Outlet />;
 
   return (
-    <div>
+    <div className="pb-12">
       <div className="flex items-center justify-between gap-3 max-[500px]:flex-wrap">
-        <div className="flex justify-between items-center w-full">
+        <div>
           <LargeTitle title="Tsexlar" />
-          <div
-            className="min-[500px]:hidden p-2.5 rounded-full bg-green-500 cursor-pointer hover:opacity-80"
-            onClick={showModal}
-          >
-            <Plus className="text-white" />
-          </div>
         </div>
+        <PlusButton setOpen={showModal}/>
         <div className="max-[500px]:hidden">
           <Button className="flex gap-2 max-[500px]:w-full" onClick={showModal}>
             <Plus /> Yangi operatsiya

@@ -1,9 +1,9 @@
 import { memo, useEffect, useMemo, useState } from "react";
 import ProTable from "@ant-design/pro-table";
 import { transactionDetailColumns } from "./model/customer-transactions-detail-model";
-import { type FormProps, Form } from "antd";
+import { type FormProps, Drawer, Form } from "antd";
 import { useCustomerTransaction } from "../../../shared/lib/apis/customer-transactions/useCustomerTransaction";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import CustomerTransactionDetailMobileList from "../../../widgets/customers/CustomerTransactionDetailMobileList/CustomerTransactionDetailMobileList";
 import NameSkeleton from "../../../shared/ui/Skeletons/NameSkeleton/NameSkeleton";
 import { useParamsHook } from "../../../shared/hooks/params/useParams";
@@ -15,14 +15,18 @@ import type {
   QueryParams,
 } from "../../../shared/lib/types";
 import { useApiNotification } from "../../../shared/hooks/api-notification/useApiNotification";
+import { ArrowLeft } from "lucide-react";
+import PlusButton from "../../../shared/ui/Button/PlusButton";
 
 const CustomerTransactionDetails = () => {
   const [transactionOpen, setTransactionOpen] = useState<boolean>(false);
   const [modalType, setModalType] =
     useState<CustomerTransactionDetailType | null>(null);
+  const [openDrawer, setOpenDrawer] = useState(false);
   const [form] = Form.useForm();
   const { id } = useParams();
   const { getParam, setParams, removeParam } = useParamsHook();
+  const navigate = useNavigate();
 
   const type = getParam("type") || "";
 
@@ -231,32 +235,26 @@ const CustomerTransactionDetails = () => {
   // PageChange ends
 
   return (
-    <div className="flex flex-col gap-5">
-      {customerTransactionDetailLoading ? (
-        <NameSkeleton />
-      ) : (
-        <span className="text-[20px] font-medium text-[#4B5563]">
-          {transactionDetails?.[0]?.customer.full_name
-            ? transactionDetails?.[0]?.customer.full_name
-            : "Hozircha no'malum"}{" "}
-          ni tranzaksiyalari
-        </span>
-      )}
-
-      <CustomerTransactionDetailTransactions
-        type={type}
-        handleActionMore={() =>
-          openTransactionModal(
-            type === "borrowing" ? "borrow-more" : "lend-more"
-          )
-        }
-        handlePayment={() =>
-          openTransactionModal(type === "borrowing" ? "repayment" : "receive")
-        }
-        handleFinish={handleFinish}
+    <div className="pb-12">
+      <ArrowLeft
+        className="hover:opacity-75 cursor-pointer mb-2"
+        onClick={() => navigate(-1)}
       />
+      <div className="flex flex-col">
+        {customerTransactionDetailLoading ? (
+          <NameSkeleton />
+        ) : (
+          <span className="text-[20px] font-medium text-[#4B5563] pb-5">
+            {transactionDetails?.[0]?.customer.full_name
+              ? transactionDetails?.[0]?.customer.full_name
+              : "Hozircha no'malum"}{" "}
+            ni tranzaksiyalari
+          </span>
+        )}
+      </div>
 
-      <div className="mt-2 max-[500px]:hidden">
+      <PlusButton setOpen={() => setOpenDrawer(true)} />
+      <div className="max-[500px]:hidden">
         <ProTable
           dataSource={transactionDetails}
           rowKey="id"
@@ -293,6 +291,27 @@ const CustomerTransactionDetails = () => {
         type={modalType as CustomerTransactionDetailType}
         loading={createLendOrBorrowTransaction.isPending}
       />
+
+      <Drawer
+        title="Tanlang"
+        placement={"bottom"}
+        onClose={() => setOpenDrawer(false)}
+        open={openDrawer}
+        height={210}
+      >
+        <CustomerTransactionDetailTransactions
+          type={type}
+          handleActionMore={() =>
+            openTransactionModal(
+              type === "borrowing" ? "borrow-more" : "lend-more"
+            )
+          }
+          handlePayment={() =>
+            openTransactionModal(type === "borrowing" ? "repayment" : "receive")
+          }
+          handleFinish={handleFinish}
+        />
+      </Drawer>
     </div>
   );
 };

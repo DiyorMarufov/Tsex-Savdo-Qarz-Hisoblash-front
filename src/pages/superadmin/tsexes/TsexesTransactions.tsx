@@ -1,7 +1,7 @@
 import ProTable from "@ant-design/pro-table";
 import { memo, useEffect, useMemo } from "react";
 import { tsexTransactionsColumns } from "./model/tsexes-transactions-model";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useTsexTransaction } from "../../../shared/lib/apis/tsex-transactions/useTsexTransaction";
 import type {
   QueryParams,
@@ -10,6 +10,7 @@ import type {
 import { useParamsHook } from "../../../shared/hooks/params/useParams";
 import NameSkeleton from "../../../shared/ui/Skeletons/NameSkeleton/NameSkeleton";
 import TsexTransactionMobileList from "../../../widgets/tsexes/TsexTransactionsMobileList/TsexTransactionMobileList";
+import { ArrowLeft } from "lucide-react";
 
 const tsexTransactionsTypeUzbek: TsexTransactionsType = {
   partial_payment: "Qisman to'lov",
@@ -21,14 +22,14 @@ const tsexTransactionsTypeUzbek: TsexTransactionsType = {
 type TsexTransactionKeys = keyof typeof tsexTransactionsTypeUzbek;
 
 const TsexesTransactions = () => {
-  useEffect(() => {
-    window.scroll({ top: 0 });
-  }, []);
-
+  const navigate = useNavigate();
   const { id } = useParams();
   const { getTsexTransactionsByTsexId } = useTsexTransaction();
 
   const { getParam, setParams, removeParam } = useParamsHook();
+  useEffect(() => {
+    window.scroll({ top: 0 });
+  }, []);
 
   // TsexTranscationsData start
   const { data: allTsexTransactions, isLoading: tsexTranscationLoading } =
@@ -81,6 +82,10 @@ const TsexesTransactions = () => {
   const tsexName = tsexTransactions?.[0]?.tsex;
   return (
     <div>
+      <ArrowLeft
+        className="hover:opacity-75 cursor-pointer mb-2"
+        onClick={() => navigate(-1)}
+      />
       {tsexTranscationLoading ? (
         <NameSkeleton />
       ) : (

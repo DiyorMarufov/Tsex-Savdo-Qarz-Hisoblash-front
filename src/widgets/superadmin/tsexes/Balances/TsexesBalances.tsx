@@ -32,7 +32,7 @@ const TsexBalances = () => {
       />
       <StatCard
         title="Umumiy balans"
-        value={-Number(net)}
+        value={Number(net) > 0 ? -Number(net) : Number(net)}
         isValueNegative={Number(net) > 0}
         isColSpan
       />

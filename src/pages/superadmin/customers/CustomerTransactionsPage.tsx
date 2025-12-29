@@ -5,6 +5,7 @@ import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useCustomerTransaction } from "../../../shared/lib/apis/customer-transactions/useCustomerTransaction";
 import CustomerTransactionMobileList from "../../../widgets/superadmin/customers/CustomerTransactionMobileList/CustomerTransactionMobileList";
 import NameSkeleton from "../../../shared/ui/Skeletons/NameSkeleton/NameSkeleton";
+import { ArrowLeft } from "lucide-react";
 
 const CustomersDetailPage = () => {
   const navigate = useNavigate();
@@ -17,7 +18,10 @@ const CustomersDetailPage = () => {
   }, []);
 
   // CustomerTransaction detail starts
-  const handleOpenTransactionDetail = (id: string, type: "lending" | "borrowing") => {
+  const handleOpenTransactionDetail = (
+    id: string,
+    type: "lending" | "borrowing"
+  ) => {
     navigate(`detail/${id}?type=${type}`);
   };
   // CustomerTransaction detail ends
@@ -34,6 +38,10 @@ const CustomersDetailPage = () => {
 
   return (
     <div>
+      <ArrowLeft
+        className="hover:opacity-75 cursor-pointer mb-2"
+        onClick={() => navigate(-1)}
+      />
       {customerTransactionLoading ? (
         <NameSkeleton />
       ) : (

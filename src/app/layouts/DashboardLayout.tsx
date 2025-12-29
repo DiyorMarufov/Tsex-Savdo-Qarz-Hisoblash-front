@@ -11,8 +11,8 @@ import {
   type SidebarNavItem,
 } from "../../shared/config/routes";
 import BottomNav from "../../widgets/bottomNav/BottomNav";
-import logo from "../../shared/assets/logo/Background.svg";
 import Sidebar from "../../widgets/sidebar/Sidebar";
+import HeaderComponent from "../../widgets/headerComponent/HeaderComponent";
 
 const { Header, Content } = Layout;
 
@@ -59,14 +59,7 @@ const DashboardLayout: React.FC = () => {
             }}
             className="max-[701px]:hidden! max-[701px]:transition-all!"
           />
-          <div className="w-full flex justify-center max-[701px]:justify-start max-[701px]:pl-3.5">
-            <div className="flex items-center gap-3">
-              <img src={logo} className="w-10 h-10" alt="" />
-              <span className="text-[25px] font-bold max-[250px]:text-[20px]">
-                Savdo tizimi
-              </span>
-            </div>
-          </div>
+          <HeaderComponent />
         </Header>
         <Content
           className="bg-bg-ty min-[700px]:px-4.5 max-[700px]:px-[14.5px] pt-5 pb-22.5 main-content select-none"

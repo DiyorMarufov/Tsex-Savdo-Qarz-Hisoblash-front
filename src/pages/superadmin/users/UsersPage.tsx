@@ -14,6 +14,7 @@ import type { QueryParams, UserFieldType } from "../../../shared/lib/types";
 import { debounce } from "../../../shared/lib/functions/debounce";
 import { roleOptions, statusOptions } from "../../../shared/lib/constants";
 import { useApiNotification } from "../../../shared/hooks/api-notification/useApiNotification";
+import PlusButton from "../../../shared/ui/Button/PlusButton";
 
 const UsersPage = () => {
   const [newUserOpen, setNewUserOpen] = useState<boolean>(false);
@@ -142,7 +143,7 @@ const UsersPage = () => {
   // Handle filter ends
 
   return (
-    <div>
+    <div className="pb-12">
       <div className="flex justify-between gap-3 items-center max-[750px]:flex-wrap">
         <div>
           <LargeTitle title="Foydalanuvchilar" />
@@ -156,12 +157,7 @@ const UsersPage = () => {
           Foydalanuvchi qo'shish
         </Button>
 
-        <div
-          className="min-[500px]:hidden p-2.5 rounded-full bg-green-500 cursor-pointer hover:opacity-80"
-          onClick={handleNewUser}
-        >
-          <Plus className="text-white" />
-        </div>
+        <PlusButton setOpen={handleNewUser} />
       </div>
 
       <UserFilters

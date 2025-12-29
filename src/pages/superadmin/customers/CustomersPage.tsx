@@ -24,6 +24,7 @@ import AddCustomerModal from "../../../widgets/superadmin/customers/AddCustomerM
 import { useApiNotification } from "../../../shared/hooks/api-notification/useApiNotification";
 import { formatPhoneNumber } from "../../../shared/lib/functions/formatPhoneNumber";
 import { useCustomerTransaction } from "../../../shared/lib/apis/customer-transactions/useCustomerTransaction";
+import PlusButton from "../../../shared/ui/Button/PlusButton";
 
 const CustomersPage = () => {
   const [transactionOpen, setTransactionOpen] = useState<boolean>(false);
@@ -287,19 +288,12 @@ const CustomersPage = () => {
     return <Outlet />;
 
   return (
-    <div>
+    <div className="pb-12">
       <div className="flex items-center justify-between gap-3 max-[1300px]:flex-wrap">
-        <div className="max-[500px]:w-full max-[500px]:flex max-[500px]:justify-between">
-          <div>
-            <LargeTitle title="Mijozlar" />
-          </div>
-          <div
-            className="min-[500px]:hidden p-2.5 rounded-full bg-green-500 cursor-pointer hover:opacity-80"
-            onClick={() => setOpenDrawer(true)}
-          >
-            <Plus className="text-white" />
-          </div>
+        <div>
+          <LargeTitle title="Mijozlar" />
         </div>
+        <PlusButton setOpen={() => setOpenDrawer(true)} />
 
         <div className="grid grid-cols-3 gap-3 max-[1300px]:w-full max-[830px]:grid-cols-2 max-[365px]:grid-cols-1 max-[500px]:hidden">
           <AntdButton
@@ -394,7 +388,7 @@ const CustomersPage = () => {
         placement={"bottom"}
         onClose={() => setOpenDrawer(false)}
         open={openDrawer}
-        height={190}
+        height={210}
       >
         <div className="grid grid-cols-3 gap-8 px-3 w-full min-[500px]:hidden">
           <div className="flex flex-col items-center cursor-pointer text-green-600 hover:text-green-700 transition duration-150">
