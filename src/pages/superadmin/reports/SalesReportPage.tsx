@@ -47,8 +47,6 @@ const SalesReportPage = () => {
       endStr: isFirstLoad
         ? dayjs().endOf("day").format("YYYY-MM-DD HH:mm:ss")
         : e || "",
-      startSale: s,
-      endSale: e,
       itemPage,
       itemLimit,
     };
@@ -92,8 +90,8 @@ const SalesReportPage = () => {
     page: query.page,
     limit: query.limit,
     search: query.search,
-    startDate: query.startSale,
-    endDate: query.endSale,
+    startDate: query.startStr,
+    endDate: query.endStr,
   });
   const sales = allSales?.data?.data;
   const total = allSales?.data?.total;
