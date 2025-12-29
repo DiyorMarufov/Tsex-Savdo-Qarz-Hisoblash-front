@@ -1,6 +1,6 @@
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
-import { Button as AntdButton, Form, type FormProps } from "antd";
+import { Button as AntdButton, Drawer, Form, type FormProps } from "antd";
 import { ArrowDown, ArrowUp, Plus } from "lucide-react";
 import Button from "../../../shared/ui/Button/Button";
 import ProTable from "@ant-design/pro-table";
@@ -31,6 +31,7 @@ const CustomersPage = () => {
     "lend" | "borrow" | null
   >(null);
   const [newCustomerOpen, setNewCustomerOpen] = useState<boolean>(false);
+  const [openDrawer, setOpenDrawer] = useState(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -78,6 +79,7 @@ const CustomersPage = () => {
           onSuccess: () => {
             handleCancelTransaction();
             form.resetFields();
+            setOpenDrawer(false);
             handleSuccess("Muvaffaqiyatli qarz berildi");
           },
           onError: (err: any) => {
@@ -112,6 +114,7 @@ const CustomersPage = () => {
           onSuccess: () => {
             handleCancelTransaction();
             form.resetFields();
+            setOpenDrawer(false);
             handleSuccess("Muvaffaqiyatli qarz olindi");
           },
           onError: (err: any) => {
@@ -166,6 +169,7 @@ const CustomersPage = () => {
       onSuccess: () => {
         handleCancelNewCustomer();
         form.resetFields();
+        setOpenDrawer(false);
         handleSuccess("Mijoz muvaffaqiyatli yaratildi");
       },
       onError: (err: any) => {
@@ -285,8 +289,16 @@ const CustomersPage = () => {
   return (
     <div>
       <div className="flex items-center justify-between gap-3 max-[1300px]:flex-wrap">
-        <div>
-          <LargeTitle title="Mijozlar" />
+        <div className="w-full max-[500px]:flex max-[500px]:justify-between">
+          <div>
+            <LargeTitle title="Mijozlar" />
+          </div>
+          <div
+            className="min-[500px]:hidden p-2.5 rounded-full bg-green-500 cursor-pointer hover:opacity-80"
+            onClick={() => setOpenDrawer(true)}
+          >
+            <Plus className="text-white" />
+          </div>
         </div>
 
         <div className="grid grid-cols-3 gap-3 max-[1300px]:w-full max-[830px]:grid-cols-2 max-[365px]:grid-cols-1 max-[500px]:hidden">
@@ -313,44 +325,6 @@ const CustomersPage = () => {
             <Plus />
             Yangi mijoz
           </Button>
-        </div>
-
-        <div className="grid grid-cols-3 gap-8 px-3 w-full min-[500px]:hidden">
-          <div className="flex flex-col items-center cursor-pointer text-green-600 hover:text-green-700 transition duration-150">
-            <div
-              className="p-3 border-2 border-green-600 rounded-full bg-green-100/50"
-              onClick={handleLend}
-            >
-              <ArrowUp className="h-8 w-8" />
-            </div>
-            <span className="text-sm font-medium mt-1 whitespace-nowrap text-center">
-              Qarz berish
-            </span>
-          </div>
-
-          <div className="flex flex-col items-center cursor-pointer text-red-600 hover:text-red-700 transition duration-150">
-            <div
-              className="p-3 border-2 border-red-600 rounded-full bg-red-100/50"
-              onClick={handleBorrow}
-            >
-              <ArrowDown className="h-8 w-8" />
-            </div>
-            <span className="text-sm font-medium mt-1 whitespace-nowrap text-center">
-              Qarz olish
-            </span>
-          </div>
-
-          <div className="flex flex-col items-center cursor-pointer text-blue-600 hover:text-blue-700 transition duration-150">
-            <div
-              className="p-3 border-2 border-blue-600 rounded-full bg-blue-100/50"
-              onClick={handleNewCustomer}
-            >
-              <Plus className="h-8 w-8" />
-            </div>
-            <span className="text-sm font-medium mt-1 whitespace-nowrap text-center">
-              Yengi mijoz
-            </span>
-          </div>
         </div>
       </div>
 
@@ -414,6 +388,52 @@ const CustomersPage = () => {
         form={form}
         loading={createCustomer.isPending}
       />
+
+      <Drawer
+        title="Tanlang"
+        placement={"bottom"}
+        onClose={() => setOpenDrawer(false)}
+        open={openDrawer}
+        height={190}
+      >
+        <div className="grid grid-cols-3 gap-8 px-3 w-full min-[500px]:hidden">
+          <div className="flex flex-col items-center cursor-pointer text-green-600 hover:text-green-700 transition duration-150">
+            <div
+              className="p-3 border-2 border-green-600 rounded-full bg-green-100/50"
+              onClick={handleLend}
+            >
+              <ArrowUp className="h-8 w-8" />
+            </div>
+            <span className="text-sm font-medium mt-1 whitespace-nowrap text-center">
+              Qarz berish
+            </span>
+          </div>
+
+          <div className="flex flex-col items-center cursor-pointer text-red-600 hover:text-red-700 transition duration-150">
+            <div
+              className="p-3 border-2 border-red-600 rounded-full bg-red-100/50"
+              onClick={handleBorrow}
+            >
+              <ArrowDown className="h-8 w-8" />
+            </div>
+            <span className="text-sm font-medium mt-1 whitespace-nowrap text-center">
+              Qarz olish
+            </span>
+          </div>
+
+          <div className="flex flex-col items-center cursor-pointer text-blue-600 hover:text-blue-700 transition duration-150">
+            <div
+              className="p-3 border-2 border-blue-600 rounded-full bg-blue-100/50"
+              onClick={handleNewCustomer}
+            >
+              <Plus className="h-8 w-8" />
+            </div>
+            <span className="text-sm font-medium mt-1 whitespace-nowrap text-center">
+              Yengi mijoz
+            </span>
+          </div>
+        </div>
+      </Drawer>
     </div>
   );
 };
