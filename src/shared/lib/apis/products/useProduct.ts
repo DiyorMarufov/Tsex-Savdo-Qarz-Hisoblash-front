@@ -34,6 +34,18 @@ export const useProduct = () => {
       gcTime: 1000 * 60 * 10,
     });
 
+  const getAllTop5ProductsForReport = (params?: any) =>
+    useQuery({
+      queryKey: [product, "products-top", params],
+      queryFn: () =>
+        api
+          .get("products/reports/top-products", { params })
+          .then((res) => res.data),
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 10,
+    });
+
   const getProductById = (id: string) =>
     useQuery({
       queryKey: [product, id],
@@ -47,6 +59,7 @@ export const useProduct = () => {
     getAllProducts,
     getProductsSummaryForReport,
     getAllProductsForProductsFilter,
+    getAllTop5ProductsForReport,
     getProductById,
   };
 };

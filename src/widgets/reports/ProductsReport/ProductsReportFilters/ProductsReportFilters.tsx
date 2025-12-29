@@ -40,13 +40,20 @@ const ProductsReportFilters = ({
     start || null,
     end || null,
   ]);
-  const [tempDateStrings, setTempDateStrings] = useState<string[] | null>(null);
+  const [tempDateStrings, setTempDateStrings] = useState<string[] | null>([
+    start ? start.format("YYYY-MM-DD HH:mm:ss") : "",
+    end ? end.format("YYYY-MM-DD HH:mm:ss") : "",
+  ]);
   const [tempShopId, setTempShopId] = useState(shopId);
   const [tempTsexId, setTempTsexId] = useState(tsexId);
   const [tempProductId, setTempProductId] = useState(productId);
 
   useEffect(() => {
     setTempDates([start || null, end || null]);
+    setTempDateStrings([
+      start ? start.format("YYYY-MM-DD HH:mm:ss") : "",
+      end ? end.format("YYYY-MM-DD HH:mm:ss") : "",
+    ]);
     setTempShopId(shopId);
     setTempTsexId(tsexId);
     setTempProductId(productId);
@@ -69,7 +76,7 @@ const ProductsReportFilters = ({
 
   return (
     <div>
-      <div className="rounded-[12px] border border-bg-fy bg-white p-4 gap-4 grid grid-cols-5 max-[1150px]:grid-cols-1 max-[500px]:hidden items-end">
+      <div className="rounded-[12px] border border-bg-fy bg-white p-4 gap-4 grid grid-cols-5 max-[1150px]:grid-cols-1 max-[800px]:hidden items-end">
         <div className="w-full">
           <DatePicker.RangePicker
             value={tempDates}
@@ -124,7 +131,7 @@ const ProductsReportFilters = ({
         </div>
       </div>
 
-      <div className="min-[500px]:hidden flex justify-end">
+      <div className="min-[800px]:hidden flex justify-end">
         <Button
           icon={<FilterOutlined />}
           onClick={() => setOpen(true)}
@@ -194,7 +201,7 @@ const ProductsReportFilters = ({
             className="h-10! w-full rounded-lg mt-2 bg-indigo-600"
             onClick={handleSubmit}
           >
-            Natijalarni ko'rish
+            Filtrlash
           </Button>
         </div>
       </Drawer>

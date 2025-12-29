@@ -12,8 +12,11 @@ import { useProduct } from "../../../shared/lib/apis/products/useProduct";
 const ProductsReportPage = () => {
   const { getAllShopsForProductsFilter } = useShop();
   const { getAllTsexesForProductsFilter } = useTsex();
-  const { getProductsSummaryForReport, getAllProductsForProductsFilter } =
-    useProduct();
+  const {
+    getProductsSummaryForReport,
+    getAllProductsForProductsFilter,
+    getAllTop5ProductsForReport,
+  } = useProduct();
   const { getParam, setParams } = useParamsHook();
 
   // Query starts
@@ -93,8 +96,8 @@ const ProductsReportPage = () => {
     ...(products?.data?.data?.map((pr: any) => ({
       value: pr?.id,
       label: (
-        <div className="flex justify-between pt-1">
-          <span className="text-[14px] font-medium text-slate-800 leading-tight">
+        <div className="flex justify-between">
+          <span className="text-[14px] font-medium text-slate-800">
             {pr?.name}
           </span>
 
@@ -124,6 +127,14 @@ const ProductsReportPage = () => {
   };
   // ProductReportFilter onFilterSubmit ends
 
+  // ProductReportChart starts
+  const { data: allTopProducts } = getAllTop5ProductsForReport({
+    startDate: query.startStr,
+    endDate: query.endStr,
+  });
+  const topProducts = allTopProducts?.data;
+  // ProductReportChart ends
+
   return (
     <div className="flex flex-col gap-5">
       <ProductsReportFilters
@@ -147,7 +158,9 @@ const ProductsReportPage = () => {
         isLoading={productsSummaryLoading}
       />
 
-      <ProductReportChart />
+      <ProductReportChart
+        data={topProducts as { name: string; sales: number }[]}
+      />
     </div>
   );
 };
