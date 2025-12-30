@@ -6,7 +6,7 @@ interface Props {
   options?: any;
   value?: string;
   onChange?: (value: string) => void;
-  className?: string;
+  [key: string]: any;
 }
 
 const Filter: FC<Props> = ({
@@ -14,15 +14,15 @@ const Filter: FC<Props> = ({
   options,
   value,
   onChange,
-  className = "",
+  ...rest
 }) => {
   return (
     <Select
       placeholder={placeholder}
-      className={className}
       options={options}
       value={value}
       onChange={(e) => onChange && onChange(e)}
+      {...rest}
     />
   );
 };

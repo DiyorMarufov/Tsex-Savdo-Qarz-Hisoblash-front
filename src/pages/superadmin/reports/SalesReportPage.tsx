@@ -17,6 +17,9 @@ import { useTsex } from "../../../shared/lib/apis/tsexes/useTsex";
 import { useProduct } from "../../../shared/lib/apis/products/useProduct";
 
 const SalesReportPage = () => {
+  const [isProductOpen, setIsProductOpen] = useState<boolean>(false);
+  const [isTsexOpen, setIsTsexOpen] = useState<boolean>(false);
+  const [isShopOpen, setIsShopOpen] = useState<boolean>(false);
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
@@ -137,7 +140,8 @@ const SalesReportPage = () => {
   // Search ends
 
   // SaleReportFilter options start
-  const shops = getAllShopsForProductsFilter().data;
+  const { data: shops, isLoading: shopLoading } =
+    getAllShopsForProductsFilter(isShopOpen);
   const shopsOptions = [
     {
       value: "",
@@ -149,7 +153,8 @@ const SalesReportPage = () => {
     })) || []),
   ];
 
-  const tsexes = getAllTsexesForProductsFilter().data;
+  const { data: tsexes, isLoading: tsexLoading } =
+    getAllTsexesForProductsFilter(isTsexOpen);
   const tsexesOptions = [
     {
       value: "",
@@ -161,7 +166,8 @@ const SalesReportPage = () => {
     })) || []),
   ];
 
-  const products = getAllProductsForProductsFilter().data;
+  const { data: products, isLoading: productLoading } =
+    getAllProductsForProductsFilter(isProductOpen);
   const productOptions = [
     {
       value: "",
@@ -214,6 +220,12 @@ const SalesReportPage = () => {
         shopsOptions={shopsOptions}
         tsexesOptions={tsexesOptions}
         productOptions={productOptions}
+        setIsProductOpen={setIsProductOpen}
+        setIsTsexOpen={setIsTsexOpen}
+        setIsShopOpen={setIsShopOpen}
+        productLoading={productLoading}
+        tsexLoading={tsexLoading}
+        shopLoading={shopLoading}
       />
 
       <SalesReportBalances

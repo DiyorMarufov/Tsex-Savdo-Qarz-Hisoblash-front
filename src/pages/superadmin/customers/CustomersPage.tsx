@@ -33,6 +33,8 @@ const CustomersPage = () => {
   >(null);
   const [newCustomerOpen, setNewCustomerOpen] = useState<boolean>(false);
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [isCustomerOpen, setIsCustomerOpen] = useState<boolean>(false);
+
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -265,8 +267,9 @@ const CustomersPage = () => {
   };
   // Filter ends
 
-  // Customers list fro transaction starts
-  const { data: allCustomersList } = getAllCustomersForTransaction();
+  // Customers list for transaction starts
+  const { data: allCustomersList, isLoading: customerListLoading } =
+    getAllCustomersForTransaction(isCustomerOpen);
   const customerOptions: Option[] =
     allCustomersList?.data.map((cs: any) => ({
       value: cs.id,
@@ -373,6 +376,8 @@ const CustomersPage = () => {
         customers={customerOptions}
         form={form}
         loading={createLend.isPending || createBorrow.isPending}
+        setIsCustomerOpen={setIsCustomerOpen}
+        customerloading={customerListLoading}
       />
 
       <AddCustomerModal

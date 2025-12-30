@@ -11,16 +11,17 @@ export const useShop = () => {
       queryFn: () => api.get("shops").then((res) => res.data),
       refetchOnWindowFocus: false,
       staleTime: Infinity,
-      gcTime: Infinity,
+      gcTime: 1000 * 60 * 60,
     });
 
-  const getAllShopsForProductsFilter = () =>
+  const getAllShopsForProductsFilter = (enabled: boolean = false) =>
     useQuery<IResponseData>({
       queryKey: [shop, "shops-filter"],
       queryFn: () => api.get("shops/filters/list").then((res) => res.data),
+      enabled,
       refetchOnWindowFocus: false,
       staleTime: Infinity,
-      gcTime: Infinity,
+      gcTime: 1000 * 60 * 60,
     });
   return { getAllShops, getAllShopsForProductsFilter };
 };

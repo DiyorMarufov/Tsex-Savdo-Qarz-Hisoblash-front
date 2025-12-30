@@ -22,6 +22,8 @@ interface TransactionModalProps {
   customers: Option[];
   form: FormInstance;
   loading: boolean;
+  setIsCustomerOpen: (open: boolean) => void;
+  customerloading: boolean;
 }
 
 const CustomerTransactionModal = ({
@@ -32,6 +34,8 @@ const CustomerTransactionModal = ({
   customers,
   form,
   loading,
+  setIsCustomerOpen,
+  customerloading,
 }: TransactionModalProps) => {
   return (
     <Modal
@@ -68,6 +72,10 @@ const CustomerTransactionModal = ({
                 className="h-10!"
                 options={customers}
                 placeholder="Mijozni tanlang"
+                onDropdownVisibleChange={(visible) => {
+                  if (visible) setIsCustomerOpen(visible);
+                }}
+                loading={customerloading}
               />
             </Form.Item>
           </div>

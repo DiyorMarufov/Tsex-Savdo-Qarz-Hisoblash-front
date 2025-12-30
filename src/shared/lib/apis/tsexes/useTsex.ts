@@ -23,13 +23,14 @@ export const useTsex = () => {
       gcTime: 1000 * 60 * 10,
     });
 
-  const getAllTsexesForProductsFilter = () =>
+  const getAllTsexesForProductsFilter = (enabled: boolean = false) =>
     useQuery<IResponseData>({
       queryKey: [tsex, "tsexes-filter"],
       queryFn: () => api.get("tsexes/filters/list").then((res) => res.data),
+      enabled,
       refetchOnWindowFocus: false,
       staleTime: Infinity,
-      gcTime: Infinity,
+      gcTime: 1000 * 60 * 60,
     });
 
   const getTsexBalanceSummary = () =>

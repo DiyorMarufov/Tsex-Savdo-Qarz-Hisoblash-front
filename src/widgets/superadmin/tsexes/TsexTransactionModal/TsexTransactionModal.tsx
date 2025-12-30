@@ -16,6 +16,8 @@ interface TsexTransactionModalProps {
   form: FormInstance;
   tsexesOptions: Option[];
   pending: boolean;
+  setIsTsexOpen: (open: boolean) => void;
+  loading: boolean;
 }
 
 const TsexTransactionModal = ({
@@ -25,6 +27,8 @@ const TsexTransactionModal = ({
   form,
   tsexesOptions,
   pending,
+  setIsTsexOpen,
+  loading,
 }: TsexTransactionModalProps) => {
   const paymentOptions = [
     { value: "payment", label: "to'liq to'lov" },
@@ -66,6 +70,10 @@ const TsexTransactionModal = ({
                 className="h-10!"
                 options={tsexesOptions}
                 placeholder="Tsexni tanlang"
+                onDropdownVisibleChange={(visible) => {
+                  if (visible) setIsTsexOpen(true);
+                }}
+                loading={loading}
               />
             </Form.Item>
           </div>

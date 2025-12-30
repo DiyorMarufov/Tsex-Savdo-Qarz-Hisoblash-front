@@ -20,6 +20,12 @@ interface ProductReportFiltersProps {
   shopsOptions: Option[];
   productOptions: Option[];
   tsexesOptions: Option[];
+  setIsProductOpen: (open: boolean) => void;
+  setIsTsexOpen: (open: boolean) => void;
+  setIsShopOpen: (open: boolean) => void;
+  productLoading: boolean;
+  tsexLoading: boolean;
+  shopLoading: boolean;
 }
 
 const ProductsReportFilters = ({
@@ -32,6 +38,12 @@ const ProductsReportFilters = ({
   shopsOptions = [],
   productOptions = [],
   tsexesOptions = [],
+  setIsProductOpen,
+  setIsTsexOpen,
+  setIsShopOpen,
+  productLoading,
+  tsexLoading,
+  shopLoading,
 }: ProductReportFiltersProps) => {
   const [open, setOpen] = useState(false);
   const [placement] = useState<DrawerProps["placement"]>("right");
@@ -97,6 +109,10 @@ const ProductsReportFilters = ({
               onChange={setTempProductId}
               placeholder="Barcha mahsulotlar"
               className="h-11! w-full rounded-lg custom-select border-slate-200"
+              onDropdownVisibleChange={(visible: any) => {
+                if (visible) setIsProductOpen(true);
+              }}
+              loading={productLoading}
             />
           </div>
           <div className="w-full">
@@ -106,6 +122,10 @@ const ProductsReportFilters = ({
               onChange={setTempTsexId}
               placeholder="Barcha tsexlar"
               className="h-11! w-full rounded-lg custom-select border-slate-200"
+              onDropdownVisibleChange={(visible: any) => {
+                if (visible) setIsTsexOpen(true);
+              }}
+              loading={tsexLoading}
             />
           </div>
           <div className="w-full">
@@ -115,6 +135,10 @@ const ProductsReportFilters = ({
               onChange={setTempShopId}
               placeholder="Barcha do'konlar"
               className="h-11! w-full rounded-lg custom-select border-slate-200"
+              onDropdownVisibleChange={(visible: any) => {
+                if (visible) setIsShopOpen(true);
+              }}
+              loading={shopLoading}
             />
           </div>
         </div>
@@ -171,6 +195,10 @@ const ProductsReportFilters = ({
               onChange={setTempProductId}
               placeholder="Barcha mahsulotlar"
               className="h-11! w-full rounded-lg custom-select border-slate-200"
+              onDropdownVisibleChange={(visible: any) => {
+                if (visible) setIsProductOpen(true);
+              }}
+              loading={productLoading}
             />
           </div>
 
@@ -182,6 +210,10 @@ const ProductsReportFilters = ({
               onChange={setTempTsexId}
               placeholder="Barcha tsexlar"
               className="h-11! w-full rounded-lg custom-select border-slate-200"
+              onDropdownVisibleChange={(visible: any) => {
+                if (visible) setIsTsexOpen(true);
+              }}
+              loading={tsexLoading}
             />
           </div>
 
@@ -193,6 +225,10 @@ const ProductsReportFilters = ({
               onChange={setTempShopId}
               placeholder="Barcha do'konlar"
               className="h-11! w-full rounded-lg custom-select border-slate-200"
+              onDropdownVisibleChange={(visible: any) => {
+                if (visible) setIsShopOpen(true);
+              }}
+              loading={shopLoading}
             />
           </div>
 

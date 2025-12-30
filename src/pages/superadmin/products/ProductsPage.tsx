@@ -13,6 +13,8 @@ import ProductFilters from "../../../widgets/products/ProductFIlters/ProductFilt
 import ProductMobileList from "../../../widgets/products/ProductMobileList/ProductMobileList";
 
 const ProductsPage = () => {
+  const [isTsexOpen, setIsTsexOpen] = useState<boolean>(false);
+  const [isShopOpen, setIsShopOpen] = useState<boolean>(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { getAllProducts } = useProduct();
@@ -100,7 +102,8 @@ const ProductsPage = () => {
     });
   };
 
-  const shops = getAllShopsForProductsFilter().data;
+  const { data: shops, isLoading: shopLoading } =
+    getAllShopsForProductsFilter(isShopOpen);
   const shopsOptions = [
     {
       value: "",
@@ -112,7 +115,8 @@ const ProductsPage = () => {
     })) || []),
   ];
 
-  const tsexes = getAllTsexesForProductsFilter().data;
+  const { data: tsexes, isLoading: tsexLoading } =
+    getAllTsexesForProductsFilter(isTsexOpen);
   const tsexesOptions = [
     {
       value: "",
@@ -138,6 +142,10 @@ const ProductsPage = () => {
         tsexesOptions={tsexesOptions}
         shopId={query.shopId}
         tsexId={query.tsexId}
+        setIsTsexOpen={setIsTsexOpen}
+        setIsShopOpen={setIsShopOpen}
+        tsexLoading={tsexLoading}
+        shopLoading={shopLoading}
       />
 
       <div className="max-[500px]:hidden mt-4">

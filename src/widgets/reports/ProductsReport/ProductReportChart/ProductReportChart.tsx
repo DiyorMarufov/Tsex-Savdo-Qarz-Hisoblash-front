@@ -14,7 +14,7 @@ import ProductReportChartSkeleton from "../../../../shared/ui/Skeletons/Reports/
 
 interface ProductReportProps {
   data: { name: string; sales: number }[];
-  loading?: boolean;
+  loading: boolean;
 }
 
 const COLORS = ["#6366f1", "#818cf8", "#a5b4fc", "#c7d2fe", "#e0e7ff"];

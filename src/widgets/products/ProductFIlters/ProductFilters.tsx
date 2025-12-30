@@ -11,6 +11,10 @@ interface ProductFiltersProps {
   shopsOptions: Option[];
   tsexesOptions: Option[];
   onFilterChange: (key: "shopId" | "tsexId", value: string) => void;
+  setIsTsexOpen: (open: boolean) => void;
+  setIsShopOpen: (open: boolean) => void;
+  tsexLoading: boolean;
+  shopLoading: boolean;
 }
 
 const ProductFilters = ({
@@ -21,6 +25,10 @@ const ProductFilters = ({
   shopsOptions,
   tsexesOptions,
   onFilterChange,
+  setIsTsexOpen,
+  setIsShopOpen,
+  tsexLoading,
+  shopLoading,
 }: ProductFiltersProps) => {
   return (
     <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-2 p-3.5 flex items-center gap-4 max-[900px]:flex-wrap">
@@ -37,6 +45,10 @@ const ProductFilters = ({
           options={tsexesOptions}
           value={tsexId}
           onChange={(val) => onFilterChange("tsexId", val)}
+          onDropdownVisibleChange={(visible: any) => {
+            if (visible) setIsTsexOpen(true);
+          }}
+          loading={tsexLoading}
         />
         <Filter
           placeholder="Barcha do'konlar"
@@ -44,6 +56,10 @@ const ProductFilters = ({
           options={shopsOptions}
           value={shopId}
           onChange={(val) => onFilterChange("shopId", val)}
+          onDropdownVisibleChange={(visible: any) => {
+            if (visible) setIsShopOpen(true);
+          }}
+          loading={shopLoading}
         />
       </div>
     </div>

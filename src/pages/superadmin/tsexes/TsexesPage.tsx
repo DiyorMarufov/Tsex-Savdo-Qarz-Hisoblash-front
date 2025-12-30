@@ -26,6 +26,7 @@ type FieldType = {
 };
 
 const TsexesPage = () => {
+  const [isTsexOpen, setIsTsexOpen] = useState<boolean>(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [form] = Form.useForm();
@@ -269,7 +270,8 @@ const TsexesPage = () => {
   // Search ends
 
   // Options start
-  const tsexesFilter = getAllTsexesForProductsFilter().data;
+  const { data: tsexesFilter, isLoading: tsexListLoading } =
+    getAllTsexesForProductsFilter(isTsexOpen);
   const tsexesOptions = tsexesFilter?.data?.map((ts) => ({
     value: ts?.id,
     label: ts?.name,
@@ -285,7 +287,7 @@ const TsexesPage = () => {
         <div>
           <LargeTitle title="Tsexlar" />
         </div>
-        <PlusButton setOpen={showModal}/>
+        <PlusButton setOpen={showModal} />
         <div className="max-[500px]:hidden">
           <Button className="flex gap-2 max-[500px]:w-full" onClick={showModal}>
             <Plus /> Yangi operatsiya
@@ -341,6 +343,8 @@ const TsexesPage = () => {
         onFinish={onFinish}
         form={form}
         tsexesOptions={tsexesOptions as Option[]}
+        setIsTsexOpen={setIsTsexOpen}
+        loading={tsexListLoading}
         pending={createTsexTransaction.isPending}
       />
     </div>

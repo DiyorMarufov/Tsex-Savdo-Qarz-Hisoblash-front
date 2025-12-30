@@ -57,14 +57,15 @@ export const useCustomer = () => {
       gcTime: 1000 * 60 * 10,
     });
 
-  const getAllCustomersForTransaction = () =>
+  const getAllCustomersForTransaction = (enabled: boolean = false) =>
     useQuery<IResponseData>({
       queryKey: [customer, "all-customers-for-transaction"],
       queryFn: () =>
         api.get("customers/transactions/list").then((res) => res.data),
+      enabled,
       refetchOnWindowFocus: false,
       staleTime: Infinity,
-      gcTime: Infinity,
+      gcTime: 1000 * 60 * 60,
     });
   return {
     createCustomer,

@@ -1,4 +1,4 @@
-import { memo, useMemo } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import ProductsReportFilters from "../../../widgets/reports/ProductsReport/ProductsReportFilters/ProductsReportFilters";
 import ProductReportChart from "../../../widgets/reports/ProductsReport/ProductReportChart/ProductReportChart";
 import ProductReportBalances from "../../../widgets/reports/ProductsReport/ProductReportBalances/ProductReportBalances";
@@ -8,19 +8,34 @@ import dayjs from "dayjs";
 import { useShop } from "../../../shared/lib/apis/shops/useShop";
 import { useTsex } from "../../../shared/lib/apis/tsexes/useTsex";
 import { useProduct } from "../../../shared/lib/apis/products/useProduct";
+import ProTable from "@ant-design/pro-table";
+import ProductMobileList from "../../../widgets/products/ProductMobileList/ProductMobileList";
+import { productColumns } from "../products/model/product-table-model";
+import { useNavigate } from "react-router-dom";
+import { debounce } from "../../../shared/lib/functions/debounce";
+import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
 
 const ProductsReportPage = () => {
+  const [isProductOpen, setIsProductOpen] = useState<boolean>(false);
+  const [isTsexOpen, setIsTsexOpen] = useState<boolean>(false);
+  const [isShopOpen, setIsShopOpen] = useState<boolean>(false);
+  const navigate = useNavigate();
   const { getAllShopsForProductsFilter } = useShop();
   const { getAllTsexesForProductsFilter } = useTsex();
   const {
+    getAllProducts,
     getProductsSummaryForReport,
     getAllProductsForProductsFilter,
     getAllTop5ProductsForReport,
   } = useProduct();
-  const { getParam, setParams } = useParamsHook();
+  const { getParam, setParams, removeParam } = useParamsHook();
+  const [localSearch, setLocalSearch] = useState(getParam("search") || "");
 
   // Query starts
   const query: QueryParams = useMemo(() => {
+    const page = Number(getParam("page")) || 1;
+    const limit = Number(getParam("limit")) || 10;
+    const search = getParam("search") || undefined;
     const s = getParam("startDate");
     const e = getParam("endDate");
     const shopId = getParam("shopId") || "";
@@ -30,6 +45,9 @@ const ProductsReportPage = () => {
     const isFirstLoad = s === null && e === null;
 
     return {
+      page,
+      limit,
+      search,
       start: isFirstLoad ? dayjs().startOf("day") : s ? dayjs(s) : null,
       end: isFirstLoad ? dayjs().endOf("day") : e ? dayjs(e) : null,
       startStr: isFirstLoad
@@ -63,7 +81,8 @@ const ProductsReportPage = () => {
   // ProductsSummaryReport ends
 
   // ProductReportFilter options start
-  const shops = getAllShopsForProductsFilter().data;
+  const { data: shops, isLoading: shopLoading } =
+    getAllShopsForProductsFilter(isShopOpen);
   const shopsOptions = [
     {
       value: "",
@@ -75,7 +94,8 @@ const ProductsReportPage = () => {
     })) || []),
   ];
 
-  const tsexes = getAllTsexesForProductsFilter().data;
+  const { data: tsexes, isLoading: tsexLoading } =
+    getAllTsexesForProductsFilter(isTsexOpen);
   const tsexesOptions = [
     {
       value: "",
@@ -87,13 +107,14 @@ const ProductsReportPage = () => {
     })) || []),
   ];
 
-  const products = getAllProductsForProductsFilter().data;
+  const { data: productLists, isLoading: productListLoading } =
+    getAllProductsForProductsFilter(isProductOpen);
   const productOptions = [
     {
       value: "",
       label: "Barcha mahsulotlar",
     },
-    ...(products?.data?.data?.map((pr: any) => ({
+    ...(productLists?.data?.data?.map((pr: any) => ({
       value: pr?.id,
       label: (
         <div className="flex justify-between">
@@ -128,12 +149,77 @@ const ProductsReportPage = () => {
   // ProductReportFilter onFilterSubmit ends
 
   // ProductReportChart starts
-  const { data: allTopProducts } = getAllTop5ProductsForReport({
-    startDate: query.startStr,
-    endDate: query.endStr,
-  });
+  const { data: allTopProducts, isLoading: topProductChartLoading } =
+    getAllTop5ProductsForReport({
+      startDate: query.startStr,
+      endDate: query.endStr,
+      productId: query.productId,
+      shopId: query.shopId,
+      tsexId: query.tsexId,
+    });
   const topProducts = allTopProducts?.data;
   // ProductReportChart ends
+
+  // ProductsReport start
+  const { data: allProducts, isLoading: productLoading } = getAllProducts({
+    page: query.page,
+    limit: query.limit,
+    startDate: query.startStr,
+    endDate: query.endStr,
+    search: query.search,
+    productId: query.productId,
+    shopId: query.shopId,
+    tsexId: query.tsexId,
+  });
+  const products = allProducts?.data?.data;
+  const total = allProducts?.data?.total || 0;
+  // ProductsReport end
+
+  // Product detail starts
+  const handleProductDetailOpen = (id: string) => {
+    navigate(`${id}`);
+  };
+  // Product detail ends
+
+  // Search starts
+  const debouncedSetSearchQuery = useCallback(
+    debounce((nextValue: string) => {
+      setParams({
+        search: nextValue || "",
+        page: 1,
+      });
+    }, 500),
+    [setParams]
+  );
+
+  const handleSearchChange = (value: string) => {
+    setLocalSearch(value);
+    debouncedSetSearchQuery(value);
+  };
+  // Search ends
+
+  // PageChange starts
+  const handlePageChange = (newPage: number, newPageSize?: number) => {
+    const updateParams: { page?: number; limit?: number } = {};
+
+    if (newPage > 1) {
+      updateParams.page = newPage;
+    }
+
+    if (newPageSize && newPageSize !== 10) {
+      updateParams.limit = newPageSize;
+    }
+
+    setParams(updateParams);
+
+    if (newPage === 1) {
+      removeParam("page");
+    }
+    if (newPageSize === 10 && getParam("limit")) {
+      removeParam("limit");
+    }
+  };
+  // PageChange ends
 
   return (
     <div className="flex flex-col gap-5">
@@ -147,6 +233,12 @@ const ProductsReportPage = () => {
         shopsOptions={shopsOptions}
         tsexesOptions={tsexesOptions}
         productOptions={productOptions}
+        setIsProductOpen={setIsProductOpen}
+        setIsTsexOpen={setIsTsexOpen}
+        setIsShopOpen={setIsShopOpen}
+        productLoading={productListLoading}
+        tsexLoading={tsexLoading}
+        shopLoading={shopLoading}
       />
 
       <ProductReportBalances
@@ -160,6 +252,46 @@ const ProductsReportPage = () => {
 
       <ProductReportChart
         data={topProducts as { name: string; sales: number }[]}
+        loading={topProductChartLoading}
+      />
+
+      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] p-3.5">
+        <SearchInput
+          placeholder="Mahsulot nomi,brandi bo'yicha qidirish"
+          className="h-12! bg-bg-ty! text-[16px]!"
+          value={localSearch}
+          onChange={handleSearchChange}
+        />
+      </div>
+
+      <div className="max-[500px]:hidden">
+        <ProTable
+          dataSource={products}
+          rowKey="id"
+          pagination={{
+            showSizeChanger: true,
+            responsive: false,
+            current: query.page,
+            pageSize: query.limit,
+            total,
+            onChange: handlePageChange,
+          }}
+          columns={productColumns(handleProductDetailOpen)}
+          search={false}
+          dateFormatter="string"
+          scroll={{ x: "max-content" }}
+          loading={productLoading}
+        />
+      </div>
+
+      <ProductMobileList
+        products={products}
+        currentPage={Number(query.page)}
+        pageSize={Number(query.limit)}
+        total={total}
+        onPageChange={handlePageChange}
+        isLoading={productLoading}
+        onDetail={handleProductDetailOpen}
       />
     </div>
   );

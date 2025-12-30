@@ -22,13 +22,17 @@ export const useProduct = () => {
       gcTime: 1000 * 60 * 10,
     });
 
-  const getAllProductsForProductsFilter = (params?: any) =>
+  const getAllProductsForProductsFilter = (
+    enabled: boolean = false,
+    params?: any
+  ) =>
     useQuery({
       queryKey: [product, "products-filter", params],
       queryFn: () =>
         api
           .get("products/reports/filters-list", { params })
           .then((res) => res.data),
+      enabled,
       refetchOnWindowFocus: false,
       staleTime: 1000 * 60 * 5,
       gcTime: 1000 * 60 * 10,
