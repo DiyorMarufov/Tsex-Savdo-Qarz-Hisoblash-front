@@ -5,23 +5,29 @@ import SalesReportBalances from "../../../widgets/reports/SalesReport/SalesRepor
 import SalesReportChart from "../../../widgets/reports/SalesReport/SalesReportChart/SalesReportChart";
 import SalesReportMobileList from "../../../widgets/reports/SalesReport/SalesReportMobileList/SalesReportMobileList";
 import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
-import ReportFilter from "../../../widgets/reports/SalesReport/ReportFilter/ReportFilter";
 import { useSale } from "../../../shared/lib/apis/sales/useSale";
 import { useParamsHook } from "../../../shared/hooks/params/useParams";
 import dayjs from "dayjs";
 import type { QueryParams } from "../../../shared/lib/types";
 import { debounce } from "../../../shared/lib/functions/debounce";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import ProductsReportFilters from "../../../widgets/reports/ProductsReport/ProductsReportFilters/ProductsReportFilters";
+import { useShop } from "../../../shared/lib/apis/shops/useShop";
+import { useTsex } from "../../../shared/lib/apis/tsexes/useTsex";
+import { useProduct } from "../../../shared/lib/apis/products/useProduct";
 
 const SalesReportPage = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
-  const { getSalesSummaryForReport } = useSale();
-  const { getParam, setParam, setParams, removeParam } = useParamsHook();
+  const { getParam, setParams, removeParam } = useParamsHook();
   const [localSearch, setLocalSearch] = useState(getParam("search") || "");
 
+  const { getSalesSummaryForReport } = useSale();
+  const { getAllShopsForProductsFilter } = useShop();
+  const { getAllTsexesForProductsFilter } = useTsex();
   const { getAllSales } = useSale();
+  const { getAllProductsForProductsFilter } = useProduct();
 
   // Query starts
   const query: QueryParams = useMemo(() => {
@@ -30,11 +36,12 @@ const SalesReportPage = () => {
     const search = getParam("search") || undefined;
     const s = getParam("startDate");
     const e = getParam("endDate");
-
-    const itemPage = Number(getParam("itemPage")) || 1;
-    const itemLimit = Number(getParam("itemLimit")) || 5;
+    const shopId = getParam("shopId") || "";
+    const tsexId = getParam("tsexId") || "";
+    const productId = getParam("productId") || "";
 
     const isFirstLoad = s === null && e === null;
+
     return {
       page,
       limit,
@@ -47,8 +54,9 @@ const SalesReportPage = () => {
       endStr: isFirstLoad
         ? dayjs().endOf("day").format("YYYY-MM-DD HH:mm:ss")
         : e || "",
-      itemPage,
-      itemLimit,
+      shopId,
+      tsexId,
+      productId,
     };
   }, [getParam]);
   // Query ends
@@ -62,6 +70,9 @@ const SalesReportPage = () => {
     getSalesSummaryForReport({
       startDate: query.startStr,
       endDate: query.endStr,
+      productId: query.productId,
+      shopId: query.shopId,
+      tsexId: query.tsexId,
     });
   const summary = salesSummary?.data;
 
@@ -70,21 +81,6 @@ const SalesReportPage = () => {
   const unpaidTotal = summary?.unpaidTotal;
   // SalesSummary ends
 
-  // Report Filter starts
-  const handleFilterChange = useCallback(
-    (dates: string[] | null) => {
-      if (dates) {
-        setParam("startDate", dates[0]);
-        setParam("endDate", dates[1]);
-      } else {
-        setParam("startDate", "");
-        setParam("endDate", "");
-      }
-    },
-    [setParam]
-  );
-  // Report Filter ends
-
   // SalesReportData starts
   const { data: allSales, isLoading: salesLoading } = getAllSales({
     page: query.page,
@@ -92,6 +88,9 @@ const SalesReportPage = () => {
     search: query.search,
     startDate: query.startStr,
     endDate: query.endStr,
+    productId: query.productId,
+    shopId: query.shopId,
+    tsexId: query.tsexId,
   });
   const sales = allSales?.data?.data;
   const total = allSales?.data?.total;
@@ -137,13 +136,84 @@ const SalesReportPage = () => {
   };
   // Search ends
 
+  // SaleReportFilter options start
+  const shops = getAllShopsForProductsFilter().data;
+  const shopsOptions = [
+    {
+      value: "",
+      label: "Barcha do'konlar",
+    },
+    ...(shops?.data?.map((st) => ({
+      value: st?.id,
+      label: st?.name,
+    })) || []),
+  ];
+
+  const tsexes = getAllTsexesForProductsFilter().data;
+  const tsexesOptions = [
+    {
+      value: "",
+      label: "Barcha tsexlar",
+    },
+    ...(tsexes?.data?.map((ts) => ({
+      value: ts?.id,
+      label: ts?.name,
+    })) || []),
+  ];
+
+  const products = getAllProductsForProductsFilter().data;
+  const productOptions = [
+    {
+      value: "",
+      label: "Barcha mahsulotlar",
+    },
+    ...(products?.data?.data?.map((pr: any) => ({
+      value: pr?.id,
+      label: (
+        <div className="flex justify-between">
+          <span className="text-[14px] font-medium text-slate-800">
+            {pr?.name}
+          </span>
+
+          <span className="text-[12px] text-slate-400 font-normal">
+            {pr?.brand}
+          </span>
+        </div>
+      ),
+    })) || []),
+  ];
+  // SaleReportFilter options end
+
+  // SaleReportFilter onFilterSubmit starts
+  const onFilterSubmit = (filters: {
+    dates: string[] | null;
+    shopId: string;
+    tsexId: string;
+    productId: string;
+  }) => {
+    setParams({
+      startDate: filters.dates?.[0] || "",
+      endDate: filters.dates?.[1] || "",
+      shopId: filters.shopId || "",
+      tsexId: filters.tsexId || "",
+      productId: filters.productId || "",
+    });
+  };
+  // SaleReportFilter onFilterSubmit ends
+
   if (pathname.startsWith("/superadmin/reports/sale/")) return <Outlet />;
   return (
     <div className="flex flex-col gap-5">
-      <ReportFilter
-        onFilter={handleFilterChange}
+      <ProductsReportFilters
+        onFilterSubmit={onFilterSubmit}
         start={query.start}
         end={query.end}
+        shopId={query.shopId}
+        tsexId={query.tsexId}
+        productId={query.productId}
+        shopsOptions={shopsOptions}
+        tsexesOptions={tsexesOptions}
+        productOptions={productOptions}
       />
 
       <SalesReportBalances
@@ -153,7 +223,15 @@ const SalesReportPage = () => {
         unpaidTotal={unpaidTotal}
       />
 
-      <SalesReportChart startDate={query.startStr} endDate={query.endStr} />
+      <SalesReportChart
+        params={{
+          startDate: query.startStr,
+          endDate: query.endStr,
+          productId: query.productId as string,
+          tsexId: query.tsexId as string,
+          shopId: query.shopId as string,
+        }}
+      />
 
       <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] p-3.5">
         <SearchInput

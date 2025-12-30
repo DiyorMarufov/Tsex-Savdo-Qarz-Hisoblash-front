@@ -14,14 +14,18 @@ import { useParamsHook } from "../../../../shared/hooks/params/useParams";
 import SalesReportChartSkeleton from "../../../../shared/ui/Skeletons/Reports/SalesReport/SalesReportChartSkeleton";
 
 interface SalesReportChartProps {
-  startDate: string;
-  endDate: string;
+  params: {
+    startDate: string;
+    endDate: string;
+    productId: string;
+    tsexId: string;
+    shopId: string;
+  };
   isAnimationActive?: boolean;
 }
 
 const SalesReportChart: FC<SalesReportChartProps> = ({
-  startDate,
-  endDate,
+  params,
   isAnimationActive,
 }) => {
   const { getParam, setParam } = useParamsHook();
@@ -32,11 +36,17 @@ const SalesReportChart: FC<SalesReportChartProps> = ({
   // SalesStatistics start
   const query = useMemo(
     () => ({
-      startDate,
-      endDate,
+      ...params,
       type: filterType,
     }),
-    [startDate, endDate, filterType]
+    [
+      params.startDate,
+      params.endDate,
+      params.productId,
+      params.tsexId,
+      params.shopId,
+      filterType,
+    ]
   );
   const { data: salesStatisticsReport, isLoading: salesStatisticsLoading } =
     getSalesStatisticsForReport(query);
