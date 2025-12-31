@@ -5,9 +5,12 @@ import TsexesReportChart from "../../../widgets/reports/TsexesReport/TsexesRepor
 import { useParamsHook } from "../../../shared/hooks/params/useParams";
 import type { QueryParams } from "../../../shared/lib/types";
 import dayjs from "dayjs";
+import { useTsex } from "../../../shared/lib/apis/tsexes/useTsex";
 
 const TsexesReportPage = () => {
   const { setParam, getParam } = useParamsHook();
+  const { getAllTsexesSummaryForReport, getAllTsexesStatisticsForReport } =
+    useTsex();
 
   // Query starts
   const query: QueryParams = useMemo(() => {
@@ -36,6 +39,24 @@ const TsexesReportPage = () => {
     [setParam]
   );
   // Report Filter ends
+
+  // TsexesReportBalances start
+  const { data: allTsexesSummary, isLoading: tsexSummaryLoading } =
+    getAllTsexesSummaryForReport();
+  const tsexSummary = allTsexesSummary?.data;
+  const inventoryBalance = tsexSummary?.inventoryBalance;
+  const totalPaid = tsexSummary?.totalPaid;
+  const totalBalance = tsexSummary?.totalBalance;
+  const totalQuantity = tsexSummary?.totalQuantity;
+  const totalTypes = tsexSummary?.totalTypes;
+  // TsexesReportBalances end
+
+  // TsexesReportChart starts
+  const { data: allTsexesStats, isLoading: tsexStatsLoading } =
+    getAllTsexesStatisticsForReport();
+  const tsexesStats = allTsexesStats?.data;
+  // TsexesReportChart ends
+
   return (
     <div className="flex flex-col gap-5">
       <ReportFilter
@@ -44,9 +65,16 @@ const TsexesReportPage = () => {
         end={query.end}
       />
 
-      <TsexesReportBalances />
+      <TsexesReportBalances
+        inventoryBalance={inventoryBalance}
+        totalPaid={totalPaid}
+        totalBalance={totalBalance}
+        totalQuantity={totalQuantity}
+        totalTypes={totalTypes}
+        loading={tsexSummaryLoading}
+      />
 
-      <TsexesReportChart />
+      <TsexesReportChart data={tsexesStats} loading={tsexStatsLoading} />
     </div>
   );
 };

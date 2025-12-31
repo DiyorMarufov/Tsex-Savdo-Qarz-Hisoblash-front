@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { useCustomer } from "../../../../shared/lib/apis/customers/useCustomer";
 import StatCard from "../../../../shared/ui/StatCard/StatCard";
-import BalanceCardSkeleton from "../../../../shared/ui/Skeletons/BalanceCardSkeleton/BalanceCardSkeleton";
+import BalanceStatCardSkeleton from "../../../../shared/ui/Skeletons/BalanceStatCardSkeleton/BalanceStatCardSkeleton";
 
 const CustomersBalances = () => {
   // CustomersStatCard start
@@ -18,7 +18,7 @@ const CustomersBalances = () => {
   if (customerBalanceLoading)
     return (
       <div className="mt-2">
-        <BalanceCardSkeleton />
+        <BalanceStatCardSkeleton />
       </div>
     );
   // CustomersStatCard end

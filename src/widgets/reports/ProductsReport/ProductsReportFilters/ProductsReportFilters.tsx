@@ -88,7 +88,7 @@ const ProductsReportFilters = ({
 
   return (
     <div>
-      <div className="rounded-[12px] border border-bg-fy bg-white p-4 gap-4 grid grid-cols-5 max-[1150px]:grid-cols-1 max-[800px]:hidden items-end">
+      <div className="rounded-[12px] border border-bg-fy bg-white p-3.5 gap-4 grid grid-cols-5 max-[1150px]:grid-cols-1 max-[800px]:hidden items-end">
         <div className="w-full">
           <DatePicker.RangePicker
             value={tempDates}

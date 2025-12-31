@@ -1,7 +1,7 @@
 import { memo } from "react";
 import StatCard from "../../../../shared/ui/StatCard/StatCard";
 import CountUp from "react-countup";
-import ProductReportCardSkeleton from "../../../../shared/ui/Skeletons/Reports/ProductsReport/ProductReportCardSkeleton";
+import BalanceStatCardSkeleton from "../../../../shared/ui/Skeletons/BalanceStatCardSkeleton/BalanceStatCardSkeleton";
 
 interface ProductReportBalancesProps {
   totalQuantity: number;
@@ -20,7 +20,7 @@ const ProductReportBalances = ({
   inventoryBalance = 0,
   isLoading,
 }: ProductReportBalancesProps) => {
-  if (isLoading) return <ProductReportCardSkeleton />;
+  if (isLoading) return <BalanceStatCardSkeleton descriptionIndexes={[0, 1]} />;
   return (
     <div className="grid grid-cols-3 gap-5 max-[1250px]:grid-cols-2 max-[500px]:grid-cols-1">
       <div className="border border-bg-fy bg-[#ffffff] rounded-2xl p-7 flex flex-col gap-1 max-[500px]:items-center">

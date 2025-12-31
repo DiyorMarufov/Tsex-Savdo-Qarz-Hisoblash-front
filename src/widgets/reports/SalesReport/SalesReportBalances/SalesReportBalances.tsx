@@ -1,6 +1,6 @@
 import { memo } from "react";
 import StatCard from "../../../../shared/ui/StatCard/StatCard";
-import BalanceCardSkeleton from "../../../../shared/ui/Skeletons/BalanceCardSkeleton/BalanceCardSkeleton";
+import BalanceStatCardSkeleton from "../../../../shared/ui/Skeletons/BalanceStatCardSkeleton/BalanceStatCardSkeleton";
 
 interface SalesReportBalancesProps {
   isLoading: boolean;
@@ -15,7 +15,7 @@ const SalesReportBalances = ({
   paidTotal,
   unpaidTotal,
 }: SalesReportBalancesProps) => {
-  if (isLoading) return <BalanceCardSkeleton />;
+  if (isLoading) return <BalanceStatCardSkeleton />;
 
   return (
     <div className="grid grid-cols-3 gap-5 max-[1250px]:grid-cols-2 max-[500px]:grid-cols-1">

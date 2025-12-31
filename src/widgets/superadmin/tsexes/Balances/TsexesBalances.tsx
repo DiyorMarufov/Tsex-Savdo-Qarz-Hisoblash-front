@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { useTsex } from "../../../../shared/lib/apis/tsexes/useTsex";
 import StatCard from "../../../../shared/ui/StatCard/StatCard";
-import BalanceCardSkeleton from "../../../../shared/ui/Skeletons/BalanceCardSkeleton/BalanceCardSkeleton";
+import BalanceStatCardSkeleton from "../../../../shared/ui/Skeletons/BalanceStatCardSkeleton/BalanceStatCardSkeleton";
 
 const TsexBalances = () => {
   const { getTsexBalanceSummary } = useTsex();
@@ -17,7 +17,7 @@ const TsexBalances = () => {
   if (tsexBalancesLoading) {
     return (
       <div className="mt-2">
-        <BalanceCardSkeleton />
+        <BalanceStatCardSkeleton />
       </div>
     );
   }

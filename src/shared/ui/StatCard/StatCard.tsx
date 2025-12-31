@@ -7,14 +7,16 @@ interface Props {
   isValueNegative?: boolean;
   isColSpan?: boolean;
   suffix?: string;
+  description?: string;
 }
 
 const StatCard: FC<Props> = ({
   title,
-  value,
+  value = 0,
   isValueNegative = false,
   isColSpan = false,
   suffix = " UZS",
+  description = "",
 }) => {
   return (
     <div
@@ -41,6 +43,11 @@ const StatCard: FC<Props> = ({
           suffix={suffix}
         />
       </span>
+      {description && (
+        <span className="text-gray-500 text-sm max-[500px]:text-xs">
+          {description}
+        </span>
+      )}
     </div>
   );
 };

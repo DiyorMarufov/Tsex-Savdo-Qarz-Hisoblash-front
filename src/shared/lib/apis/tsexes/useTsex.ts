@@ -42,7 +42,7 @@ export const useTsex = () => {
       gcTime: 1000 * 60 * 10,
     });
 
-  const getAllTsexes = (params: any) =>
+  const getAllTsexes = (params?: any) =>
     useQuery({
       queryKey: [tsex, "all-tsex", params],
       queryFn: () => api.get("tsexes", { params }).then((res) => res.data),
@@ -50,11 +50,38 @@ export const useTsex = () => {
       staleTime: 1000 * 60 * 5,
       gcTime: 1000 * 60 * 10,
     });
+
+  const getAllTsexesSummaryForReport = (params?: any) =>
+    useQuery({
+      queryKey: [tsex, "all-tsex-summary", params],
+      queryFn: () =>
+        api
+          .get("tsexes/reports/tsex-summary", { params })
+          .then((res) => res.data),
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 10,
+    });
+
+  const getAllTsexesStatisticsForReport = (params?: any) =>
+    useQuery({
+      queryKey: [tsex, "all-tsex-statistics", params],
+      queryFn: () =>
+        api
+          .get("tsexes/reports/tsex-statistics", { params })
+          .then((res) => res.data),
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 10,
+    });
+
   return {
     getTotalTsexBalance,
     getMostDebtorTsexes,
     getAllTsexesForProductsFilter,
     getTsexBalanceSummary,
     getAllTsexes,
+    getAllTsexesSummaryForReport,
+    getAllTsexesStatisticsForReport,
   };
 };
