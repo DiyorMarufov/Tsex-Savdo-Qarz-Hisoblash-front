@@ -1,8 +1,10 @@
-import { DatePicker } from "antd";
+import { Button, DatePicker, Drawer } from "antd";
 import { memo, useEffect, useState } from "react";
 import { Dayjs } from "dayjs";
 import Filter from "../../../../shared/ui/Filter/Filter";
 import type { Option } from "../../../../shared/lib/types";
+import type { DrawerProps } from "antd/lib";
+import { FilterOutlined } from "@ant-design/icons";
 
 interface ReportFilterProps {
   onFilter: (dates: string[] | null, tsexId: string) => void;
@@ -15,6 +17,8 @@ interface ReportFilterProps {
 }
 
 const ReportFilter = ({ onFilter, start, end, setIsTsexOpen, tsexId, tsexesOptions, tsexLoading }: ReportFilterProps) => {
+  const [open, setOpen] = useState(false);
+  const [placement] = useState<DrawerProps["placement"]>("right");
   const [tempDates, setTempDates] = useState<[Dayjs | null, Dayjs | null]>([
     start || null,
     end || null,
@@ -38,34 +42,104 @@ const ReportFilter = ({ onFilter, start, end, setIsTsexOpen, tsexId, tsexesOptio
   }
 
   return (
-    <div className="rounded-[12px] border border-bg-fy bg-white p-3.5">
-      <div className="flex items-center gap-4 w-full max-[800px]:flex-col max-[800px]:items-stretch">
-        <div className="w-1/3 max-[800px]:w-full">
+    <div>
+      <div className="rounded-[12px] border border-bg-fy bg-white p-3.5 gap-4 grid grid-cols-5 max-[1150px]:grid-cols-1 max-[800px]:hidden items-end">
+        <div className="w-full">
           <DatePicker.RangePicker
             value={tempDates}
+            onChange={handleRangeChange}
             showTime={{ format: "HH:mm" }}
             format="YYYY-MM-DD HH:mm"
-            onChange={handleRangeChange}
-            className="h-11! w-full rounded-lg border-slate-200"
-            inputReadOnly
             placeholder={["Boshlanish", "Tugash"]}
+            className="h-11 w-full rounded-lg border-slate-200"
+            inputReadOnly
           />
         </div>
 
-        <div className="w-1/3 max-[800px]:w-full">
-          <Filter
-            value={tempTsexId}
-            onChange={handleTsexChange}
-            placeholder="Barcha tsexlar"
-            className="h-11! w-full rounded-lg custom-select border-slate-200"
-            options={tsexesOptions}
-            onDropdownVisibleChange={(visible: any) => {
-              if (visible) setIsTsexOpen(true);
-            }}
-            loading={tsexLoading}
-          />
+        <div className="col-span-3 grid grid-cols-3 gap-4 max-[1150px]:col-span-1 max-[390px]:grid-cols-1">
+          <div className="w-full">
+            <Filter
+              value={tempTsexId}
+              options={tsexesOptions}
+              onChange={setTempTsexId}
+              placeholder="Barcha tsexlar"
+              className="h-11! w-full rounded-lg custom-select border-slate-200"
+              onDropdownVisibleChange={(visible: any) => {
+                if (visible) setIsTsexOpen(true);
+              }}
+              loading={tsexLoading}
+            />
+          </div>
+        </div>
+
+        <div className="flex justify-end">
+          <Button
+            type="primary"
+            icon={<FilterOutlined />}
+            className="h-10! w-full max-w-[150px] bg-indigo-600 rounded-lg font-medium"
+          >
+            Filtrlash
+          </Button>
         </div>
       </div>
+      <div className="min-[800px]:hidden flex justify-end">
+        <Button
+          icon={<FilterOutlined />}
+          onClick={() => setOpen(true)}
+          className="rounded-lg flex items-center bg-white border-slate-200 text-slate-600 h-11"
+        >
+          Filtrlar
+        </Button>
+      </div>
+      <Drawer
+        title="Filtrlar"
+        placement={placement}
+        onClose={() => setOpen(false)}
+        open={open}
+        key={placement}
+        width={280}
+      >
+        <div className="flex flex-col gap-4">
+          <div className="w-full">
+            <p className="mb-1 text-sm text-slate-500">Sana oralig'i</p>
+            <DatePicker.RangePicker
+              value={tempDates}
+              onChange={handleRangeChange}
+              showTime={{ format: "HH:mm" }}
+              format="YYYY-MM-DD HH:mm"
+              placeholder={["Boshlanish", "Tugash"]}
+              className="h-11! w-full rounded-lg border-slate-200"
+              inputReadOnly
+            />
+          </div>
+
+          <div className="w-full">
+            <p className="mb-1 text-sm text-slate-500">Tsexlar</p>
+            <Filter
+              value={tempTsexId}
+              options={tsexesOptions}
+              onChange={handleTsexChange}
+              placeholder="Barcha tsexlar"
+              className="h-11! w-full rounded-lg custom-select border-slate-200"
+              onDropdownVisibleChange={(visible: any) => {
+                if (visible) setIsTsexOpen(true);
+              }}
+              loading={tsexLoading}
+            />
+          </div>
+
+          <Button
+            type="primary"
+            className="h-11! w-full rounded-lg mt-2 bg-indigo-600"
+            onClick={() => {
+              // Bu yerda onFilter chaqiriladi yoki handleSubmit
+              setOpen(false);
+            }}
+          >
+            Filtrlash
+          </Button>
+        </div>
+      </Drawer>
     </div>
   );
 };
