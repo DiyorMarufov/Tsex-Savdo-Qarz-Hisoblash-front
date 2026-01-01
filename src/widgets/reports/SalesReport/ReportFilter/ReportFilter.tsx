@@ -7,7 +7,7 @@ import type { DrawerProps } from "antd/lib";
 import { FilterOutlined } from "@ant-design/icons";
 
 interface ReportFilterProps {
-  onFilter: (dates: string[] | null, tsexId: string) => void;
+  onFilterSubmit: (filters: { dates: string[] | null; tsexId: string }) => void;
   start: Dayjs | undefined | null;
   end: Dayjs | undefined | null;
   setIsTsexOpen: (open: boolean) => void;
@@ -16,30 +16,48 @@ interface ReportFilterProps {
   tsexLoading: boolean;
 }
 
-const ReportFilter = ({ onFilter, start, end, setIsTsexOpen, tsexId, tsexesOptions, tsexLoading }: ReportFilterProps) => {
+const ReportFilter = ({
+  onFilterSubmit,
+  start,
+  end,
+  setIsTsexOpen,
+  tsexId,
+  tsexesOptions,
+  tsexLoading,
+}: ReportFilterProps) => {
   const [open, setOpen] = useState(false);
   const [placement] = useState<DrawerProps["placement"]>("right");
   const [tempDates, setTempDates] = useState<[Dayjs | null, Dayjs | null]>([
     start || null,
     end || null,
   ]);
+  const [tempDateStrings, setTempDateStrings] = useState<string[] | null>([
+    start ? start.format("YYYY-MM-DD HH:mm:ss") : "",
+    end ? end.format("YYYY-MM-DD HH:mm:ss") : "",
+  ]);
   const [tempTsexId, setTempTsexId] = useState(tsexId);
 
   useEffect(() => {
     setTempDates([start || null, end || null]);
+    setTempDateStrings([
+      start ? start.format("YYYY-MM-DD HH:mm:ss") : "",
+      end ? end.format("YYYY-MM-DD HH:mm:ss") : "",
+    ]);
     setTempTsexId(tsexId);
   }, [start, end, tsexId]);
 
-  const handleRangeChange = (values: any, dateStrings: [string, string]) => {
-    setTempDates(values);
-    onFilter(values ? dateStrings : null, tempTsexId || "");
+  const handleSubmit = () => {
+    onFilterSubmit({
+      dates: tempDateStrings,
+      tsexId: tempTsexId || "",
+    });
+    setOpen(false);
   };
 
-  const handleTsexChange = (val: string) => {
-    setTempTsexId(val)
-    const dateStrings = tempDates?.[0] && tempDates?.[1] ? [tempDates?.[0].format("YYYY-MM-DD HH:mm:ss"), tempDates?.[1].format("YYYY-MM-DD HH:mm:ss")] : null
-    onFilter(dateStrings, val)
-  }
+  const handleRangeChange = (values: any, dateStrings: [string, string]) => {
+    setTempDates(values);
+    setTempDateStrings(values ? dateStrings : null);
+  };
 
   return (
     <div>
@@ -56,7 +74,7 @@ const ReportFilter = ({ onFilter, start, end, setIsTsexOpen, tsexId, tsexesOptio
           />
         </div>
 
-        <div className="col-span-3 grid grid-cols-3 gap-4 max-[1150px]:col-span-1 max-[390px]:grid-cols-1">
+        <div className="col-span-3 grid grid-cols-3 gap-4 max-[1150px]:col-span-1 max-[1150px]:grid-cols-1">
           <div className="w-full">
             <Filter
               value={tempTsexId}
@@ -77,6 +95,7 @@ const ReportFilter = ({ onFilter, start, end, setIsTsexOpen, tsexId, tsexesOptio
             type="primary"
             icon={<FilterOutlined />}
             className="h-10! w-full max-w-[150px] bg-indigo-600 rounded-lg font-medium"
+            onClick={handleSubmit}
           >
             Filtrlash
           </Button>
@@ -118,7 +137,7 @@ const ReportFilter = ({ onFilter, start, end, setIsTsexOpen, tsexId, tsexesOptio
             <Filter
               value={tempTsexId}
               options={tsexesOptions}
-              onChange={handleTsexChange}
+              onChange={setTempTsexId}
               placeholder="Barcha tsexlar"
               className="h-11! w-full rounded-lg custom-select border-slate-200"
               onDropdownVisibleChange={(visible: any) => {
@@ -131,10 +150,7 @@ const ReportFilter = ({ onFilter, start, end, setIsTsexOpen, tsexId, tsexesOptio
           <Button
             type="primary"
             className="h-11! w-full rounded-lg mt-2 bg-indigo-600"
-            onClick={() => {
-              // Bu yerda onFilter chaqiriladi yoki handleSubmit
-              setOpen(false);
-            }}
+            onClick={handleSubmit}
           >
             Filtrlash
           </Button>

@@ -15,7 +15,7 @@ import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
 
 const TsexesReportPage = () => {
   const [isTsexOpen, setIsTsexOpen] = useState<boolean>(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { setParams, getParam, removeParam } = useParamsHook();
   const [localSearch, setLocalSearch] = useState(getParam("search") || "");
   const { getAllTsexes, getAllTsexesForProductsFilter } = useTsex();
@@ -45,22 +45,21 @@ const TsexesReportPage = () => {
         ? dayjs().endOf("day").format("YYYY-MM-DD HH:mm:ss")
         : e || "",
       tsexId,
-
     };
   }, [getParam]);
   // Query ends
 
   // Report Filter starts
-  const handleFilterChange = useCallback(
-    (dates: string[] | null, tsexId: string) => {
-      setParams({
-        startDate: dates?.[0] || "",
-        endDate: dates?.[1] || "",
-        tsexId: tsexId || ""
-      });
-    },
-    [setParams],
-  );
+  const onFilterSubmit = (filters: {
+    dates: string[] | null;
+    tsexId: string;
+  }) => {
+    setParams({
+      startDate: filters.dates?.[0] || "",
+      endDate: filters.dates?.[1] || "",
+      tsexId: filters.tsexId || "",
+    });
+  };
   // Report Filter ends
 
   // TsexesReportBalances start
@@ -68,7 +67,7 @@ const TsexesReportPage = () => {
     getAllTsexesSummaryForReport({
       startDate: query.startStr,
       endDate: query.endStr,
-      tsexId: query.tsexId
+      tsexId: query.tsexId,
     });
   const tsexSummary = allTsexesSummary?.data;
   const inventoryBalance = tsexSummary?.inventoryBalance;
@@ -80,13 +79,11 @@ const TsexesReportPage = () => {
 
   // TsexesReportChart starts
   const { data: allTsexesStats, isLoading: tsexStatsLoading } =
-    getAllTsexesStatisticsForReport(
-      {
-        startDate: query.startStr,
-        endDate: query.endStr,
-        tsexId: query.tsexId
-      }
-    );
+    getAllTsexesStatisticsForReport({
+      startDate: query.startStr,
+      endDate: query.endStr,
+      tsexId: query.tsexId,
+    });
   const tsexesStats = allTsexesStats?.data;
   // TsexesReportChart ends
 
@@ -111,7 +108,6 @@ const TsexesReportPage = () => {
   };
   // HanleOpenDetail ends
 
-
   // TsexData starts
   const { data: allTsexes, isLoading: tsexLoading } = getAllTsexes({
     startDate: query.startStr,
@@ -119,7 +115,7 @@ const TsexesReportPage = () => {
     tsexId: query.tsexId,
     search: query.search,
     page: query.page,
-    limit: query.limit
+    limit: query.limit,
   });
   const tsexes = allTsexes?.data?.data;
   const total = allTsexes?.data?.total || 0;
@@ -156,7 +152,7 @@ const TsexesReportPage = () => {
         page: 1,
       });
     }, 500),
-    [setParams],
+    [setParams]
   );
 
   const handleSearchChange = (value: string) => {
@@ -168,7 +164,7 @@ const TsexesReportPage = () => {
   return (
     <div className="flex flex-col gap-5">
       <ReportFilter
-        onFilter={handleFilterChange}
+        onFilterSubmit={onFilterSubmit}
         start={query.start}
         end={query.end}
         tsexId={query.tsexId}
