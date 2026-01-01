@@ -12,7 +12,7 @@ export type ProductTableListItem = {
 };
 
 export const productColumns = (
-  handleOpenDetail: any
+  handleOpenDetail: any,
 ): ProColumns<ProductTableListItem>[] => [
   {
     title: "Rasm",

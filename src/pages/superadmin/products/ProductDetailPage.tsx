@@ -32,7 +32,10 @@ const ProductDetailPage = () => {
   return (
     <div className="mx-auto bg-white rounded-[5px]">
       <div className="flex items-center justify-center p-4 border-b relative">
-        <ArrowLeft className="absolute left-3 cursor-pointer hover:opacity-80" onClick={() => navigate(-1)} />
+        <ArrowLeft
+          className="absolute left-3 cursor-pointer hover:opacity-80"
+          onClick={() => navigate(-1)}
+        />
         <h2 className="text-[18px] font-semibold">Mahsulot Tafsilotlari</h2>
       </div>
 

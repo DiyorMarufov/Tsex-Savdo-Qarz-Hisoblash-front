@@ -15,7 +15,7 @@ export type SalesTableListItem = {
 };
 
 export const salesColumns = (
-  onOpenDetail: any
+  onOpenDetail: any,
 ): ProColumns<SalesTableListItem>[] => [
   {
     title: "Do'kon",

@@ -46,7 +46,7 @@ const SalesReportChart: FC<SalesReportChartProps> = ({
       params.tsexId,
       params.shopId,
       filterType,
-    ]
+    ],
   );
   const { data: salesStatisticsReport, isLoading: salesStatisticsLoading } =
     getSalesStatisticsForReport(query);
@@ -82,8 +82,8 @@ const SalesReportChart: FC<SalesReportChartProps> = ({
               {type === "day"
                 ? "Kunlik"
                 : type === "month"
-                ? "Oylik"
-                : "Yillik"}
+                  ? "Oylik"
+                  : "Yillik"}
             </button>
           ))}
         </div>

@@ -35,7 +35,7 @@ const AdminCustomersPage = () => {
   };
 
   const transactionOnFinish: FormProps<NewCustomerFieldType>["onFinish"] = (
-    values: NewCustomerFieldType
+    values: NewCustomerFieldType,
   ) => {
     console.log("Success:", values);
   };

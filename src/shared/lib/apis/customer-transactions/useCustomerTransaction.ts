@@ -116,7 +116,7 @@ export const useCustomerTransaction = () => {
     });
 
   const getCustomerTransactionsDetailByParentTransactionId = (
-    parent_transaction_id: string
+    parent_transaction_id: string,
   ) =>
     useQuery({
       queryKey: [

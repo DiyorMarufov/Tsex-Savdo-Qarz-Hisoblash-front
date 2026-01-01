@@ -67,7 +67,7 @@ const CustomersPage = () => {
   };
 
   const transactionOnFinish: FormProps<TransactionFieldType>["onFinish"] = (
-    values: TransactionFieldType
+    values: TransactionFieldType,
   ) => {
     const { customer_id, amount, description, due_date } = values;
     const data = {
@@ -160,7 +160,7 @@ const CustomersPage = () => {
   };
 
   const newCustomerOnFinish: FormProps<NewCustomerFieldType>["onFinish"] = (
-    values: NewCustomerFieldType
+    values: NewCustomerFieldType,
   ) => {
     const { full_name, phone_number, region } = values;
     const data = {
@@ -181,7 +181,7 @@ const CustomersPage = () => {
           case 409:
             handleApiError(
               `${phone_number} raqamli foydalanuvchi mavjud`,
-              "topRight"
+              "topRight",
             );
             break;
 
@@ -249,7 +249,7 @@ const CustomersPage = () => {
         page: 1,
       });
     }, 500),
-    [setParams]
+    [setParams],
   );
 
   const handleSearchChange = (value: string) => {

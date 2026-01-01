@@ -11,7 +11,7 @@ export type TsexTableListItem = {
 };
 
 export const tsexColumns = (
-  onOpenDetail: any
+  onOpenDetail: any,
 ): ProColumns<TsexTableListItem>[] => [
   {
     title: "Nomi",
@@ -46,7 +46,9 @@ export const tsexColumns = (
     dataIndex: "last_transaction",
     width: 160,
     render: (_, record) => (
-      <div className="text-[#688C74]">{record.last_transaction ? record.last_transaction : "Hozircha yo'q"}</div>
+      <div className="text-[#688C74]">
+        {record.last_transaction ? record.last_transaction : "Hozircha yo'q"}
+      </div>
     ),
   },
   {

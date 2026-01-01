@@ -43,7 +43,7 @@ const AdminSalesPage = () => {
   };
 
   const filterOnFinish: FormProps<filterFieldType>["onFinish"] = (
-    values: filterFieldType
+    values: filterFieldType,
   ) => {
     console.log("Success:", values);
   };
@@ -131,20 +131,20 @@ const AdminSalesPage = () => {
             sl.type === "full_payment"
               ? "bg-green-100 text-green-700"
               : sl.type === "partial_payment"
-              ? "bg-yellow-100 text-yellow-700"
-              : sl.type === "real"
-              ? "bg-blue-100 text-blue-700"
-              : "bg-gray-100 text-[#4B5563]"
+                ? "bg-yellow-100 text-yellow-700"
+                : sl.type === "real"
+                  ? "bg-blue-100 text-blue-700"
+                  : "bg-gray-100 text-[#4B5563]"
           }`}
                   >
                     <span className="text-[12px] font-bold">
                       {sl.type === "full_payment"
                         ? "To'liq to'lov"
                         : sl.type === "partial_payment"
-                        ? "Qisman to'lov"
-                        : sl.type === "real"
-                        ? "Real"
-                        : sl.type}
+                          ? "Qisman to'lov"
+                          : sl.type === "real"
+                            ? "Real"
+                            : sl.type}
                     </span>
                   </div>
                 </div>

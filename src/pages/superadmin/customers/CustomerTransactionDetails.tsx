@@ -96,7 +96,7 @@ const CustomerTransactionDetails = () => {
                   return;
                 }
               },
-            }
+            },
           );
           break;
 
@@ -127,7 +127,7 @@ const CustomerTransactionDetails = () => {
                   return;
                 }
               },
-            }
+            },
           );
           break;
 
@@ -158,7 +158,7 @@ const CustomerTransactionDetails = () => {
                   return;
                 }
               },
-            }
+            },
           );
           break;
 
@@ -189,7 +189,7 @@ const CustomerTransactionDetails = () => {
                   return;
                 }
               },
-            }
+            },
           );
           break;
         default:
@@ -303,7 +303,7 @@ const CustomerTransactionDetails = () => {
           type={type}
           handleActionMore={() =>
             openTransactionModal(
-              type === "borrowing" ? "borrow-more" : "lend-more"
+              type === "borrowing" ? "borrow-more" : "lend-more",
             )
           }
           handlePayment={() =>

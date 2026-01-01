@@ -39,7 +39,7 @@ const UsersPage = () => {
   };
 
   const newUserOnFinish: FormProps<UserFieldType>["onFinish"] = (
-    values: UserFieldType
+    values: UserFieldType,
   ) => {
     const { full_name, phone_number, password, role } = values;
     const data = {
@@ -61,7 +61,7 @@ const UsersPage = () => {
         if (status === 409 && msg.startsWith("User with phone number")) {
           handleApiError(
             "Bunday tel raqamli yoki rolelik foydalanuvchi mavjud",
-            "topRight"
+            "topRight",
           );
           return;
         } else {
@@ -123,7 +123,7 @@ const UsersPage = () => {
         page: 1,
       });
     }, 500),
-    [setParams]
+    [setParams],
   );
 
   const handleSearchChange = (value: string) => {

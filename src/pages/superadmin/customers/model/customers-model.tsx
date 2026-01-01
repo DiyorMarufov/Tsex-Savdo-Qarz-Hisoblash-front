@@ -13,7 +13,7 @@ export type CustomersListItemsType = {
 };
 
 export const customerColumns = (
-  openDetail: any
+  openDetail: any,
 ): ProColumns<CustomersListItemsType>[] => [
   {
     title: "F.I",
@@ -26,7 +26,7 @@ export const customerColumns = (
     title: "Telefon Raqami",
     dataIndex: "phone_number",
     width: 150,
-    render: (_,record) => formatPhoneNumber(record.phone_number),
+    render: (_, record) => formatPhoneNumber(record.phone_number),
   },
   {
     title: "Viloyat/Shahar",

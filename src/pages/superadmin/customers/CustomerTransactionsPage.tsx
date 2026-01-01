@@ -20,7 +20,7 @@ const CustomersDetailPage = () => {
   // CustomerTransaction detail starts
   const handleOpenTransactionDetail = (
     id: string,
-    type: "lending" | "borrowing"
+    type: "lending" | "borrowing",
   ) => {
     navigate(`detail/${id}?type=${type}`);
   };

@@ -1,85 +1,87 @@
 import { lazy, memo } from "react";
 import { useRoutes } from "react-router-dom";
 
-const SaleItemReportPage = lazy(()=> import( "../../pages/superadmin/reports/SaleItemReportPage"));
+const SaleItemReportPage = lazy(
+  () => import("../../pages/superadmin/reports/SaleItemReportPage"),
+);
 const SalesReportPage = lazy(
-  () => import("../../pages/superadmin/reports/SalesReportPage")
+  () => import("../../pages/superadmin/reports/SalesReportPage"),
 );
 const ProductsReportPage = lazy(
-  () => import("../../pages/superadmin/reports/ProductsReportPage")
+  () => import("../../pages/superadmin/reports/ProductsReportPage"),
 );
 const TsexesReportPage = lazy(
-  () => import("../../pages/superadmin/reports/TsexesReportPage")
+  () => import("../../pages/superadmin/reports/TsexesReportPage"),
 );
 const CustomersReportPage = lazy(
-  () => import("../../pages/superadmin/reports/CustomersReportPage")
+  () => import("../../pages/superadmin/reports/CustomersReportPage"),
 );
 const NotFoundPage = lazy(
-  () => import("../../shared/ui/NotFound/NotFoundPage")
+  () => import("../../shared/ui/NotFound/NotFoundPage"),
 );
 const AdminSettingsPage = lazy(
-  () => import("../../pages/admin/settings/SettingsPage")
+  () => import("../../pages/admin/settings/SettingsPage"),
 );
 const AdminReportsPage = lazy(
-  () => import("../../pages/admin/reports/ReportsPage")
+  () => import("../../pages/admin/reports/ReportsPage"),
 );
 const AdminTsexesPage = lazy(
-  () => import("../../pages/admin/tsexes/TsexesPage")
+  () => import("../../pages/admin/tsexes/TsexesPage"),
 );
 const AdminCustomersPage = lazy(
-  () => import("../../pages/admin/customers/CustomersPage")
+  () => import("../../pages/admin/customers/CustomersPage"),
 );
 const AdminAddSalePage = lazy(
-  () => import("../../pages/admin/sales/AddSalePage")
+  () => import("../../pages/admin/sales/AddSalePage"),
 );
 const AdminSalesPage = lazy(() => import("../../pages/admin/sales/SalesPage"));
 const AdminProductsAddPage = lazy(
-  () => import("../../pages/admin/products/ProductsAddPage")
+  () => import("../../pages/admin/products/ProductsAddPage"),
 );
 const AdminProductsPage = lazy(
-  () => import("../../pages/admin/products/ProductsPage")
+  () => import("../../pages/admin/products/ProductsPage"),
 );
 const AdminDashboardPage = lazy(
-  () => import("../../pages/admin/dashboard/DashboardPage")
+  () => import("../../pages/admin/dashboard/DashboardPage"),
 );
 const TsexesTransactions = lazy(
-  () => import("../../pages/superadmin/tsexes/TsexesTransactions")
+  () => import("../../pages/superadmin/tsexes/TsexesTransactions"),
 );
 const CustomerTransactionDetails = lazy(
-  () => import("../../pages/superadmin/customers/CustomerTransactionDetails")
+  () => import("../../pages/superadmin/customers/CustomerTransactionDetails"),
 );
 const CustomersTransactionPage = lazy(
-  () => import("../../pages/superadmin/customers/CustomerTransactionsPage")
+  () => import("../../pages/superadmin/customers/CustomerTransactionsPage"),
 );
 const LoginPage = lazy(() => import("../../pages/login/LoginPage"));
 const DashboardLayout = lazy(() => import("../layouts/DashboardLayout"));
 const NavigateToRole = lazy(
-  () => import("../providers/router/guards/NavigateToRole")
+  () => import("../providers/router/guards/NavigateToRole"),
 );
 const AdminGuard = lazy(() => import("../providers/router/guards/AdminGuard"));
 const DashboardPage = lazy(
-  () => import("../../pages/superadmin/dashboard/DashboardPage")
+  () => import("../../pages/superadmin/dashboard/DashboardPage"),
 );
 const AuthGuard = lazy(() => import("../providers/router/guards/AuthGuard"));
 const ProductDetailPage = lazy(
-  () => import("../../pages/superadmin/products/ProductDetailPage")
+  () => import("../../pages/superadmin/products/ProductDetailPage"),
 );
 const ProductsPage = lazy(
-  () => import("../../pages/superadmin/products/ProductsPage")
+  () => import("../../pages/superadmin/products/ProductsPage"),
 );
 const ShopsPage = lazy(() => import("../../pages/superadmin/shops/ShopsPage"));
 const TsexesPage = lazy(
-  () => import("../../pages/superadmin/tsexes/TsexesPage")
+  () => import("../../pages/superadmin/tsexes/TsexesPage"),
 );
 const CustomersPage = lazy(
-  () => import("../../pages/superadmin/customers/CustomersPage")
+  () => import("../../pages/superadmin/customers/CustomersPage"),
 );
 const UsersPage = lazy(() => import("../../pages/superadmin/users/UsersPage"));
 const ReportsPage = lazy(
-  () => import("../../pages/superadmin/reports/ReportsPage")
+  () => import("../../pages/superadmin/reports/ReportsPage"),
 );
 const SettingsPage = lazy(
-  () => import("../../pages/superadmin/settings/SettingsPage")
+  () => import("../../pages/superadmin/settings/SettingsPage"),
 );
 
 const Router = () => {

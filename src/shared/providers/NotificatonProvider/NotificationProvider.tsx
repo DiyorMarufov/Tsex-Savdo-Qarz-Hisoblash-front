@@ -26,7 +26,7 @@ export const useNotificationApi = () => {
   const context = useContext(NotificationContext);
   if (!context) {
     throw new Error(
-      "useNotificationApi must be used within a NotificationProvider"
+      "useNotificationApi must be used within a NotificationProvider",
     );
   }
   return context.api;

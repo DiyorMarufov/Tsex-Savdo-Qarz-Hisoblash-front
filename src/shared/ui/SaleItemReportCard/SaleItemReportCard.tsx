@@ -13,9 +13,7 @@ const SaleItemReportCard = ({ item }: SaleItemRepordCard) => {
           <span className="text-[15px] font-bold text-[#4B5563]">
             {item.product_brand}
           </span>
-          <a className="text-[16px] font-bold">
-            {item.product}
-          </a>
+          <a className="text-[16px] font-bold">{item.product}</a>
         </div>
       </div>
 

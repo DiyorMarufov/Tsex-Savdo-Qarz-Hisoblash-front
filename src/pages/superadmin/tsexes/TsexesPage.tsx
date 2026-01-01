@@ -89,7 +89,7 @@ const TsexesPage = () => {
                 case "Amount must be greater than zero":
                   handleApiError(
                     "Summa 0 dan katta bo'lishi kerak",
-                    "topRight"
+                    "topRight",
                   );
                   break;
 
@@ -100,14 +100,14 @@ const TsexesPage = () => {
                 case "Full payment must exactly match the current balance":
                   handleApiError(
                     "Miqdor tsex hisobi bilan teng bo'lishi kerak",
-                    "topRight"
+                    "topRight",
                   );
                   break;
 
                 case "User not registered":
                   handleApiError(
                     "Foydalanuvchi ro'yxatdan o'tmagan",
-                    "topRight"
+                    "topRight",
                   );
                   break;
 
@@ -119,7 +119,7 @@ const TsexesPage = () => {
                   break;
               }
             },
-          }
+          },
         );
         break;
 
@@ -138,7 +138,7 @@ const TsexesPage = () => {
                 case "Amount must be greater than zero":
                   handleApiError(
                     "Summa 0 dan katta bo'lishi kerak",
-                    "topRight"
+                    "topRight",
                   );
                   break;
 
@@ -149,14 +149,14 @@ const TsexesPage = () => {
                 case "Can't exceed the main balance":
                   handleApiError(
                     "Miqdor tsex hisobidan oshib ketmasligi kerak",
-                    "topRight"
+                    "topRight",
                   );
                   break;
 
                 case "User not registered":
                   handleApiError(
                     "Foydalanuvchi ro'yxatdan o'tmagan",
-                    "topRight"
+                    "topRight",
                   );
                   break;
 
@@ -168,7 +168,7 @@ const TsexesPage = () => {
                   break;
               }
             },
-          }
+          },
         );
         break;
 
@@ -187,7 +187,7 @@ const TsexesPage = () => {
                 case "Amount must be greater than zero":
                   handleApiError(
                     "Summa 0 dan katta bo'lishi kerak",
-                    "topRight"
+                    "topRight",
                   );
                   break;
 
@@ -198,7 +198,7 @@ const TsexesPage = () => {
                 case "User not registered":
                   handleApiError(
                     "Foydalanuvchi ro'yxatdan o'tmagan",
-                    "topRight"
+                    "topRight",
                   );
                   break;
 
@@ -210,7 +210,7 @@ const TsexesPage = () => {
                   break;
               }
             },
-          }
+          },
         );
         break;
     }
@@ -260,7 +260,7 @@ const TsexesPage = () => {
         page: 1,
       });
     }, 500),
-    [setParams]
+    [setParams],
   );
 
   const handleSearchChange = (value: string) => {

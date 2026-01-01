@@ -120,7 +120,7 @@ const CustomersReportChart = () => {
               iconType="circle"
               formatter={(value, entry: any) => {
                 const percent = ((entry.payload.value / total) * 100).toFixed(
-                  1
+                  1,
                 );
                 return (
                   <span className="text-slate-700 font-medium ml-1">

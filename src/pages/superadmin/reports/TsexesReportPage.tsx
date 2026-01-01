@@ -36,7 +36,7 @@ const TsexesReportPage = () => {
         setParam("endDate", "");
       }
     },
-    [setParam]
+    [setParam],
   );
   // Report Filter ends
 
@@ -56,6 +56,9 @@ const TsexesReportPage = () => {
     getAllTsexesStatisticsForReport();
   const tsexesStats = allTsexesStats?.data;
   // TsexesReportChart ends
+
+  // TsexReport options start
+  // TsexReport options ends
 
   return (
     <div className="flex flex-col gap-5">

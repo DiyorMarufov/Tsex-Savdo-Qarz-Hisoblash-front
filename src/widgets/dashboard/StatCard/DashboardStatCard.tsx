@@ -6,7 +6,7 @@ interface StatCardProps {
   title: string;
   value: number;
   suffix: string;
-  decimals?: number
+  decimals?: number;
   rawValue?: string;
   isValueNegative?: boolean;
 }

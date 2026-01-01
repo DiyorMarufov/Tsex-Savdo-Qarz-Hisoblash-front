@@ -5,8 +5,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { jwtDecode } from "jwt-decode";
 import type { RootState } from "../../app/store";
-import { AdminSidebarNavigation, SuperadminSidebarNavigation, type SidebarNavItem } from "../../shared/config/routes";
-
+import {
+  AdminSidebarNavigation,
+  SuperadminSidebarNavigation,
+  type SidebarNavItem,
+} from "../../shared/config/routes";
 
 interface Props {
   collapsed: boolean;

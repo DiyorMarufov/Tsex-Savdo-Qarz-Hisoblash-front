@@ -14,7 +14,7 @@ export type CustomerTranscationsListItemsType = {
 };
 
 export const transactionColumns = (
-  handleOpenTransactionDetail: any
+  handleOpenTransactionDetail: any,
 ): ProColumns<CustomerTranscationsListItemsType>[] => [
   {
     title: "Mijoz F.I.",

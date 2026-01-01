@@ -11,7 +11,7 @@ export const useApiNotification = () => {
       | "top"
       | "bottom"
       | "bottomLeft"
-      | "bottomRight"
+      | "bottomRight",
   ) => {
     api.error({
       message: title,
@@ -21,7 +21,7 @@ export const useApiNotification = () => {
 
   const handleSuccess = (
     title: string = "success",
-    description: string = ""
+    description: string = "",
   ) => {
     api.success({
       message: title,
@@ -32,7 +32,7 @@ export const useApiNotification = () => {
 
   const handleWarning = (
     title: string = "⚠️ Warning",
-    description: string = "Something went wrong"
+    description: string = "Something went wrong",
   ) => {
     api.warning({
       message: title,

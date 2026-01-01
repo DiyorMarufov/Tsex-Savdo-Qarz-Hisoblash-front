@@ -40,19 +40,19 @@ const SaleReportCard = ({ item, onDetail }: SaleReportCardProps) => {
           item.type === "full_payment"
             ? "bg-green-100 text-green-700"
             : item.type === "partial_payment"
-            ? "bg-yellow-100 text-yellow-700"
-            : item.type === "real"
-            ? "bg-blue-100 text-blue-700"
-            : "bg-gray-100 text-[#4B5563]"
+              ? "bg-yellow-100 text-yellow-700"
+              : item.type === "real"
+                ? "bg-blue-100 text-blue-700"
+                : "bg-gray-100 text-[#4B5563]"
         }`}
           >
             {item.type === "full_payment"
               ? "To'liq to'lov"
               : item.type === "partial_payment"
-              ? "Qisman to'lov"
-              : item.type === "real"
-              ? "Real"
-              : item.type}
+                ? "Qisman to'lov"
+                : item.type === "real"
+                  ? "Real"
+                  : item.type}
           </div>
         </div>
       </div>

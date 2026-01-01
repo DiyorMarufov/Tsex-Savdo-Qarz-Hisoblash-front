@@ -161,8 +161,7 @@
   background-color: #f8f9fa !important;
 }
 
-
 /* Faqat ustun sarlavhalari (Thead) fonini o'zgartirish */
 .custom-protable-background .ant-table-thead > tr > th {
-  background-color: #f8f9FA !important; /* Siz xohlagan rang: juda oq kulrang */
+  background-color: #f8f9fa !important; /* Siz xohlagan rang: juda oq kulrang */
 }

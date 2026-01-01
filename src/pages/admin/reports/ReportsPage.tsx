@@ -13,8 +13,16 @@ import {
 } from "antd";
 
 import CountUp from "react-countup";
-import { fakeSales, salesColumns, type SalesTableListItem } from "../../superadmin/reports/model/sales-model";
-import { fakeSalesItems, salesItemColumns, type SaleItemsTableListItem } from "../../superadmin/reports/model/sales-items-detail-model";
+import {
+  fakeSales,
+  salesColumns,
+  type SalesTableListItem,
+} from "../../superadmin/reports/model/sales-model";
+import {
+  fakeSalesItems,
+  salesItemColumns,
+  type SaleItemsTableListItem,
+} from "../../superadmin/reports/model/sales-items-detail-model";
 
 type filterFieldType = {
   store?: string;
@@ -41,7 +49,7 @@ const AdminReportsPage = () => {
   };
 
   const filterOnFinish: FormProps<filterFieldType>["onFinish"] = (
-    values: filterFieldType
+    values: filterFieldType,
   ) => {
     console.log("Success:", values);
   };
@@ -113,7 +121,9 @@ const AdminReportsPage = () => {
                   <span className="text-[15px] font-bold text-[#6B7280]">
                     {sl.shop.name}
                   </span>
-                  <a className="text-[16px] font-bold">{sl.customer.full_name}</a>
+                  <a className="text-[16px] font-bold">
+                    {sl.customer.full_name}
+                  </a>
                 </div>
                 <div className="flex items-center gap-3">
                   <div
@@ -122,20 +132,20 @@ const AdminReportsPage = () => {
       sl.type === "full_payment"
         ? "bg-green-100 text-green-700"
         : sl.type === "partial_payment"
-        ? "bg-yellow-100 text-yellow-700"
-        : sl.type === "real"
-        ? "bg-blue-100 text-blue-700"
-        : "bg-gray-100 text-[#4B5563]"
+          ? "bg-yellow-100 text-yellow-700"
+          : sl.type === "real"
+            ? "bg-blue-100 text-blue-700"
+            : "bg-gray-100 text-[#4B5563]"
     }`}
                   >
                     <span className="text-[12px] font-bold">
                       {sl.type === "full_payment"
                         ? "To'liq to'lov"
                         : sl.type === "partial_payment"
-                        ? "Qisman to'lov"
-                        : sl.type === "real"
-                        ? "Real"
-                        : sl.type}
+                          ? "Qisman to'lov"
+                          : sl.type === "real"
+                            ? "Real"
+                            : sl.type}
                     </span>
                   </div>
                 </div>

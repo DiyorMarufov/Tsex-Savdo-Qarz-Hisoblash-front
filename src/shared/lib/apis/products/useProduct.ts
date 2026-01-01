@@ -24,7 +24,7 @@ export const useProduct = () => {
 
   const getAllProductsForProductsFilter = (
     enabled: boolean = false,
-    params?: any
+    params?: any,
   ) =>
     useQuery({
       queryKey: [product, "products-filter", params],
