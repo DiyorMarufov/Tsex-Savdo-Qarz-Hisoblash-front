@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import ReportFilter from "../../../widgets/reports/SalesReport/ReportFilter/ReportFilter";
 import TsexesReportBalances from "../../../widgets/reports/TsexesReport/TsexesReportBalances/TsexesReportBalances";
 import TsexesReportChart from "../../../widgets/reports/TsexesReport/TsexesReportChart/TsexesReportChart";
@@ -8,7 +8,9 @@ import dayjs from "dayjs";
 import { useTsex } from "../../../shared/lib/apis/tsexes/useTsex";
 
 const TsexesReportPage = () => {
-  const { setParam, getParam } = useParamsHook();
+  const [isTsexOpen, setIsTsexOpen] = useState<boolean>(false);
+  const { setParams, getParam } = useParamsHook();
+  const { getAllTsexesForProductsFilter } = useTsex();
   const { getAllTsexesSummaryForReport, getAllTsexesStatisticsForReport } =
     useTsex();
 
@@ -16,33 +18,44 @@ const TsexesReportPage = () => {
   const query: QueryParams = useMemo(() => {
     const s = getParam("startDate");
     const e = getParam("endDate");
+    const tsexId = getParam("tsexId") || "";
 
     const isFirstLoad = s === null && e === null;
     return {
       start: isFirstLoad ? dayjs().startOf("day") : s ? dayjs(s) : null,
       end: isFirstLoad ? dayjs().endOf("day") : e ? dayjs(e) : null,
+      startStr: isFirstLoad
+        ? dayjs().startOf("day").format("YYYY-MM-DD HH:mm:ss")
+        : s || "",
+      endStr: isFirstLoad
+        ? dayjs().endOf("day").format("YYYY-MM-DD HH:mm:ss")
+        : e || "",
+      tsexId,
+
     };
   }, [getParam]);
   // Query ends
 
   // Report Filter starts
   const handleFilterChange = useCallback(
-    (dates: string[] | null) => {
-      if (dates) {
-        setParam("startDate", dates[0]);
-        setParam("endDate", dates[1]);
-      } else {
-        setParam("startDate", "");
-        setParam("endDate", "");
-      }
+    (dates: string[] | null, tsexId: string) => {
+      setParams({
+        startDate: dates?.[0] || "",
+        endDate: dates?.[1] || "",
+        tsexId: tsexId || ""
+      });
     },
-    [setParam],
+    [setParams],
   );
   // Report Filter ends
 
   // TsexesReportBalances start
   const { data: allTsexesSummary, isLoading: tsexSummaryLoading } =
-    getAllTsexesSummaryForReport();
+    getAllTsexesSummaryForReport({
+      startDate: query.startStr,
+      endDate: query.endStr,
+      tsexId: query.tsexId
+    });
   const tsexSummary = allTsexesSummary?.data;
   const inventoryBalance = tsexSummary?.inventoryBalance;
   const totalPaid = tsexSummary?.totalPaid;
@@ -53,11 +66,29 @@ const TsexesReportPage = () => {
 
   // TsexesReportChart starts
   const { data: allTsexesStats, isLoading: tsexStatsLoading } =
-    getAllTsexesStatisticsForReport();
+    getAllTsexesStatisticsForReport(
+      {
+        startDate: query.startStr,
+        endDate: query.endStr,
+        tsexId: query.tsexId
+      }
+    );
   const tsexesStats = allTsexesStats?.data;
   // TsexesReportChart ends
 
   // TsexReport options start
+  const { data: tsexes, isLoading: tsexLoading } =
+    getAllTsexesForProductsFilter(isTsexOpen);
+  const tsexesOptions = [
+    {
+      value: "",
+      label: "Barcha tsexlar",
+    },
+    ...(tsexes?.data?.map((ts) => ({
+      value: ts?.id,
+      label: ts?.name,
+    })) || []),
+  ];
   // TsexReport options ends
 
   return (
@@ -66,6 +97,10 @@ const TsexesReportPage = () => {
         onFilter={handleFilterChange}
         start={query.start}
         end={query.end}
+        tsexId={query.tsexId}
+        tsexesOptions={tsexesOptions}
+        tsexLoading={tsexLoading}
+        setIsTsexOpen={setIsTsexOpen}
       />
 
       <TsexesReportBalances
