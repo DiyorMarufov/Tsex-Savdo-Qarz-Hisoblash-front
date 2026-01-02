@@ -1,136 +1,140 @@
-import { DatePicker } from "antd";
-import dayjs from "dayjs";
 import { memo, useState } from "react";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  ResponsiveContainer,
-  Legend,
-} from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 
-const data = [
-  { name: "Qarzdorlik", value: 65000000 },
-  { name: "Haqdorlik", value: 35000000 },
+const COLORS = [
+  "#5c67f2",
+  "#63b3ed",
+  "#48bb78",
+  "#ecc94b",
+  "#ed64a6",
+  "#f56565",
 ];
 
-const COLORS = ["#ef4444", "#22c55e"];
+const LENT_DATA = [
+  { name: "islom", value: 9248000 },
+  { name: "Feruz", value: 9200000 },
+  { name: "Fozil klent", value: 9000000 },
+  { name: "Azizbeka klent", value: 8800000 },
+  { name: "Jasur Xiva klent", value: 6200000 },
+];
+
+const BORROWED_DATA = [
+  { name: "Ta'minotchi A", value: 15000000 },
+  { name: "Bank Kredit", value: 25000000 },
+];
 
 const CustomersReportChart = () => {
+  const [tab, setTab] = useState<"borrowed" | "lent" | any>("borrowed");
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const total = data.reduce((acc, curr) => acc + curr.value, 0);
-  const [filterType, setFilterType] = useState<"oy" | "yil">("oy");
-  const [selectedDate, setSelectedDate] = useState(dayjs());
 
-  const onPieEnter = (_: any, index: number) => {
-    setActiveIndex(index);
-  };
+  const currentData = tab === "lent" ? LENT_DATA : BORROWED_DATA;
+  const total = currentData.reduce((acc, curr) => acc + curr.value, 0);
+  const formatNumber = (num: number) => num.toLocaleString();
 
-  const onPieLeave = () => {
-    setActiveIndex(null);
-  };
-
-  const handleDateChange = (date: any) => {
-    if (date) setSelectedDate(date);
-  };
   return (
-    <div className="bg-white rounded-xl border border-bg-fy w-full p-4 max-[500px]:p-3">
-      <div className="flex flex-col gap-2 mb-5">
-        <div className="flex flex-col">
-          <h3 className="text-lg font-bold text-slate-800 max-[500px]:text-[15px]">
-            Mijozlar balansi holati
-          </h3>
-          <p className="text-sm text-slate-500">
-            Umumiy aylanma: {total.toLocaleString()} so'm
-          </p>
+    <div className="w-full">
+      <div className="bg-white rounded-[12px] border border-bg-fy overflow-hidden p-4">
+        <div className="flex bg-gray-100 p-1 rounded-xl w-full min-[900px]:max-w-[300px]">
+          <button
+            onClick={() => setTab("borrowed")}
+            className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${
+              tab === "borrowed"
+                ? "bg-white shadow text-indigo-600"
+                : "text-slate-500"
+            }`}
+          >
+            Qarzdorlik
+          </button>
+          <button
+            onClick={() => setTab("lent")}
+            className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${
+              tab === "lent"
+                ? "bg-white shadow text-indigo-600"
+                : "text-slate-500"
+            }`}
+          >
+            Haqdorlik
+          </button>
         </div>
 
-        <div className="flex items-center justify-between gap-3 max-[500px]:flex-col max-[500px]:items-stretch">
-          <div className="flex bg-gray-100 p-1 rounded-lg shrink-0">
-            {(["oy", "yil"] as const).map((type) => (
-              <button
-                key={type}
-                onClick={() => setFilterType(type)}
-                className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all flex-1 min-w-20 ${
-                  filterType === type
-                    ? "bg-white text-indigo-600 shadow-sm"
-                    : "text-gray-500 hover:text-gray-700"
-                }`}
-              >
-                {type === "oy" ? "Oylik" : "Yillik"}
-              </button>
-            ))}
+        <div className="flex flex-col min-[900px]:flex-row items-center min-[850px]:p-6 gap-6 min-[850px]:gap-12">
+          <div className="relative  w-50 h-50 min-[900px]:w-[230px] min-[900px]:h-[230px] shrink-0 max-[850px]:mt-4">
+            <div className="absolute inset-0 flex flex-col items-center justify-center z-10 pointer-events-none">
+              <span className="text-xl min-[850px]:text-2xl font-black text-slate-800 tracking-tighter">
+                {formatNumber(total)}
+              </span>
+              <span className="text-[9px] text-slate-400 font-bold uppercase tracking-widest">
+                Jami
+              </span>
+            </div>
+
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={currentData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius="70%"
+                  outerRadius="100%"
+                  paddingAngle={3}
+                  dataKey="value"
+                  stroke="none"
+                  cornerRadius={4}
+                  onMouseEnter={(_, index) => setActiveIndex(index)}
+                  onMouseLeave={() => setActiveIndex(null)}
+                  style={{ outline: "none" }}
+                >
+                  {currentData.map((_, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                      opacity={
+                        activeIndex === null || activeIndex === index ? 1 : 0.6
+                      }
+                      className="transition-all duration-300"
+                    />
+                  ))}
+                </Pie>
+                <Tooltip formatter={(value: number) => formatNumber(value)} />
+              </PieChart>
+            </ResponsiveContainer>
           </div>
 
-          <DatePicker
-            picker={filterType === "oy" ? "month" : "year"}
-            value={selectedDate}
-            onChange={handleDateChange}
-            allowClear={false}
-            size="middle"
-            className="border-slate-200 text-slate-700 w-44 h-10 max-[500px]:w-full"
-          />
-        </div>
-      </div>
-
-      <div className="w-full h-[300px]">
-        <ResponsiveContainer width="100%" height="100%">
-          <PieChart>
-            <Pie
-              data={data}
-              cx="50%"
-              cy="50%"
-              innerRadius={70}
-              outerRadius={90}
-              paddingAngle={5}
-              dataKey="value"
-              onMouseEnter={onPieEnter}
-              onMouseLeave={onPieLeave}
-              stroke="none"
-              style={{ cursor: "pointer", outline: "none" }}
-            >
-              {data.map((_, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                  style={{
-                    transition: "all 0.3s ease",
-                    outline: "none",
-                  }}
-                  opacity={
-                    activeIndex === null || activeIndex === index ? 1 : 0.6
-                  }
-                />
+          <div className="w-full h-[300px] flex-1">
+            <div className="grid grid-cols-1 gap-2">
+              {currentData.map((item, index) => (
+                <div
+                  key={index}
+                  onMouseEnter={() => setActiveIndex(index)}
+                  onMouseLeave={() => setActiveIndex(null)}
+                  className={`flex items-center justify-between p-3 rounded-xl bg-gray-50 border border-transparent transition-all duration-300 ${
+                    activeIndex === index ? "bg-indigo-50/50 scale-[1.01]" : ""
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="w-3 h-3 rounded-full shrink-0"
+                      style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                    />
+                    <div className="flex flex-col">
+                      <span className="text-slate-800 font-bold text-sm capitalize leading-none">
+                        {item.name}
+                      </span>
+                      <span className="text-[10px] text-slate-400 font-medium">
+                        {((item.value / total) * 100).toFixed(1)}% ulush
+                      </span>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-slate-900 font-black text-sm tracking-tight">
+                      {formatNumber(item.value)}
+                    </div>
+                  </div>
+                </div>
               ))}
-            </Pie>
-
-            <Tooltip
-              formatter={(value: number) => `${value.toLocaleString()} so'm`}
-              contentStyle={{
-                borderRadius: "8px",
-                border: "none",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-              }}
-            />
-
-            <Legend
-              verticalAlign="bottom"
-              align="center"
-              iconType="circle"
-              formatter={(value, entry: any) => {
-                const percent = ((entry.payload.value / total) * 100).toFixed(
-                  1,
-                );
-                return (
-                  <span className="text-slate-700 font-medium ml-1">
-                    {value}: {percent}%
-                  </span>
-                );
-              }}
-            />
-          </PieChart>
-        </ResponsiveContainer>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
