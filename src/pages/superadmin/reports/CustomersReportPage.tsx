@@ -5,18 +5,26 @@ import CustomersReportFilter from "../../../widgets/reports/CustomersReport/Cust
 import { useCustomer } from "../../../shared/lib/apis/customers/useCustomer";
 
 const CustomersReportPage = () => {
-  const { getCustomerBalanceSummary } = useCustomer();
+  const { getCustomerBalanceSummary, getAllCustomersStatisticsForReport } =
+    useCustomer();
   // CustomersReportCard starts
 
   const { data: customerBalancesSummary, isLoading: customerBalanceLoading } =
     getCustomerBalanceSummary();
   const customerBalances = customerBalancesSummary?.data;
-
   const creditor = customerBalances?.creditorTotalBalance;
   const debtor = customerBalances?.debtorTotalBalance;
   const net = customerBalances?.netTotalBalance;
-
   // CustomersReportCard ends
+
+  // CustomersReportChart starts
+  const { data: customersStats, isLoading: customersStatsLoading } =
+    getAllCustomersStatisticsForReport();
+  const borrowed = customersStats?.data?.borrowed;
+  const lent = customersStats?.data?.lent;
+  const totalBorrowed = customersStats?.data?.totalBorrowed;
+  const totalLent = customersStats?.data?.totalLent;
+  // CustomersReportChart ends
   return (
     <div className="flex flex-col gap-5">
       <CustomersReportFilter />
@@ -26,7 +34,14 @@ const CustomersReportPage = () => {
         net={net}
         loading={customerBalanceLoading}
       />
-      <CustomersReportChart />
+
+      <CustomersReportChart
+        borrowed={borrowed}
+        lent={lent}
+        totalBorrowed={totalBorrowed}
+        totalLent={totalLent}
+        loading={customersStatsLoading}
+      />
     </div>
   );
 };

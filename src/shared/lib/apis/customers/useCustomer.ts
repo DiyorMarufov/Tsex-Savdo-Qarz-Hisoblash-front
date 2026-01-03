@@ -67,6 +67,18 @@ export const useCustomer = () => {
       staleTime: Infinity,
       gcTime: 1000 * 60 * 60,
     });
+
+  const getAllCustomersStatisticsForReport = (params?: any) =>
+    useQuery({
+      queryKey: [customer, "all-customers-statistics-for-report", params],
+      queryFn: () =>
+        api
+          .get("customers/reports/customers-statistics", { params })
+          .then((res) => res.data),
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 10,
+    });
   return {
     createCustomer,
     getTotalCustomerBalance,
@@ -74,5 +86,6 @@ export const useCustomer = () => {
     getCustomerBalanceSummary,
     getAllCustomers,
     getAllCustomersForTransaction,
+    getAllCustomersStatisticsForReport,
   };
 };
