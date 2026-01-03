@@ -1,18 +1,86 @@
 import { Button, DatePicker, Drawer } from "antd";
-import { memo, useState } from "react";
+import { memo, useEffect, useState, type FC } from "react";
 import Filter from "../../../../shared/ui/Filter/Filter";
 import { FilterOutlined } from "@ant-design/icons";
 import type { DrawerProps } from "antd/lib";
+import type { Dayjs } from "dayjs";
+import type { Option } from "../../../../shared/lib/types";
 
-const CustomersReportFIlter = () => {
+interface CustomersReportFilterProps {
+  onFilterSubmit: (filters: {
+    dates: string[] | null;
+    customerId: string;
+    type: "borrow" | "lend";
+  }) => void;
+  start: Dayjs | undefined | null;
+  end: Dayjs | undefined | null;
+  customerId?: string;
+  type?: string;
+  customerOptions: Option[];
+  setIsCustomerOpen: (open: boolean) => void;
+  customerLoading: boolean;
+}
+
+const CustomersReportFilter: FC<CustomersReportFilterProps> = ({
+  onFilterSubmit,
+  start,
+  end,
+  customerId,
+  type,
+  customerOptions = [],
+  setIsCustomerOpen,
+  customerLoading,
+}) => {
   const [open, setOpen] = useState<boolean>(false);
   const [placement] = useState<DrawerProps["placement"]>("right");
 
+  const [tempDates, setTempDates] = useState<[Dayjs | null, Dayjs | null]>([
+    start || null,
+    end || null,
+  ]);
+  const [tempDateStrings, setTempDateStrings] = useState<string[] | null>([
+    start ? start.format("YYYY-MM-DD HH:mm:ss") : "",
+    end ? end.format("YYYY-MM-DD HH:mm:ss") : "",
+  ]);
+  const [tempCustomerId, setTempCustomerId] = useState(customerId);
+  const [tempType, setTempType] = useState(type);
+
+  useEffect(() => {
+    setTempDates([start || null, end || null]);
+    setTempDateStrings([
+      start ? start.format("YYYY-MM-DD HH:mm:ss") : "",
+      end ? end.format("YYYY-MM-DD HH:mm:ss") : "",
+    ]);
+    setTempCustomerId(customerId);
+    setTempType(type);
+  }, [start, end, customerId, type]);
+
+  const handleSubmit = () => {
+    onFilterSubmit({
+      dates: tempDateStrings,
+      customerId: tempCustomerId || "",
+      type: type as "lend" | "borrow",
+    });
+    setOpen(false);
+  };
+
+  const handleRangeChange = (values: any, dateStrings: [string, string]) => {
+    setTempDates(values);
+    setTempDateStrings(values ? dateStrings : null);
+  };
+
+  const typeOptions = [
+    { value: "", label: "Barcha tiplar" },
+    { value: "borrowing", label: "borrow" },
+    { value: "lending", label: "lend" },
+  ];
   return (
     <div>
       <div className="rounded-[12px] border border-bg-fy bg-white p-3.5 gap-4 grid grid-cols-4 max-[1150px]:grid-cols-1 max-[800px]:hidden items-end">
         <div className="w-full">
           <DatePicker.RangePicker
+            value={tempDates}
+            onChange={handleRangeChange}
             showTime={{ format: "HH:mm" }}
             format="YYYY-MM-DD HH:mm"
             placeholder={["Boshlanish", "Tugash"]}
@@ -24,12 +92,22 @@ const CustomersReportFIlter = () => {
         <div className="col-span-2 grid grid-cols-2 gap-4 max-[1150px]:col-span-1 max-[390px]:grid-cols-1">
           <div className="w-full">
             <Filter
+              value={tempCustomerId}
+              options={customerOptions}
+              onChange={setTempCustomerId}
               placeholder="Barcha mijozlar"
               className="h-11! w-full rounded-lg custom-select border-slate-200"
+              onDropdownVisibleChange={(visible: any) => {
+                if (visible) setIsCustomerOpen(true);
+              }}
+              loading={customerLoading}
             />
           </div>
           <div className="w-full">
             <Filter
+              value={tempType}
+              onChange={setTempType}
+              options={typeOptions}
               placeholder="Barcha tranzaksiya tiplar"
               className="h-11! w-full rounded-lg custom-select border-slate-200"
             />
@@ -40,6 +118,7 @@ const CustomersReportFIlter = () => {
           <Button
             type="primary"
             icon={<FilterOutlined />}
+            onClick={handleSubmit}
             className="h-10! w-full max-w-[150px] bg-indigo-600 rounded-lg font-medium"
           >
             Filtrlash
@@ -68,6 +147,8 @@ const CustomersReportFIlter = () => {
           <div className="w-full">
             <p className="mb-1 text-sm text-slate-500">Sana oralig'i</p>
             <DatePicker.RangePicker
+              value={tempDates}
+              onChange={handleRangeChange}
               showTime={{ format: "HH:mm" }}
               format="YYYY-MM-DD HH:mm"
               placeholder={["Boshlanish", "Tugash"]}
@@ -79,14 +160,24 @@ const CustomersReportFIlter = () => {
           <div className="w-full">
             <p className="mb-1 text-sm text-slate-500">Mijozar</p>
             <Filter
+              value={tempCustomerId}
+              options={customerOptions}
+              onChange={setTempCustomerId}
               placeholder="Barcha mijozlar"
               className="h-11! w-full rounded-lg custom-select border-slate-200"
+              onDropdownVisibleChange={(visible: any) => {
+                if (visible) setIsCustomerOpen(true);
+              }}
+              loading={customerLoading}
             />
           </div>
 
           <div className="w-full">
             <p className="mb-1 text-sm text-slate-500">Tranzaksiya tiplar</p>
             <Filter
+              value={tempType}
+              onChange={setTempType}
+              options={typeOptions}
               placeholder="Barcha tranzaksiya tiplar"
               className="h-11! w-full rounded-lg custom-select border-slate-200"
             />
@@ -95,6 +186,7 @@ const CustomersReportFIlter = () => {
           <Button
             type="primary"
             icon={<FilterOutlined />}
+            onClick={handleSubmit}
             className="h-11! w-full rounded-lg mt-2 bg-indigo-600 flex items-center justify-center"
           >
             Filtrlash
@@ -105,4 +197,4 @@ const CustomersReportFIlter = () => {
   );
 };
 
-export default memo(CustomersReportFIlter);
+export default memo(CustomersReportFilter);

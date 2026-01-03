@@ -27,6 +27,8 @@ export interface QueryParams {
   endSale?: any;
   type?: "day" | "month" | "year";
   date?: string | undefined;
+  customerId?: string;
+  customerType?: string;
 }
 
 export interface TsexTransactionsType {

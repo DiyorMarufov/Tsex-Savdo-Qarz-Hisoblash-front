@@ -284,8 +284,7 @@ const CustomersPage = () => {
         </div>
       ),
     })) || [];
-
-  // Customers list fro transaction ends
+  // Customers list for transaction ends
 
   if (pathname.startsWith("/superadmin/customers/transaction/"))
     return <Outlet />;

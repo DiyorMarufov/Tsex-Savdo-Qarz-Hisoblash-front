@@ -12,6 +12,7 @@ interface CustomerMobileListProps {
   pageSize?: number;
   onPageChange?: (page: number, pageSize?: number) => void;
   onDetail: (id: string) => void;
+  isReport?: boolean;
 }
 
 const CustomerMobileList = ({
@@ -22,13 +23,16 @@ const CustomerMobileList = ({
   pageSize = 5,
   onPageChange,
   onDetail,
+  isReport = false,
 }: CustomerMobileListProps) => {
   if (loading) {
     return <CustomerCardSkeleton />;
   }
 
   return (
-    <div className="min-[500px]:hidden flex flex-col gap-5 mt-4">
+    <div
+      className={`min-[500px]:hidden flex flex-col gap-5 ${isReport ? "" : "mt-4"}`}
+    >
       {data && data.length > 0 ? (
         data.map((cs) => (
           <CustomerCard key={cs.id} cs={cs} onDetail={onDetail} />
