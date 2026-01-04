@@ -16,39 +16,16 @@ import dayjs from "dayjs";
 
 const CustomersReportPage = () => {
   const navigate = useNavigate();
-  const { getAllCustomers } = useCustomer();
   const { getParam, setParams, removeParam } = useParamsHook();
   const [localSearch, setLocalSearch] = useState(getParam("search") || "");
   const [isCustomerOpen, setIsCustomerOpen] = useState<boolean>(false);
   const {
+    getAllCustomers,
     getCustomerBalanceSummary,
     getAllCustomersStatisticsForReport,
     getAllCustomersForTransaction,
   } = useCustomer();
   // CustomersReportCard starts
-
-  const { data: customerBalancesSummary, isLoading: customerBalanceLoading } =
-    getCustomerBalanceSummary();
-  const customerBalances = customerBalancesSummary?.data;
-  const creditor = customerBalances?.creditorTotalBalance;
-  const debtor = customerBalances?.debtorTotalBalance;
-  const net = customerBalances?.netTotalBalance;
-  // CustomersReportCard ends
-
-  // CustomersReportChart starts
-  const { data: customersStats, isLoading: customersStatsLoading } =
-    getAllCustomersStatisticsForReport();
-  const borrowed = customersStats?.data?.borrowed;
-  const lent = customersStats?.data?.lent;
-  const totalBorrowed = customersStats?.data?.totalBorrowed;
-  const totalLent = customersStats?.data?.totalLent;
-  // CustomersReportChart ends
-
-  // Detail starts
-  const handleOpenDetail = (id: string) => {
-    navigate(`/superadmin/customer/transaction/${id}`);
-  };
-  // Detail ends
 
   // Query starts
   const query: QueryParams = useMemo(() => {
@@ -58,7 +35,6 @@ const CustomersReportPage = () => {
     const s = getParam("startDate");
     const e = getParam("endDate");
     const customerId = getParam("customerId") || "";
-    const customerType = getParam("type") || "";
 
     const isFirstLoad = s === null && e === null;
 
@@ -75,13 +51,48 @@ const CustomersReportPage = () => {
         ? dayjs().endOf("day").format("YYYY-MM-DD HH:mm:ss")
         : e || "",
       customerId,
-      customerType,
     };
   }, [getParam]);
   // Query ends
 
+  const { data: customerBalancesSummary, isLoading: customerBalanceLoading } =
+    getCustomerBalanceSummary({
+      startDate: query.startStr,
+      endDate: query.endStr,
+      customerId: query.customerId,
+      type: query.customerType,
+    });
+  const customerBalances = customerBalancesSummary?.data;
+  const creditor = customerBalances?.creditorTotalBalance;
+  const debtor = customerBalances?.debtorTotalBalance;
+  const net = customerBalances?.netTotalBalance;
+  // CustomersReportCard ends
+
+  // CustomersReportChart starts
+  const { data: customersStats, isLoading: customersStatsLoading } =
+    getAllCustomersStatisticsForReport({
+      startDate: query.startStr,
+      endDate: query.endStr,
+      customerId: query.customerId,
+    });
+  const borrowed = customersStats?.data?.borrowed;
+  const lent = customersStats?.data?.lent;
+  const totalBorrowed = customersStats?.data?.totalBorrowed;
+  const totalLent = customersStats?.data?.totalLent;
+  // CustomersReportChart ends
+
+  // Detail starts
+  const handleOpenDetail = (id: string) => {
+    navigate(`/superadmin/customer/transaction/${id}`);
+  };
+  // Detail ends
+
   // CustomerData starts
-  const { data: allCustomers, isLoading: customerLoading } = getAllCustomers();
+  const { data: allCustomers, isLoading: customerLoading } = getAllCustomers({
+    startDate: query.startStr,
+    endDate: query.endStr,
+    customerId: query.customerId,
+  });
   const customers = allCustomers?.data?.data;
   const total = allCustomers?.data?.total || 0;
   // CustomerData ends
@@ -130,13 +141,11 @@ const CustomersReportPage = () => {
   const onFilterSubmit = (filters: {
     dates: string[] | null;
     customerId: string;
-    type: string;
   }) => {
     setParams({
       startDate: filters.dates?.[0] || "",
       endDate: filters.dates?.[1] || "",
       customerId: filters.customerId || "",
-      type: filters.type || "",
     });
   };
   // CustomerReportFilter ends
@@ -172,7 +181,6 @@ const CustomersReportPage = () => {
         start={query.start}
         end={query.end}
         customerId={query.customerId}
-        type={query.customerType}
         customerOptions={customerOptions}
         setIsCustomerOpen={setIsCustomerOpen}
         customerLoading={customerListLoading}

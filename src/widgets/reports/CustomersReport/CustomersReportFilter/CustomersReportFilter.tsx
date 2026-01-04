@@ -10,12 +10,10 @@ interface CustomersReportFilterProps {
   onFilterSubmit: (filters: {
     dates: string[] | null;
     customerId: string;
-    type: "borrow" | "lend";
   }) => void;
   start: Dayjs | undefined | null;
   end: Dayjs | undefined | null;
   customerId?: string;
-  type?: string;
   customerOptions: Option[];
   setIsCustomerOpen: (open: boolean) => void;
   customerLoading: boolean;
@@ -26,7 +24,6 @@ const CustomersReportFilter: FC<CustomersReportFilterProps> = ({
   start,
   end,
   customerId,
-  type,
   customerOptions = [],
   setIsCustomerOpen,
   customerLoading,
@@ -43,7 +40,6 @@ const CustomersReportFilter: FC<CustomersReportFilterProps> = ({
     end ? end.format("YYYY-MM-DD HH:mm:ss") : "",
   ]);
   const [tempCustomerId, setTempCustomerId] = useState(customerId);
-  const [tempType, setTempType] = useState(type);
 
   useEffect(() => {
     setTempDates([start || null, end || null]);
@@ -52,14 +48,12 @@ const CustomersReportFilter: FC<CustomersReportFilterProps> = ({
       end ? end.format("YYYY-MM-DD HH:mm:ss") : "",
     ]);
     setTempCustomerId(customerId);
-    setTempType(type);
-  }, [start, end, customerId, type]);
+  }, [start, end, customerId]);
 
   const handleSubmit = () => {
     onFilterSubmit({
       dates: tempDateStrings,
       customerId: tempCustomerId || "",
-      type: type as "lend" | "borrow",
     });
     setOpen(false);
   };
@@ -69,11 +63,6 @@ const CustomersReportFilter: FC<CustomersReportFilterProps> = ({
     setTempDateStrings(values ? dateStrings : null);
   };
 
-  const typeOptions = [
-    { value: "", label: "Barcha tiplar" },
-    { value: "borrowing", label: "borrow" },
-    { value: "lending", label: "lend" },
-  ];
   return (
     <div>
       <div className="rounded-[12px] border border-bg-fy bg-white p-3.5 gap-4 grid grid-cols-4 max-[1150px]:grid-cols-1 max-[800px]:hidden items-end">
@@ -101,15 +90,6 @@ const CustomersReportFilter: FC<CustomersReportFilterProps> = ({
                 if (visible) setIsCustomerOpen(true);
               }}
               loading={customerLoading}
-            />
-          </div>
-          <div className="w-full">
-            <Filter
-              value={tempType}
-              onChange={setTempType}
-              options={typeOptions}
-              placeholder="Barcha tranzaksiya tiplar"
-              className="h-11! w-full rounded-lg custom-select border-slate-200"
             />
           </div>
         </div>
@@ -169,17 +149,6 @@ const CustomersReportFilter: FC<CustomersReportFilterProps> = ({
                 if (visible) setIsCustomerOpen(true);
               }}
               loading={customerLoading}
-            />
-          </div>
-
-          <div className="w-full">
-            <p className="mb-1 text-sm text-slate-500">Tranzaksiya tiplar</p>
-            <Filter
-              value={tempType}
-              onChange={setTempType}
-              options={typeOptions}
-              placeholder="Barcha tranzaksiya tiplar"
-              className="h-11! w-full rounded-lg custom-select border-slate-200"
             />
           </div>
 

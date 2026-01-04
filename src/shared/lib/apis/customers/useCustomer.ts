@@ -38,11 +38,13 @@ export const useCustomer = () => {
       gcTime: 1000 * 60 * 10,
     });
 
-  const getCustomerBalanceSummary = () =>
+  const getCustomerBalanceSummary = (params?: any) =>
     useQuery({
-      queryKey: [customer, "customer-balance-summary"],
+      queryKey: [customer, "customer-balance-summary", params],
       queryFn: () =>
-        api.get("customers/balances/summary").then((res) => res.data),
+        api
+          .get("customers/balances/summary", { params })
+          .then((res) => res.data),
       refetchOnWindowFocus: false,
       staleTime: 1000 * 60 * 5,
       gcTime: 1000 * 60 * 10,
