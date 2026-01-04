@@ -12,7 +12,7 @@ const AdminProductsAddPage = () => {
         className="hover:opacity-75 cursor-pointer mb-2"
         onClick={() => navigate(-1)}
       />
-      <LargeTitle title="Yengi mahsulot qo'shish" />
+      <LargeTitle title="Yangi mahsulot qo'shish" />
       <div className="flex justify-center items-center min-[700px]:h-[77vh] max-[700px]:mt-2">
         <ProductsCreate />
       </div>

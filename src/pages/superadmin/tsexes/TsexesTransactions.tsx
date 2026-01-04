@@ -1,6 +1,5 @@
 import ProTable from "@ant-design/pro-table";
 import { memo, useEffect, useMemo } from "react";
-import { tsexTransactionsColumns } from "./model/tsexes-transactions-model";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTsexTransaction } from "../../../shared/lib/apis/tsex-transactions/useTsexTransaction";
 import type {
@@ -11,6 +10,7 @@ import { useParamsHook } from "../../../shared/hooks/params/useParams";
 import NameSkeleton from "../../../shared/ui/Skeletons/NameSkeleton/NameSkeleton";
 import TsexTransactionMobileList from "../../../widgets/tsexes/TsexTransactionsMobileList/TsexTransactionMobileList";
 import { ArrowLeft } from "lucide-react";
+import { tsexTransactionsColumns } from "../../../shared/lib/model/tsexes/tsexes-transactions-model";
 
 const tsexTransactionsTypeUzbek: TsexTransactionsType = {
   partial_payment: "Qisman to'lov",

@@ -1,6 +1,5 @@
 import { memo, useCallback, useMemo, useState } from "react";
 import ProTable from "@ant-design/pro-table";
-import { salesColumns } from "./model/sales-model";
 import SalesReportBalances from "../../../widgets/reports/SalesReport/SalesReportBalances/SalesReportBalances";
 import SalesReportChart from "../../../widgets/reports/SalesReport/SalesReportChart/SalesReportChart";
 import SalesReportMobileList from "../../../widgets/reports/SalesReport/SalesReportMobileList/SalesReportMobileList";
@@ -15,6 +14,7 @@ import ProductsReportFilters from "../../../widgets/reports/ProductsReport/Produ
 import { useShop } from "../../../shared/lib/apis/shops/useShop";
 import { useTsex } from "../../../shared/lib/apis/tsexes/useTsex";
 import { useProduct } from "../../../shared/lib/apis/products/useProduct";
+import { salesColumns } from "../../../shared/lib/model/reports/sales-model";
 
 const SalesReportPage = () => {
   const [isProductOpen, setIsProductOpen] = useState<boolean>(false);

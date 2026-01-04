@@ -10,10 +10,10 @@ import { useTsex } from "../../../shared/lib/apis/tsexes/useTsex";
 import { useProduct } from "../../../shared/lib/apis/products/useProduct";
 import ProTable from "@ant-design/pro-table";
 import ProductMobileList from "../../../widgets/products/ProductMobileList/ProductMobileList";
-import { productColumns } from "../products/model/product-table-model";
 import { useNavigate } from "react-router-dom";
 import { debounce } from "../../../shared/lib/functions/debounce";
 import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
+import { productColumns } from "../../../shared/lib/model/products/product-table-model";
 
 const ProductsReportPage = () => {
   const [isProductOpen, setIsProductOpen] = useState<boolean>(false);

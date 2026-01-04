@@ -1,11 +1,11 @@
 import ProTable from "@ant-design/pro-table";
 import { memo, useEffect } from "react";
-import { transactionColumns } from "./model/customer-transactions-model";
 import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useCustomerTransaction } from "../../../shared/lib/apis/customer-transactions/useCustomerTransaction";
 import CustomerTransactionMobileList from "../../../widgets/superadmin/customers/CustomerTransactionMobileList/CustomerTransactionMobileList";
 import NameSkeleton from "../../../shared/ui/Skeletons/NameSkeleton/NameSkeleton";
 import { ArrowLeft } from "lucide-react";
+import { transactionColumns } from "../../../shared/lib/model/customers/customer-transactions-model";
 
 const CustomersDetailPage = () => {
   const navigate = useNavigate();

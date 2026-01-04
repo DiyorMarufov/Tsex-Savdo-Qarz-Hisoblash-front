@@ -4,7 +4,6 @@ import Button from "../../../shared/ui/Button/Button";
 import { Plus } from "lucide-react";
 import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
 import ProTable from "@ant-design/pro-table";
-import { tsexColumns } from "./model/tsexes-model";
 import { Form, type FormProps } from "antd";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import TsexesBalances from "../../../widgets/superadmin/tsexes/Balances/TsexesBalances";
@@ -17,6 +16,7 @@ import { useApiNotification } from "../../../shared/hooks/api-notification/useAp
 import TsexesMobileList from "../../../widgets/tsexes/TsexesMobileList/TsexesMobileList";
 import TsexTransactionModal from "../../../widgets/superadmin/tsexes/TsexTransactionModal/TsexTransactionModal";
 import PlusButton from "../../../shared/ui/Button/PlusButton";
+import { tsexColumns } from "../../../shared/lib/model/tsexes/tsexes-model";
 
 type FieldType = {
   tsex_id: string;

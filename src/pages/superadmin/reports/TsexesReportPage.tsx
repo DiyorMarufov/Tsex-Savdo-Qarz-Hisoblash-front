@@ -8,10 +8,10 @@ import dayjs from "dayjs";
 import { useTsex } from "../../../shared/lib/apis/tsexes/useTsex";
 import ProTable from "@ant-design/pro-table";
 import { debounce } from "../../../shared/lib/functions/debounce";
-import { tsexColumns } from "../tsexes/model/tsexes-model";
 import { useNavigate } from "react-router-dom";
 import TsexesMobileList from "../../../widgets/tsexes/TsexesMobileList/TsexesMobileList";
 import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
+import { tsexColumns } from "../../../shared/lib/model/tsexes/tsexes-model";
 
 const TsexesReportPage = () => {
   const [isTsexOpen, setIsTsexOpen] = useState<boolean>(false);
@@ -152,7 +152,7 @@ const TsexesReportPage = () => {
         page: 1,
       });
     }, 500),
-    [setParams]
+    [setParams],
   );
 
   const handleSearchChange = (value: string) => {

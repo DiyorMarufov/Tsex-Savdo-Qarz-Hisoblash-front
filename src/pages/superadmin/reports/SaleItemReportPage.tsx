@@ -1,16 +1,16 @@
 import { memo, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useSaleItem } from "../../../shared/lib/apis/sale-items/useSaleItem";
-import {
-  salesItemColumns,
-  type SaleItemsTableListItem,
-} from "./model/sales-items-detail-model";
 import SaleItemReportMobileList from "../../../widgets/reports/SalesReport/SaleItemReportMobileList/SaleItemReportMobileList";
 import { useParamsHook } from "../../../shared/hooks/params/useParams";
 import type { QueryParams } from "../../../shared/lib/types";
 import ProTable from "@ant-design/pro-table";
 import SaleItemReportHeader from "../../../features/sale-items/components/SaleItemReportHeader";
 import SaleItemReportHeaderSkeleton from "../../../shared/ui/Skeletons/Reports/SalesReport/SaleItemReportHeaderSkeleton";
+import {
+  salesItemColumns,
+  type SaleItemsTableListItem,
+} from "../../../shared/lib/model/reports/sales-items-detail-model";
 
 const SaleItemReportPage = () => {
   const { id } = useParams();

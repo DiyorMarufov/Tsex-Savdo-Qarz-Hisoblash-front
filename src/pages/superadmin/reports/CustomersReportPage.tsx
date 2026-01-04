@@ -8,11 +8,11 @@ import type { Option, QueryParams } from "../../../shared/lib/types";
 import { debounce } from "../../../shared/lib/functions/debounce";
 import { formatPhoneNumber } from "../../../shared/lib/functions/formatPhoneNumber";
 import ProTable from "@ant-design/pro-table";
-import { customerColumns } from "../customers/model/customers-model";
 import CustomerMobileList from "../../../widgets/customers/CustomerMobileList/CustomerMobileList";
 import { useNavigate } from "react-router-dom";
 import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
 import dayjs from "dayjs";
+import { customerColumns } from "../../../shared/lib/model/customers/customers-model";
 
 const CustomersReportPage = () => {
   const navigate = useNavigate();
@@ -127,7 +127,7 @@ const CustomersReportPage = () => {
         page: 1,
       });
     }, 500),
-    [setParams]
+    [setParams],
   );
 
   const handleSearchChange = (value: string) => {

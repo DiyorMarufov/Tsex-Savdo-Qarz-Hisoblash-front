@@ -2,10 +2,6 @@ import { memo, useCallback, useMemo, useState } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
 import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
 import ProTable from "@ant-design/pro-table";
-import {
-  tsexColumns,
-  type TsexTableListItem,
-} from "../../superadmin/tsexes/model/tsexes-model";
 import { Button as AntdButton, Pagination } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useParamsHook } from "../../../shared/hooks/params/useParams";
@@ -14,6 +10,10 @@ import type { QueryParams } from "../../../shared/lib/types";
 import { debounce } from "../../../shared/lib/functions/debounce";
 import { Edit } from "lucide-react";
 import TsexCardSkeleton from "../../../shared/ui/Skeletons/Tsexes/TsexCardSkeleton";
+import {
+  tsexColumns,
+  type TsexTableListItem,
+} from "../../../shared/lib/model/tsexes/tsexes-model";
 
 const AdminTsexesPage = () => {
   const navigate = useNavigate();
@@ -41,16 +41,7 @@ const AdminTsexesPage = () => {
 
   // TsexData starts
   const { data: allTsexes, isLoading: tsexLoading } = getAllTsexes(query);
-  const tsexes = allTsexes?.data?.data?.map((as: any) => ({
-    id: as?.id,
-    name: as?.name,
-    manager: { full_name: as?.manager?.full_name },
-    balance: as?.balance,
-    last_transaction: as?.last_transaction?.display
-      ? as?.last_transaction?.display
-      : "Hozircha yo'q",
-    created_at: new Date(as?.created_at).toLocaleString("uz-UZ"),
-  }));
+  const tsexes = allTsexes?.data?.data;
   const total = allTsexes?.data?.total || 0;
   // TsexData ends
 
@@ -85,7 +76,7 @@ const AdminTsexesPage = () => {
         page: 1,
       });
     }, 500),
-    [setParams]
+    [setParams],
   );
 
   const handleSearchChange = (value: string) => {
@@ -180,7 +171,9 @@ const AdminTsexesPage = () => {
                     </div>
                     <div>
                       <span className="text-[16px] font-bold text-[#4B5563]">
-                        {ts?.last_transaction}
+                        {ts?.last_transaction
+                          ? ts?.last_transaction
+                          : "Hozircha yo'q"}
                       </span>
                     </div>
                   </div>

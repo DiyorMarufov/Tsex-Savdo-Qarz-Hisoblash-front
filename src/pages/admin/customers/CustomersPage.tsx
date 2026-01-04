@@ -1,9 +1,5 @@
 import ProTable from "@ant-design/pro-table";
 import { memo, useState } from "react";
-import {
-  customerColumns,
-  // type CustomersListItemsType,
-} from "../../superadmin/customers/model/customers-model";
 import { useNavigate } from "react-router-dom";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
 import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
@@ -19,6 +15,7 @@ import Button from "../../../shared/ui/Button/Button";
 // import { Edit, Trash } from "lucide-react";
 import { Plus } from "lucide-react";
 import type { NewCustomerFieldType } from "../../../shared/lib/types";
+import { customerColumns } from "../../../shared/lib/model/customers/customers-model";
 
 const AdminCustomersPage = () => {
   const [newCustomerOpen, setNewCustomerOpen] = useState<boolean>(false);

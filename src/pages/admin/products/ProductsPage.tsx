@@ -1,30 +1,54 @@
-import { memo, useEffect } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
-import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
-import Filter from "../../../shared/ui/Filter/Filter";
 import { ProTable } from "@ant-design/pro-components";
 import { Plus } from "lucide-react";
 import Button from "../../../shared/ui/Button/Button";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import {
-  productColumns,
-  type ProductTableListItem,
-} from "../../superadmin/products/model/product-table-model";
-import { Image, Button as AntdButton } from "antd";
 import { useProduct } from "../../../shared/lib/apis/products/useProduct";
 import PlusButton from "../../../shared/ui/Button/PlusButton";
+import ProductFilters from "../../../widgets/products/ProductFIlters/ProductFilters";
+import { useParamsHook } from "../../../shared/hooks/params/useParams";
+import type { QueryParams } from "../../../shared/lib/types";
+import { debounce } from "../../../shared/lib/functions/debounce";
+import { useShop } from "../../../shared/lib/apis/shops/useShop";
+import { useTsex } from "../../../shared/lib/apis/tsexes/useTsex";
+import ProductMobileList from "../../../widgets/products/ProductMobileList/ProductMobileList";
+import { productColumns } from "../../../shared/lib/model/products/product-table-model";
 
 const AdminProductsPage = () => {
+  const [isTsexOpen, setIsTsexOpen] = useState<boolean>(false);
+  const [isShopOpen, setIsShopOpen] = useState<boolean>(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { getAllProducts } = useProduct();
+  const { getAllShopsForProductsFilter } = useShop();
+  const { getAllTsexesForProductsFilter } = useTsex();
+
+  const { getParam, setParams, removeParam } = useParamsHook();
+  const [localSearch, setLocalSearch] = useState(getParam("search") || "");
+
   useEffect(() => {
     window.scroll({ top: 0 });
   }, []);
 
+  // Query starts
+  const query: QueryParams = useMemo(() => {
+    const page = Number(getParam("page")) || 1;
+    const limit = Number(getParam("limit")) || 10;
+    const search = getParam("search") || undefined;
+    const shopId = getParam("shopId") || undefined;
+    const tsexId = getParam("tsexId") || undefined;
+
+    return { page, limit, search, shopId, tsexId };
+  }, [getParam]);
+  // Query ends
+
   // Products start
-  const { data: allProducts } = getAllProducts();
+  const { data: allProducts, isLoading: productLoading } =
+    getAllProducts(query);
   const products = allProducts?.data?.data;
+  const total = allProducts?.data?.total || 0;
+
   // Products end
 
   // Product detail starts
@@ -33,7 +57,80 @@ const AdminProductsPage = () => {
   };
   // Product detail ends
 
-  if (pathname.startsWith(`/superadmin/products/`)) return <Outlet />;
+  // PageChange starts
+  const handlePageChange = (newPage: number, newPageSize?: number) => {
+    const updateParams: { page?: number; limit?: number } = {};
+
+    if (newPage > 1) {
+      updateParams.page = newPage;
+    }
+
+    if (newPageSize && newPageSize !== 10) {
+      updateParams.limit = newPageSize;
+    }
+
+    setParams(updateParams);
+
+    if (newPage === 1) {
+      removeParam("page");
+    }
+    if (newPageSize === 10 && getParam("limit")) {
+      removeParam("limit");
+    }
+  };
+  // PageChange ends
+
+  // Search starts
+  const debouncedSetSearchQuery = useCallback(
+    debounce((nextValue: string) => {
+      setParams({
+        search: nextValue || "",
+        page: 1,
+      });
+    }, 500),
+    [setParams],
+  );
+
+  const handleSearchChange = (value: string) => {
+    setLocalSearch(value);
+    debouncedSetSearchQuery(value);
+  };
+  // Search ends
+
+  // Filter starts
+  const handleFilterChange = (key: "shopId" | "tsexId", value: string) => {
+    setParams({
+      [key]: value || "",
+      page: 1,
+    });
+  };
+
+  const { data: shops, isLoading: shopLoading } =
+    getAllShopsForProductsFilter(isShopOpen);
+  const shopsOptions = [
+    {
+      value: "",
+      label: "Barcha do'konlar",
+    },
+    ...(shops?.data?.map((st) => ({
+      value: st?.id,
+      label: st?.name,
+    })) || []),
+  ];
+
+  const { data: tsexes, isLoading: tsexLoading } =
+    getAllTsexesForProductsFilter(isTsexOpen);
+  const tsexesOptions = [
+    {
+      value: "",
+      label: "Barcha tsexlar",
+    },
+    ...(tsexes?.data?.map((ts) => ({
+      value: ts?.id,
+      label: ts?.name,
+    })) || []),
+  ];
+  // Filter ends
 
   if (pathname.startsWith("/admin/products/")) return <Outlet />;
   return (
@@ -50,22 +147,19 @@ const AdminProductsPage = () => {
         <PlusButton setOpen={() => navigate("add")} />
       </div>
 
-      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-2 p-3.5 flex items-center gap-4 max-[900px]:flex-wrap">
-        <SearchInput
-          placeholder="Mahsulot nomi,brandi bo'yicha qidirish"
-          className="h-12! min-[900px]:w-[50%]! bg-bg-ty! text-[16px]!"
-        />
-        <div className="flex gap-4 min-[900px]:w-[50%] max-[900px]:w-full max-[400px]:flex-wrap">
-          <Filter
-            placeholder="Barcha do'konlar"
-            className="h-12! min-[900px]:w-[50%]! max-[900px]:w-full! custom-select"
-          />
-          <Filter
-            placeholder="Barcha tsexlar"
-            className="h-12! min-[900px]:w-[50%]! max-[900px]:w-full! custom-select"
-          />
-        </div>
-      </div>
+      <ProductFilters
+        localSearch={localSearch}
+        onFilterChange={handleFilterChange}
+        onSearchChange={handleSearchChange}
+        shopsOptions={shopsOptions}
+        tsexesOptions={tsexesOptions}
+        shopId={query.shopId}
+        tsexId={query.tsexId}
+        setIsTsexOpen={setIsTsexOpen}
+        setIsShopOpen={setIsShopOpen}
+        tsexLoading={tsexLoading}
+        shopLoading={shopLoading}
+      />
 
       <div className="max-[500px]:hidden mt-4">
         <ProTable
@@ -74,54 +168,28 @@ const AdminProductsPage = () => {
           pagination={{
             showSizeChanger: true,
             responsive: false,
+            current: query.page,
+            pageSize: query.limit,
+            total,
+            onChange: handlePageChange,
           }}
           columns={productColumns(handleProductDetailOpen)}
           search={false}
           dateFormatter="string"
           scroll={{ x: "max-content" }}
+          loading={productLoading}
         />
       </div>
 
-      <div className="min-[500px]:hidden grid grid-cols-2 gap-5 mt-4 max-[330px]:grid-cols-1">
-        {products?.map((pr: ProductTableListItem) => (
-          <div
-            key={pr.id}
-            className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]"
-          >
-            <div className="p-2.5 flex justify-center items-center">
-              {/* @ts-ignore */}
-              <Image
-                src={pr.images[0].image_url}
-                className="w-full rounded-[5px] object-contain h-[130px]!"
-              />
-            </div>
-            <div className="flex flex-col gap-1 justify-between px-3.5 py-2.5">
-              <div className="flex flex-col">
-                <a className="text-[16px] font-bold">{pr.name}</a>
-                <span className="text-[14px] font-bold text-[#6B7280]">
-                  {pr.brand}
-                </span>
-              </div>
-              <span className="text-[17px] text-green-500 font-bold">
-                {pr.price.toLocaleString()}
-              </span>
-            </div>
-
-            <div className="w-full h-px bg-bg-fy"></div>
-
-            <div className="mt-1 px-3.5 pt-2 pb-3">
-              <div className="flex justify-end">
-                <AntdButton
-                  className="bg-[#1D4ED8]! text-white!"
-                  onClick={() => handleProductDetailOpen(pr.id)}
-                >
-                  Batafsil
-                </AntdButton>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+      <ProductMobileList
+        products={products}
+        currentPage={Number(query.page)}
+        pageSize={Number(query.limit)}
+        total={total}
+        onPageChange={handlePageChange}
+        isLoading={productLoading}
+        onDetail={handleProductDetailOpen}
+      />
     </div>
   );
 };

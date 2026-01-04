@@ -2,9 +2,9 @@ import { memo, useEffect } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
 import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
 import ProTable from "@ant-design/pro-table";
-import { storesColumns } from "./model/shops-table-model";
 import { useShop } from "../../../shared/lib/apis/shops/useShop";
 import ShopsMobileList from "../../../widgets/superadmin/shops/ShopsMobileList/ShopsMobileList";
+import { storesColumns } from "../../../shared/lib/model/shops/shops-table-model";
 
 const StoresPage = () => {
   const { getAllShops } = useShop();

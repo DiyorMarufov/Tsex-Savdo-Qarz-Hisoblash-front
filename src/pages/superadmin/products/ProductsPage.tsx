@@ -1,7 +1,6 @@
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
 import { ProTable } from "@ant-design/pro-components";
-import { productColumns } from "./model/product-table-model";
 import { useProduct } from "../../../shared/lib/apis/products/useProduct";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { debounce } from "../../../shared/lib/functions/debounce";
@@ -11,6 +10,7 @@ import { useTsex } from "../../../shared/lib/apis/tsexes/useTsex";
 import { useShop } from "../../../shared/lib/apis/shops/useShop";
 import ProductFilters from "../../../widgets/products/ProductFIlters/ProductFilters";
 import ProductMobileList from "../../../widgets/products/ProductMobileList/ProductMobileList";
+import { productColumns } from "../../../shared/lib/model/products/product-table-model";
 
 const ProductsPage = () => {
   const [isTsexOpen, setIsTsexOpen] = useState<boolean>(false);

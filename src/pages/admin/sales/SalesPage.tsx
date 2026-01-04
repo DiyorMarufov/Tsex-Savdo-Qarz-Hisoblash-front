@@ -12,12 +12,12 @@ import {
   fakeSales,
   salesColumns,
   type SalesTableListItem,
-} from "../../superadmin/reports/model/sales-model";
+} from "../../../shared/lib/model/reports/sales-model";
 import {
   fakeSalesItems,
   salesItemColumns,
   type SaleItemsTableListItem,
-} from "../../superadmin/reports/model/sales-items-detail-model";
+} from "../../../shared/lib/model/reports/sales-items-detail-model";
 
 type filterFieldType = {
   store?: string;

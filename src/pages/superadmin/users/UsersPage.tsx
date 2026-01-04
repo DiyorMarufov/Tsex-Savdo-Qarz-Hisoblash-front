@@ -3,7 +3,6 @@ import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
 import Button from "../../../shared/ui/Button/Button";
 import { Plus } from "lucide-react";
 import ProTable from "@ant-design/pro-table";
-import { userColumns } from "./model/users-model";
 import { type FormProps, Form } from "antd";
 import UserFilters from "../../../widgets/superadmin/users/UserFilters/UserFilters";
 import UserMobileList from "../../../widgets/superadmin/users/UserMobileList/UserMobileList";
@@ -15,6 +14,7 @@ import { debounce } from "../../../shared/lib/functions/debounce";
 import { roleOptions, statusOptions } from "../../../shared/lib/constants";
 import { useApiNotification } from "../../../shared/hooks/api-notification/useApiNotification";
 import PlusButton from "../../../shared/ui/Button/PlusButton";
+import { userColumns } from "../../../shared/lib/model/users/users-model";
 
 const UsersPage = () => {
   const [newUserOpen, setNewUserOpen] = useState<boolean>(false);

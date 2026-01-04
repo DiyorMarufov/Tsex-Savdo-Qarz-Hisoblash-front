@@ -1,6 +1,5 @@
 import { memo, useEffect, useMemo, useState } from "react";
 import ProTable from "@ant-design/pro-table";
-import { transactionDetailColumns } from "./model/customer-transactions-detail-model";
 import { type FormProps, Drawer, Form } from "antd";
 import { useCustomerTransaction } from "../../../shared/lib/apis/customer-transactions/useCustomerTransaction";
 import { useNavigate, useParams } from "react-router-dom";
@@ -17,6 +16,7 @@ import type {
 import { useApiNotification } from "../../../shared/hooks/api-notification/useApiNotification";
 import { ArrowLeft } from "lucide-react";
 import PlusButton from "../../../shared/ui/Button/PlusButton";
+import { transactionDetailColumns } from "../../../shared/lib/model/customers/customer-transactions-detail-model";
 
 const CustomerTransactionDetails = () => {
   const [transactionOpen, setTransactionOpen] = useState<boolean>(false);

@@ -4,7 +4,6 @@ import { Button as AntdButton, Drawer, Form, type FormProps } from "antd";
 import { ArrowDown, ArrowUp, Plus } from "lucide-react";
 import Button from "../../../shared/ui/Button/Button";
 import ProTable from "@ant-design/pro-table";
-import { customerColumns } from "./model/customers-model";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import CustomersBalances from "../../../widgets/superadmin/customers/Balances/CustomersBalances";
 import CustomerFilters from "../../../widgets/customers/CustomerFilters/CustomerFilters";
@@ -25,6 +24,7 @@ import { useApiNotification } from "../../../shared/hooks/api-notification/useAp
 import { formatPhoneNumber } from "../../../shared/lib/functions/formatPhoneNumber";
 import { useCustomerTransaction } from "../../../shared/lib/apis/customer-transactions/useCustomerTransaction";
 import PlusButton from "../../../shared/ui/Button/PlusButton";
+import { customerColumns } from "../../../shared/lib/model/customers/customers-model";
 
 const CustomersPage = () => {
   const [transactionOpen, setTransactionOpen] = useState<boolean>(false);
