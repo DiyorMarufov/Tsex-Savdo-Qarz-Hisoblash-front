@@ -60,7 +60,6 @@ const CustomersReportPage = () => {
       startDate: query.startStr,
       endDate: query.endStr,
       customerId: query.customerId,
-      type: query.customerType,
     });
   const customerBalances = customerBalancesSummary?.data;
   const creditor = customerBalances?.creditorTotalBalance;
