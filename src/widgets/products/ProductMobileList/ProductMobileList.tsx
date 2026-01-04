@@ -1,8 +1,8 @@
 import { memo } from "react";
 import { Pagination } from "antd";
 import ProductCardSkeleton from "../../../shared/ui/Skeletons/Products/ProductCardSkeleton";
-import type { ProductTableListItem } from "../../../pages/superadmin/products/model/product-table-model";
 import ProductCard from "../../../shared/ui/ProductCard/ProductCard";
+import type { ProductTableListItem } from "../../../shared/lib/model/products/product-table-model";
 
 interface ProductMobileListProps {
   products: ProductTableListItem[] | undefined;

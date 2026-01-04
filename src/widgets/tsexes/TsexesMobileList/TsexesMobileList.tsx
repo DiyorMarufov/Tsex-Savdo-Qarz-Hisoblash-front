@@ -1,8 +1,8 @@
 import { memo } from "react";
 import { Pagination } from "antd";
-import type { TsexTableListItem } from "../../../pages/superadmin/tsexes/model/tsexes-model";
 import TsexCard from "../../../shared/ui/TsexCard/TsexCard";
 import TsexCardSkeleton from "../../../shared/ui/Skeletons/Tsexes/TsexCardSkeleton";
+import type { TsexTableListItem } from "../../../shared/lib/model/tsexes/tsexes-model";
 
 interface TsexMobileListProps {
   data: TsexTableListItem[] | undefined;

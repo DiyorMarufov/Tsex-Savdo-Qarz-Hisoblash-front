@@ -1,8 +1,8 @@
 import { memo } from "react";
 import { Pagination } from "antd";
 import ShopCardSkeleton from "../../../../shared/ui/Skeletons/Shops/ShopCardSkeleton";
-import type { StoresTableListItem } from "../../../../pages/superadmin/shops/model/shops-table-model";
 import ShopCard from "../../../../shared/ui/ShopCard/ShopCard";
+import type { StoresTableListItem } from "../../../../shared/lib/model/shops/shops-table-model";
 
 interface ShopsMobileListProps {
   data: StoresTableListItem[] | undefined;

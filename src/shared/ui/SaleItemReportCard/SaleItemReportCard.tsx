@@ -1,5 +1,5 @@
 import { memo } from "react";
-import type { SaleItemsTableListItem } from "../../../pages/superadmin/reports/model/sales-items-detail-model";
+import type { SaleItemsTableListItem } from "../../lib/model/reports/sales-items-detail-model";
 
 interface SaleItemRepordCard {
   item: SaleItemsTableListItem;

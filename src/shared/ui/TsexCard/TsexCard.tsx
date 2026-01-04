@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { Button as AntdButton } from "antd";
 import { Edit } from "lucide-react";
-import type { TsexTableListItem } from "../../../pages/superadmin/tsexes/model/tsexes-model";
+import type { TsexTableListItem } from "../../lib/model/tsexes/tsexes-model";
 
 interface TsexCardProps {
   ts: TsexTableListItem;

@@ -1,8 +1,8 @@
 import React from "react";
 import { Pagination } from "antd";
-import type { TsexTransactionsTableListItem } from "../../../pages/superadmin/tsexes/model/tsexes-transactions-model";
 import TsexTransactionCard from "../../../shared/ui/TsexTransactionCard/TsexTransactionCard";
 import TsexTransactionCardSkeleton from "../../../shared/ui/Skeletons/TsexTranscations/TsexTransactionCardSkeleton";
+import type { TsexTransactionsTableListItem } from "../../../shared/lib/model/tsexes/tsexes-transactions-model";
 
 interface TsexMobileListProps {
   transactions: TsexTransactionsTableListItem[];

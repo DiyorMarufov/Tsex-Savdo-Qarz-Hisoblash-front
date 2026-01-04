@@ -1,7 +1,7 @@
 import { Edit, Trash } from "lucide-react";
 import { Button as AntdButton } from "antd";
 import { memo } from "react";
-import type { CustomerTranscationsListItemsType } from "../../../pages/superadmin/customers/model/customer-transactions-model";
+import type { CustomerTranscationsListItemsType } from "../../lib/model/customers/customer-transactions-model";
 
 interface TransactionCardProps {
   trd: CustomerTranscationsListItemsType;

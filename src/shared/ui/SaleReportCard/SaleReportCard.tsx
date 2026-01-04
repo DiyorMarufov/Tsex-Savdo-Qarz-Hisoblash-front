@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { Button as AntdButton, Image } from "antd";
-import type { SalesTableListItem } from "../../../pages/superadmin/reports/model/sales-model";
+import type { SalesTableListItem } from "../../lib/model/reports/sales-model";
 
 interface SaleReportCardProps {
   item: SalesTableListItem;

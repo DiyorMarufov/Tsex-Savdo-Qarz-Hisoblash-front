@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { Edit, Trash } from "lucide-react";
-import type { StoresTableListItem } from "../../../pages/superadmin/shops/model/shops-table-model";
+import type { StoresTableListItem } from "../../lib/model/shops/shops-table-model";
 
 interface StoreCardProps {
   store: StoresTableListItem;

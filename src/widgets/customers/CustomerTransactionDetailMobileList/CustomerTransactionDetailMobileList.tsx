@@ -1,8 +1,8 @@
 import { memo } from "react";
-import type { CustomerTranscationDetailListItemsType } from "../../../pages/superadmin/customers/model/customer-transactions-detail-model";
 import CustomerTransactionDetailCard from "../../../shared/ui/CustomerTransactionDetailCard/CustomerTransactionDetailCard";
 import CustomerTransactionDetailCardSkeleton from "../../../shared/ui/Skeletons/Customers/CustomerTransactionDetailCardSkeleton";
 import { Pagination } from "antd";
+import type { CustomerTranscationDetailListItemsType } from "../../../shared/lib/model/customers/customer-transactions-detail-model";
 
 interface Props {
   data: CustomerTranscationDetailListItemsType[] | undefined;

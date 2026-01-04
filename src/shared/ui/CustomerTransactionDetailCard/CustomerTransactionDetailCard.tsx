@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { Edit, Trash } from "lucide-react";
-import type { CustomerTranscationDetailListItemsType } from "../../../pages/superadmin/customers/model/customer-transactions-detail-model";
+import type { CustomerTranscationDetailListItemsType } from "../../lib/model/customers/customer-transactions-detail-model";
 
 interface TransactionDetailCardProps {
   trd: CustomerTranscationDetailListItemsType;

@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { Image, Button as AntdButton } from "antd";
-import type { ProductTableListItem } from "../../../pages/superadmin/products/model/product-table-model";
+import type { ProductTableListItem } from "../../lib/model/products/product-table-model";
 
 interface ProductCardProps {
   product: ProductTableListItem;

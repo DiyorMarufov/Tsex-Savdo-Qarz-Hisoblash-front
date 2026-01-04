@@ -1,8 +1,8 @@
 import { memo } from "react";
 import { Pagination } from "antd";
 import CustomerCard from "../../../shared/ui/CustomerCard/CustomerCard";
-import type { CustomersListItemsType } from "../../../pages/superadmin/customers/model/customers-model";
 import CustomerCardSkeleton from "../../../shared/ui/Skeletons/Customers/CustomerCardSkeleton";
+import type { CustomersListItemsType } from "../../../shared/lib/model/customers/customers-model";
 
 interface CustomerMobileListProps {
   data: CustomersListItemsType[];

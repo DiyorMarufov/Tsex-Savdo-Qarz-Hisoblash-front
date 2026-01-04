@@ -1,8 +1,8 @@
 import { memo } from "react";
-import type { UsersTableListItem } from "../../../../pages/superadmin/users/model/users-model";
 import UserCard from "../../../../shared/ui/UserCard/UserCard";
 import { Pagination } from "antd";
 import UserCardSkeleton from "../../../../shared/ui/Skeletons/Users/UserCardSkeleton";
+import type { UsersTableListItem } from "../../../../shared/lib/model/users/users-model";
 
 interface UserMobileListProps {
   data: UsersTableListItem[];

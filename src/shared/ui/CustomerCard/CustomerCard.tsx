@@ -1,8 +1,8 @@
 import { memo } from "react";
 import { Button as AntdButton } from "antd";
 import { Edit, Trash } from "lucide-react";
-import type { CustomersListItemsType } from "../../../pages/superadmin/customers/model/customers-model";
 import { formatPhoneNumber } from "../../lib/functions/formatPhoneNumber";
+import type { CustomersListItemsType } from "../../lib/model/customers/customers-model";
 
 interface Props {
   cs: CustomersListItemsType;

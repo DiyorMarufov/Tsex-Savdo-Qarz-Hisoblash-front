@@ -1,14 +1,14 @@
 import { memo } from "react";
 import CustomerTransactionCard from "../../../../shared/ui/CustomerTransactionCard/CustomerTransactionCard";
-import type { CustomerTranscationsListItemsType } from "../../../../pages/superadmin/customers/model/customer-transactions-model";
 import CustomerCardSkeleton from "../../../../shared/ui/Skeletons/Customers/CustomerCardSkeleton";
+import type { CustomerTranscationsListItemsType } from "../../../../shared/lib/model/customers/customer-transactions-model";
 
 interface TransactionMobileListProps {
   transactions: CustomerTranscationsListItemsType[] | undefined;
   loading: boolean;
   handleOpenTransactionDetail: (
     id: string,
-    type: "lending" | "borrowing",
+    type: "lending" | "borrowing"
   ) => void;
 }
 

@@ -1,8 +1,8 @@
 import { Edit, Trash } from "lucide-react";
 import { memo } from "react";
-import type { UsersTableListItem } from "../../../pages/superadmin/users/model/users-model";
 import { formatPhoneNumber } from "../../lib/functions/formatPhoneNumber";
 import { roleTranslationToUzbek } from "../../lib/constants";
+import type { UsersTableListItem } from "../../lib/model/users/users-model";
 
 interface UserMobileCardProps {
   user: UsersTableListItem;

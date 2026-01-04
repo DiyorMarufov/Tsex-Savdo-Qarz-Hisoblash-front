@@ -1,10 +1,7 @@
 import ProTable from "@ant-design/pro-table";
 import { Select } from "antd";
 import { memo, useRef } from "react";
-import {
-  fakeSales,
-  salesColumns,
-} from "../../../pages/superadmin/reports/model/sales-model";
+import { fakeSales, salesColumns } from "../../../shared/lib/model/reports/sales-model";
 
 const SaleItemsManager = () => {
   const saleId = useRef<string | null>(null);
