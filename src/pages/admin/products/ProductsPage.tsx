@@ -12,6 +12,7 @@ import {
 } from "../../superadmin/products/model/product-table-model";
 import { Image, Button as AntdButton } from "antd";
 import { useProduct } from "../../../shared/lib/apis/products/useProduct";
+import PlusButton from "../../../shared/ui/Button/PlusButton";
 
 const AdminProductsPage = () => {
   const navigate = useNavigate();
@@ -36,22 +37,17 @@ const AdminProductsPage = () => {
 
   if (pathname.startsWith("/admin/products/")) return <Outlet />;
   return (
-    <div>
+    <div className="pb-12">
       <div className="flex justify-between gap-3">
         <LargeTitle title="Mahsulotlar" />
         <div className="max-[500px]:hidden">
           <Button onClick={() => navigate("add")}>
             <Plus />
-            Yengi mahsulot qo'shish
+            Yangi mahsulot qo'shish
           </Button>
         </div>
 
-        <div
-          className="min-[500px]:hidden p-2.5 rounded-full bg-green-500 cursor-pointer hover:opacity-80"
-          onClick={() => navigate("add")}
-        >
-          <Plus className="text-white" />
-        </div>
+        <PlusButton setOpen={() => navigate("add")} />
       </div>
 
       <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-2 p-3.5 flex items-center gap-4 max-[900px]:flex-wrap">

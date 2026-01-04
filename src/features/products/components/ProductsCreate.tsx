@@ -10,6 +10,7 @@ import Dragger from "antd/es/upload/Dragger";
 import { Inbox, Plus } from "lucide-react";
 import { memo, useState } from "react";
 import Button from "../../../shared/ui/Button/Button";
+import { useNavigate } from "react-router-dom";
 
 type FieldType = {
   name: string;
@@ -24,6 +25,7 @@ type FieldType = {
 
 const ProductsCreate = () => {
   const [fileList, setFileList] = useState<any>(null);
+  const navigate = useNavigate();
   const [form] = Form.useForm();
 
   const props: UploadProps = {
@@ -213,7 +215,10 @@ const ProductsCreate = () => {
 
       <Form.Item>
         <div className="flex justify-end gap-4 pt-4 max-[500px]:flex-col-reverse">
-          <AntdButton className="h-10! bg-red-500! text-white!">
+          <AntdButton
+            onClick={() => navigate(-1)}
+            className="h-10! bg-red-500! text-white!"
+          >
             Bekor qilish
           </AntdButton>{" "}
           <Button type="primary" htmlType="submit" className="h-10!">

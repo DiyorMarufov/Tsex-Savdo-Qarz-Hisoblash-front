@@ -44,9 +44,9 @@ const AdminTsexesPage = () => {
   const tsexes = allTsexes?.data?.data?.map((as: any) => ({
     id: as?.id,
     name: as?.name,
-    tsex: as?.manager?.full_name,
+    manager: { full_name: as?.manager?.full_name },
     balance: as?.balance,
-    last_operation: as?.last_transaction?.display
+    last_transaction: as?.last_transaction?.display
       ? as?.last_transaction?.display
       : "Hozircha yo'q",
     created_at: new Date(as?.created_at).toLocaleString("uz-UZ"),
@@ -85,7 +85,7 @@ const AdminTsexesPage = () => {
         page: 1,
       });
     }, 500),
-    [setParams],
+    [setParams]
   );
 
   const handleSearchChange = (value: string) => {
