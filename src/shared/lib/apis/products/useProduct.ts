@@ -1,9 +1,20 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "../../../../features/auth/api";
 
 export const product = "product";
 
 export const useProduct = () => {
+  const client = useQueryClient();
+  const createProduct = useMutation({
+    mutationFn: (data: any) =>
+      api.post("products", data).then((res) => res.data),
+    onSuccess: () => (
+      client.invalidateQueries({ queryKey: [product, "all-products"] }),
+      client.invalidateQueries({ queryKey: ["tsex", "total-balance"] }),
+      client.invalidateQueries({ queryKey: ["tsex", "most-debtor-tsexes"] })
+    ),
+  });
+
   const getAllProducts = (params?: any) =>
     useQuery({
       queryKey: [product, "all-products", params],
@@ -24,7 +35,7 @@ export const useProduct = () => {
 
   const getAllProductsForProductsFilter = (
     enabled: boolean = false,
-    params?: any,
+    params?: any
   ) =>
     useQuery({
       queryKey: [product, "products-filter", params],
@@ -60,6 +71,7 @@ export const useProduct = () => {
       gcTime: 1000 * 60 * 10,
     });
   return {
+    createProduct,
     getAllProducts,
     getProductsSummaryForReport,
     getAllProductsForProductsFilter,

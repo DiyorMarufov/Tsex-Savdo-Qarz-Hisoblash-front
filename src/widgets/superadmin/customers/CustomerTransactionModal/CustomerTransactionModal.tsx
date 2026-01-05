@@ -91,6 +91,25 @@ const CustomerTransactionModal = ({
                   required: true,
                   message: "To'lov summasi kiritilishi shart!",
                 },
+                {
+                  validator: (_, value) => {
+                    if (!value) {
+                      return Promise.resolve();
+                    }
+
+                    const numericValue = Number(
+                      String(value).replace(/,/g, "")
+                    );
+
+                    if (numericValue > 0) {
+                      return Promise.resolve();
+                    }
+
+                    return Promise.reject(
+                      new Error("To'lov summasi 0 dan baland bo'lishi kerak!")
+                    );
+                  },
+                },
               ]}
               normalize={(v) =>
                 v

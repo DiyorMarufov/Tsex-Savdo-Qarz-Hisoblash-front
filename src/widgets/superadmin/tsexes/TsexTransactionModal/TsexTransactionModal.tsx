@@ -98,7 +98,28 @@ const TsexTransactionModal = ({
             <span className="flex mb-1 font-medium text-[15px]">Summa</span>
             <Form.Item
               name="amount"
-              rules={[{ required: true, message: "Summa kiritilishi shart!" }]}
+              rules={[
+                { required: true, message: "Summa kiritilishi shart!" },
+                {
+                  validator: (_, value) => {
+                    if (!value) {
+                      return Promise.resolve();
+                    }
+
+                    const numericValue = Number(
+                      String(value).replace(/,/g, "")
+                    );
+
+                    if (numericValue > 0) {
+                      return Promise.resolve();
+                    }
+
+                    return Promise.reject(
+                      new Error("Summa 0 dan baland bo'lishi kerak!")
+                    );
+                  },
+                },
+              ]}
               normalize={(v) =>
                 v
                   ? String(v)

@@ -1,6 +1,6 @@
 import type { ProColumns } from "@ant-design/pro-table";
 import { Image } from "antd";
-import { Edit, Trash } from "lucide-react";
+import { Edit } from "lucide-react";
 
 export type ProductTableListItem = {
   id: string;
@@ -12,7 +12,7 @@ export type ProductTableListItem = {
 };
 
 export const productColumns = (
-  handleOpenDetail: any,
+  handleOpenDetail: any
 ): ProColumns<ProductTableListItem>[] => [
   {
     title: "Rasm",
@@ -67,7 +67,6 @@ export const productColumns = (
     render: (_) => (
       <div className="flex gap-3">
         <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
-        <Trash className="text-red-600 cursor-pointer hover:opacity-80" />
       </div>
     ),
   },

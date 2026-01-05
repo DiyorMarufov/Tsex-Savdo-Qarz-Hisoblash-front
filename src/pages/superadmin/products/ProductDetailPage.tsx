@@ -3,7 +3,7 @@ import { useProduct } from "../../../shared/lib/apis/products/useProduct";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, Image } from "antd";
 import ProductDetailCardSkeleton from "../../../shared/ui/Skeletons/Products/ProductDetailCardSkeleton";
-import { ArrowLeft, Edit, Trash } from "lucide-react";
+import { ArrowLeft, Edit } from "lucide-react";
 
 const ProductDetailPage = () => {
   const navigate = useNavigate();
@@ -42,7 +42,7 @@ const ProductDetailPage = () => {
       <div className="p-4 lg:p-8">
         <div className="flex max-[1380px]:flex-col gap-8">
           <div className="min-[1380px]:w-1/2">
-            <div className="bg-gray-50 rounded-2xl p-6 flex items-center justify-center">
+            <div className="bg-gray-50 rounded-2xl p-6 flex items-center justify-center h-full">
               <Image
                 src={
                   product.images?.length
@@ -82,12 +82,9 @@ const ProductDetailPage = () => {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-3 px-4 pb-4 justify-end">
-        <Button className="bg-green-500! text-white! h-9!">
+      <div className="flex p-4 justify-end">
+        <Button className="bg-green-500! text-white! h-9! max-[500px]:w-full">
           <Edit />
-        </Button>
-        <Button className="bg-red-500! text-white! h-9!">
-          <Trash />
         </Button>
       </div>
     </div>
