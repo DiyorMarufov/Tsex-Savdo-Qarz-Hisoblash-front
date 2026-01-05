@@ -38,7 +38,7 @@ const ProductFilters = ({
         value={localSearch}
         onChange={onSearchChange}
       />
-      <div className="flex gap-4 min-[900px]:w-[50%] max-[900px]:w-full max-[400px]:flex-wrap">
+      <div className="flex gap-4 min-[900px]:w-[50%] max-[900px]:w-full max-[370px]:flex-wrap">
         <Filter
           placeholder="Barcha tsexlar"
           className="h-11! min-[900px]:w-[50%]! max-[900px]:w-full! custom-select"

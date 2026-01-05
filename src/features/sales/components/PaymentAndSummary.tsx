@@ -59,11 +59,11 @@ const PaymentAndSummary = () => {
 
       <div className="flex flex-col gap-3">
         <div className="flex justify-between gap-3">
-          <span className="text-[#519969] text-[16px]">Jami summa</span>
+          <span className="text-gray-700 text-[16px]">Jami summa</span>
           <span className="text-[17px]">100,000,000 UZS</span>
         </div>
         <div className="flex justify-between gap-3">
-          <span className="text-[#519969] text-[16px]">To'langan summa</span>
+          <span className="text-gray-700 text-[16px]">To'langan summa</span>
           <span className="text-[17px]">270,000 UZS</span>
         </div>
         <div className="bg-[#FEF2F2] rounded-[5px]">

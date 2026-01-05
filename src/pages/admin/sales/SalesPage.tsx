@@ -1,4 +1,4 @@
-import { memo, useMemo } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Button from "../../../shared/ui/Button/Button";
@@ -12,12 +12,23 @@ import { useSale } from "../../../shared/lib/apis/sales/useSale";
 import type { QueryParams } from "../../../shared/lib/types";
 import dayjs from "dayjs";
 import SalesReportMobileList from "../../../widgets/reports/SalesReport/SalesReportMobileList/SalesReportMobileList";
+import { useShop } from "../../../shared/lib/apis/shops/useShop";
+import { useTsex } from "../../../shared/lib/apis/tsexes/useTsex";
+import { useProduct } from "../../../shared/lib/apis/products/useProduct";
+import { debounce } from "../../../shared/lib/functions/debounce";
 
 const AdminSalesPage = () => {
+  const [isProductOpen, setIsProductOpen] = useState<boolean>(false);
+  const [isTsexOpen, setIsTsexOpen] = useState<boolean>(false);
+  const [isShopOpen, setIsShopOpen] = useState<boolean>(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { getParam, setParams, removeParam } = useParamsHook();
+  const [localSearch, setLocalSearch] = useState(getParam("search") || "");
   const { getAllSales } = useSale();
+  const { getAllShopsForProductsFilter } = useShop();
+  const { getAllTsexesForProductsFilter } = useTsex();
+  const { getAllProductsForProductsFilter } = useProduct();
 
   // Query starts
   const query: QueryParams = useMemo(() => {
@@ -28,6 +39,7 @@ const AdminSalesPage = () => {
     const e = getParam("endDate");
     const shopId = getParam("shopId") || "";
     const tsexId = getParam("tsexId") || "";
+    const productId = getParam("productId") || "";
 
     const isFirstLoad = s === null && e === null;
 
@@ -45,6 +57,7 @@ const AdminSalesPage = () => {
         : e || "",
       shopId,
       tsexId,
+      productId,
     };
   }, [getParam]);
   // Query ends
@@ -53,7 +66,7 @@ const AdminSalesPage = () => {
   const handleSaleItems = (id: string) => navigate(`${id}`);
   // Sale Items detail ends
 
-  // SalesReportData starts
+  // SalesData starts
   const { data: allSales, isLoading: salesLoading } = getAllSales({
     page: query.page,
     limit: query.limit,
@@ -66,7 +79,7 @@ const AdminSalesPage = () => {
   });
   const sales = allSales?.data?.data;
   const total = allSales?.data?.total;
-  // SalesReportData ends
+  // SalesData ends
 
   // PageChange starts
   const handlePageChange = (newPage: number, newPageSize?: number) => {
@@ -91,6 +104,91 @@ const AdminSalesPage = () => {
   };
   // PageChange ends
 
+  // Search starts
+  const debouncedSetSearchQuery = useCallback(
+    debounce((nextValue: string) => {
+      setParams({
+        search: nextValue || "",
+        page: 1,
+      });
+    }, 500),
+    [setParams]
+  );
+
+  const handleSearchChange = (value: string) => {
+    setLocalSearch(value);
+    debouncedSetSearchQuery(value);
+  };
+  // Search ends
+
+  // SaleFilter options start
+  const { data: shops, isLoading: shopLoading } =
+    getAllShopsForProductsFilter(isShopOpen);
+  const shopsOptions = [
+    {
+      value: "",
+      label: "Barcha do'konlar",
+    },
+    ...(shops?.data?.map((st) => ({
+      value: st?.id,
+      label: st?.name,
+    })) || []),
+  ];
+
+  const { data: tsexes, isLoading: tsexLoading } =
+    getAllTsexesForProductsFilter(isTsexOpen);
+  const tsexesOptions = [
+    {
+      value: "",
+      label: "Barcha tsexlar",
+    },
+    ...(tsexes?.data?.map((ts) => ({
+      value: ts?.id,
+      label: ts?.name,
+    })) || []),
+  ];
+
+  const { data: products, isLoading: productLoading } =
+    getAllProductsForProductsFilter(isProductOpen);
+  const productOptions = [
+    {
+      value: "",
+      label: "Barcha mahsulotlar",
+    },
+    ...(products?.data?.data?.map((pr: any) => ({
+      value: pr?.id,
+      label: (
+        <div className="flex justify-between">
+          <span className="text-[14px] font-medium text-slate-800">
+            {pr?.name}
+          </span>
+
+          <span className="text-[12px] text-slate-400 font-normal">
+            {pr?.brand}
+          </span>
+        </div>
+      ),
+    })) || []),
+  ];
+  // SaleFilter options end
+
+  // SaleReportFilter onFilterSubmit starts
+  const onFilterSubmit = (filters: {
+    dates: string[] | null;
+    shopId: string;
+    tsexId: string;
+    productId: string;
+  }) => {
+    setParams({
+      startDate: filters.dates?.[0] || "",
+      endDate: filters.dates?.[1] || "",
+      shopId: filters.shopId || "",
+      tsexId: filters.tsexId || "",
+      productId: filters.productId || "",
+    });
+  };
+  // SaleReportFilter onFilterSubmit ends
+
   if (pathname.startsWith("/admin/sales/")) return <Outlet />;
   return (
     <div className="pb-12">
@@ -107,7 +205,25 @@ const AdminSalesPage = () => {
       </div>
       <div className="flex flex-col gap-5">
         <div className="min-[500px]:mt-2">
-          <SalesFilter />
+          <SalesFilter
+            onFilterSubmit={onFilterSubmit}
+            start={query.start}
+            end={query.end}
+            shopId={query.shopId}
+            tsexId={query.tsexId}
+            productId={query.productId}
+            localSearch={localSearch}
+            shopsOptions={shopsOptions}
+            tsexesOptions={tsexesOptions}
+            productOptions={productOptions}
+            setIsProductOpen={setIsProductOpen}
+            setIsTsexOpen={setIsTsexOpen}
+            setIsShopOpen={setIsShopOpen}
+            handleSearchChange={handleSearchChange}
+            productLoading={productLoading}
+            tsexLoading={tsexLoading}
+            shopLoading={shopLoading}
+          />
         </div>
 
         <div className="max-[500px]:hidden">

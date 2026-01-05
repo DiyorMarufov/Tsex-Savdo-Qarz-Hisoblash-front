@@ -8,73 +8,88 @@ import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
 import Filter from "../../../shared/ui/Filter/Filter";
 
 interface CombinedReportFilterProps {
-  onFilterSubmit?: (filters: {
+  onFilterSubmit: (filters: {
     dates: string[] | null;
-    customerId: string;
-    workshopId: string;
-    storeId: string;
-    search?: string;
+    shopId: string;
+    tsexId: string;
+    productId: string;
   }) => void;
-  start?: Dayjs | null;
-  end?: Dayjs | null;
-  customerId?: string;
-  workshopId?: string;
-  storeId?: string;
-  customerOptions?: Option[];
-  workshopOptions?: Option[];
-  storeOptions?: Option[];
-  customerLoading?: boolean;
-  workshopLoading?: boolean;
-  storeLoading?: boolean;
-  onSearchChange?: (value: string) => void;
+  start: Dayjs | undefined | null;
+  end: Dayjs | undefined | null;
+  shopId?: string;
+  tsexId?: string;
+  productId?: string;
+  localSearch?: string;
+  shopsOptions: Option[];
+  productOptions: Option[];
+  tsexesOptions: Option[];
+  setIsProductOpen: (open: boolean) => void;
+  setIsTsexOpen: (open: boolean) => void;
+  setIsShopOpen: (open: boolean) => void;
+  handleSearchChange: (value: string) => void;
+  productLoading: boolean;
+  tsexLoading: boolean;
+  shopLoading: boolean;
 }
 
 const SalesFilter: FC<CombinedReportFilterProps> = ({
-  // onFilterSubmit,
+  onFilterSubmit,
   start,
   end,
-  customerId,
-  workshopId,
-  storeId,
-  customerOptions = [],
-  workshopOptions = [],
-  storeOptions = [],
-  customerLoading = false,
-  workshopLoading = false,
-  storeLoading = false,
+  shopId,
+  tsexId,
+  productId,
+  localSearch,
+  shopsOptions = [],
+  productOptions = [],
+  tsexesOptions = [],
+  setIsProductOpen,
+  setIsTsexOpen,
+  setIsShopOpen,
+  handleSearchChange,
+  productLoading,
+  tsexLoading,
+  shopLoading,
 }) => {
-  const [open, setOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState(false);
   const [placement] = useState<DrawerProps["placement"]>("right");
 
   const [tempDates, setTempDates] = useState<[Dayjs | null, Dayjs | null]>([
     start || null,
     end || null,
   ]);
-  const [_, setTempDateStrings] = useState<string[] | null>(null);
-  const [tempCustomerId, setTempCustomerId] = useState(customerId);
-  const [tempWorkshopId, setTempWorkshopId] = useState(workshopId);
-  const [tempStoreId, setTempStoreId] = useState(storeId);
+  const [tempDateStrings, setTempDateStrings] = useState<string[] | null>([
+    start ? start.format("YYYY-MM-DD HH:mm:ss") : "",
+    end ? end.format("YYYY-MM-DD HH:mm:ss") : "",
+  ]);
+  const [tempShopId, setTempShopId] = useState(shopId);
+  const [tempTsexId, setTempTsexId] = useState(tsexId);
+  const [tempProductId, setTempProductId] = useState(productId);
 
   useEffect(() => {
     setTempDates([start || null, end || null]);
-    setTempCustomerId(customerId);
-    setTempWorkshopId(workshopId);
-    setTempStoreId(storeId);
-  }, [start, end, customerId, workshopId, storeId]);
+    setTempDateStrings([
+      start ? start.format("YYYY-MM-DD HH:mm:ss") : "",
+      end ? end.format("YYYY-MM-DD HH:mm:ss") : "",
+    ]);
+    setTempShopId(shopId);
+    setTempTsexId(tsexId);
+    setTempProductId(productId);
+  }, [start, end, shopId, tsexId, productId]);
+
+  const handleSubmit = () => {
+    onFilterSubmit({
+      dates: tempDateStrings,
+      shopId: tempShopId || "",
+      tsexId: tempTsexId || "",
+      productId: tempProductId || "",
+    });
+    setOpen(false);
+  };
 
   const handleRangeChange = (values: any, dateStrings: [string, string]) => {
     setTempDates(values);
     setTempDateStrings(values ? dateStrings : null);
-  };
-
-  const handleSubmit = () => {
-    // onFilterSubmit({
-    //   dates: tempDateStrings,
-    //   customerId: tempCustomerId || "",
-    //   workshopId: tempWorkshopId || "",
-    //   storeId: tempStoreId || "",
-    // });
-    setOpen(false);
   };
 
   return (
@@ -82,8 +97,10 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
       <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] grid grid-cols-[300px_1fr] max-[1200px]:grid-cols-1 p-3.5 gap-3 items-center">
         <div className="w-full">
           <SearchInput
-            placeholder="Mijoz ismi bo'yicha qidirish"
+            placeholder="Do'kon,sotuvchi,mijoz bo'yicha qidirish"
             className="h-11! bg-bg-ty! text-[16px]! max-[1200px]:w-full!"
+            value={localSearch}
+            onChange={handleSearchChange}
           />
         </div>
 
@@ -101,32 +118,41 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
           </div>
           <div className="w-full">
             <Filter
-              value={tempCustomerId}
-              options={customerOptions}
-              onChange={setTempCustomerId}
-              placeholder="Barcha mijozlar"
+              value={tempProductId}
+              options={productOptions}
+              onChange={setTempProductId}
+              placeholder="Barcha mahsulotlar"
               className="h-11! w-full rounded-lg custom-select border-slate-200"
-              loading={customerLoading}
+              onDropdownVisibleChange={(visible: any) => {
+                if (visible) setIsProductOpen(true);
+              }}
+              loading={productLoading}
             />
           </div>
           <div className="w-full">
             <Filter
-              value={tempWorkshopId}
-              options={workshopOptions}
-              onChange={setTempWorkshopId}
+              value={tempTsexId}
+              options={tsexesOptions}
+              onChange={setTempTsexId}
               placeholder="Barcha tsexlar"
               className="h-11! w-full rounded-lg custom-select border-slate-200"
-              loading={workshopLoading}
+              onDropdownVisibleChange={(visible: any) => {
+                if (visible) setIsTsexOpen(true);
+              }}
+              loading={tsexLoading}
             />
           </div>
           <div className="w-full">
             <Filter
-              value={tempStoreId}
-              options={storeOptions}
-              onChange={setTempStoreId}
+              value={tempShopId}
+              options={shopsOptions}
+              onChange={setTempShopId}
               placeholder="Barcha do'konlar"
               className="h-11! w-full rounded-lg custom-select border-slate-200"
-              loading={storeLoading}
+              onDropdownVisibleChange={(visible: any) => {
+                if (visible) setIsShopOpen(true);
+              }}
+              loading={shopLoading}
             />
           </div>
           <div className="flex justify-end">
@@ -179,36 +205,45 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
           <div className="w-full">
             <p className="mb-1 text-sm text-slate-500 font-medium">Mijozlar</p>
             <Filter
-              value={tempCustomerId}
-              options={customerOptions}
-              onChange={setTempCustomerId}
-              placeholder="Barcha mijozlar"
+              value={tempProductId}
+              options={productOptions}
+              onChange={setTempProductId}
+              placeholder="Barcha mahsulotlar"
               className="h-11! w-full rounded-lg custom-select border-slate-200"
-              loading={customerLoading}
+              onDropdownVisibleChange={(visible: any) => {
+                if (visible) setIsProductOpen(true);
+              }}
+              loading={productLoading}
             />
           </div>
 
           <div className="w-full">
             <p className="mb-1 text-sm text-slate-500 font-medium">Tsexlar</p>
             <Filter
-              value={tempWorkshopId}
-              options={workshopOptions}
-              onChange={setTempWorkshopId}
+              value={tempTsexId}
+              options={tsexesOptions}
+              onChange={setTempTsexId}
               placeholder="Barcha tsexlar"
               className="h-11! w-full rounded-lg custom-select border-slate-200"
-              loading={workshopLoading}
+              onDropdownVisibleChange={(visible: any) => {
+                if (visible) setIsTsexOpen(true);
+              }}
+              loading={tsexLoading}
             />
           </div>
 
           <div className="w-full">
             <p className="mb-1 text-sm text-slate-500 font-medium">Do'konlar</p>
             <Filter
-              value={tempStoreId}
-              options={storeOptions}
-              onChange={setTempStoreId}
+              value={tempShopId}
+              options={shopsOptions}
+              onChange={setTempShopId}
               placeholder="Barcha do'konlar"
               className="h-11! w-full rounded-lg custom-select border-slate-200"
-              loading={storeLoading}
+              onDropdownVisibleChange={(visible: any) => {
+                if (visible) setIsShopOpen(true);
+              }}
+              loading={shopLoading}
             />
           </div>
 

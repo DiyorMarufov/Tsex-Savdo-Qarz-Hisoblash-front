@@ -26,10 +26,9 @@ const SalesReportPage = () => {
   const { getParam, setParams, removeParam } = useParamsHook();
   const [localSearch, setLocalSearch] = useState(getParam("search") || "");
 
-  const { getSalesSummaryForReport } = useSale();
+  const { getSalesSummaryForReport, getAllSales } = useSale();
   const { getAllShopsForProductsFilter } = useShop();
   const { getAllTsexesForProductsFilter } = useTsex();
-  const { getAllSales } = useSale();
   const { getAllProductsForProductsFilter } = useProduct();
 
   // Query starts
@@ -130,7 +129,7 @@ const SalesReportPage = () => {
         page: 1,
       });
     }, 500),
-    [setParams],
+    [setParams]
   );
 
   const handleSearchChange = (value: string) => {
