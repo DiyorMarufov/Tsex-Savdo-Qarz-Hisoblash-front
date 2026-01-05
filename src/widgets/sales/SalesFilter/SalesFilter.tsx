@@ -30,7 +30,7 @@ interface CombinedReportFilterProps {
 }
 
 const SalesFilter: FC<CombinedReportFilterProps> = ({
-  onFilterSubmit,
+  // onFilterSubmit,
   start,
   end,
   customerId,
@@ -50,7 +50,7 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
     start || null,
     end || null,
   ]);
-  const [tempDateStrings, setTempDateStrings] = useState<string[] | null>(null);
+  const [_, setTempDateStrings] = useState<string[] | null>(null);
   const [tempCustomerId, setTempCustomerId] = useState(customerId);
   const [tempWorkshopId, setTempWorkshopId] = useState(workshopId);
   const [tempStoreId, setTempStoreId] = useState(storeId);
