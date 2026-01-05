@@ -258,7 +258,7 @@ const ProductsReportPage = () => {
       <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] p-3.5">
         <SearchInput
           placeholder="Mahsulot nomi,brandi bo'yicha qidirish"
-          className="h-12! bg-bg-ty! text-[16px]!"
+          className="h-11! bg-bg-ty! text-[16px]!"
           value={localSearch}
           onChange={handleSearchChange}
         />

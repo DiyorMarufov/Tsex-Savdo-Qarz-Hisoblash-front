@@ -148,7 +148,7 @@ const ProductsReportFilters = ({
             type="primary"
             icon={<FilterOutlined />}
             onClick={handleSubmit}
-            className="h-10! w-full max-w-[150px] bg-indigo-600 rounded-lg font-medium"
+            className="h-11! w-full max-w-[150px] bg-indigo-600 rounded-lg font-medium"
           >
             Filtrlash
           </Button>
@@ -234,7 +234,7 @@ const ProductsReportFilters = ({
 
           <Button
             type="primary"
-            className="h-10! w-full rounded-lg mt-2 bg-indigo-600"
+            className="h-11! w-full rounded-lg mt-2 bg-indigo-600"
             onClick={handleSubmit}
           >
             Filtrlash

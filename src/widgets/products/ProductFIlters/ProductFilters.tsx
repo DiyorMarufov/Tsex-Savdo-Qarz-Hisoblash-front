@@ -34,14 +34,14 @@ const ProductFilters = ({
     <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-2 p-3.5 flex items-center gap-4 max-[900px]:flex-wrap">
       <SearchInput
         placeholder="Mahsulot nomi, brandi bo'yicha qidirish"
-        className="h-12! min-[900px]:w-[50%]! bg-bg-ty! text-[16px]!"
+        className="h-11! min-[900px]:w-[50%]! bg-bg-ty! text-[16px]!"
         value={localSearch}
         onChange={onSearchChange}
       />
       <div className="flex gap-4 min-[900px]:w-[50%] max-[900px]:w-full max-[400px]:flex-wrap">
         <Filter
           placeholder="Barcha tsexlar"
-          className="h-12! min-[900px]:w-[50%]! max-[900px]:w-full! custom-select"
+          className="h-11! min-[900px]:w-[50%]! max-[900px]:w-full! custom-select"
           options={tsexesOptions}
           value={tsexId}
           onChange={(val) => onFilterChange("tsexId", val)}
@@ -52,7 +52,7 @@ const ProductFilters = ({
         />
         <Filter
           placeholder="Barcha do'konlar"
-          className="h-12! min-[900px]:w-[50%]! max-[900px]:w-full! custom-select"
+          className="h-11! min-[900px]:w-[50%]! max-[900px]:w-full! custom-select"
           options={shopsOptions}
           value={shopId}
           onChange={(val) => onFilterChange("shopId", val)}

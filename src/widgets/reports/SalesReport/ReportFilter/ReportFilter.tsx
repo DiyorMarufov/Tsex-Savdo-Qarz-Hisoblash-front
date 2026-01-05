@@ -94,7 +94,7 @@ const ReportFilter = ({
           <Button
             type="primary"
             icon={<FilterOutlined />}
-            className="h-10! w-full max-w-[150px] bg-indigo-600 rounded-lg font-medium"
+            className="h-11! w-full max-w-[150px] bg-indigo-600 rounded-lg font-medium"
             onClick={handleSubmit}
           >
             Filtrlash

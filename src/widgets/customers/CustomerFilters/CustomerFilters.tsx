@@ -22,13 +22,13 @@ const CustomerFilters = ({
     <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-6 p-3.5 flex items-center gap-3 max-[960px]:flex-wrap">
       <SearchInput
         placeholder="Mijoz nomi yoki telefon raqami bo'yicha qidirish"
-        className="h-12! bg-bg-ty! text-[17px]!"
+        className="h-11! bg-bg-ty! text-[17px]!"
         value={searchValue}
         onChange={onSearchChange}
       />
       <div className="max-[960px]:w-full">
         <Filter
-          className="h-12! bg-bg-ty! text-[17px]! w-[300px] max-[960px]:w-full! custom-select"
+          className="h-11! bg-bg-ty! text-[17px]! w-[300px] max-[960px]:w-full! custom-select"
           placeholder="Barcha shaharlar/viloyatlar"
           value={regionValue}
           onChange={(val) => onRegionChange("region", val)}

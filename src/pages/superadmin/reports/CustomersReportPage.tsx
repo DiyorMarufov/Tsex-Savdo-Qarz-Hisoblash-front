@@ -201,7 +201,7 @@ const CustomersReportPage = () => {
       <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] p-3.5 flex items-center gap-5 max-[960px]:flex-wrap">
         <SearchInput
           placeholder="Mijoz nomi,tel raqami orqali qidirish"
-          className="h-12! bg-bg-ty! text-[17px]!"
+          className="h-11! bg-bg-ty! text-[17px]!"
           value={localSearch}
           onChange={handleSearchChange}
         />

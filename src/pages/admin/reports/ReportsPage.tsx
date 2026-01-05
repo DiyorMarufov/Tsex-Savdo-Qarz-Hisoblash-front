@@ -75,7 +75,7 @@ const AdminReportsPage = () => {
       <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-2 p-3.5 flex items-center gap-3">
         <SearchInput
           placeholder="Ismi yoki telefon raqami bo'yicha qidirish"
-          className="h-12! bg-bg-ty! text-[17px]!"
+          className="h-11! bg-bg-ty! text-[17px]!"
         />
         <div
           className="p-[11px] border border-[#D9D9D9] rounded-[5px] bg-bg-ty cursor-pointer opacity-70"
