@@ -11,7 +11,7 @@ interface SaleItemsManagerProps {
   shopListLoading: boolean;
   setIsProductOpen: (visible: boolean) => void;
   setIsShopOpen: (visible: boolean) => void;
-  handleChange: (key: "productId" | "shopId", value: string) => void;
+  handleChange: (key: "shopId" | "productId", value: string[] | string) => void;
 }
 
 const SaleItemsManager = ({
@@ -25,6 +25,10 @@ const SaleItemsManager = ({
   setIsShopOpen,
   handleChange,
 }: SaleItemsManagerProps) => {
+  const handleProductChange = (val: string[]) => {
+    handleChange("productId", val);
+  };
+
   return (
     <div className="flex flex-col gap-2 bg-[#ffffff] p-4 border border-bg-fy rounded-[5px] overflow-hidden">
       <div className="flex flex-col gap-1.5">
@@ -35,15 +39,17 @@ const SaleItemsManager = ({
           <div className="flex flex-col gap-1 w-full">
             <span className="text-[16px] text-[#232E2F]">Mahsulot</span>
             <Select
-              value={productListLoading ? undefined : productId}
+              size="large"
+              mode="multiple"
+              value={productId ? productId.split(",").filter(Boolean) : []}
               options={productOptions}
-              onChange={(val) => handleChange("productId", val)}
+              onChange={handleProductChange}
               placeholder={
                 productListLoading
                   ? "Yuklanmoqda"
                   : `Mahsulotni qidiring yoki tanlang`
               }
-              className="h-10! min-[800px]:w-full"
+              className="min-[800px]:w-full custom-select-placeholder"
               onDropdownVisibleChange={(visible) => {
                 if (visible) setIsProductOpen(visible);
               }}

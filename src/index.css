@@ -165,3 +165,8 @@
 .custom-protable-background .ant-table-thead > tr > th {
   background-color: #f8f9fa !important; /* Siz xohlagan rang: juda oq kulrang */
 }
+
+/* Placeholder matnini kichiklashtirish */
+.custom-select-placeholder .ant-select-selection-placeholder {
+  font-size: 14px !important;
+}

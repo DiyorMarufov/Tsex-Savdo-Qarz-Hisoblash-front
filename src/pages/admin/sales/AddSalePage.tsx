@@ -1,4 +1,4 @@
-import { memo, useMemo, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
 import { Button } from "antd";
 import { Save } from "lucide-react";
@@ -27,21 +27,44 @@ const AdminAddSalePage = () => {
   // Query starts
   const query: QueryParams = useMemo(() => {
     const customerId = getParam("customerId") || undefined;
-    const productId = getParam("productId") || undefined;
     const shopId = getParam("shopId") || undefined;
 
-    return { customerId, productId, shopId };
+    const savedData = localStorage.getItem("selected_product_ids");
+    const productIdArray: string[] = savedData ? JSON.parse(savedData) : [];
+    const productId =
+      productIdArray.length > 0 ? productIdArray.join(",") : undefined;
+
+    return { customerId, shopId, productId };
   }, [getParam]);
   // Query ends
 
   // HanldeChangeSelect starts
   const handleChange = (
     key: "customerId" | "productId" | "shopId",
-    value: string
+    value: string | string[]
   ) => {
-    setParams({
-      [key]: value || "",
-    });
+    if (key === "productId") {
+      const savedData = localStorage.getItem("selected_product_ids");
+
+      let existingIds: string[] = [];
+      try {
+        existingIds = savedData ? JSON.parse(savedData) : [];
+      } catch (e) {
+        existingIds = [];
+      }
+
+      const newValues = Array.isArray(value) ? value : [value];
+
+      let finalValues =
+        existingIds.length !== newValues.length ? newValues : existingIds;
+
+      localStorage.setItem("selected_product_ids", JSON.stringify(finalValues));
+
+      setParams({ p_ref: Date.now().toString() });
+      return;
+    }
+
+    setParams({ [key]: value as string });
   };
   // HanldeChangeSelect ends
 
@@ -71,15 +94,11 @@ const AdminAddSalePage = () => {
   const shouldFetchProducts = isProductOpen || !!query.productId;
   const { data: products, isLoading: productLoading } =
     getAllProductsForProductsFilter(shouldFetchProducts);
-  const productOptions = [
-    {
-      value: "",
-      label: "Barcha mahsulotlar",
-    },
-    ...(products?.data?.data?.map((pr: any) => ({
+  const productOptions =
+    products?.data?.data?.map((pr: any) => ({
       value: pr?.id,
       label: (
-        <div className="flex justify-between">
+        <div className="flex gap-3 items-center justify-between">
           <span className="text-[14px] font-medium text-slate-800">
             {pr?.name}
           </span>
@@ -89,23 +108,23 @@ const AdminAddSalePage = () => {
           </span>
         </div>
       ),
-    })) || []),
-  ];
+    })) || [];
 
   const shouldFetchShop = isShopOpen || !!query.shopId;
   const { data: shops, isLoading: shopLoading } =
     getAllShopsForProductsFilter(shouldFetchShop);
-  const shopsOptions = [
-    {
-      value: "",
-      label: "Barcha do'konlar",
-    },
-    ...(shops?.data?.map((st) => ({
+  const shopsOptions =
+    shops?.data?.map((st) => ({
       value: st?.id,
       label: st?.name,
-    })) || []),
-  ];
+    })) || [];
   // Options end
+
+  useEffect(() => {
+    return () => {
+      localStorage.removeItem("selected_product_ids");
+    };
+  }, []);
 
   return (
     <div>
