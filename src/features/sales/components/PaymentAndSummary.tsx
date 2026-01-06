@@ -9,7 +9,7 @@ const PaymentAndSummary = () => {
   const { getParam } = useParamsHook();
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [paidAmount, setPaidAmount] = useState<any>(
-    Number(localStorage.getItem("paidAmount")) || 0
+    Number(localStorage.getItem("paid_amount")) || 0
   );
 
   const pRef = getParam("p_ref") || "";
@@ -17,11 +17,15 @@ const PaymentAndSummary = () => {
     name: "image",
     multiple: false,
     capture: false,
-    beforeUpload: () => false,
+    beforeUpload: (file) => {
+      handleFileUpload(file);
+      return false;
+    },
     fileList,
     onChange(info) {
       setFileList(info.fileList);
     },
+    onRemove: (file) => handleFileRemove(file),
     onDrop(e) {
       console.log("Dropped files", e.dataTransfer.files);
     },
@@ -38,6 +42,30 @@ const PaymentAndSummary = () => {
 
     setTotalAmount(total);
   }, [pRef]);
+
+  const handleFileUpload = (file: File) => {
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      const base64Str = reader.result as string;
+      const existingImgs = localStorage.getItem("images");
+      const imgsArr = existingImgs ? JSON.parse(existingImgs) : [];
+
+      imgsArr.push(base64Str);
+      localStorage.setItem("images", JSON.stringify(imgsArr));
+    };
+    reader.readAsDataURL(file);
+    return false;
+  };
+
+  const handleFileRemove = (file: any) => {
+    const index = fileList.indexOf(file);
+    if (index > -1) {
+      const imgs = JSON.parse(localStorage.getItem("images") || "[]");
+      imgs.splice(index, 1);
+      localStorage.setItem("images", JSON.stringify(imgs));
+    }
+  };
 
   const debt = paidAmount - totalAmount;
   return (
@@ -62,11 +90,11 @@ const PaymentAndSummary = () => {
           parser={(v) => v!.replace(/[^\d]/g, "")}
           onChange={(val) => {
             if (val === null) {
-              localStorage.removeItem("paidAmount");
+              localStorage.removeItem("paid_amount");
               setPaidAmount(null);
             } else {
               const numVal = Number(val);
-              localStorage.setItem("paidAmount", numVal.toString());
+              localStorage.setItem("paid_amount", numVal.toString());
               setPaidAmount(numVal);
             }
           }}

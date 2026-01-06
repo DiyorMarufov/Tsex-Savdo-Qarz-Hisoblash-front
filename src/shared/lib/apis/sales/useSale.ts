@@ -1,10 +1,26 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "../../../../features/auth/api";
 import type { IResponseData } from "../../types";
 
 export const sale = "sale";
 
 export const useSale = () => {
+  const client = useQueryClient();
+  const createSale = useMutation({
+    mutationFn: (data: any) => api.post("sales", data).then((res) => res.data),
+    onSuccess: () => (
+      client.invalidateQueries({ queryKey: [sale, "all-sales"] }),
+      client.invalidateQueries({ queryKey: [sale, "total-sales"] }),
+      client.invalidateQueries({ queryKey: [sale, "weekly-sale"] }),
+      client.invalidateQueries({
+        queryKey: [sale, "sales-summary-for-report"],
+      }),
+      client.invalidateQueries({
+        queryKey: [sale, "sales-statistics-for-report"],
+      })
+    ),
+  });
+
   const getAllSales = (params?: any) =>
     useQuery({
       queryKey: [sale, "all-sales", params],
@@ -56,6 +72,7 @@ export const useSale = () => {
       gcTime: 1000 * 60 * 10,
     });
   return {
+    createSale,
     getAllSales,
     getTotalSales,
     getWeeklySale,

@@ -177,7 +177,7 @@ const ProductsReportPage = () => {
 
   // Product detail starts
   const handleProductDetailOpen = (id: string) => {
-    navigate(`${id}`);
+    navigate(`/superadmin/products/${id}`);
   };
   // Product detail ends
 

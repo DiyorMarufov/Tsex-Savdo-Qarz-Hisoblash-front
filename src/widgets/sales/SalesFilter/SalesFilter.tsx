@@ -203,7 +203,7 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
           </div>
 
           <div className="w-full">
-            <p className="mb-1 text-sm text-slate-500 font-medium">Mijozlar</p>
+            <p className="mb-1 text-sm text-slate-500 font-medium">Mahsulotlar</p>
             <Filter
               value={tempProductId}
               options={productOptions}

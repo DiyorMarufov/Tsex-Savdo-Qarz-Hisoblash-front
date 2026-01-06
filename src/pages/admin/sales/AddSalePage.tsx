@@ -12,6 +12,9 @@ import { formatPhoneNumber } from "../../../shared/lib/functions/formatPhoneNumb
 import { useParamsHook } from "../../../shared/hooks/params/useParams";
 import { useProduct } from "../../../shared/lib/apis/products/useProduct";
 import { useShop } from "../../../shared/lib/apis/shops/useShop";
+import { base64ToFile } from "../../../shared/lib/functions/base64ToFile";
+import { useSale } from "../../../shared/lib/apis/sales/useSale";
+import { useApiNotification } from "../../../shared/hooks/api-notification/useApiNotification";
 
 const AdminAddSalePage = () => {
   const navigate = useNavigate();
@@ -21,8 +24,10 @@ const AdminAddSalePage = () => {
   const { getAllCustomersForTransaction } = useCustomer();
   const { getAllProductsForProductsFilter } = useProduct();
   const { getAllShopsForProductsFilter } = useShop();
+  const { createSale } = useSale();
 
-  const { getParam, setParams } = useParamsHook();
+  const { getParam, setParams, removeParams } = useParamsHook();
+  const { handleApiError } = useApiNotification();
 
   // Query starts
   const query: QueryParams = useMemo(() => {
@@ -153,6 +158,62 @@ const AdminAddSalePage = () => {
     })) || [];
   // Options end
 
+  // HandleFinishSale starts
+  const handleFinishSale = () => {
+    const formData = new FormData();
+
+    const shop_id = getParam("shopId") || "";
+    const customer_id = getParam("customerId") || "";
+    const paid_amount = localStorage.getItem("paid_amount") || "";
+    const sale_items = localStorage.getItem("sale_items") || "[]";
+    const savedImgs = JSON.parse(localStorage.getItem("images") || "[]");
+
+    formData.append("shop_id", shop_id);
+    formData.append("customer_id", customer_id);
+    formData.append("paid_amount", paid_amount);
+    formData.append("sale_items", sale_items);
+    savedImgs.forEach((base64: any, inx: number) => {
+      const file = base64ToFile(base64, `product_${inx}.png`);
+      formData.append("images", file);
+    });
+
+    createSale.mutate(formData, {
+      onSuccess: () => {
+        removeParams(["shopId", "customerId"]);
+        localStorage.removeItem("paid_amount");
+        localStorage.removeItem("sale_items");
+        localStorage.removeItem("selected_product_ids");
+        navigate("/admin/sales");
+      },
+      onError: (err: any) => {
+        const status = err?.response?.data?.statusCode;
+        const msg = err?.response?.data?.message;
+
+        if (status === 404 && msg.startsWith("Shop with ID")) {
+          handleApiError("Do'kon topilmadi", "topRight");
+          return;
+        } else if (status === 404 && msg.startsWith("Seller with ID")) {
+          handleApiError("Sotuvchi topilmadi", "topRight");
+          return;
+        } else if (status === 404 && msg.startsWith("Customer with ID")) {
+          handleApiError("Mijoz topilmadi", "topRight");
+          return;
+        } else if (status === 404 && msg.startsWith("Product with ID")) {
+          handleApiError("Mahsulot topilmadi", "topRight");
+          return;
+        } else if (status === 400 && msg.startsWith("Product")) {
+          handleApiError("Mahsulot yetarli emas", "topRight");
+          return;
+        } else {
+          handleApiError("Serverda xato", "topRight");
+          return;
+        }
+      },
+    });
+  };
+
+  // HandleFinishSale ends
+
   return (
     <div>
       <div className="flex justify-between gap-3">
@@ -165,7 +226,14 @@ const AdminAddSalePage = () => {
           >
             Bekor qilish
           </Button>
-          <Button className="h-10!" type="primary" htmlType="submit">
+          <Button
+            className="h-10!"
+            type="primary"
+            htmlType="submit"
+            onClick={handleFinishSale}
+            loading={createSale.isPending}
+            disabled={createSale.isPending}
+          >
             <Save />
             Saqlash
           </Button>
@@ -208,6 +276,9 @@ const AdminAddSalePage = () => {
           className="max-[500px]:w-full h-10!"
           type="primary"
           htmlType="submit"
+          onClick={handleFinishSale}
+          loading={createSale.isPending}
+          disabled={createSale.isPending}
         >
           <Save />
           Saqlash
