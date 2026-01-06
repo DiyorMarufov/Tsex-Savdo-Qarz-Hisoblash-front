@@ -8,8 +8,8 @@ import {
   type FormInstance,
 } from "antd";
 import { memo } from "react";
-import { customerRegions } from "../../../../shared/lib/constants";
-import type { NewCustomerFieldType } from "../../../../shared/lib/types";
+import type { NewCustomerFieldType } from "../../../shared/lib/types";
+import { customerRegions } from "../../../shared/lib/constants";
 
 interface AddCustomerModalProps {
   open: boolean;

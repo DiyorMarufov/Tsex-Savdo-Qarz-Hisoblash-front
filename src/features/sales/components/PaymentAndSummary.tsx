@@ -22,7 +22,6 @@ const PaymentAndSummary = () => {
   return (
     <div className="w-full bg-[#ffffff] px-5 py-4 flex flex-col gap-5 border border-bg-fy rounded-[5px] overflow-hidden">
       <span className="text-[20px] font-medium text-[#232E2F]">To'lov</span>
-
       <Form>
         <div>
           <span className="text-[16px] max-[500px]:text-[15px] text-[#232E2F] flex mb-1">

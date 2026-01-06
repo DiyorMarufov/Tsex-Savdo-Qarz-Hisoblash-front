@@ -297,7 +297,7 @@ const TsexesPage = () => {
 
       <TsexesBalances />
 
-      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-6 p-3.5 flex items-center gap-5 max-[960px]:flex-wrap">
+      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-4 p-3.5 flex items-center gap-5 max-[960px]:flex-wrap">
         <SearchInput
           placeholder="Tsex nomi yoki operatsiya bo'yicha qidirish"
           className="h-11! bg-bg-ty! text-[17px]!"

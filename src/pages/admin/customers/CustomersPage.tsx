@@ -1,28 +1,35 @@
 import ProTable from "@ant-design/pro-table";
-import { memo, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
-import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
-import {
-  Select,
-  Button as AntdButton,
-  Modal,
-  Form,
-  type FormProps,
-  Input,
-} from "antd";
+import { Form, type FormProps } from "antd";
 import Button from "../../../shared/ui/Button/Button";
-// import { Edit, Trash } from "lucide-react";
 import { Plus } from "lucide-react";
-import type { NewCustomerFieldType } from "../../../shared/lib/types";
+import type {
+  NewCustomerFieldType,
+  QueryParams,
+} from "../../../shared/lib/types";
 import { customerColumns } from "../../../shared/lib/model/customers/customers-model";
+import CustomerFilters from "../../../widgets/customers/CustomerFilters/CustomerFilters";
+import CustomerMobileList from "../../../widgets/customers/CustomerMobileList/CustomerMobileList";
+import AddCustomerModal from "../../../widgets/customers/AddCustomerModal/AddCustomerModal";
+import { useCustomer } from "../../../shared/lib/apis/customers/useCustomer";
+import { useParamsHook } from "../../../shared/hooks/params/useParams";
+import { useApiNotification } from "../../../shared/hooks/api-notification/useApiNotification";
+import { debounce } from "../../../shared/lib/functions/debounce";
+import { customerRegions } from "../../../shared/lib/constants";
 
 const AdminCustomersPage = () => {
   const [newCustomerOpen, setNewCustomerOpen] = useState<boolean>(false);
-  const navigate = useNavigate();
   const [form] = Form.useForm();
+  const navigate = useNavigate();
+  const { getParam, setParams, removeParam } = useParamsHook();
+  const [localSearch, setLocalSearch] = useState(getParam("search") || "");
+  const { getAllCustomers } = useCustomer();
+  const { createCustomer } = useCustomer();
+  const { handleApiError, handleSuccess } = useApiNotification();
 
-  // NewCustomer create starts
+  // New Customer starts
   const handleNewCustomer = () => {
     setNewCustomerOpen(true);
   };
@@ -31,19 +38,112 @@ const AdminCustomersPage = () => {
     setNewCustomerOpen(false);
   };
 
-  const transactionOnFinish: FormProps<NewCustomerFieldType>["onFinish"] = (
-    values: NewCustomerFieldType,
+  const newCustomerOnFinish: FormProps<NewCustomerFieldType>["onFinish"] = (
+    values: NewCustomerFieldType
   ) => {
-    console.log("Success:", values);
+    const { full_name, phone_number, region } = values;
+    const data = {
+      full_name,
+      phone_number: phone_number.split(" ").join(""),
+      region,
+    };
+    createCustomer.mutate(data, {
+      onSuccess: () => {
+        handleCancelNewCustomer();
+        form.resetFields();
+        handleSuccess("Mijoz muvaffaqiyatli yaratildi");
+      },
+      onError: (err: any) => {
+        const status = err?.response?.data?.statusCode;
+        switch (status) {
+          case 409:
+            handleApiError(
+              `${phone_number} raqamli foydalanuvchi mavjud`,
+              "topRight"
+            );
+            break;
+
+          default:
+            handleApiError("Serverda xato", "topRight");
+            break;
+        }
+      },
+    });
   };
-  // NewCustomer create ends
+  // New Customer ends
 
   // Detail starts
   const handleOpenDetail = (id: string) => {
-    navigate(`detail/${id}`);
+    navigate(`transaction/${id}`);
   };
-
   // Detail ends
+
+  // Query starts
+  const query: QueryParams = useMemo(() => {
+    const page = Number(getParam("page")) || 1;
+    const limit = Number(getParam("limit")) || 5;
+    const search = getParam("search") || undefined;
+    const region = getParam("region") || undefined;
+
+    return { page, limit, search, region };
+  }, [getParam]);
+  // Query ends
+
+  // CustomerData starts
+  const { data: allCustomers, isLoading: customerLoading } =
+    getAllCustomers(query);
+  const customers = allCustomers?.data?.data;
+  const total = allCustomers?.data?.total || 0;
+  // CustomerData ends
+
+  // PageChange starts
+  const handlePageChange = (newPage: number, newPageSize?: number) => {
+    const updateParams: { page?: number; limit?: number } = {};
+
+    if (newPage > 1) {
+      updateParams.page = newPage;
+    }
+
+    if (newPageSize && newPageSize !== 5) {
+      updateParams.limit = newPageSize;
+    }
+
+    setParams(updateParams);
+
+    if (newPage === 1) {
+      removeParam("page");
+    }
+    if (newPageSize === 5 && getParam("limit")) {
+      removeParam("limit");
+    }
+  };
+  // PageChange ends
+
+  // Search starts
+  const debouncedSetSearchQuery = useCallback(
+    debounce((nextValue: string) => {
+      setParams({
+        search: nextValue || "",
+        page: 1,
+      });
+    }, 500),
+    [setParams]
+  );
+
+  const handleSearchChange = (value: string) => {
+    setLocalSearch(value);
+    debouncedSetSearchQuery(value);
+  };
+  // Search ends
+
+  // Filter starts
+  const handleFilterChange = (key: string, value: string) => {
+    setParams({
+      [key]: value || "",
+      page: 1,
+    });
+  };
+  // Filter ends
   return (
     <div>
       <div className="flex justify-between gap-3">
@@ -63,188 +163,55 @@ const AdminCustomersPage = () => {
         </div>
       </div>
 
-      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-2 p-3.5 flex items-center gap-3 max-[960px]:flex-wrap">
-        <SearchInput
-          placeholder="Mijoz ismi yoki tel raqami bo'yicha qidirish"
-          className="h-11! bg-bg-ty! text-[17px]!"
-        />
-        <div className="max-[960px]:w-full">
-          <Select
-            className="h-11! bg-bg-ty! text-[17px]! w-[300px] max-[960px]:w-full!"
-            placeholder="Viloyat/Shahar"
-          />
-        </div>
-      </div>
+      <CustomerFilters
+        regionOptions={[
+          { value: "", label: "Barcha shaharlar/viloyatlar" },
+          ...(customerRegions || []),
+        ]}
+        onSearchChange={handleSearchChange}
+        searchValue={localSearch}
+        regionValue={query.region || ""}
+        onRegionChange={handleFilterChange}
+        isSuperadmin={false}
+      />
+
       <div className="mt-4 max-[500px]:hidden">
         <ProTable
-          // dataSource={fakeCustomerData}
+          dataSource={customers}
           rowKey="id"
           pagination={{
             showSizeChanger: true,
             responsive: false,
+            current: query.page,
+            pageSize: query.limit,
+            total,
+            onChange: handlePageChange,
           }}
           columns={customerColumns(handleOpenDetail)}
           search={false}
           dateFormatter="string"
           scroll={{ x: "max-content" }}
+          loading={customerLoading}
         />
       </div>
 
-      {/* <div className="mt-4 min-[500px]:hidden flex flex-col gap-5">
-        {fakeCustomerData.map((cs: CustomersListItemsType) => (
-          <div
-            key={cs.id}
-            className="flex flex-col gap-3 border border-bg-fy bg-[#ffffff] rounded-[12px] overflow-hidden"
-          >
-            <div className="flex justify-between items-center gap-3 pt-2.5 px-3.5">
-              <div className="flex flex-col items-start">
-                <a className="text-[16px] font-bold">{cs.full_name}</a>
-                <span className="text-[15px] font-bold text-[#64748B]">
-                  {cs.region}
-                </span>
-              </div>
-              <div className="flex flex-col items-end">
-                {cs.balance > 0 ? (
-                  <span className="text-[16px] font-bold text-red-500">
-                    -{Math.abs(cs.balance).toLocaleString()}
-                  </span>
-                ) : (
-                  <span className="text-[16px] font-bold text-green-500">
-                    {Math.abs(cs.balance).toLocaleString()}
-                  </span>
-                )}
-              </div>
-            </div>
+      <CustomerMobileList
+        data={customers}
+        onDetail={handleOpenDetail}
+        currentPage={query.page}
+        pageSize={query.limit}
+        total={total}
+        onPageChange={handlePageChange}
+        loading={customerLoading}
+      />
 
-            <div className="flex flex-col px-3.5">
-              <div className="flex justify-between gap-3">
-                <span className="text-[15px] font-medium text-[#6B7280]">
-                  Telefon raqami
-                </span>
-                <span className="text-[16px] font-bold text-[#4B5563]">
-                  {cs.phone_number}
-                </span>
-              </div>
-              <div className="flex justify-between gap-3">
-                <span className="text-[15px] font-medium text-[#6B7280]">
-                  Oxirgi tranzaksiya
-                </span>
-                <span className="text-[16px] font-bold text-[#4B5563]">
-                  {cs.last_transaction.toLocaleString("uz-UZ")}
-                </span>
-              </div>
-              <div className="flex justify-between gap-3">
-                <span
-                  title="Kiritilgan sana"
-                  className="text-[15px] font-medium text-[#6B7280]"
-                >
-                  Kiritilgan sana
-                </span>
-                <span className="text-[16px] font-bold text-[#4B5563]">
-                  {cs.created_at.toLocaleString("uz-UZ")}
-                </span>
-              </div>
-            </div>
-
-            <div className="w-full h-px bg-bg-fy"></div>
-
-            <div className="flex items-center justify-between px-3.5 pb-3">
-              <div className="flex items-center gap-5">
-                <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
-                <Trash className="text-red-600 cursor-pointer hover:opacity-80" />
-              </div>
-              <div>
-                <AntdButton
-                  className="bg-[#1D4ED8]! text-white!"
-                  onClick={() => handleOpenDetail(cs.id as string)}
-                >
-                  Batafsil
-                </AntdButton>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div> */}
-
-      <Modal
-        centered
-        title="Mijoz yaratish"
-        closable={{ "aria-label": "Custom Close Button" }}
+      <AddCustomerModal
         open={newCustomerOpen}
         onCancel={handleCancelNewCustomer}
-        footer={
-          <div className="flex gap-2 justify-end">
-            <AntdButton
-              className="bg-red-500! text-white!"
-              onClick={handleCancelNewCustomer}
-            >
-              Bekor qilish
-            </AntdButton>
-            <AntdButton
-              onClick={() => form.submit()}
-              className="bg-green-500! text-white!"
-            >
-              Tasdiqlash
-            </AntdButton>
-          </div>
-        }
-      >
-        <div className="mt-6">
-          <Form name="basic" onFinish={transactionOnFinish} form={form}>
-            <div>
-              <span className="flex mb-1 font-medium text-[15px]">
-                Mijoz ismi
-              </span>
-              <Form.Item<NewCustomerFieldType>
-                name="full_name"
-                rules={[
-                  {
-                    required: true,
-                    message: "Mijoz to'liq ismi kiritilishi shart!",
-                  },
-                ]}
-              >
-                <Input className="h-10!" placeholder="To'liq ismi" />
-              </Form.Item>
-            </div>
-
-            <div>
-              <span className="flex mb-1 font-medium text-[15px]">
-                Tel raqami
-              </span>
-              <Form.Item<NewCustomerFieldType>
-                name="phone_number"
-                rules={[
-                  {
-                    required: true,
-                    message: "Mijoz tel raqami kiritilishi shart!",
-                  },
-                ]}
-              >
-                <Input className="h-10!" placeholder="+998" />
-              </Form.Item>
-            </div>
-
-            <div>
-              <span className="flex mb-1 font-medium text-[15px]">
-                Viloyat/Shahar
-              </span>
-              <Form.Item<NewCustomerFieldType>
-                name="region"
-                className="w-full!"
-                rules={[
-                  {
-                    required: true,
-                    message: "Mijoz viloyat/shahar tanlanishi shart!",
-                  },
-                ]}
-              >
-                <Select placeholder="Viloyat/Shahar" />
-              </Form.Item>
-            </div>
-          </Form>
-        </div>
-      </Modal>
+        onFinish={newCustomerOnFinish}
+        form={form}
+        loading={createCustomer.isPending}
+      />
     </div>
   );
 };

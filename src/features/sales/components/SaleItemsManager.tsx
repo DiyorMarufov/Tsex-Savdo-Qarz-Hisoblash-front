@@ -1,40 +1,76 @@
-import ProTable from "@ant-design/pro-table";
 import { Select } from "antd";
-import { memo, useRef } from "react";
-import { fakeSales, salesColumns } from "../../../shared/lib/model/reports/sales-model";
+import { memo } from "react";
+import type { Option } from "../../../shared/lib/types";
 
-const SaleItemsManager = () => {
-  const saleId = useRef<string | null>(null);
-  // Sale Items detail starts
-  const handleSaleItems = (id: string) => {
-    saleId.current = id;
-  };
+interface SaleItemsManagerProps {
+  productId?: string;
+  shopId?: string;
+  productOptions: Option[];
+  shopOptions: Option[];
+  productListLoading: boolean;
+  shopListLoading: boolean;
+  setIsProductOpen: (visible: boolean) => void;
+  setIsShopOpen: (visible: boolean) => void;
+  handleChange: (key: "productId" | "shopId", value: string) => void;
+}
 
-  // Sale Items detail ends
+const SaleItemsManager = ({
+  productId,
+  shopId,
+  productOptions,
+  shopOptions,
+  productListLoading,
+  shopListLoading,
+  setIsProductOpen,
+  setIsShopOpen,
+  handleChange,
+}: SaleItemsManagerProps) => {
   return (
     <div className="flex flex-col gap-2 bg-[#ffffff] p-4 border border-bg-fy rounded-[5px] overflow-hidden">
-      <span className="text-[18px] text-[#232E2F]">Sotuvdagi mahsulotlar</span>
-      <div className="flex flex-col gap-1">
-        <span className="text-[16px] text-[#232E2F]">Mahsulot</span>
-        <Select
-          placeholder="Mahsulotni qidiring yoki tanlang"
-          className="h-10!"
-        />
-      </div>
-      <div className="max-[500px]:hidden">
-        <ProTable
-          dataSource={fakeSales}
-          rowKey="id"
-          pagination={{
-            showSizeChanger: true,
-            responsive: false,
-          }}
-          columns={salesColumns(handleSaleItems)}
-          search={false}
-          dateFormatter="string"
-          scroll={{ x: "max-content" }}
-          className="custom-protable-background"
-        />
+      <div className="flex flex-col gap-1.5">
+        <span className="text-[18px] text-[#232E2F] ">
+          Mahsulot va do'kon malumotlari
+        </span>
+        <div className="flex max-[820px]:flex-col-reverse gap-3">
+          <div className="flex flex-col gap-1 w-full">
+            <span className="text-[16px] text-[#232E2F]">Mahsulot</span>
+            <Select
+              value={productListLoading ? undefined : productId}
+              options={productOptions}
+              onChange={(val) => handleChange("productId", val)}
+              placeholder={
+                productListLoading
+                  ? "Yuklanmoqda"
+                  : `Mahsulotni qidiring yoki tanlang`
+              }
+              className="h-10! min-[800px]:w-full"
+              onDropdownVisibleChange={(visible) => {
+                if (visible) setIsProductOpen(visible);
+              }}
+              loading={productListLoading}
+              allowClear
+            />
+          </div>
+          <div className="flex flex-col gap-1 w-full">
+            <span className="text-[16px] text-[#232E2F]">Do'kon</span>
+            <Select
+              value={shopListLoading ? undefined : shopId}
+              options={shopOptions}
+              onChange={(val) => handleChange("shopId", val)}
+              placeholder={
+                shopListLoading
+                  ? "Yuklanmoqda"
+                  : `Do'konni qidiring yoki tanlang`
+              }
+              className="h-10! min-[800px]:w-full"
+              onDropdownVisibleChange={(visible) => {
+                if (visible) setIsShopOpen(visible);
+              }}
+              loading={shopListLoading}
+              allowClear
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

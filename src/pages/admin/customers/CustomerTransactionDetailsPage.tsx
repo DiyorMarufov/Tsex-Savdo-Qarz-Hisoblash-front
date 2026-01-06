@@ -18,7 +18,7 @@ import { ArrowLeft } from "lucide-react";
 import PlusButton from "../../../shared/ui/Button/PlusButton";
 import { transactionDetailColumns } from "../../../shared/lib/model/customers/customer-transactions-detail-model";
 
-const CustomerTransactionDetails = () => {
+const AdminCustomerTransactionDetails = () => {
   const [transactionOpen, setTransactionOpen] = useState<boolean>(false);
   const [modalType, setModalType] =
     useState<CustomerTransactionDetailType | null>(null);
@@ -96,7 +96,7 @@ const CustomerTransactionDetails = () => {
                   return;
                 }
               },
-            },
+            }
           );
           break;
 
@@ -127,7 +127,7 @@ const CustomerTransactionDetails = () => {
                   return;
                 }
               },
-            },
+            }
           );
           break;
 
@@ -158,7 +158,7 @@ const CustomerTransactionDetails = () => {
                   return;
                 }
               },
-            },
+            }
           );
           break;
 
@@ -189,7 +189,7 @@ const CustomerTransactionDetails = () => {
                   return;
                 }
               },
-            },
+            }
           );
           break;
         default:
@@ -204,11 +204,11 @@ const CustomerTransactionDetails = () => {
 
   // CustomerTransactionDetail starts
   const {
-    data: customerTransactionDetails,
+    data: AdmincustomerTransactionDetails,
     isLoading: customerTransactionDetailLoading,
   } = getCustomerTransactionsDetailByParentTransactionId(id as string);
-  const transactionDetails = customerTransactionDetails?.data?.data;
-  const total = customerTransactionDetails?.data?.total || 0;
+  const transactionDetails = AdmincustomerTransactionDetails?.data?.data;
+  const total = AdmincustomerTransactionDetails?.data?.total || 0;
   // CustomerTransactionDetail ends
 
   // PageChange starts
@@ -303,7 +303,7 @@ const CustomerTransactionDetails = () => {
           type={type}
           handleActionMore={() =>
             openTransactionModal(
-              type === "borrowing" ? "borrow-more" : "lend-more",
+              type === "borrowing" ? "borrow-more" : "lend-more"
             )
           }
           handlePayment={() =>
@@ -316,4 +316,4 @@ const CustomerTransactionDetails = () => {
   );
 };
 
-export default memo(CustomerTransactionDetails);
+export default memo(AdminCustomerTransactionDetails);

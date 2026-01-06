@@ -72,7 +72,7 @@ export const AdminSidebarNavigation: SidebarNavItem[] = [
   {
     id: 1,
     to: "/admin",
-    label: "Boshqaruv Paneli",
+    label: "Boshqaruv paneli",
     icon: <LayoutDashboard className="w-5 h-5" />,
   },
   {

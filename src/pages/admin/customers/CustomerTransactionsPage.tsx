@@ -7,7 +7,7 @@ import NameSkeleton from "../../../shared/ui/Skeletons/NameSkeleton/NameSkeleton
 import { ArrowLeft } from "lucide-react";
 import { transactionColumns } from "../../../shared/lib/model/customers/customer-transactions-model";
 
-const CustomersDetailPage = () => {
+const AdminCustomersDetailPage = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { id } = useParams();
@@ -18,8 +18,11 @@ const CustomersDetailPage = () => {
   }, []);
 
   // CustomerTransaction detail starts
-  const handleOpenTransactionDetail = (id: string) => {
-    navigate(`detail/${id}`);
+  const handleOpenTransactionDetail = (
+    id: string,
+    type: "lending" | "borrowing"
+  ) => {
+    navigate(`detail/${id}?type=${type}`);
   };
   // CustomerTransaction detail ends
 
@@ -74,4 +77,4 @@ const CustomersDetailPage = () => {
   );
 };
 
-export default memo(CustomersDetailPage);
+export default memo(AdminCustomersDetailPage);

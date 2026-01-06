@@ -19,6 +19,7 @@ const CustomersReportPage = lazy(
 const NotFoundPage = lazy(
   () => import("../../shared/ui/NotFound/NotFoundPage")
 );
+
 const AdminSettingsPage = lazy(
   () => import("../../pages/admin/settings/SettingsPage")
 );
@@ -27,6 +28,12 @@ const AdminReportsPage = lazy(
 );
 const AdminTsexesPage = lazy(
   () => import("../../pages/admin/tsexes/TsexesPage")
+);
+const AdminCustomersTransactionDetailPage = lazy(
+  () => import("../../pages/admin/customers/CustomerTransactionDetailsPage")
+);
+const AdminCustomersTransactionPage = lazy(
+  () => import("../../pages/admin/customers/CustomerTransactionsPage")
 );
 const AdminCustomersPage = lazy(
   () => import("../../pages/admin/customers/CustomersPage")
@@ -47,8 +54,8 @@ const AdminDashboardPage = lazy(
 const TsexesTransactions = lazy(
   () => import("../../pages/superadmin/tsexes/TsexesTransactions")
 );
-const CustomerTransactionDetails = lazy(
-  () => import("../../pages/superadmin/customers/CustomerTransactionDetails")
+const CustomerTransactionDetailsPage = lazy(
+  () => import("../../pages/superadmin/customers/CustomerTransactionDetailsPage")
 );
 const CustomersTransactionPage = lazy(
   () => import("../../pages/superadmin/customers/CustomerTransactionsPage")
@@ -135,7 +142,7 @@ const Router = () => {
                       children: [
                         {
                           path: "detail/:id",
-                          element: <CustomerTransactionDetails />,
+                          element: <CustomerTransactionDetailsPage />,
                         },
                       ],
                     },
@@ -208,7 +215,22 @@ const Router = () => {
                 },
                 {
                   path: "customers",
-                  element: <AdminCustomersPage />,
+                  children: [
+                    {
+                      index: true,
+                      element: <AdminCustomersPage />,
+                    },
+                    {
+                      path: "transaction/:id",
+                      element: <AdminCustomersTransactionPage />,
+                      children: [
+                        {
+                          path: "detail/:id",
+                          element: <AdminCustomersTransactionDetailPage />,
+                        },
+                      ],
+                    },
+                  ],
                 },
                 {
                   path: "tsexes",

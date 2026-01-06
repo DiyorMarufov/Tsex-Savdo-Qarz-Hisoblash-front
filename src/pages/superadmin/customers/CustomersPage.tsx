@@ -19,12 +19,12 @@ import { useParamsHook } from "../../../shared/hooks/params/useParams";
 import { debounce } from "../../../shared/lib/functions/debounce";
 import { customerRegions } from "../../../shared/lib/constants";
 import CustomerTransactionModal from "../../../widgets/superadmin/customers/CustomerTransactionModal/CustomerTransactionModal";
-import AddCustomerModal from "../../../widgets/superadmin/customers/AddCustomerModal/AddCustomerModal";
 import { useApiNotification } from "../../../shared/hooks/api-notification/useApiNotification";
 import { formatPhoneNumber } from "../../../shared/lib/functions/formatPhoneNumber";
 import { useCustomerTransaction } from "../../../shared/lib/apis/customer-transactions/useCustomerTransaction";
 import PlusButton from "../../../shared/ui/Button/PlusButton";
 import { customerColumns } from "../../../shared/lib/model/customers/customers-model";
+import AddCustomerModal from "../../../widgets/customers/AddCustomerModal/AddCustomerModal";
 
 const CustomersPage = () => {
   const [transactionOpen, setTransactionOpen] = useState<boolean>(false);
@@ -67,7 +67,7 @@ const CustomersPage = () => {
   };
 
   const transactionOnFinish: FormProps<TransactionFieldType>["onFinish"] = (
-    values: TransactionFieldType,
+    values: TransactionFieldType
   ) => {
     const { customer_id, amount, description, due_date } = values;
     const data = {
@@ -160,7 +160,7 @@ const CustomersPage = () => {
   };
 
   const newCustomerOnFinish: FormProps<NewCustomerFieldType>["onFinish"] = (
-    values: NewCustomerFieldType,
+    values: NewCustomerFieldType
   ) => {
     const { full_name, phone_number, region } = values;
     const data = {
@@ -181,7 +181,7 @@ const CustomersPage = () => {
           case 409:
             handleApiError(
               `${phone_number} raqamli foydalanuvchi mavjud`,
-              "topRight",
+              "topRight"
             );
             break;
 
@@ -249,7 +249,7 @@ const CustomersPage = () => {
         page: 1,
       });
     }, 500),
-    [setParams],
+    [setParams]
   );
 
   const handleSearchChange = (value: string) => {
