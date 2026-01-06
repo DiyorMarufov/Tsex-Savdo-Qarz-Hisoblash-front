@@ -170,3 +170,21 @@
 .custom-select-placeholder .ant-select-selection-placeholder {
   font-size: 14px !important;
 }
+
+/* Tanlangan matn va qidiruv inputi uchun */
+.custom-select-placeholder .ant-select-selection-item,
+.custom-select-placeholder .ant-select-selection-search-input {
+  font-size: 14px !important;
+}
+
+/* Chrome, Safari, Edge, Opera */
+.ant-input[type="number"]::-webkit-outer-spin-button,
+.ant-input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.ant-input[type="number"] {
+  -moz-appearance: textfield;
+}

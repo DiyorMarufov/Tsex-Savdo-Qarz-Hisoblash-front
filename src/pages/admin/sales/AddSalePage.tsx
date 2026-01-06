@@ -1,4 +1,4 @@
-import { memo, useEffect, useMemo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
 import { Button } from "antd";
 import { Save } from "lucide-react";
@@ -94,21 +94,54 @@ const AdminAddSalePage = () => {
   const shouldFetchProducts = isProductOpen || !!query.productId;
   const { data: products, isLoading: productLoading } =
     getAllProductsForProductsFilter(shouldFetchProducts);
-  const productOptions =
-    products?.data?.data?.map((pr: any) => ({
-      value: pr?.id,
-      label: (
-        <div className="flex gap-3 items-center justify-between">
-          <span className="text-[14px] font-medium text-slate-800">
-            {pr?.name}
-          </span>
+  const productOptions = useMemo(() => {
+    return (
+      products?.data?.data?.map((pr: any) => ({
+        value: pr?.id,
+        label: (
+          <div className="flex items-center justify-between w-full py-1">
+            <div className="flex flex-col gap-0.5">
+              <span className="text-[14px] font-medium text-slate-800 leading-tight">
+                {pr?.name}
+              </span>
+              <span className="text-[11px] text-slate-400 font-normal">
+                {pr?.brand}
+              </span>
+            </div>
+            <div className="flex flex-col items-end gap-0.5">
+              <span className="text-[13px] font-bold text-emerald-600 tabular-nums">
+                {Number(pr?.price).toLocaleString()} so'm
+              </span>
+              <span
+                className={`text-[11px] font-medium ${pr?.quantity > 0 ? "text-blue-500" : "text-red-500"}`}
+              >
+                Qoldiq: {pr?.quantity} ta
+              </span>
+            </div>
+          </div>
+        ),
+        displayLabel: `${pr?.name} - ${pr?.brand}`,
+      })) || []
+    );
+  }, [products]);
 
-          <span className="text-[12px] text-slate-400 font-normal">
-            {pr?.brand}
+  const tagRender = (props: any) => {
+    const { value, closable, onClose } = props;
+    const selectedOption = productOptions.find(
+      (opt: any) => opt.value === value
+    );
+
+    return (
+      <div className="flex items-center gap-1 bg-blue-50 border border-blue-200 text-blue-700 px-2 py-0.5 m-0.5 rounded-lg text-[13px]">
+        <span>{selectedOption?.displayLabel || "Yuklanmoqda..."}</span>
+        {closable && (
+          <span onClick={onClose} className="cursor-pointer ml-1">
+            ✕
           </span>
-        </div>
-      ),
-    })) || [];
+        )}
+      </div>
+    );
+  };
 
   const shouldFetchShop = isShopOpen || !!query.shopId;
   const { data: shops, isLoading: shopLoading } =
@@ -119,12 +152,6 @@ const AdminAddSalePage = () => {
       label: st?.name,
     })) || [];
   // Options end
-
-  useEffect(() => {
-    return () => {
-      localStorage.removeItem("selected_product_ids");
-    };
-  }, []);
 
   return (
     <div>
@@ -164,6 +191,7 @@ const AdminAddSalePage = () => {
             setIsProductOpen={setIsProductOpen}
             setIsShopOpen={setIsShopOpen}
             handleChange={handleChange}
+            tagRender={tagRender}
           />
         </div>
         <PaymentAndSummary />
