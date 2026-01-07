@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import ProTable from "@ant-design/pro-table";
 import SalesReportBalances from "../../../widgets/reports/SalesReport/SalesReportBalances/SalesReportBalances";
 import SalesReportChart from "../../../widgets/reports/SalesReport/SalesReportChart/SalesReportChart";
@@ -22,6 +22,10 @@ const SalesReportPage = () => {
   const [isShopOpen, setIsShopOpen] = useState<boolean>(false);
   const { pathname } = useLocation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scroll({ top: 0 });
+  }, []);
 
   const { getParam, setParams, removeParam } = useParamsHook();
   const [localSearch, setLocalSearch] = useState(getParam("search") || "");

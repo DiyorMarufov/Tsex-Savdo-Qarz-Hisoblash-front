@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Button from "../../../shared/ui/Button/Button";
@@ -29,6 +29,10 @@ const AdminSalesPage = () => {
   const { getAllShopsForProductsFilter } = useShop();
   const { getAllTsexesForProductsFilter } = useTsex();
   const { getAllProductsForProductsFilter } = useProduct();
+
+  useEffect(() => {
+    window.scroll({ top: 0 });
+  }, []);
 
   // Query starts
   const query: QueryParams = useMemo(() => {

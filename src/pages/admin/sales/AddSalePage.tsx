@@ -1,7 +1,7 @@
-import { memo, useMemo, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
 import { Button } from "antd";
-import { Save } from "lucide-react";
+import { ArrowLeft, Save } from "lucide-react";
 import ClientInfoForm from "../../../features/sales/components/ClientInfoForm";
 import SaleItemsManager from "../../../features/sales/components/SaleItemsManager";
 import PaymentAndSummary from "../../../features/sales/components/PaymentAndSummary";
@@ -28,6 +28,10 @@ const AdminAddSalePage = () => {
 
   const { getParam, setParams, removeParams } = useParamsHook();
   const { handleApiError } = useApiNotification();
+
+  useEffect(() => {
+    window.scroll({ top: 0 });
+  }, []);
 
   // Query starts
   const query: QueryParams = useMemo(() => {
@@ -216,6 +220,10 @@ const AdminAddSalePage = () => {
 
   return (
     <div>
+      <ArrowLeft
+        className="hover:opacity-75 cursor-pointer"
+        onClick={() => navigate(-1)}
+      />
       <div className="flex justify-between gap-3">
         <LargeTitle title="Yangi sotuv" />
 

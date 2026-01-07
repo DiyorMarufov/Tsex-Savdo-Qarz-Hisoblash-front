@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
 import ProductsCreate from "../../../features/products/components/ProductsCreate";
 import { ArrowLeft } from "lucide-react";
@@ -6,6 +6,9 @@ import { useNavigate } from "react-router-dom";
 
 const AdminProductsAddPage = () => {
   const navigate = useNavigate();
+  useEffect(() => {
+    window.scroll({ top: 0 });
+  }, []);
   return (
     <div className="w-full">
       <ArrowLeft

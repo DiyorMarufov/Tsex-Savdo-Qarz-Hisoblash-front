@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import ProTable from "@ant-design/pro-table";
 import SalesReportBalances from "../../../widgets/reports/SalesReport/SalesReportBalances/SalesReportBalances";
 import SalesReportChart from "../../../widgets/reports/SalesReport/SalesReportChart/SalesReportChart";
@@ -30,6 +30,10 @@ const AdminSalesReportPage = () => {
   const { getAllShopsForProductsFilter } = useShop();
   const { getAllTsexesForProductsFilter } = useTsex();
   const { getAllProductsForProductsFilter } = useProduct();
+
+  useEffect(() => {
+    window.scroll({ top: 0 });
+  }, []);
 
   // Query starts
   const query: QueryParams = useMemo(() => {

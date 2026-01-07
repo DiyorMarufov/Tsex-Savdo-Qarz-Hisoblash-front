@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import ReportFilter from "../../../widgets/reports/SalesReport/ReportFilter/ReportFilter";
 import TsexesReportBalances from "../../../widgets/reports/TsexesReport/TsexesReportBalances/TsexesReportBalances";
 import TsexesReportChart from "../../../widgets/reports/TsexesReport/TsexesReportChart/TsexesReportChart";
@@ -21,6 +21,10 @@ const TsexesReportPage = () => {
   const { getAllTsexes, getAllTsexesForProductsFilter } = useTsex();
   const { getAllTsexesSummaryForReport, getAllTsexesStatisticsForReport } =
     useTsex();
+
+  useEffect(() => {
+    window.scroll({ top: 0 });
+  }, []);
 
   // Query starts
   const query: QueryParams = useMemo(() => {
@@ -152,7 +156,7 @@ const TsexesReportPage = () => {
         page: 1,
       });
     }, 500),
-    [setParams],
+    [setParams]
   );
 
   const handleSearchChange = (value: string) => {

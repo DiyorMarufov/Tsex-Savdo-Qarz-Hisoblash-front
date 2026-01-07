@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import ProductsReportFilters from "../../../widgets/reports/ProductsReport/ProductsReportFilters/ProductsReportFilters";
 import ProductReportChart from "../../../widgets/reports/ProductsReport/ProductReportChart/ProductReportChart";
 import ProductReportBalances from "../../../widgets/reports/ProductsReport/ProductReportBalances/ProductReportBalances";
@@ -30,6 +30,10 @@ const AdminProductsReportPage = () => {
   } = useProduct();
   const { getParam, setParams, removeParam } = useParamsHook();
   const [localSearch, setLocalSearch] = useState(getParam("search") || "");
+
+  useEffect(() => {
+    window.scroll({ top: 0 });
+  }, []);
 
   // Query starts
   const query: QueryParams = useMemo(() => {

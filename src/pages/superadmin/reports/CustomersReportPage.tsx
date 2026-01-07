@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import CustomersReportBalances from "../../../widgets/reports/CustomersReport/CustomersReportBalances/CustomersReportBalances";
 import CustomersReportChart from "../../../widgets/reports/CustomersReport/CustomersReportChart/CustomersReportChart";
 import CustomersReportFilter from "../../../widgets/reports/CustomersReport/CustomersReportFilter/CustomersReportFilter";
@@ -26,6 +26,10 @@ const CustomersReportPage = () => {
     getAllCustomersForTransaction,
   } = useCustomer();
   // CustomersReportCard starts
+
+  useEffect(() => {
+    window.scroll({ top: 0 });
+  }, []);
 
   // Query starts
   const query: QueryParams = useMemo(() => {
@@ -127,7 +131,7 @@ const CustomersReportPage = () => {
         page: 1,
       });
     }, 500),
-    [setParams],
+    [setParams]
   );
 
   const handleSearchChange = (value: string) => {

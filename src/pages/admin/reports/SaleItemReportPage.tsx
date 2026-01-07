@@ -1,5 +1,5 @@
-import { memo, useMemo } from "react";
-import { useParams } from "react-router-dom";
+import { memo, useEffect, useMemo } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSaleItem } from "../../../shared/lib/apis/sale-items/useSaleItem";
 import SaleItemReportMobileList from "../../../widgets/reports/SalesReport/SaleItemReportMobileList/SaleItemReportMobileList";
 import { useParamsHook } from "../../../shared/hooks/params/useParams";
@@ -11,11 +11,17 @@ import {
   salesItemColumns,
   type SaleItemsTableListItem,
 } from "../../../shared/lib/model/reports/sales-items-detail-model";
+import { ArrowLeft } from "lucide-react";
 
 const AdminSaleItemReportPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { getSaleItemsBySaleId } = useSaleItem();
   const { getParam, setParams, removeParam } = useParamsHook();
+
+  useEffect(() => {
+    window.scroll({ top: 0 });
+  }, []);
 
   // Query starts
   const query: QueryParams = useMemo(() => {
@@ -61,6 +67,10 @@ const AdminSaleItemReportPage = () => {
 
   return (
     <div className="flex flex-col gap-5">
+      <ArrowLeft
+        className="hover:opacity-75 cursor-pointer"
+        onClick={() => navigate(-1)}
+      />
       <div className="min-[500px]:hidden">
         {saleItemLoading ? (
           <SaleItemReportHeaderSkeleton />

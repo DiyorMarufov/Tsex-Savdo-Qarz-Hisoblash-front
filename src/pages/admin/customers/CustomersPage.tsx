@@ -1,5 +1,5 @@
 import ProTable from "@ant-design/pro-table";
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
 import { Form, type FormProps } from "antd";
@@ -29,6 +29,10 @@ const AdminCustomersPage = () => {
   const { getAllCustomers } = useCustomer();
   const { createCustomer } = useCustomer();
   const { handleApiError, handleSuccess } = useApiNotification();
+
+  useEffect(() => {
+    window.scroll({ top: 0 });
+  }, []);
 
   // New Customer starts
   const handleNewCustomer = () => {

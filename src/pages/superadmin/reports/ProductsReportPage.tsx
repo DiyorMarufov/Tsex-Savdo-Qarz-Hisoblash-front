@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import ProductsReportFilters from "../../../widgets/reports/ProductsReport/ProductsReportFilters/ProductsReportFilters";
 import ProductReportChart from "../../../widgets/reports/ProductsReport/ProductReportChart/ProductReportChart";
 import ProductReportBalances from "../../../widgets/reports/ProductsReport/ProductReportBalances/ProductReportBalances";
@@ -20,6 +20,11 @@ const ProductsReportPage = () => {
   const [isTsexOpen, setIsTsexOpen] = useState<boolean>(false);
   const [isShopOpen, setIsShopOpen] = useState<boolean>(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scroll({ top: 0 });
+  }, []);
+
   const { getAllShopsForProductsFilter } = useShop();
   const { getAllTsexesForProductsFilter } = useTsex();
   const {
@@ -189,7 +194,7 @@ const ProductsReportPage = () => {
         page: 1,
       });
     }, 500),
-    [setParams],
+    [setParams]
   );
 
   const handleSearchChange = (value: string) => {
