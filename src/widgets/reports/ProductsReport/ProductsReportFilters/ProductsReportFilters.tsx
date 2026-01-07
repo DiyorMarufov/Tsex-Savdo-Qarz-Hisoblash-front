@@ -23,10 +23,10 @@ interface ProductReportFiltersProps {
   setIsProductOpen: (open: boolean) => void;
   setIsTsexOpen: (open: boolean) => void;
   setIsShopOpen: (open: boolean) => void;
-  productLoading: boolean;
-  productHasNextPage: boolean;
-  productIsFetchingNextPage: boolean;
-  fetchNextPage: any;
+  productLoading?: boolean;
+  productHasNextPage?: boolean;
+  productIsFetchingNextPage?: boolean;
+  productFetchNextPage?: any;
   tsexLoading: boolean;
   shopLoading: boolean;
 }
@@ -47,7 +47,7 @@ const ProductsReportFilters = ({
   productLoading,
   productHasNextPage,
   productIsFetchingNextPage,
-  fetchNextPage,
+  productFetchNextPage,
   tsexLoading,
   shopLoading,
 }: ProductReportFiltersProps) => {
@@ -96,7 +96,7 @@ const ProductsReportFilters = ({
     const { target } = e;
     if (target.scrollTop + target.clientHeight >= target.scrollHeight - 10) {
       if (productHasNextPage && !productIsFetchingNextPage) {
-        fetchNextPage();
+        productFetchNextPage();
       }
     }
   };
@@ -130,7 +130,7 @@ const ProductsReportFilters = ({
               dropdownRender={(menu: any) => (
                 <>
                   {menu}
-                  {productIsFetchingNextPage && <div>Yuklanmoqda...</div>}
+                  {productIsFetchingNextPage && <span className="text-[12px] text-gray-500">Yuklanmoqda...</span>}
                 </>
               )}
               loading={productLoading}

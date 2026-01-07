@@ -23,7 +23,7 @@ const CustomersReportPage = () => {
     getAllCustomers,
     getCustomerBalanceSummary,
     getAllCustomersStatisticsForReport,
-    getAllCustomersForTransaction,
+    getInfiniteCustomers,
   } = useCustomer();
   // CustomersReportCard starts
 
@@ -154,14 +154,25 @@ const CustomersReportPage = () => {
   // CustomerReportFilter ends
 
   // Customers list for transaction starts
-  const { data: allCustomersList, isLoading: customerListLoading } =
-    getAllCustomersForTransaction(isCustomerOpen);
+  const {
+    data: allCustomersList,
+    isLoading: customerListLoading,
+    fetchNextPage: customerFetchNextPage,
+    hasNextPage: customerHasNextPage,
+    isFetchingNextPage: customerIsFetchingNextPage,
+  } = getInfiniteCustomers(isCustomerOpen);
   const customerOptions: Option[] = [
     {
       value: "",
       label: "Barcha mijozlar",
     },
-    ...(allCustomersList?.data?.map((cs: any) => ({
+    ...(
+      allCustomersList?.pages?.flatMap((page: any) => {
+        return Array.isArray(page)
+          ? page
+          : page?.data?.data || page?.data || [];
+      }) || []
+    ).map((cs: any) => ({
       value: cs.id,
       label: (
         <div className="flex items-center justify-between w-full gap-4">
@@ -173,7 +184,7 @@ const CustomersReportPage = () => {
           </span>
         </div>
       ),
-    })) || []),
+    })),
   ];
   // Customers list for transaction ends
 
@@ -187,6 +198,9 @@ const CustomersReportPage = () => {
         customerOptions={customerOptions}
         setIsCustomerOpen={setIsCustomerOpen}
         customerLoading={customerListLoading}
+        customerHasNextPage={customerHasNextPage}
+        customerIsFetchingNextPage={customerIsFetchingNextPage}
+        customerFetchNextPage={customerFetchNextPage}
       />
       <CustomersReportBalances
         creditor={creditor}

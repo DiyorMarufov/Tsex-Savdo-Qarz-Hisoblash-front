@@ -43,7 +43,7 @@ const CustomersPage = () => {
   const [localSearch, setLocalSearch] = useState(getParam("search") || "");
   const [form] = Form.useForm();
 
-  const { createCustomer, getAllCustomersForTransaction } = useCustomer();
+  const { createCustomer, getInfiniteCustomers } = useCustomer();
   const { createLend, createBorrow } = useCustomerTransaction();
   const { handleApiError, handleSuccess } = useApiNotification();
 
@@ -268,10 +268,25 @@ const CustomersPage = () => {
   // Filter ends
 
   // Customers list for transaction starts
-  const { data: allCustomersList, isLoading: customerListLoading } =
-    getAllCustomersForTransaction(isCustomerOpen);
-  const customerOptions: Option[] =
-    allCustomersList?.data.map((cs: any) => ({
+  const {
+    data: allCustomersList,
+    isLoading: customerListLoading,
+    fetchNextPage: customerFetchNextPage,
+    hasNextPage: customerHasNextPage,
+    isFetchingNextPage: customerIsFetchingNextPage,
+  } = getInfiniteCustomers(isCustomerOpen);
+  const customerOptions: Option[] = [
+    {
+      value: "",
+      label: "Barcha mijozlar",
+    },
+    ...(
+      allCustomersList?.pages?.flatMap((page: any) => {
+        return Array.isArray(page)
+          ? page
+          : page?.data?.data || page?.data || [];
+      }) || []
+    ).map((cs: any) => ({
       value: cs.id,
       label: (
         <div className="flex items-center justify-between w-full gap-4">
@@ -283,7 +298,8 @@ const CustomersPage = () => {
           </span>
         </div>
       ),
-    })) || [];
+    })),
+  ];
   // Customers list for transaction ends
 
   if (pathname.startsWith("/superadmin/customers/transaction/"))
@@ -377,6 +393,9 @@ const CustomersPage = () => {
         loading={createLend.isPending || createBorrow.isPending}
         setIsCustomerOpen={setIsCustomerOpen}
         customerloading={customerListLoading}
+        customerHasNextPage={customerHasNextPage}
+        customerIsFetchingNextPage={customerIsFetchingNextPage}
+        customerFetchNextPage={customerFetchNextPage}
       />
 
       <AddCustomerModal

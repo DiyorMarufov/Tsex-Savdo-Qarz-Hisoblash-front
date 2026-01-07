@@ -24,6 +24,9 @@ interface TransactionModalProps {
   loading: boolean;
   setIsCustomerOpen: (open: boolean) => void;
   customerloading: boolean;
+  customerHasNextPage?: boolean;
+  customerIsFetchingNextPage?: boolean;
+  customerFetchNextPage?: any;
 }
 
 const CustomerTransactionModal = ({
@@ -36,7 +39,18 @@ const CustomerTransactionModal = ({
   loading,
   setIsCustomerOpen,
   customerloading,
+  customerHasNextPage,
+  customerIsFetchingNextPage,
+  customerFetchNextPage,
 }: TransactionModalProps) => {
+  const handleScroll = (e: any) => {
+    const { target } = e;
+    if (target.scrollTop + target.clientHeight >= target.scrollHeight - 10) {
+      if (customerHasNextPage && !customerIsFetchingNextPage) {
+        customerFetchNextPage();
+      }
+    }
+  };
   return (
     <Modal
       centered
@@ -69,12 +83,23 @@ const CustomerTransactionModal = ({
               rules={[{ required: true, message: "Mijoz tanlanishi shart!" }]}
             >
               <Select
+                onPopupScroll={handleScroll}
                 className="h-10!"
                 options={customers}
                 placeholder="Mijozni tanlang"
                 onDropdownVisibleChange={(visible) => {
                   if (visible) setIsCustomerOpen(visible);
                 }}
+                dropdownRender={(menu: any) => (
+                  <>
+                    {menu}
+                    {customerIsFetchingNextPage && (
+                      <span className="text-[12px] text-gray-500">
+                        Yuklanmoqda...
+                      </span>
+                    )}
+                  </>
+                )}
                 loading={customerloading}
               />
             </Form.Item>

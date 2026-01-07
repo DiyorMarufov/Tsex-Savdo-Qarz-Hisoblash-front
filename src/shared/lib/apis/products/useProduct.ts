@@ -29,23 +29,6 @@ export const useProduct = () => {
       gcTime: 1000 * 60 * 10,
     });
 
-  const getInfiniteProducts = (params?: any) =>
-    useInfiniteQuery({
-      queryKey: [product, "all-infinite-products", params],
-      queryFn: ({ pageParam = 1 }) =>
-        api
-          .get("products", {
-            params: { ...params, page: pageParam, limit: 10 },
-          })
-          .then((res) => res.data),
-      getNextPageParam: (lastPage, allPages) => {
-        return lastPage.length === 10 ? allPages.length + 1 : undefined;
-      },
-      initialPageParam: 1,
-      refetchOnWindowFocus: false,
-      staleTime: 1000 * 60 * 5,
-    });
-
   const getProductsSummaryForReport = (params?: any) =>
     useQuery({
       queryKey: [product, "all-products-summary", params],
@@ -69,6 +52,26 @@ export const useProduct = () => {
       refetchOnWindowFocus: false,
       staleTime: 1000 * 60 * 5,
       gcTime: 1000 * 60 * 10,
+    });
+
+  const getInfiniteProducts = (enabled: boolean = false, params?: any) =>
+    useInfiniteQuery({
+      queryKey: [product, "all-infinite-products", params],
+      queryFn: ({ pageParam = 1 }) =>
+        api
+          .get("products/reports/filters-list", {
+            params: { ...params, page: pageParam, limit: 10 },
+          })
+          .then((res) => res.data),
+      enabled,
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage?.data?.data.length === 10
+          ? allPages.length + 1
+          : undefined;
+      },
+      initialPageParam: 1,
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5,
     });
 
   const getAllTop5ProductsForReport = (params?: any) =>

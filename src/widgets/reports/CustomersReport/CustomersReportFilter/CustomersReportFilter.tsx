@@ -17,6 +17,9 @@ interface CustomersReportFilterProps {
   customerOptions: Option[];
   setIsCustomerOpen: (open: boolean) => void;
   customerLoading: boolean;
+  customerHasNextPage?: boolean;
+  customerIsFetchingNextPage?: boolean;
+  customerFetchNextPage?: any;
 }
 
 const CustomersReportFilter: FC<CustomersReportFilterProps> = ({
@@ -27,6 +30,9 @@ const CustomersReportFilter: FC<CustomersReportFilterProps> = ({
   customerOptions = [],
   setIsCustomerOpen,
   customerLoading,
+  customerHasNextPage,
+  customerIsFetchingNextPage,
+  customerFetchNextPage,
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [placement] = useState<DrawerProps["placement"]>("right");
@@ -63,6 +69,14 @@ const CustomersReportFilter: FC<CustomersReportFilterProps> = ({
     setTempDateStrings(values ? dateStrings : null);
   };
 
+  const handleScroll = (e: any) => {
+    const { target } = e;
+    if (target.scrollTop + target.clientHeight >= target.scrollHeight - 10) {
+      if (customerHasNextPage && !customerIsFetchingNextPage) {
+        customerFetchNextPage();
+      }
+    }
+  };
   return (
     <div>
       <div className="rounded-[12px] border border-bg-fy bg-white p-3.5 gap-4 grid grid-cols-4 max-[1150px]:grid-cols-1 max-[800px]:hidden items-end">
@@ -81,6 +95,7 @@ const CustomersReportFilter: FC<CustomersReportFilterProps> = ({
         <div className="col-span-2 grid grid-cols-2 gap-4 max-[1150px]:col-span-1 max-[390px]:grid-cols-1">
           <div className="w-full">
             <Filter
+              onPopupScroll={handleScroll}
               value={tempCustomerId}
               options={customerOptions}
               onChange={setTempCustomerId}
@@ -89,6 +104,16 @@ const CustomersReportFilter: FC<CustomersReportFilterProps> = ({
               onDropdownVisibleChange={(visible: any) => {
                 if (visible) setIsCustomerOpen(true);
               }}
+              dropdownRender={(menu: any) => (
+                <>
+                  {menu}
+                  {customerIsFetchingNextPage && (
+                    <span className="text-[12px] text-gray-500">
+                      Yuklanmoqda...
+                    </span>
+                  )}
+                </>
+              )}
               loading={customerLoading}
             />
           </div>
@@ -140,6 +165,7 @@ const CustomersReportFilter: FC<CustomersReportFilterProps> = ({
           <div className="w-full">
             <p className="mb-1 text-sm text-slate-500">Mijozar</p>
             <Filter
+              onPopupScroll={handleScroll}
               value={tempCustomerId}
               options={customerOptions}
               onChange={setTempCustomerId}
@@ -148,6 +174,16 @@ const CustomersReportFilter: FC<CustomersReportFilterProps> = ({
               onDropdownVisibleChange={(visible: any) => {
                 if (visible) setIsCustomerOpen(true);
               }}
+              dropdownRender={(menu: any) => (
+                <>
+                  {menu}
+                  {customerIsFetchingNextPage && (
+                    <span className="text-[12px] text-gray-500">
+                      Yuklanmoqda...
+                    </span>
+                  )}
+                </>
+              )}
               loading={customerLoading}
             />
           </div>

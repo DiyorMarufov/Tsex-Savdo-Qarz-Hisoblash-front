@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { api } from "../../../../features/auth/api";
 import type { IResponseData, NewCustomerFieldType } from "../../types";
 
@@ -70,6 +75,26 @@ export const useCustomer = () => {
       gcTime: 1000 * 60 * 60,
     });
 
+  const getInfiniteCustomers = (enabled: boolean = false, params?: any) =>
+    useInfiniteQuery({
+      queryKey: [customer, "all-infinite-customers", params],
+      queryFn: ({ pageParam = 1 }) =>
+        api
+          .get("customers/transactions/list", {
+            params: { ...params, page: pageParam, limit: 10 },
+          })
+          .then((res) => res.data),
+      enabled,
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage?.data?.data.length === 10
+          ? allPages.length + 1
+          : undefined;
+      },
+      initialPageParam: 1,
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5,
+    });
+
   const getAllCustomersStatisticsForReport = (params?: any) =>
     useQuery({
       queryKey: [customer, "all-customers-statistics-for-report", params],
@@ -88,6 +113,7 @@ export const useCustomer = () => {
     getCustomerBalanceSummary,
     getAllCustomers,
     getAllCustomersForTransaction,
+    getInfiniteCustomers,
     getAllCustomersStatisticsForReport,
   };
 };

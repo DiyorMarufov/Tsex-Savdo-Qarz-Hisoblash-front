@@ -182,14 +182,20 @@ const SalesReportPage = () => {
       value: "",
       label: "Barcha mahsulotlar",
     },
-    ...(products?.pages?.flatMap((page: any) => page) || []).map((pr: any) => ({
+    ...(
+      products?.pages?.flatMap((page: any) => {
+        return Array.isArray(page)
+          ? page
+          : page?.data?.data || page?.data || [];
+      }) || []
+    ).map((pr: any) => ({
       value: pr?.id,
       label: (
-        <div className="flex justify-between">
+        <div className="flex justify-between items-center w-full">
           <span className="text-[14px] font-medium text-slate-800">
             {pr?.name}
           </span>
-          <span className="text-[12px] text-slate-400 font-normal">
+          <span className="text-[12px] text-slate-400 font-normal ml-2">
             {pr?.brand}
           </span>
         </div>
@@ -234,7 +240,7 @@ const SalesReportPage = () => {
         productLoading={productLoading}
         productHasNextPage={productHasNextPage}
         productIsFetchingNextPage={productIsFetchingNextPage}
-        fetchNextPage={productFetchNextPage}
+        productFetchNextPage={productFetchNextPage}
         tsexLoading={tsexLoading}
         shopLoading={shopLoading}
       />
