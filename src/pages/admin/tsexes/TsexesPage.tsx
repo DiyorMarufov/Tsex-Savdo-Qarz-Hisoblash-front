@@ -3,7 +3,7 @@ import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
 import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
 import ProTable from "@ant-design/pro-table";
 import { Button as AntdButton, Pagination } from "antd";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useParamsHook } from "../../../shared/hooks/params/useParams";
 import { useTsex } from "../../../shared/lib/apis/tsexes/useTsex";
 import type { QueryParams } from "../../../shared/lib/types";
@@ -17,7 +17,7 @@ import {
 
 const AdminTsexesPage = () => {
   const navigate = useNavigate();
-
+  const { pathname } = useLocation();
   const { getParam, setParams, removeParam } = useParamsHook();
   const [localSearch, setLocalSearch] = useState(getParam("search") || "");
 
@@ -76,7 +76,7 @@ const AdminTsexesPage = () => {
         page: 1,
       });
     }, 500),
-    [setParams],
+    [setParams]
   );
 
   const handleSearchChange = (value: string) => {
@@ -84,6 +84,9 @@ const AdminTsexesPage = () => {
     debouncedSetSearchQuery(value);
   };
   // Search ends
+
+  if (pathname.startsWith("/admin/tsexes/transactions")) return <Outlet />;
+
   return (
     <div>
       <div className="flex justify-between items-center w-full">

@@ -19,12 +19,26 @@ const CustomersReportPage = lazy(
 const NotFoundPage = lazy(
   () => import("../../shared/ui/NotFound/NotFoundPage")
 );
-
 const AdminSettingsPage = lazy(
   () => import("../../pages/admin/settings/SettingsPage")
 );
+const AdminTsexesReportPage = lazy(
+  () => import("../../pages/admin/reports/TsexesReportPage")
+);
+const AdminProductsReportPage = lazy(
+  () => import("../../pages/admin/reports/ProductsReportPage")
+);
+const AdminSaleItemReportPage = lazy(
+  () => import("../../pages/admin/reports/SaleItemReportPage")
+);
+const AdminSalesReportPage = lazy(
+  () => import("../../pages/admin/reports/SalesReportPage")
+);
 const AdminReportsPage = lazy(
   () => import("../../pages/admin/reports/ReportsPage")
+);
+const AdminTsexesTransactionsPage = lazy(
+  () => import("../../pages/admin/tsexes/TsexesTranscationsPage")
 );
 const AdminTsexesPage = lazy(
   () => import("../../pages/admin/tsexes/TsexesPage")
@@ -51,11 +65,12 @@ const AdminProductsPage = lazy(
 const AdminDashboardPage = lazy(
   () => import("../../pages/admin/dashboard/DashboardPage")
 );
-const TsexesTransactions = lazy(
-  () => import("../../pages/superadmin/tsexes/TsexesTransactions")
+const TsexesTransactionsPage = lazy(
+  () => import("../../pages/superadmin/tsexes/TsexesTransactionsPage")
 );
 const CustomerTransactionDetailsPage = lazy(
-  () => import("../../pages/superadmin/customers/CustomerTransactionDetailsPage")
+  () =>
+    import("../../pages/superadmin/customers/CustomerTransactionDetailsPage")
 );
 const CustomersTransactionPage = lazy(
   () => import("../../pages/superadmin/customers/CustomerTransactionsPage")
@@ -125,7 +140,7 @@ const Router = () => {
                   children: [
                     {
                       path: "transactions/:id",
-                      element: <TsexesTransactions />,
+                      element: <TsexesTransactionsPage />,
                     },
                   ],
                 },
@@ -235,10 +250,36 @@ const Router = () => {
                 {
                   path: "tsexes",
                   element: <AdminTsexesPage />,
+                  children: [
+                    {
+                      path: "transactions/:id",
+                      element: <AdminTsexesTransactionsPage />,
+                    },
+                  ],
                 },
                 {
                   path: "reports",
                   element: <AdminReportsPage />,
+                  children: [
+                    {
+                      path: "sale",
+                      element: <AdminSalesReportPage />,
+                      children: [
+                        {
+                          path: ":id",
+                          element: <AdminSaleItemReportPage />,
+                        },
+                      ],
+                    },
+                    {
+                      path: "products",
+                      element: <AdminProductsReportPage />,
+                    },
+                    {
+                      path: "tsexes",
+                      element: <AdminTsexesReportPage />,
+                    },
+                  ],
                 },
                 {
                   path: "settings",

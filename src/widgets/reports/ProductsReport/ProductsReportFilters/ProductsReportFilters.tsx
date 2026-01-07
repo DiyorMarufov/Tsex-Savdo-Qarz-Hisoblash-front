@@ -171,7 +171,7 @@ const ProductsReportFilters = ({
         onClose={() => setOpen(false)}
         open={open}
         key={placement}
-        width={280}
+        width={300}
       >
         <div className="flex flex-col gap-4">
           <div className="w-full">

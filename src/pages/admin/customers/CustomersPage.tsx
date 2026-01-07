@@ -18,6 +18,7 @@ import { useParamsHook } from "../../../shared/hooks/params/useParams";
 import { useApiNotification } from "../../../shared/hooks/api-notification/useApiNotification";
 import { debounce } from "../../../shared/lib/functions/debounce";
 import { customerRegions } from "../../../shared/lib/constants";
+import PlusButton from "../../../shared/ui/Button/PlusButton";
 
 const AdminCustomersPage = () => {
   const [newCustomerOpen, setNewCustomerOpen] = useState<boolean>(false);
@@ -155,12 +156,7 @@ const AdminCustomersPage = () => {
           </Button>
         </div>
 
-        <div
-          className="min-[500px]:hidden p-2.5 rounded-full bg-green-500 cursor-pointer hover:opacity-80"
-          onClick={handleNewCustomer}
-        >
-          <Plus className="text-white" />
-        </div>
+        <PlusButton setOpen={handleNewCustomer} />
       </div>
 
       <CustomerFilters

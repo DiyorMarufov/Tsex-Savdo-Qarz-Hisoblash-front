@@ -101,7 +101,7 @@ export const AdminSidebarNavigation: SidebarNavItem[] = [
   },
   {
     id: 6,
-    to: "/admin/reports",
+    to: "/admin/reports/sale",
     label: "Hisobotlar",
     icon: <ChartBar className="w-5 h-5" />,
   },
