@@ -33,7 +33,7 @@ const SalesReportPage = () => {
   const { getSalesSummaryForReport, getAllSales } = useSale();
   const { getAllShopsForProductsFilter } = useShop();
   const { getAllTsexesForProductsFilter } = useTsex();
-  const { getAllProductsForProductsFilter } = useProduct();
+  const { getInfiniteProducts } = useProduct();
 
   // Query starts
   const query: QueryParams = useMemo(() => {
@@ -169,27 +169,32 @@ const SalesReportPage = () => {
     })) || []),
   ];
 
-  const { data: products, isLoading: productLoading } =
-    getAllProductsForProductsFilter(isProductOpen);
+  const {
+    data: products,
+    isLoading: productLoading,
+    fetchNextPage: productFetchNextPage,
+    hasNextPage: productHasNextPage,
+    isFetchingNextPage: productIsFetchingNextPage,
+  } = getInfiniteProducts(isProductOpen);
+
   const productOptions = [
     {
       value: "",
       label: "Barcha mahsulotlar",
     },
-    ...(products?.data?.data?.map((pr: any) => ({
+    ...(products?.pages?.flatMap((page: any) => page) || []).map((pr: any) => ({
       value: pr?.id,
       label: (
         <div className="flex justify-between">
           <span className="text-[14px] font-medium text-slate-800">
             {pr?.name}
           </span>
-
           <span className="text-[12px] text-slate-400 font-normal">
             {pr?.brand}
           </span>
         </div>
       ),
-    })) || []),
+    })),
   ];
   // SaleReportFilter options end
 
@@ -227,6 +232,9 @@ const SalesReportPage = () => {
         setIsTsexOpen={setIsTsexOpen}
         setIsShopOpen={setIsShopOpen}
         productLoading={productLoading}
+        productHasNextPage={productHasNextPage}
+        productIsFetchingNextPage={productIsFetchingNextPage}
+        fetchNextPage={productFetchNextPage}
         tsexLoading={tsexLoading}
         shopLoading={shopLoading}
       />

@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { api } from "../../../../features/auth/api";
 
 export const product = "product";
@@ -22,6 +27,23 @@ export const useProduct = () => {
       refetchOnWindowFocus: false,
       staleTime: 1000 * 60 * 5,
       gcTime: 1000 * 60 * 10,
+    });
+
+  const getInfiniteProducts = (params?: any) =>
+    useInfiniteQuery({
+      queryKey: [product, "all-infinite-products", params],
+      queryFn: ({ pageParam = 1 }) =>
+        api
+          .get("products", {
+            params: { ...params, page: pageParam, limit: 10 },
+          })
+          .then((res) => res.data),
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage.length === 10 ? allPages.length + 1 : undefined;
+      },
+      initialPageParam: 1,
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5,
     });
 
   const getProductsSummaryForReport = (params?: any) =>
@@ -73,6 +95,7 @@ export const useProduct = () => {
   return {
     createProduct,
     getAllProducts,
+    getInfiniteProducts,
     getProductsSummaryForReport,
     getAllProductsForProductsFilter,
     getAllTop5ProductsForReport,

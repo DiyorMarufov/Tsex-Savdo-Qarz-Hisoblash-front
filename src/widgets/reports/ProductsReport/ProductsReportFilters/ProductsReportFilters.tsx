@@ -24,6 +24,9 @@ interface ProductReportFiltersProps {
   setIsTsexOpen: (open: boolean) => void;
   setIsShopOpen: (open: boolean) => void;
   productLoading: boolean;
+  productHasNextPage: boolean;
+  productIsFetchingNextPage: boolean;
+  fetchNextPage: any;
   tsexLoading: boolean;
   shopLoading: boolean;
 }
@@ -42,6 +45,9 @@ const ProductsReportFilters = ({
   setIsTsexOpen,
   setIsShopOpen,
   productLoading,
+  productHasNextPage,
+  productIsFetchingNextPage,
+  fetchNextPage,
   tsexLoading,
   shopLoading,
 }: ProductReportFiltersProps) => {
@@ -86,6 +92,14 @@ const ProductsReportFilters = ({
     setTempDateStrings(values ? dateStrings : null);
   };
 
+  const handleScroll = (e: any) => {
+    const { target } = e;
+    if (target.scrollTop + target.clientHeight >= target.scrollHeight - 10) {
+      if (productHasNextPage && !productIsFetchingNextPage) {
+        fetchNextPage();
+      }
+    }
+  };
   return (
     <div>
       <div className="rounded-[12px] border border-bg-fy bg-white p-3.5 gap-4 grid grid-cols-5 max-[1150px]:grid-cols-1 max-[800px]:hidden items-end">
@@ -104,6 +118,7 @@ const ProductsReportFilters = ({
         <div className="col-span-3 grid grid-cols-3 gap-4 max-[1150px]:col-span-1 max-[390px]:grid-cols-1">
           <div className="w-full">
             <Filter
+              onPopupScroll={handleScroll}
               value={tempProductId}
               options={productOptions}
               onChange={setTempProductId}
@@ -112,6 +127,12 @@ const ProductsReportFilters = ({
               onDropdownVisibleChange={(visible: any) => {
                 if (visible) setIsProductOpen(true);
               }}
+              dropdownRender={(menu: any) => (
+                <>
+                  {menu}
+                  {productIsFetchingNextPage && <div>Yuklanmoqda...</div>}
+                </>
+              )}
               loading={productLoading}
             />
           </div>
@@ -190,14 +211,21 @@ const ProductsReportFilters = ({
           <div className="w-full">
             <p className="mb-1 text-sm text-slate-500">Mahsulotlar</p>
             <Filter
+              onPopupScroll={handleScroll}
               value={tempProductId}
               options={productOptions}
               onChange={setTempProductId}
               placeholder="Barcha mahsulotlar"
               className="h-11! w-full rounded-lg custom-select border-slate-200"
-              onDropdownVisibleChange={(visible: any) => {
+              onDropdownVisibleChange={(visible: boolean) => {
                 if (visible) setIsProductOpen(true);
               }}
+              dropdownRender={(menu: any) => (
+                <>
+                  {menu}
+                  {productIsFetchingNextPage && <div>Yuklanmoqda...</div>}
+                </>
+              )}
               loading={productLoading}
             />
           </div>
