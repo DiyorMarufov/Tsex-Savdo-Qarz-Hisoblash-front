@@ -1,4 +1,4 @@
-import { InputNumber, Select } from "antd";
+import { InputNumber, Select, Spin } from "antd";
 import { memo, useMemo, useState, useEffect } from "react";
 import type { Option } from "../../../shared/lib/types";
 import type { SelectProps } from "antd/es/select";
@@ -117,29 +117,30 @@ const SaleItemsManager = ({
                 tagRender={tagRender}
               />
 
-              <div className="flex flex-col gap-3 max-h-[400px] overflow-y-auto mt-3 pr-1">
-                {selectedProducts.length > 0 ? (
-                  selectedProducts.map((product: any) => {
-                    const currentItem = items.find(
-                      (i) => i.product_id === product.id
-                    );
-                    return (
-                      <div
-                        key={product.id}
-                        className="flex flex-col gap-3 p-4 bg-slate-50 border border-slate-100 rounded-xl"
-                      >
-                        <div className="flex justify-between items-start gap-3 max-[450px]:flex-col ">
-                          <div className="flex flex-col">
-                            <span className="text-sm font-bold text-slate-800 leading-tight">
-                              {product.name}
-                            </span>
-                            <span className="text-[11px] text-slate-500 font-semibold">
-                              {product.brand}
-                            </span>
-                          </div>
-                          <div className="flex min-[370px]:items-center gap-3 mt-1 max-[370px]:flex-col">
-                            <div
-                              className={`flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-semibold tracking-wide border 
+              <Spin spinning={productListLoading}>
+                <div className="flex flex-col gap-3 max-h-[400px] overflow-y-auto mt-3 pr-1">
+                  {selectedProducts.length > 0 ? (
+                    selectedProducts.map((product: any) => {
+                      const currentItem = items.find(
+                        (i) => i.product_id === product.id
+                      );
+                      return (
+                        <div
+                          key={product.id}
+                          className="flex flex-col gap-3 p-4 bg-slate-50 border border-slate-100 rounded-xl"
+                        >
+                          <div className="flex justify-between items-start gap-3 max-[450px]:flex-col ">
+                            <div className="flex flex-col">
+                              <span className="text-sm font-bold text-slate-800 leading-tight">
+                                {product.name}
+                              </span>
+                              <span className="text-[11px] text-slate-500 font-semibold">
+                                {product.brand}
+                              </span>
+                            </div>
+                            <div className="flex min-[370px]:items-center gap-3 mt-1 max-[370px]:flex-col">
+                              <div
+                                className={`flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-semibold tracking-wide border 
                                         ${
                                           product.quantity > 10
                                             ? "bg-blue-50 text-blue-600 border-blue-100"
@@ -147,93 +148,94 @@ const SaleItemsManager = ({
                                               ? "bg-orange-50 text-orange-600 border-orange-100"
                                               : "bg-red-50 text-red-600 border-red-100"
                                         }`}
-                            >
-                              <span className="relative flex h-2 w-2">
-                                {product.quantity > 0 &&
-                                  product.quantity <= 10 && (
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                                  )}
-                                <span
-                                  className={`relative inline-flex rounded-full h-2 w-2 ${
-                                    product.quantity > 10
-                                      ? "bg-blue-500"
-                                      : product.quantity > 0
-                                        ? "bg-orange-500"
-                                        : "bg-red-500"
-                                  }`}
-                                ></span>
-                              </span>
-                              Qoldiq: {product.quantity} ta
-                            </div>
+                              >
+                                <span className="relative flex h-2 w-2">
+                                  {product.quantity > 0 &&
+                                    product.quantity <= 10 && (
+                                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                                    )}
+                                  <span
+                                    className={`relative inline-flex rounded-full h-2 w-2 ${
+                                      product.quantity > 10
+                                        ? "bg-blue-500"
+                                        : product.quantity > 0
+                                          ? "bg-orange-500"
+                                          : "bg-red-500"
+                                    }`}
+                                  ></span>
+                                </span>
+                                Qoldiq: {product.quantity} ta
+                              </div>
 
-                            <div className="flex items-center gap-1 px-2 py-0.5 rounded text-[12px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">
-                              <span className="text-[11px] opacity-60">
-                                Asl narxi:
+                              <div className="flex items-center gap-1 px-2 py-0.5 rounded text-[12px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">
+                                <span className="text-[11px] opacity-60">
+                                  Asl narxi:
+                                </span>
+                                {Number(product.price).toLocaleString()}{" "}
+                                <span className="text-[11px]">uzs</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="flex gap-3 max-[370px]:flex-col">
+                            <div className="flex-1 flex flex-col gap-1">
+                              <span className="text-[11px] text-slate-400 font-medium ml-1">
+                                Miqdori
                               </span>
-                              {Number(product.price).toLocaleString()}{" "}
-                              <span className="text-[11px]">uzs</span>
+                              <InputNumber
+                                min={1}
+                                controls={false}
+                                value={currentItem?.quantity ?? 1}
+                                stringMode={false}
+                                onKeyPress={(e) => {
+                                  if (!/[0-9]/.test(e.key)) {
+                                    e.preventDefault();
+                                  }
+                                }}
+                                onChange={(val) =>
+                                  updateItemDetails(product.id, "quantity", val)
+                                }
+                                className="w-[75px]! rounded-md max-[370px]:w-full!"
+                              />
+                            </div>
+                            <div className="flex-1 flex flex-col gap-1">
+                              <span className="text-[11px] text-slate-400 font-medium ml-1">
+                                Sotuv narxi
+                              </span>
+                              <InputNumber
+                                min={1}
+                                controls={false}
+                                value={currentItem?.price ?? product.price}
+                                stringMode={false}
+                                onKeyPress={(e) => {
+                                  if (!/[0-9]/.test(e.key)) {
+                                    e.preventDefault();
+                                  }
+                                }}
+                                onChange={(val) =>
+                                  updateItemDetails(product.id, "price", val)
+                                }
+                                className="w-full h-9! rounded-md"
+                                formatter={(v) =>
+                                  `${v}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                }
+                                parser={(v) => v!.replace(/[^\d]/g, "")}
+                                addonAfter={
+                                  <span className="text-[10px]">so'm</span>
+                                }
+                              />
                             </div>
                           </div>
                         </div>
-
-                        <div className="flex gap-3 max-[370px]:flex-col">
-                          <div className="flex-1 flex flex-col gap-1">
-                            <span className="text-[11px] text-slate-400 font-medium ml-1">
-                              Miqdori
-                            </span>
-                            <InputNumber
-                              min={1}
-                              controls={false}
-                              value={currentItem?.quantity ?? 1}
-                              stringMode={false}
-                              onKeyPress={(e) => {
-                                if (!/[0-9]/.test(e.key)) {
-                                  e.preventDefault();
-                                }
-                              }}
-                              onChange={(val) =>
-                                updateItemDetails(product.id, "quantity", val)
-                              }
-                              className="w-[75px]! rounded-md max-[370px]:w-full!"
-                            />
-                          </div>
-                          <div className="flex-1 flex flex-col gap-1">
-                            <span className="text-[11px] text-slate-400 font-medium ml-1">
-                              Sotuv narxi
-                            </span>
-                            <InputNumber
-                              min={1}
-                              controls={false}
-                              value={currentItem?.price ?? product.price}
-                              stringMode={false}
-                              onKeyPress={(e) => {
-                                if (!/[0-9]/.test(e.key)) {
-                                  e.preventDefault();
-                                }
-                              }}
-                              onChange={(val) =>
-                                updateItemDetails(product.id, "price", val)
-                              }
-                              className="w-full h-9! rounded-md"
-                              formatter={(v) =>
-                                `${v}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                              }
-                              parser={(v) => v!.replace(/[^\d]/g, "")}
-                              addonAfter={
-                                <span className="text-[10px]">so'm</span>
-                              }
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })
-                ) : (
-                  <div className="text-center py-8 border-2 border-dashed border-slate-100 rounded-xl text-slate-400 text-sm">
-                    Hali mahsulot tanlanmagan
-                  </div>
-                )}
-              </div>
+                      );
+                    })
+                  ) : (
+                    <div className="text-center py-8 border-2 border-dashed border-slate-100 rounded-xl text-slate-400 text-sm">
+                      Hali mahsulot tanlanmagan
+                    </div>
+                  )}
+                </div>
+              </Spin>
             </div>
 
             <div className="flex flex-col gap-1 w-full">

@@ -187,6 +187,7 @@ const AdminAddSalePage = () => {
         localStorage.removeItem("paid_amount");
         localStorage.removeItem("sale_items");
         localStorage.removeItem("selected_product_ids");
+        localStorage.removeItem("images");
         navigate("/admin/sales");
       },
       onError: (err: any) => {
@@ -215,14 +216,24 @@ const AdminAddSalePage = () => {
       },
     });
   };
-
   // HandleFinishSale ends
+
+  // HandleCancel starts
+  const handleCancelSale = () => {
+    removeParams(["shopId", "customerId"]);
+    localStorage.removeItem("paid_amount");
+    localStorage.removeItem("sale_items");
+    localStorage.removeItem("selected_product_ids");
+    localStorage.removeItem("images");
+    navigate("/admin/sales");
+  };
+  // HandleCancel ends
 
   return (
     <div>
       <ArrowLeft
         className="hover:opacity-75 cursor-pointer"
-        onClick={() => navigate(-1)}
+        onClick={handleCancelSale}
       />
       <div className="flex justify-between gap-3">
         <LargeTitle title="Yangi sotuv" />
@@ -230,7 +241,7 @@ const AdminAddSalePage = () => {
         <div className="flex items-center gap-3 max-[500px]:hidden">
           <Button
             className="h-10! bg-red-500! text-white!"
-            onClick={() => navigate(-1)}
+            onClick={handleCancelSale}
           >
             Bekor qilish
           </Button>
@@ -276,7 +287,7 @@ const AdminAddSalePage = () => {
       <div className="flex items-center gap-3 min-[500px]:hidden max-[500px]:mt-3 max-[380px]:flex-col-reverse">
         <Button
           className="max-[500px]:w-full h-10! bg-red-500! text-white!"
-          onClick={() => navigate(-1)}
+          onClick={handleCancelSale}
         >
           Bekor qilish
         </Button>
