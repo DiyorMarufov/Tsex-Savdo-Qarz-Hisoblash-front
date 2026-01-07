@@ -25,7 +25,7 @@ const AdminProductsReportPage = () => {
   const {
     getAllProducts,
     getProductsSummaryForReport,
-    getAllProductsForProductsFilter,
+    getInfiniteProducts,
     getAllTop5ProductsForReport,
   } = useProduct();
   const { getParam, setParams, removeParam } = useParamsHook();
@@ -111,27 +111,38 @@ const AdminProductsReportPage = () => {
     })) || []),
   ];
 
-  const { data: productLists, isLoading: productListLoading } =
-    getAllProductsForProductsFilter(isProductOpen);
+  const {
+    data: productLists,
+    isLoading: productListLoading,
+    fetchNextPage: productFetchNextPage,
+    hasNextPage: productHasNextPage,
+    isFetchingNextPage: productIsFetchingNextPage,
+  } = getInfiniteProducts(isProductOpen);
+
   const productOptions = [
     {
       value: "",
       label: "Barcha mahsulotlar",
     },
-    ...(productLists?.data?.data?.map((pr: any) => ({
+    ...(
+      productLists?.pages?.flatMap((page: any) => {
+        return Array.isArray(page)
+          ? page
+          : page?.data?.data || page?.data || [];
+      }) || []
+    ).map((pr: any) => ({
       value: pr?.id,
       label: (
-        <div className="flex justify-between">
+        <div className="flex justify-between items-center w-full">
           <span className="text-[14px] font-medium text-slate-800">
             {pr?.name}
           </span>
-
-          <span className="text-[12px] text-slate-400 font-normal">
+          <span className="text-[12px] text-slate-400 font-normal ml-2">
             {pr?.brand}
           </span>
         </div>
       ),
-    })) || []),
+    })),
   ];
   // ProductReportFilter options end
 
@@ -241,6 +252,9 @@ const AdminProductsReportPage = () => {
         setIsTsexOpen={setIsTsexOpen}
         setIsShopOpen={setIsShopOpen}
         productLoading={productListLoading}
+        productHasNextPage={productHasNextPage}
+        productIsFetchingNextPage={productIsFetchingNextPage}
+        productFetchNextPage={productFetchNextPage}
         tsexLoading={tsexLoading}
         shopLoading={shopLoading}
       />

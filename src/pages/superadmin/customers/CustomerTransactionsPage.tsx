@@ -18,8 +18,11 @@ const CustomersDetailPage = () => {
   }, []);
 
   // CustomerTransaction detail starts
-  const handleOpenTransactionDetail = (id: string) => {
-    navigate(`detail/${id}`);
+  const handleOpenTransactionDetail = (
+    id: string,
+    type: "lending" | "borrowing"
+  ) => {
+    navigate(`detail/${id}?type=${type}`);
   };
   // CustomerTransaction detail ends
 

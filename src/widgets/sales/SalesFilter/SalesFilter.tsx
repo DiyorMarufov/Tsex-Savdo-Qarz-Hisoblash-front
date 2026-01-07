@@ -28,6 +28,9 @@ interface CombinedReportFilterProps {
   setIsShopOpen: (open: boolean) => void;
   handleSearchChange: (value: string) => void;
   productLoading: boolean;
+  productHasNextPage?: boolean;
+  productIsFetchingNextPage?: boolean;
+  productFetchNextPage?: any;
   tsexLoading: boolean;
   shopLoading: boolean;
 }
@@ -48,6 +51,9 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
   setIsShopOpen,
   handleSearchChange,
   productLoading,
+  productHasNextPage,
+  productIsFetchingNextPage,
+  productFetchNextPage,
   tsexLoading,
   shopLoading,
 }) => {
@@ -92,6 +98,15 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
     setTempDateStrings(values ? dateStrings : null);
   };
 
+  const handleScroll = (e: any) => {
+    const { target } = e;
+    if (target.scrollTop + target.clientHeight >= target.scrollHeight - 10) {
+      if (productHasNextPage && !productIsFetchingNextPage) {
+        productFetchNextPage();
+      }
+    }
+  };
+
   return (
     <div>
       <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] grid grid-cols-[300px_1fr] max-[1200px]:grid-cols-1 p-3.5 gap-3 items-center">
@@ -118,6 +133,7 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
           </div>
           <div className="w-full">
             <Filter
+              onPopupScroll={handleScroll}
               value={tempProductId}
               options={productOptions}
               onChange={setTempProductId}
@@ -126,6 +142,16 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
               onDropdownVisibleChange={(visible: any) => {
                 if (visible) setIsProductOpen(true);
               }}
+              dropdownRender={(menu: any) => (
+                <>
+                  {menu}
+                  {productIsFetchingNextPage && (
+                    <span className="text-[12px] text-gray-500">
+                      Yuklanmoqda...
+                    </span>
+                  )}
+                </>
+              )}
               loading={productLoading}
             />
           </div>
@@ -203,8 +229,11 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
           </div>
 
           <div className="w-full">
-            <p className="mb-1 text-sm text-slate-500 font-medium">Mahsulotlar</p>
+            <p className="mb-1 text-sm text-slate-500 font-medium">
+              Mahsulotlar
+            </p>
             <Filter
+              onPopupScroll={handleScroll}
               value={tempProductId}
               options={productOptions}
               onChange={setTempProductId}
@@ -213,6 +242,16 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
               onDropdownVisibleChange={(visible: any) => {
                 if (visible) setIsProductOpen(true);
               }}
+              dropdownRender={(menu: any) => (
+                <>
+                  {menu}
+                  {productIsFetchingNextPage && (
+                    <span className="text-[12px] text-gray-500">
+                      Yuklanmoqda...
+                    </span>
+                  )}
+                </>
+              )}
               loading={productLoading}
             />
           </div>

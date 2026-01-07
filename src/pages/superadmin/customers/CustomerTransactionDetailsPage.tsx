@@ -1,21 +1,40 @@
-import { memo, useEffect, useMemo } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import ProTable from "@ant-design/pro-table";
+import { type FormProps, Drawer, Form } from "antd";
 import { useCustomerTransaction } from "../../../shared/lib/apis/customer-transactions/useCustomerTransaction";
 import { useNavigate, useParams } from "react-router-dom";
 import CustomerTransactionDetailMobileList from "../../../widgets/customers/CustomerTransactionDetailMobileList/CustomerTransactionDetailMobileList";
 import NameSkeleton from "../../../shared/ui/Skeletons/NameSkeleton/NameSkeleton";
 import { useParamsHook } from "../../../shared/hooks/params/useParams";
-import type { QueryParams } from "../../../shared/lib/types";
+import CustomerTransactionDetailTransactions from "../../../widgets/superadmin/customers/CustomerTransactionDetailTransactions/CustomerTransactionDetailTransactions";
+import CustomerTransactionDetailModal from "../../../widgets/superadmin/customers/CustomerTransactionDetailModal/CustomerTransactionDetailModal";
+import type {
+  CustomerTransactionDetailDataType,
+  CustomerTransactionDetailType,
+  QueryParams,
+} from "../../../shared/lib/types";
+import { useApiNotification } from "../../../shared/hooks/api-notification/useApiNotification";
 import { ArrowLeft } from "lucide-react";
+import PlusButton from "../../../shared/ui/Button/PlusButton";
 import { transactionDetailColumns } from "../../../shared/lib/model/customers/customer-transactions-detail-model";
 
-const CustomerTransactionDetailsPage = () => {
+const CustomerTransactionDetails = () => {
+  const [transactionOpen, setTransactionOpen] = useState<boolean>(false);
+  const [modalType, setModalType] =
+    useState<CustomerTransactionDetailType | null>(null);
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const [form] = Form.useForm();
   const { id } = useParams();
   const { getParam, setParams, removeParam } = useParamsHook();
   const navigate = useNavigate();
 
-  const { getCustomerTransactionsDetailByParentTransactionId } =
-    useCustomerTransaction();
+  const type = getParam("type") || "";
+
+  const {
+    getCustomerTransactionsDetailByParentTransactionId,
+    createLendOrBorrowTransaction,
+  } = useCustomerTransaction();
+  const { handleApiError, handleSuccess } = useApiNotification();
 
   useEffect(() => {
     window.scroll({ top: 0 });
@@ -30,13 +49,166 @@ const CustomerTransactionDetailsPage = () => {
   }, [getParam]);
   // Query ends
 
+  // Transaction starts
+  const openTransactionModal = (type: CustomerTransactionDetailType) => {
+    setModalType(type);
+    setTransactionOpen(true);
+  };
+
+  const handleCancelTransaction = () => {
+    setModalType(null);
+    setTransactionOpen(false);
+  };
+
+  const transactionOnFinish: FormProps<CustomerTransactionDetailDataType>["onFinish"] =
+    (values: CustomerTransactionDetailDataType) => {
+      const { amount, description } = values;
+      const data: CustomerTransactionDetailDataType = {
+        transaction_id: id as string,
+        amount: Number(amount.replace(/\D/g, "")),
+        description,
+      };
+      switch (modalType) {
+        case "lend-more":
+          createLendOrBorrowTransaction.mutate(
+            { data, type: modalType },
+            {
+              onSuccess: () => {
+                handleCancelTransaction();
+                form.resetFields();
+                handleSuccess("Muvaffaqiyatli ko'proq qarz berildi");
+              },
+              onError: (err: any) => {
+                const status = err?.response?.data?.statusCode;
+                const msg = err?.response?.data?.message;
+
+                if (
+                  status === 404 &&
+                  msg.startsWith("CustomerTransaction with ID")
+                ) {
+                  handleApiError("Bunday tranzaksiya mavjud emas", "topRight");
+                  return;
+                } else if (status === 404 && msg.startsWith("User with ID")) {
+                  handleApiError("Superadmin mavjud emas");
+                  return;
+                } else {
+                  handleApiError("Serverda xato");
+                  return;
+                }
+              },
+            }
+          );
+          break;
+
+        case "receive":
+          createLendOrBorrowTransaction.mutate(
+            { data, type: modalType },
+            {
+              onSuccess: () => {
+                handleCancelTransaction();
+                form.resetFields();
+                handleSuccess("Muvaffaqiyatli qabul qilindi");
+              },
+              onError: (err: any) => {
+                const status = err?.response?.data?.statusCode;
+                const msg = err?.response?.data?.message;
+
+                if (
+                  status === 404 &&
+                  msg.startsWith("CustomerTransaction with ID")
+                ) {
+                  handleApiError("Bunday tranzaksiya mavjud emas", "topRight");
+                  return;
+                } else if (status === 404 && msg.startsWith("User with ID")) {
+                  handleApiError("Superadmin mavjud emas");
+                  return;
+                } else {
+                  handleApiError("Serverda xato");
+                  return;
+                }
+              },
+            }
+          );
+          break;
+
+        case "borrow-more":
+          createLendOrBorrowTransaction.mutate(
+            { data, type: modalType },
+            {
+              onSuccess: () => {
+                handleCancelTransaction();
+                form.resetFields();
+                handleSuccess("Muvaffaqiyatli koproq qarz olindi");
+              },
+              onError: (err: any) => {
+                const status = err?.response?.data?.statusCode;
+                const msg = err?.response?.data?.message;
+
+                if (
+                  status === 404 &&
+                  msg.startsWith("CustomerTransaction with ID")
+                ) {
+                  handleApiError("Bunday tranzaksiya mavjud emas", "topRight");
+                  return;
+                } else if (status === 404 && msg.startsWith("User with ID")) {
+                  handleApiError("Superadmin mavjud emas");
+                  return;
+                } else {
+                  handleApiError("Serverda xato");
+                  return;
+                }
+              },
+            }
+          );
+          break;
+
+        case "repayment":
+          createLendOrBorrowTransaction.mutate(
+            { data, type: modalType },
+            {
+              onSuccess: () => {
+                handleCancelTransaction();
+                form.resetFields();
+                handleSuccess("Muvaffaqiyatli qisman qarz to'landi");
+              },
+              onError: (err: any) => {
+                const status = err?.response?.data?.statusCode;
+                const msg = err?.response?.data?.message;
+
+                if (
+                  status === 404 &&
+                  msg.startsWith("CustomerTransaction with ID")
+                ) {
+                  handleApiError("Bunday tranzaksiya mavjud emas", "topRight");
+                  return;
+                } else if (status === 404 && msg.startsWith("User with ID")) {
+                  handleApiError("Superadmin mavjud emas");
+                  return;
+                } else {
+                  handleApiError("Serverda xato");
+                  return;
+                }
+              },
+            }
+          );
+          break;
+        default:
+          break;
+      }
+    };
+
+  const handleFinish = () => {
+    console.log("Tugatish jarayoni boshlandi");
+  };
+  // Transaction ends
+
   // CustomerTransactionDetail starts
   const {
-    data: customerTransactionDetailsPage,
+    data: customerTransactionDetails,
     isLoading: customerTransactionDetailLoading,
   } = getCustomerTransactionsDetailByParentTransactionId(id as string);
-  const transactionDetails = customerTransactionDetailsPage?.data?.data;
-  const total = customerTransactionDetailsPage?.data?.total || 0;
+  const transactionDetails = customerTransactionDetails?.data?.data;
+  const total = customerTransactionDetails?.data?.total || 0;
   // CustomerTransactionDetail ends
 
   // PageChange starts
@@ -81,6 +253,7 @@ const CustomerTransactionDetailsPage = () => {
         )}
       </div>
 
+      <PlusButton setOpen={() => setOpenDrawer(true)} />
       <div className="max-[500px]:hidden">
         <ProTable
           dataSource={transactionDetails}
@@ -109,8 +282,38 @@ const CustomerTransactionDetailsPage = () => {
         pageSize={Number(query.limit)}
         onPageChange={handlePageChange}
       />
+
+      <CustomerTransactionDetailModal
+        open={transactionOpen}
+        onCancel={handleCancelTransaction}
+        onFinish={transactionOnFinish}
+        form={form}
+        type={modalType as CustomerTransactionDetailType}
+        loading={createLendOrBorrowTransaction.isPending}
+      />
+
+      <Drawer
+        title="Tanlang"
+        placement={"bottom"}
+        onClose={() => setOpenDrawer(false)}
+        open={openDrawer}
+        height={210}
+      >
+        <CustomerTransactionDetailTransactions
+          type={type}
+          handleActionMore={() =>
+            openTransactionModal(
+              type === "borrowing" ? "borrow-more" : "lend-more"
+            )
+          }
+          handlePayment={() =>
+            openTransactionModal(type === "borrowing" ? "repayment" : "receive")
+          }
+          handleFinish={handleFinish}
+        />
+      </Drawer>
     </div>
   );
 };
 
-export default memo(CustomerTransactionDetailsPage);
+export default memo(CustomerTransactionDetails);

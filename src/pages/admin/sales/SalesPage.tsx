@@ -28,7 +28,7 @@ const AdminSalesPage = () => {
   const { getAllSales } = useSale();
   const { getAllShopsForProductsFilter } = useShop();
   const { getAllTsexesForProductsFilter } = useTsex();
-  const { getAllProductsForProductsFilter } = useProduct();
+  const { getInfiniteProducts } = useProduct();
 
   useEffect(() => {
     window.scroll({ top: 0 });
@@ -152,27 +152,38 @@ const AdminSalesPage = () => {
     })) || []),
   ];
 
-  const { data: products, isLoading: productLoading } =
-    getAllProductsForProductsFilter(isProductOpen);
+  const {
+    data: products,
+    isLoading: productLoading,
+    fetchNextPage: productFetchNextPage,
+    hasNextPage: productHasNextPage,
+    isFetchingNextPage: productIsFetchingNextPage,
+  } = getInfiniteProducts(isProductOpen);
+
   const productOptions = [
     {
       value: "",
       label: "Barcha mahsulotlar",
     },
-    ...(products?.data?.data?.map((pr: any) => ({
+    ...(
+      products?.pages?.flatMap((page: any) => {
+        return Array.isArray(page)
+          ? page
+          : page?.data?.data || page?.data || [];
+      }) || []
+    ).map((pr: any) => ({
       value: pr?.id,
       label: (
-        <div className="flex justify-between">
+        <div className="flex justify-between items-center w-full">
           <span className="text-[14px] font-medium text-slate-800">
             {pr?.name}
           </span>
-
-          <span className="text-[12px] text-slate-400 font-normal">
+          <span className="text-[12px] text-slate-400 font-normal ml-2">
             {pr?.brand}
           </span>
         </div>
       ),
-    })) || []),
+    })),
   ];
   // SaleFilter options end
 
@@ -225,6 +236,9 @@ const AdminSalesPage = () => {
             setIsShopOpen={setIsShopOpen}
             handleSearchChange={handleSearchChange}
             productLoading={productLoading}
+            productHasNextPage={productHasNextPage}
+            productIsFetchingNextPage={productIsFetchingNextPage}
+            productFetchNextPage={productFetchNextPage}
             tsexLoading={tsexLoading}
             shopLoading={shopLoading}
           />
