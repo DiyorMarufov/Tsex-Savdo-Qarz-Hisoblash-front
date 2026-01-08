@@ -35,7 +35,7 @@ const SaleChart = ({ isAnimationActive = true }) => {
         <CartesianGrid strokeDasharray="3 3" vertical={false} />
         <XAxis dataKey="name" axisLine={false} tickLine={false} />
         <YAxis axisLine={false} tickLine={false} />
-        <Tooltip />
+        <Tooltip formatter={(val) => `${val.toLocaleString()} uzs`} />
         <Area
           type="monotone"
           dataKey="sotuvlar"

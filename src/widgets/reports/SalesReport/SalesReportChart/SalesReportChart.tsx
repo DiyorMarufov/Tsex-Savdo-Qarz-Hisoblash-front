@@ -160,7 +160,7 @@ const SalesReportChart: FC<SalesReportChartProps> = ({
               />
               <Tooltip
                 formatter={(value: number, name: string) => [
-                  value.toLocaleString() + (name === "Summa" ? " so'm" : " ta"),
+                  value.toLocaleString() + (name === "Summa" ? " uzs" : " ta"),
                   name,
                 ]}
                 contentStyle={{

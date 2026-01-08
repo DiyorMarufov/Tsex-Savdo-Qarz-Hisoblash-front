@@ -251,7 +251,7 @@ const SaleItemsManager = ({
                                 }
                                 parser={(v) => v!.replace(/[^\d]/g, "")}
                                 addonAfter={
-                                  <span className="text-[10px]">so'm</span>
+                                  <span className="text-[10px]">uzs</span>
                                 }
                               />
                             </div>

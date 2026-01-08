@@ -183,7 +183,7 @@ const AdminAddSalePage = () => {
             </div>
             <div className="flex flex-col items-end gap-0.5">
               <span className="text-[13px] font-bold text-emerald-600 tabular-nums">
-                {Number(pr?.price).toLocaleString()} so'm
+                {Number(pr?.price).toLocaleString()} uzs
               </span>
               <span
                 className={`text-[11px] font-medium ${pr?.quantity > 0 ? "text-blue-500" : "text-red-500"}`}
