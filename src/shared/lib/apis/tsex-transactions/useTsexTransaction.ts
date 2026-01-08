@@ -17,6 +17,7 @@ export const useTsexTransaction = () => {
     onSuccess: () => {
       client.invalidateQueries({ queryKey: [tsex_transaction] });
       client.invalidateQueries({ queryKey: ["tsex", "all-tsex"] });
+      client.invalidateQueries({ queryKey: ["tsex", "tsex-balance-summary"] });
       client.invalidateQueries({
         queryKey: ["tsex", "creditor-total-balance"],
       });

@@ -194,6 +194,7 @@ const AdminAddSalePage = () => {
           </div>
         ),
         displayLabel: `${pr?.name} - ${pr?.brand}`,
+        originalProduct: pr,
       })) || []
     );
   }, [productLists]);

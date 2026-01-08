@@ -3,8 +3,10 @@ import logo from "../../shared/assets/logo/Background.svg";
 import { LogOut } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { removeToken } from "../../features/auth/model/authModel";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleSignOut = () => {
     dispatch(removeToken());
@@ -14,7 +16,10 @@ const Header = () => {
   return (
     <div className="flex justify-between w-full">
       <div className="w-full flex items-center justify-center max-[701px]:justify-start max-[701px]:pl-3.5">
-        <div className="flex items-center gap-3">
+        <div
+          className="flex items-center gap-3 select-none cursor-pointer"
+          onClick={() => navigate("/")}
+        >
           <img src={logo} className="w-10 h-10" alt="" />
           <span className="text-[25px] font-bold max-[250px]:text-[20px]">
             Savdo tizimi

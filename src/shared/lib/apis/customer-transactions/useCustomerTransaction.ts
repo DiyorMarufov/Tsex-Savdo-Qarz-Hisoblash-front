@@ -17,18 +17,15 @@ export const useCustomerTransaction = () => {
     mutationFn: (data: TransactionFieldType) =>
       api.post("customer-transactions/lend", data).then((res) => res.data),
     onSuccess: () => {
-      client.invalidateQueries({
-        queryKey: [customer, "creditor-total-balance"],
-      });
-      client.invalidateQueries({
-        queryKey: [customer, "debtor-total-balance"],
-      });
-      client.invalidateQueries({
-        queryKey: [customer, "net-total-balance"],
-      });
       client.invalidateQueries({ queryKey: [customer, "all-customers"] });
       client.invalidateQueries({
-        queryKey: [customer, "customer-transactions"],
+        queryKey: [customer, "customer-balance-summary"],
+      });
+      client.invalidateQueries({
+        queryKey: [customer_transaction, "customer-transactions"],
+      });
+      client.invalidateQueries({
+        queryKey: [customer_transaction, "customer-transactions-parent-id"],
       });
       client.invalidateQueries({
         queryKey: [customer, "customer-total-balance"],
@@ -43,18 +40,12 @@ export const useCustomerTransaction = () => {
     mutationFn: (data: TransactionFieldType) =>
       api.post("customer-transactions/borrow", data).then((res) => res.data),
     onSuccess: () => {
-      client.invalidateQueries({
-        queryKey: [customer, "creditor-total-balance"],
-      });
-      client.invalidateQueries({
-        queryKey: [customer, "debtor-total-balance"],
-      });
-      client.invalidateQueries({
-        queryKey: [customer, "net-total-balance"],
-      });
       client.invalidateQueries({ queryKey: [customer, "all-customers"] });
       client.invalidateQueries({
-        queryKey: [customer, "customer-transactions"],
+        queryKey: [customer, "customer-balance-summary"],
+      });
+      client.invalidateQueries({
+        queryKey: [customer_transaction, "customer-transactions"],
       });
       client.invalidateQueries({
         queryKey: [customer, "customer-transactions-parent-id"],
@@ -78,21 +69,38 @@ export const useCustomerTransaction = () => {
     }) =>
       api.post(`customer-transactions/${type}`, data).then((res) => res.data),
     onSuccess: () => {
-      client.invalidateQueries({
-        queryKey: [customer, "creditor-total-balance"],
-      });
-      client.invalidateQueries({
-        queryKey: [customer, "debtor-total-balance"],
-      });
-      client.invalidateQueries({
-        queryKey: [customer, "net-total-balance"],
-      });
       client.invalidateQueries({ queryKey: [customer, "all-customers"] });
       client.invalidateQueries({
         queryKey: [customer_transaction, "customer-transactions"],
       });
       client.invalidateQueries({
         queryKey: [customer_transaction, "customer-transactions-parent-id"],
+      });
+      client.invalidateQueries({
+        queryKey: [customer, "customer-balance-summary"],
+      });
+      client.invalidateQueries({
+        queryKey: [customer, "customer-total-balance"],
+      });
+      client.invalidateQueries({
+        queryKey: [customer, "most-debtor-customers"],
+      });
+    },
+  });
+
+  const createPaidOffTransaction = useMutation({
+    mutationFn: (data: { transaction_id: string }) =>
+      api.post("customer-transactions/payoff", data).then((res) => res.data),
+    onSuccess: () => {
+      client.invalidateQueries({ queryKey: [customer, "all-customers"] });
+      client.invalidateQueries({
+        queryKey: [customer_transaction, "customer-transactions"],
+      });
+      client.invalidateQueries({
+        queryKey: [customer_transaction, "customer-transactions-parent-id"],
+      });
+      client.invalidateQueries({
+        queryKey: [customer, "customer-balance-summary"],
       });
       client.invalidateQueries({
         queryKey: [customer, "customer-total-balance"],
@@ -116,7 +124,7 @@ export const useCustomerTransaction = () => {
     });
 
   const getCustomerTransactionsDetailByParentTransactionId = (
-    parent_transaction_id: string,
+    parent_transaction_id: string
   ) =>
     useQuery({
       queryKey: [
@@ -136,6 +144,7 @@ export const useCustomerTransaction = () => {
     createLend,
     createBorrow,
     createLendOrBorrowTransaction,
+    createPaidOffTransaction,
     getCustomerTransactionsByCustomerId,
     getCustomerTransactionsDetailByParentTransactionId,
   };

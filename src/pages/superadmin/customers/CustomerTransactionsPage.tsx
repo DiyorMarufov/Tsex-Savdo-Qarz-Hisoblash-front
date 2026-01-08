@@ -45,7 +45,7 @@ const CustomersDetailPage = () => {
       {customerTransactionLoading ? (
         <NameSkeleton />
       ) : (
-        <span className="text-[20px] font-medium text-[#4B5563]">
+        <span className="text-[20px] font-medium text-[#4B5563] flex mb-2">
           {transactions?.[0]?.customer.full_name
             ? transactions?.[0]?.customer.full_name
             : "Hozircha no'malum"}{" "}

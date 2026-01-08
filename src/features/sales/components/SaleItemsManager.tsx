@@ -39,8 +39,8 @@ const SaleItemsManager = ({
   handleChange,
   tagRender,
 }: SaleItemsManagerProps) => {
-  const { getAllProductsForProductsFilter } = useProduct();
-  const { data: productsData } = getAllProductsForProductsFilter(true);
+  const { getInfiniteProducts } = useProduct();
+  const { data: productsData } = getInfiniteProducts(true);
 
   const [items, setItems] = useState<any[]>(() => {
     const saved = localStorage.getItem("sale_items");
@@ -52,11 +52,15 @@ const SaleItemsManager = ({
   }, [productId]);
 
   const selectedProducts = useMemo(() => {
-    if (!productsData?.data?.data) return [];
+    if (!productOptions) return [];
+
     return selectedIds
-      .map((id) => productsData.data.data.find((p: any) => p.id === id))
+      .map((id) => {
+        const option: any = productOptions.find((opt) => opt.value === id);
+        return option?.originalProduct || null;
+      })
       .filter(Boolean);
-  }, [selectedIds, productsData]);
+  }, [selectedIds, productOptions]);
 
   useEffect(() => {
     const saved = localStorage.getItem("sale_items");
@@ -69,7 +73,8 @@ const SaleItemsManager = ({
     selectedIds.forEach((id) => {
       const exists = filtered.find((item: any) => item.product_id === id);
       if (!exists) {
-        const product = productsData?.data?.data?.find((p: any) => p.id === id);
+        const option: any = productOptions.find((opt) => opt.value === id);
+        const product = option?.originalProduct;
         filtered.push({
           product_id: id,
           quantity: 1,
@@ -78,7 +83,6 @@ const SaleItemsManager = ({
         });
       }
     });
-
     localStorage.setItem("sale_items", JSON.stringify(filtered));
     setItems(filtered);
   }, [productId, productsData]);

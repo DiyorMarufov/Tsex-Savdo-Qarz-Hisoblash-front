@@ -33,6 +33,7 @@ const CustomerTransactionDetails = () => {
   const {
     getCustomerTransactionsDetailByParentTransactionId,
     createLendOrBorrowTransaction,
+    createPaidOffTransaction,
   } = useCustomerTransaction();
   const { handleApiError, handleSuccess } = useApiNotification();
 
@@ -198,7 +199,30 @@ const CustomerTransactionDetails = () => {
     };
 
   const handleFinish = () => {
-    console.log("Tugatish jarayoni boshlandi");
+    const data = {
+      transaction_id: id,
+    };
+    createPaidOffTransaction.mutate(data as { transaction_id: string }, {
+      onSuccess: () => {
+        handleCancelTransaction();
+        navigate("/superadmin/customers");
+      },
+      onError: (err: any) => {
+        const status = err?.response?.data?.statusCode;
+        const msg = err?.response?.data?.message;
+
+        if (status === 404 && msg.startsWith("CustomerTransaction with ID")) {
+          handleApiError("Bunday tranzaksiya mavjud emas", "topRight");
+          return;
+        } else if (status === 404 && msg.startsWith("User with ID")) {
+          handleApiError("Superadmin mavjud emas");
+          return;
+        } else {
+          handleApiError("Serverda xato");
+          return;
+        }
+      },
+    });
   };
   // Transaction ends
 
@@ -244,7 +268,7 @@ const CustomerTransactionDetails = () => {
         {customerTransactionDetailLoading ? (
           <NameSkeleton />
         ) : (
-          <span className="text-[20px] font-medium text-[#4B5563] pb-5">
+          <span className="text-[20px] font-medium text-[#4B5563] pb-2">
             {transactionDetails?.[0]?.customer.full_name
               ? transactionDetails?.[0]?.customer.full_name
               : "Hozircha no'malum"}{" "}
