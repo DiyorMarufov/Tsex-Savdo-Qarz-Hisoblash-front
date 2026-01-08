@@ -35,7 +35,7 @@ const ProductsReportPage = () => {
   } = useProduct();
   const { getParam, setParams, removeParam } = useParamsHook();
   const [localSearch, setLocalSearch] = useState(getParam("search") || "");
-  const [_, setProductFilterSearch] = useState(
+  const [, setProductFilterSearch] = useState(
     getParam("product_search") || ""
   );
 

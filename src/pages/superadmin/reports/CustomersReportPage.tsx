@@ -18,7 +18,7 @@ const CustomersReportPage = () => {
   const navigate = useNavigate();
   const { getParam, setParams, removeParam } = useParamsHook();
   const [localSearch, setLocalSearch] = useState(getParam("search") || "");
-  const [_, setCustomerModalSearch] = useState(
+  const [, setCustomerModalSearch] = useState(
     getParam("customer_search") || ""
   );
   const [isCustomerOpen, setIsCustomerOpen] = useState<boolean>(false);

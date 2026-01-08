@@ -41,7 +41,7 @@ const CustomersPage = () => {
   const { getAllCustomers } = useCustomer();
   const { getParam, setParams, removeParam } = useParamsHook();
   const [localSearch, setLocalSearch] = useState(getParam("search") || "");
-  const [_, setCustomerModalSearch] = useState(
+  const [, setCustomerModalSearch] = useState(
     getParam("customer_search") || ""
   );
   const [form] = Form.useForm();
