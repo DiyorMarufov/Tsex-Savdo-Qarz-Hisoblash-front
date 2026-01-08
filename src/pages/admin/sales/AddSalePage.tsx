@@ -1,4 +1,4 @@
-import { memo, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
 import { Button } from "antd";
 import { ArrowLeft, Save } from "lucide-react";
@@ -15,18 +15,23 @@ import { useShop } from "../../../shared/lib/apis/shops/useShop";
 import { base64ToFile } from "../../../shared/lib/functions/base64ToFile";
 import { useSale } from "../../../shared/lib/apis/sales/useSale";
 import { useApiNotification } from "../../../shared/hooks/api-notification/useApiNotification";
+import { debounce } from "../../../shared/lib/functions/debounce";
 
 const AdminAddSalePage = () => {
   const navigate = useNavigate();
   const [isCustomerOpen, setIsCustomerOpen] = useState<boolean>(false);
   const [isProductOpen, setIsProductOpen] = useState<boolean>(false);
   const [isShopOpen, setIsShopOpen] = useState<boolean>(false);
-  const { getAllCustomersForTransaction } = useCustomer();
-  const { getAllProductsForProductsFilter } = useProduct();
+  const { getInfiniteCustomers } = useCustomer();
+  const { getInfiniteProducts } = useProduct();
   const { getAllShopsForProductsFilter } = useShop();
   const { createSale } = useSale();
 
   const { getParam, setParams, removeParams } = useParamsHook();
+  const [, setCustomerModalSearch] = useState(
+    getParam("customer_search") || ""
+  );
+  const [, setProductFilterSearch] = useState(getParam("product_search") || "");
   const { handleApiError } = useApiNotification();
 
   useEffect(() => {
@@ -42,10 +47,50 @@ const AdminAddSalePage = () => {
     const productIdArray: string[] = savedData ? JSON.parse(savedData) : [];
     const productId =
       productIdArray.length > 0 ? productIdArray.join(",") : undefined;
+    const customerFilterSearch = getParam("customer_search") || undefined;
+    const productFilterSearch = getParam("product_search") || undefined;
 
-    return { customerId, shopId, productId };
+    return {
+      customerId,
+      shopId,
+      productId,
+      customerFilterSearch,
+      productFilterSearch,
+    };
   }, [getParam]);
   // Query ends
+
+  // FilterSearch starts
+  const debouncedSetSearchCustomerModalQuery = useCallback(
+    debounce((nextValue: string) => {
+      setParams({
+        customer_search: nextValue || "",
+        page: 1,
+      });
+    }, 500),
+    [setParams]
+  );
+
+  const debouncedSetSearchProductFilterQuery = useCallback(
+    debounce((nextValue: string) => {
+      setParams({
+        product_search: nextValue || "",
+        page: 1,
+      });
+    }, 500),
+    [setParams]
+  );
+
+  const handleSearchCustomerModalChange = (value: string) => {
+    setCustomerModalSearch(value);
+    debouncedSetSearchCustomerModalQuery(value);
+  };
+
+  const handleSearchProductFilterChange = (value: string) => {
+    setProductFilterSearch(value);
+    debouncedSetSearchProductFilterQuery(value);
+  };
+  // FilterSearch ends
 
   // HanldeChangeSelect starts
   const handleChange = (
@@ -79,33 +124,52 @@ const AdminAddSalePage = () => {
 
   // Options start
   const shouldFetchCustomers = isCustomerOpen || !!query.customerId;
-  const { data: allCustomersList, isLoading: customerListLoading } =
-    getAllCustomersForTransaction(shouldFetchCustomers);
-
-  const customerOptions: Option[] = useMemo(() => {
-    return (
-      allCustomersList?.data.map((cs: any) => ({
-        value: String(cs.id),
-        label: (
-          <div className="flex items-center justify-between w-full gap-4">
-            <span className="font-medium text-slate-800 truncate">
-              {cs.full_name}
-            </span>
-            <span className="text-[12px] text-slate-400 font-normal tabular-nums shrink-0">
-              {formatPhoneNumber(cs.phone_number)}
-            </span>
-          </div>
-        ),
-      })) || []
-    );
-  }, [allCustomersList]);
+  const {
+    data: allCustomersList,
+    isLoading: customerListLoading,
+    fetchNextPage: customerFetchNextPage,
+    hasNextPage: customerHasNextPage,
+    isFetchingNextPage: customerIsFetchingNextPage,
+  } = getInfiniteCustomers(shouldFetchCustomers, {
+    search: query.customerFilterSearch,
+  });
+  const customerOptions: Option[] = (
+    allCustomersList?.pages?.flatMap((page: any) => {
+      return Array.isArray(page) ? page : page?.data?.data || page?.data || [];
+    }) || []
+  ).map((cs: any) => ({
+    value: cs.id,
+    label: (
+      <div className="flex items-center justify-between w-full gap-4">
+        <span className="font-medium text-slate-800 truncate">
+          {cs.full_name}
+        </span>
+        <span className="text-[12px] text-slate-400 font-normal tabular-nums shrink-0">
+          {formatPhoneNumber(cs.phone_number)}
+        </span>
+      </div>
+    ),
+  }));
 
   const shouldFetchProducts = isProductOpen || !!query.productId;
-  const { data: products, isLoading: productLoading } =
-    getAllProductsForProductsFilter(shouldFetchProducts);
+  const {
+    data: productLists,
+    isLoading: productListLoading,
+    fetchNextPage: productFetchNextPage,
+    hasNextPage: productHasNextPage,
+    isFetchingNextPage: productIsFetchingNextPage,
+  } = getInfiniteProducts(shouldFetchProducts, {
+    search: query.productFilterSearch,
+  });
   const productOptions = useMemo(() => {
     return (
-      products?.data?.data?.map((pr: any) => ({
+      (
+        productLists?.pages.flatMap((page: any) => {
+          return Array.isArray(page)
+            ? page
+            : page?.data?.data || page?.data || [];
+        }) || []
+      ).map((pr: any) => ({
         value: pr?.id,
         label: (
           <div className="flex items-center justify-between w-full py-1">
@@ -132,7 +196,7 @@ const AdminAddSalePage = () => {
         displayLabel: `${pr?.name} - ${pr?.brand}`,
       })) || []
     );
-  }, [products]);
+  }, [productLists]);
 
   const tagRender = (props: any) => {
     const { value, closable, onClose } = props;
@@ -266,6 +330,10 @@ const AdminAddSalePage = () => {
             handleChange={handleChange}
             customerOptions={customerOptions}
             customerListLoading={customerListLoading}
+            customerHasNextPage={customerHasNextPage}
+            customerIsFetchingNextPage={customerIsFetchingNextPage}
+            customerFetchNextPage={customerFetchNextPage}
+            onSearchChange={handleSearchCustomerModalChange}
             setIsCustomerOpen={setIsCustomerOpen}
           />
           <SaleItemsManager
@@ -273,7 +341,11 @@ const AdminAddSalePage = () => {
             shopId={query.shopId}
             productOptions={productOptions}
             shopOptions={shopsOptions}
-            productListLoading={productLoading}
+            productListLoading={productListLoading}
+            productHasNextPage={productHasNextPage}
+            productIsFetchingNextPage={productIsFetchingNextPage}
+            productFetchNextPage={productFetchNextPage}
+            onSearchChange={handleSearchProductFilterChange}
             shopListLoading={shopLoading}
             setIsProductOpen={setIsProductOpen}
             setIsShopOpen={setIsShopOpen}

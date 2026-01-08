@@ -41,6 +41,9 @@ const CustomersPage = () => {
   const { getAllCustomers } = useCustomer();
   const { getParam, setParams, removeParam } = useParamsHook();
   const [localSearch, setLocalSearch] = useState(getParam("search") || "");
+  const [_, setCustomerModalSearch] = useState(
+    getParam("customer_search") || ""
+  );
   const [form] = Form.useForm();
 
   const { createCustomer, getInfiniteCustomers } = useCustomer();
@@ -205,15 +208,18 @@ const CustomersPage = () => {
     const page = Number(getParam("page")) || 1;
     const limit = Number(getParam("limit")) || 5;
     const search = getParam("search") || undefined;
+    const customerFilterSearch = getParam("customer_search") || undefined;
     const region = getParam("region") || undefined;
 
-    return { page, limit, search, region };
+    return { page, limit, search, region, customerFilterSearch };
   }, [getParam]);
   // Query ends
 
   // CustomerData starts
-  const { data: allCustomers, isLoading: customerLoading } =
-    getAllCustomers(query);
+  const { data: allCustomers, isLoading: customerLoading } = getAllCustomers({
+    search: query.search,
+    region: query.region,
+  });
   const customers = allCustomers?.data?.data;
   const total = allCustomers?.data?.total || 0;
   // CustomerData ends
@@ -252,9 +258,24 @@ const CustomersPage = () => {
     [setParams]
   );
 
+  const debouncedSetSearchCustomerModalQuery = useCallback(
+    debounce((nextValue: string) => {
+      setParams({
+        customer_search: nextValue || "",
+        page: 1,
+      });
+    }, 500),
+    [setParams]
+  );
+
   const handleSearchChange = (value: string) => {
     setLocalSearch(value);
     debouncedSetSearchQuery(value);
+  };
+
+  const handleSearchCutomerModalChange = (value: string) => {
+    setCustomerModalSearch(value);
+    debouncedSetSearchCustomerModalQuery(value);
   };
   // Search ends
 
@@ -274,32 +295,26 @@ const CustomersPage = () => {
     fetchNextPage: customerFetchNextPage,
     hasNextPage: customerHasNextPage,
     isFetchingNextPage: customerIsFetchingNextPage,
-  } = getInfiniteCustomers(isCustomerOpen);
-  const customerOptions: Option[] = [
-    {
-      value: "",
-      label: "Barcha mijozlar",
-    },
-    ...(
-      allCustomersList?.pages?.flatMap((page: any) => {
-        return Array.isArray(page)
-          ? page
-          : page?.data?.data || page?.data || [];
-      }) || []
-    ).map((cs: any) => ({
-      value: cs.id,
-      label: (
-        <div className="flex items-center justify-between w-full gap-4">
-          <span className="font-medium text-slate-800 truncate">
-            {cs.full_name}
-          </span>
-          <span className="text-[12px] text-slate-400 font-normal tabular-nums shrink-0">
-            {formatPhoneNumber(cs.phone_number)}
-          </span>
-        </div>
-      ),
-    })),
-  ];
+  } = getInfiniteCustomers(isCustomerOpen, {
+    search: query.customerFilterSearch,
+  });
+  const customerOptions: Option[] = (
+    allCustomersList?.pages?.flatMap((page: any) => {
+      return Array.isArray(page) ? page : page?.data?.data || page?.data || [];
+    }) || []
+  ).map((cs: any) => ({
+    value: cs.id,
+    label: (
+      <div className="flex items-center justify-between w-full gap-4">
+        <span className="font-medium text-slate-800 truncate">
+          {cs.full_name}
+        </span>
+        <span className="text-[12px] text-slate-400 font-normal tabular-nums shrink-0">
+          {formatPhoneNumber(cs.phone_number)}
+        </span>
+      </div>
+    ),
+  }));
   // Customers list for transaction ends
 
   if (pathname.startsWith("/superadmin/customers/transaction/"))
@@ -392,10 +407,11 @@ const CustomersPage = () => {
         form={form}
         loading={createLend.isPending || createBorrow.isPending}
         setIsCustomerOpen={setIsCustomerOpen}
-        customerloading={customerListLoading}
+        customerLoading={customerListLoading}
         customerHasNextPage={customerHasNextPage}
         customerIsFetchingNextPage={customerIsFetchingNextPage}
         customerFetchNextPage={customerFetchNextPage}
+        onSearchChange={handleSearchCutomerModalChange}
       />
 
       <AddCustomerModal

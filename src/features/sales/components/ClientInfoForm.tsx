@@ -9,6 +9,10 @@ interface ClientInfoFormProps {
   handleChange: (key: "customerId", value: string) => void;
   customerOptions: Option[];
   customerListLoading: boolean;
+  customerHasNextPage?: boolean;
+  customerIsFetchingNextPage?: boolean;
+  customerFetchNextPage?: any;
+  onSearchChange?: (value: string) => void;
   setIsCustomerOpen: (visible: boolean) => void;
 }
 
@@ -16,11 +20,23 @@ const ClientInfoForm = ({
   customerId,
   handleChange,
   customerOptions,
-  setIsCustomerOpen,
   customerListLoading,
+  customerHasNextPage,
+  customerIsFetchingNextPage,
+  customerFetchNextPage,
+  onSearchChange,
+  setIsCustomerOpen,
 }: ClientInfoFormProps) => {
   const navigate = useNavigate();
 
+  const handleScroll = (e: any) => {
+    const { target } = e;
+    if (target.scrollTop + target.clientHeight >= target.scrollHeight - 10) {
+      if (customerHasNextPage && !customerIsFetchingNextPage) {
+        customerFetchNextPage();
+      }
+    }
+  };
   return (
     <div className="border border-bg-fy rounded-[5px] overflow-hidden">
       <div className="flex flex-col justify-end gap-2 bg-[#ffffff] p-4">
@@ -30,6 +46,7 @@ const ClientInfoForm = ({
             <span className="text-[16px] text-[#232E2F]">Mijoz</span>
             <Select
               className="h-10!"
+              onPopupScroll={handleScroll}
               value={customerListLoading ? undefined : customerId}
               onChange={(val) => handleChange("customerId", val)}
               options={customerOptions}
@@ -41,7 +58,20 @@ const ClientInfoForm = ({
               onDropdownVisibleChange={(visible) => {
                 if (visible) setIsCustomerOpen(visible);
               }}
+              dropdownRender={(menu: any) => (
+                <>
+                  {menu}
+                  {customerIsFetchingNextPage && (
+                    <span className="text-[12px] text-gray-500">
+                      Yuklanmoqda...
+                    </span>
+                  )}
+                </>
+              )}
               loading={customerListLoading}
+              showSearch
+              filterOption={false}
+              onSearch={onSearchChange}
               allowClear
             />
           </div>

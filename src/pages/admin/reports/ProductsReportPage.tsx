@@ -30,6 +30,7 @@ const AdminProductsReportPage = () => {
   } = useProduct();
   const { getParam, setParams, removeParam } = useParamsHook();
   const [localSearch, setLocalSearch] = useState(getParam("search") || "");
+  const [, setProductFilterSearch] = useState(getParam("product_search") || "");
 
   useEffect(() => {
     window.scroll({ top: 0 });
@@ -45,6 +46,7 @@ const AdminProductsReportPage = () => {
     const shopId = getParam("shopId") || "";
     const tsexId = getParam("tsexId") || "";
     const productId = getParam("productId") || "";
+    const productFilterSearch = getParam("product_search") || undefined;
 
     const isFirstLoad = s === null && e === null;
 
@@ -63,6 +65,7 @@ const AdminProductsReportPage = () => {
       shopId,
       tsexId,
       productId,
+      productFilterSearch,
     };
   }, [getParam]);
   // Query ends
@@ -83,68 +86,6 @@ const AdminProductsReportPage = () => {
   const totalSoldTypes = productsSummary?.totalSoldTypes;
   const inventoryBalance = productsSummary?.inventoryBalance;
   // ProductsSummaryReport ends
-
-  // ProductReportFilter options start
-  const { data: shops, isLoading: shopLoading } =
-    getAllShopsForProductsFilter(isShopOpen);
-  const shopsOptions = [
-    {
-      value: "",
-      label: "Barcha do'konlar",
-    },
-    ...(shops?.data?.map((st) => ({
-      value: st?.id,
-      label: st?.name,
-    })) || []),
-  ];
-
-  const { data: tsexes, isLoading: tsexLoading } =
-    getAllTsexesForProductsFilter(isTsexOpen);
-  const tsexesOptions = [
-    {
-      value: "",
-      label: "Barcha tsexlar",
-    },
-    ...(tsexes?.data?.map((ts) => ({
-      value: ts?.id,
-      label: ts?.name,
-    })) || []),
-  ];
-
-  const {
-    data: productLists,
-    isLoading: productListLoading,
-    fetchNextPage: productFetchNextPage,
-    hasNextPage: productHasNextPage,
-    isFetchingNextPage: productIsFetchingNextPage,
-  } = getInfiniteProducts(isProductOpen);
-
-  const productOptions = [
-    {
-      value: "",
-      label: "Barcha mahsulotlar",
-    },
-    ...(
-      productLists?.pages?.flatMap((page: any) => {
-        return Array.isArray(page)
-          ? page
-          : page?.data?.data || page?.data || [];
-      }) || []
-    ).map((pr: any) => ({
-      value: pr?.id,
-      label: (
-        <div className="flex justify-between items-center w-full">
-          <span className="text-[14px] font-medium text-slate-800">
-            {pr?.name}
-          </span>
-          <span className="text-[12px] text-slate-400 font-normal ml-2">
-            {pr?.brand}
-          </span>
-        </div>
-      ),
-    })),
-  ];
-  // ProductReportFilter options end
 
   // ProductReportFilter onFilterSubmit starts
   const onFilterSubmit = (filters: {
@@ -190,6 +131,68 @@ const AdminProductsReportPage = () => {
   const total = allProducts?.data?.total || 0;
   // ProductsReport end
 
+  // ProductReportFilter options start
+  const {
+    data: productLists,
+    isLoading: productListLoading,
+    fetchNextPage: productFetchNextPage,
+    hasNextPage: productHasNextPage,
+    isFetchingNextPage: productIsFetchingNextPage,
+  } = getInfiniteProducts(isProductOpen, { search: query.productFilterSearch });
+
+  const productOptions = [
+    {
+      value: "",
+      label: "Barcha mahsulotlar",
+    },
+    ...(
+      productLists?.pages?.flatMap((page: any) => {
+        return Array.isArray(page)
+          ? page
+          : page?.data?.data || page?.data || [];
+      }) || []
+    ).map((pr: any) => ({
+      value: pr?.id,
+      label: (
+        <div className="flex justify-between items-center w-full">
+          <span className="text-[14px] font-medium text-slate-800">
+            {pr?.name}
+          </span>
+          <span className="text-[12px] text-slate-400 font-normal ml-2">
+            {pr?.brand}
+          </span>
+        </div>
+      ),
+    })),
+  ];
+
+  const { data: tsexes, isLoading: tsexLoading } =
+    getAllTsexesForProductsFilter(isTsexOpen);
+  const tsexesOptions = [
+    {
+      value: "",
+      label: "Barcha tsexlar",
+    },
+    ...(tsexes?.data?.map((ts) => ({
+      value: ts?.id,
+      label: ts?.name,
+    })) || []),
+  ];
+
+  const { data: shops, isLoading: shopLoading } =
+    getAllShopsForProductsFilter(isShopOpen);
+  const shopsOptions = [
+    {
+      value: "",
+      label: "Barcha do'konlar",
+    },
+    ...(shops?.data?.map((st) => ({
+      value: st?.id,
+      label: st?.name,
+    })) || []),
+  ];
+  // ProductReportFilter options end
+
   // Product detail starts
   const handleProductDetailOpen = (id: string) => {
     navigate(`/admin/products/${id}`);
@@ -207,9 +210,24 @@ const AdminProductsReportPage = () => {
     [setParams]
   );
 
+  const debouncedSetSearchProductFilterQuery = useCallback(
+    debounce((nextValue: string) => {
+      setParams({
+        product_search: nextValue || "",
+        page: 1,
+      });
+    }, 500),
+    [setParams]
+  );
+
   const handleSearchChange = (value: string) => {
     setLocalSearch(value);
     debouncedSetSearchQuery(value);
+  };
+
+  const handleSearchProductFilterChange = (value: string) => {
+    setProductFilterSearch(value);
+    debouncedSetSearchProductFilterQuery(value);
   };
   // Search ends
 
@@ -255,6 +273,7 @@ const AdminProductsReportPage = () => {
         productHasNextPage={productHasNextPage}
         productIsFetchingNextPage={productIsFetchingNextPage}
         productFetchNextPage={productFetchNextPage}
+        onSearchChange={handleSearchProductFilterChange}
         tsexLoading={tsexLoading}
         shopLoading={shopLoading}
       />

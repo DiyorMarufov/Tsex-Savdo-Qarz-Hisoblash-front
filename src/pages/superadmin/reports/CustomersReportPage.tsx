@@ -18,6 +18,9 @@ const CustomersReportPage = () => {
   const navigate = useNavigate();
   const { getParam, setParams, removeParam } = useParamsHook();
   const [localSearch, setLocalSearch] = useState(getParam("search") || "");
+  const [_, setCustomerModalSearch] = useState(
+    getParam("customer_search") || ""
+  );
   const [isCustomerOpen, setIsCustomerOpen] = useState<boolean>(false);
   const {
     getAllCustomers,
@@ -39,6 +42,7 @@ const CustomersReportPage = () => {
     const s = getParam("startDate");
     const e = getParam("endDate");
     const customerId = getParam("customerId") || "";
+    const customerFilterSearch = getParam("customer_search") || undefined;
 
     const isFirstLoad = s === null && e === null;
 
@@ -55,6 +59,7 @@ const CustomersReportPage = () => {
         ? dayjs().endOf("day").format("YYYY-MM-DD HH:mm:ss")
         : e || "",
       customerId,
+      customerFilterSearch,
     };
   }, [getParam]);
   // Query ends
@@ -134,9 +139,24 @@ const CustomersReportPage = () => {
     [setParams]
   );
 
+  const debouncedSetSearchCustomerModalQuery = useCallback(
+    debounce((nextValue: string) => {
+      setParams({
+        customer_search: nextValue || "",
+        page: 1,
+      });
+    }, 500),
+    [setParams]
+  );
+
   const handleSearchChange = (value: string) => {
     setLocalSearch(value);
     debouncedSetSearchQuery(value);
+  };
+
+  const handleSearchCstomerModalChange = (value: string) => {
+    setCustomerModalSearch(value);
+    debouncedSetSearchCustomerModalQuery(value);
   };
   // Search ends
 
@@ -160,7 +180,9 @@ const CustomersReportPage = () => {
     fetchNextPage: customerFetchNextPage,
     hasNextPage: customerHasNextPage,
     isFetchingNextPage: customerIsFetchingNextPage,
-  } = getInfiniteCustomers(isCustomerOpen);
+  } = getInfiniteCustomers(isCustomerOpen, {
+    search: query.customerFilterSearch,
+  });
   const customerOptions: Option[] = [
     {
       value: "",
@@ -201,6 +223,7 @@ const CustomersReportPage = () => {
         customerHasNextPage={customerHasNextPage}
         customerIsFetchingNextPage={customerIsFetchingNextPage}
         customerFetchNextPage={customerFetchNextPage}
+        onSearchChange={handleSearchCstomerModalChange}
       />
       <CustomersReportBalances
         creditor={creditor}

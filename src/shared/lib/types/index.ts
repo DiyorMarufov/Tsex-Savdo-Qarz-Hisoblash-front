@@ -29,6 +29,8 @@ export interface QueryParams {
   date?: string | undefined;
   customerId?: string;
   customerType?: string;
+  customerFilterSearch?: string;
+  productFilterSearch?: string;
 }
 
 export interface TsexTransactionsType {

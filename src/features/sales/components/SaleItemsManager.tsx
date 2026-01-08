@@ -12,6 +12,10 @@ interface SaleItemsManagerProps {
   productOptions: Option[];
   shopOptions: Option[];
   productListLoading: boolean;
+  productHasNextPage?: boolean;
+  productIsFetchingNextPage?: boolean;
+  productFetchNextPage?: any;
+  onSearchChange?: (value: string) => void;
   shopListLoading: boolean;
   setIsProductOpen: (visible: boolean) => void;
   setIsShopOpen: (visible: boolean) => void;
@@ -25,6 +29,10 @@ const SaleItemsManager = ({
   productOptions,
   shopOptions,
   productListLoading,
+  productHasNextPage,
+  productIsFetchingNextPage,
+  productFetchNextPage,
+  onSearchChange,
   shopListLoading,
   setIsProductOpen,
   setIsShopOpen,
@@ -91,6 +99,14 @@ const SaleItemsManager = ({
     handleChange("productId", productId || "");
   };
 
+  const handleScroll = (e: any) => {
+    const { target } = e;
+    if (target.scrollTop + target.clientHeight >= target.scrollHeight - 10) {
+      if (productHasNextPage && !productIsFetchingNextPage) {
+        productFetchNextPage();
+      }
+    }
+  };
   return (
     <div className="flex flex-col gap-2 bg-[#ffffff] p-4 border border-bg-fy rounded-[5px] overflow-hidden">
       <div className="flex flex-col gap-1.5">
@@ -104,6 +120,7 @@ const SaleItemsManager = ({
               <Select
                 size="large"
                 mode="multiple"
+                onPopupScroll={handleScroll}
                 value={selectedIds}
                 options={productOptions}
                 onChange={(val) => handleChange("productId", val)}
@@ -112,9 +129,22 @@ const SaleItemsManager = ({
                 }
                 className="min-[800px]:w-full custom-select-placeholder"
                 onDropdownVisibleChange={(v) => setIsProductOpen(v)}
+                dropdownRender={(menu: any) => (
+                  <>
+                    {menu}
+                    {productIsFetchingNextPage && (
+                      <span className="text-[12px] text-gray-500">
+                        Yuklanmoqda...
+                      </span>
+                    )}
+                  </>
+                )}
                 loading={productListLoading}
-                allowClear
                 tagRender={tagRender}
+                showSearch
+                filterOption={false}
+                onSearch={onSearchChange}
+                allowClear
               />
 
               <Spin spinning={productListLoading}>

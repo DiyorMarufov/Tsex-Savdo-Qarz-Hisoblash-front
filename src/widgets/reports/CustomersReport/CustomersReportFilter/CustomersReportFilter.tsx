@@ -20,6 +20,7 @@ interface CustomersReportFilterProps {
   customerHasNextPage?: boolean;
   customerIsFetchingNextPage?: boolean;
   customerFetchNextPage?: any;
+  onSearchChange?: (value: string) => void;
 }
 
 const CustomersReportFilter: FC<CustomersReportFilterProps> = ({
@@ -33,6 +34,7 @@ const CustomersReportFilter: FC<CustomersReportFilterProps> = ({
   customerHasNextPage,
   customerIsFetchingNextPage,
   customerFetchNextPage,
+  onSearchChange,
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [placement] = useState<DrawerProps["placement"]>("right");
@@ -115,6 +117,9 @@ const CustomersReportFilter: FC<CustomersReportFilterProps> = ({
                 </>
               )}
               loading={customerLoading}
+              showSearch
+              filterOption={false}
+              onSearch={onSearchChange}
             />
           </div>
         </div>
@@ -185,6 +190,9 @@ const CustomersReportFilter: FC<CustomersReportFilterProps> = ({
                 </>
               )}
               loading={customerLoading}
+              showSearch
+              filterOption={false}
+              onSearch={onSearchChange}
             />
           </div>
 

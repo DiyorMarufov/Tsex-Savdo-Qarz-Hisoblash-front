@@ -35,6 +35,9 @@ const ProductsReportPage = () => {
   } = useProduct();
   const { getParam, setParams, removeParam } = useParamsHook();
   const [localSearch, setLocalSearch] = useState(getParam("search") || "");
+  const [_, setProductFilterSearch] = useState(
+    getParam("product_search") || ""
+  );
 
   // Query starts
   const query: QueryParams = useMemo(() => {
@@ -46,6 +49,7 @@ const ProductsReportPage = () => {
     const shopId = getParam("shopId") || "";
     const tsexId = getParam("tsexId") || "";
     const productId = getParam("productId") || "";
+    const productFilterSearch = getParam("product_search") || undefined;
 
     const isFirstLoad = s === null && e === null;
 
@@ -64,6 +68,7 @@ const ProductsReportPage = () => {
       shopId,
       tsexId,
       productId,
+      productFilterSearch,
     };
   }, [getParam]);
   // Query ends
@@ -85,68 +90,6 @@ const ProductsReportPage = () => {
   const inventoryBalance = productsSummary?.inventoryBalance;
   // ProductsSummaryReport ends
 
-  // ProductReportFilter options start
-  const { data: shops, isLoading: shopLoading } =
-    getAllShopsForProductsFilter(isShopOpen);
-  const shopsOptions = [
-    {
-      value: "",
-      label: "Barcha do'konlar",
-    },
-    ...(shops?.data?.map((st) => ({
-      value: st?.id,
-      label: st?.name,
-    })) || []),
-  ];
-
-  const { data: tsexes, isLoading: tsexLoading } =
-    getAllTsexesForProductsFilter(isTsexOpen);
-  const tsexesOptions = [
-    {
-      value: "",
-      label: "Barcha tsexlar",
-    },
-    ...(tsexes?.data?.map((ts) => ({
-      value: ts?.id,
-      label: ts?.name,
-    })) || []),
-  ];
-
-  const {
-    data: productLists,
-    isLoading: productListLoading,
-    fetchNextPage: productFetchNextPage,
-    hasNextPage: productHasNextPage,
-    isFetchingNextPage: productIsFetchingNextPage,
-  } = getInfiniteProducts(isProductOpen);
-
-  const productOptions = [
-    {
-      value: "",
-      label: "Barcha mahsulotlar",
-    },
-    ...(
-      productLists?.pages?.flatMap((page: any) => {
-        return Array.isArray(page)
-          ? page
-          : page?.data?.data || page?.data || [];
-      }) || []
-    ).map((pr: any) => ({
-      value: pr?.id,
-      label: (
-        <div className="flex justify-between items-center w-full">
-          <span className="text-[14px] font-medium text-slate-800">
-            {pr?.name}
-          </span>
-          <span className="text-[12px] text-slate-400 font-normal ml-2">
-            {pr?.brand}
-          </span>
-        </div>
-      ),
-    })),
-  ];
-  // ProductReportFilter options end
-
   // ProductReportFilter onFilterSubmit starts
   const onFilterSubmit = (filters: {
     dates: string[] | null;
@@ -163,6 +106,67 @@ const ProductsReportPage = () => {
     });
   };
   // ProductReportFilter onFilterSubmit ends
+
+  // Product detail starts
+  const handleProductDetailOpen = (id: string) => {
+    navigate(`/superadmin/products/${id}`);
+  };
+  // Product detail ends
+
+  // Search starts
+  const debouncedSetSearchQuery = useCallback(
+    debounce((nextValue: string) => {
+      setParams({
+        search: nextValue || "",
+        page: 1,
+      });
+    }, 500),
+    [setParams]
+  );
+
+  const debouncedSetSearchProductFilterQuery = useCallback(
+    debounce((nextValue: string) => {
+      setParams({
+        product_search: nextValue || "",
+        page: 1,
+      });
+    }, 500),
+    [setParams]
+  );
+
+  const handleSearchChange = (value: string) => {
+    setLocalSearch(value);
+    debouncedSetSearchQuery(value);
+  };
+
+  const handleSearchProductFilterChange = (value: string) => {
+    setProductFilterSearch(value);
+    debouncedSetSearchProductFilterQuery(value);
+  };
+  // Search ends
+
+  // PageChange starts
+  const handlePageChange = (newPage: number, newPageSize?: number) => {
+    const updateParams: { page?: number; limit?: number } = {};
+
+    if (newPage > 1) {
+      updateParams.page = newPage;
+    }
+
+    if (newPageSize && newPageSize !== 10) {
+      updateParams.limit = newPageSize;
+    }
+
+    setParams(updateParams);
+
+    if (newPage === 1) {
+      removeParam("page");
+    }
+    if (newPageSize === 10 && getParam("limit")) {
+      removeParam("limit");
+    }
+  };
+  // PageChange ends
 
   // ProductReportChart starts
   const { data: allTopProducts, isLoading: topProductChartLoading } =
@@ -191,51 +195,67 @@ const ProductsReportPage = () => {
   const total = allProducts?.data?.total || 0;
   // ProductsReport end
 
-  // Product detail starts
-  const handleProductDetailOpen = (id: string) => {
-    navigate(`/superadmin/products/${id}`);
-  };
-  // Product detail ends
+  // ProductReportFilter options start
+  const {
+    data: productLists,
+    isLoading: productListLoading,
+    fetchNextPage: productFetchNextPage,
+    hasNextPage: productHasNextPage,
+    isFetchingNextPage: productIsFetchingNextPage,
+  } = getInfiniteProducts(isProductOpen, { search: query.productFilterSearch });
 
-  // Search starts
-  const debouncedSetSearchQuery = useCallback(
-    debounce((nextValue: string) => {
-      setParams({
-        search: nextValue || "",
-        page: 1,
-      });
-    }, 500),
-    [setParams]
-  );
+  const productOptions = [
+    {
+      value: "",
+      label: "Barcha mahsulotlar",
+    },
+    ...(
+      productLists?.pages?.flatMap((page: any) => {
+        return Array.isArray(page)
+          ? page
+          : page?.data?.data || page?.data || [];
+      }) || []
+    ).map((pr: any) => ({
+      value: pr?.id,
+      label: (
+        <div className="flex justify-between items-center w-full">
+          <span className="text-[14px] font-medium text-slate-800">
+            {pr?.name}
+          </span>
+          <span className="text-[12px] text-slate-400 font-normal ml-2">
+            {pr?.brand}
+          </span>
+        </div>
+      ),
+    })),
+  ];
 
-  const handleSearchChange = (value: string) => {
-    setLocalSearch(value);
-    debouncedSetSearchQuery(value);
-  };
-  // Search ends
+  const { data: tsexes, isLoading: tsexLoading } =
+    getAllTsexesForProductsFilter(isTsexOpen);
+  const tsexesOptions = [
+    {
+      value: "",
+      label: "Barcha tsexlar",
+    },
+    ...(tsexes?.data?.map((ts) => ({
+      value: ts?.id,
+      label: ts?.name,
+    })) || []),
+  ];
 
-  // PageChange starts
-  const handlePageChange = (newPage: number, newPageSize?: number) => {
-    const updateParams: { page?: number; limit?: number } = {};
-
-    if (newPage > 1) {
-      updateParams.page = newPage;
-    }
-
-    if (newPageSize && newPageSize !== 10) {
-      updateParams.limit = newPageSize;
-    }
-
-    setParams(updateParams);
-
-    if (newPage === 1) {
-      removeParam("page");
-    }
-    if (newPageSize === 10 && getParam("limit")) {
-      removeParam("limit");
-    }
-  };
-  // PageChange ends
+  const { data: shops, isLoading: shopLoading } =
+    getAllShopsForProductsFilter(isShopOpen);
+  const shopsOptions = [
+    {
+      value: "",
+      label: "Barcha do'konlar",
+    },
+    ...(shops?.data?.map((st) => ({
+      value: st?.id,
+      label: st?.name,
+    })) || []),
+  ];
+  // ProductReportFilter options end
 
   return (
     <div className="flex flex-col gap-5">
@@ -256,6 +276,7 @@ const ProductsReportPage = () => {
         productHasNextPage={productHasNextPage}
         productIsFetchingNextPage={productIsFetchingNextPage}
         productFetchNextPage={productFetchNextPage}
+        onSearchChange={handleSearchProductFilterChange}
         tsexLoading={tsexLoading}
         shopLoading={shopLoading}
       />

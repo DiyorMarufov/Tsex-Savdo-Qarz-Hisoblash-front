@@ -31,6 +31,7 @@ interface CombinedReportFilterProps {
   productHasNextPage?: boolean;
   productIsFetchingNextPage?: boolean;
   productFetchNextPage?: any;
+  onSearchProductFilerChange?: (value: string) => void;
   tsexLoading: boolean;
   shopLoading: boolean;
 }
@@ -54,6 +55,7 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
   productHasNextPage,
   productIsFetchingNextPage,
   productFetchNextPage,
+  onSearchProductFilerChange,
   tsexLoading,
   shopLoading,
 }) => {
@@ -153,6 +155,9 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
                 </>
               )}
               loading={productLoading}
+              showSearch
+              filterOption={false}
+              onSearch={onSearchProductFilerChange}
             />
           </div>
           <div className="w-full">
@@ -253,6 +258,9 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
                 </>
               )}
               loading={productLoading}
+              showSearch
+              filterOption={false}
+              onSearch={onSearchProductFilerChange}
             />
           </div>
 

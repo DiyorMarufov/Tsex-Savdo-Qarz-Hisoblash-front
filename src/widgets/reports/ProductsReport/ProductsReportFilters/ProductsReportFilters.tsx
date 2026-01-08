@@ -27,6 +27,7 @@ interface ProductReportFiltersProps {
   productHasNextPage?: boolean;
   productIsFetchingNextPage?: boolean;
   productFetchNextPage?: any;
+  onSearchChange?: (value: string) => void;
   tsexLoading: boolean;
   shopLoading: boolean;
 }
@@ -48,6 +49,7 @@ const ProductsReportFilters = ({
   productHasNextPage,
   productIsFetchingNextPage,
   productFetchNextPage,
+  onSearchChange,
   tsexLoading,
   shopLoading,
 }: ProductReportFiltersProps) => {
@@ -130,10 +132,17 @@ const ProductsReportFilters = ({
               dropdownRender={(menu: any) => (
                 <>
                   {menu}
-                  {productIsFetchingNextPage && <span className="text-[12px] text-gray-500">Yuklanmoqda...</span>}
+                  {productIsFetchingNextPage && (
+                    <span className="text-[12px] text-gray-500">
+                      Yuklanmoqda...
+                    </span>
+                  )}
                 </>
               )}
               loading={productLoading}
+              showSearch
+              filterOption={false}
+              onSearch={onSearchChange}
             />
           </div>
           <div className="w-full">
@@ -226,6 +235,9 @@ const ProductsReportFilters = ({
                   {productIsFetchingNextPage && <div>Yuklanmoqda...</div>}
                 </>
               )}
+              showSearch
+              filterOption={false}
+              onSearch={onSearchChange}
               loading={productLoading}
             />
           </div>

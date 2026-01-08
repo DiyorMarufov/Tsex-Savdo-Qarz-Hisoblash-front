@@ -23,10 +23,11 @@ interface TransactionModalProps {
   form: FormInstance;
   loading: boolean;
   setIsCustomerOpen: (open: boolean) => void;
-  customerloading: boolean;
+  customerLoading: boolean;
   customerHasNextPage?: boolean;
   customerIsFetchingNextPage?: boolean;
   customerFetchNextPage?: any;
+  onSearchChange?: (value: string) => void;
 }
 
 const CustomerTransactionModal = ({
@@ -38,10 +39,11 @@ const CustomerTransactionModal = ({
   form,
   loading,
   setIsCustomerOpen,
-  customerloading,
+  customerLoading,
   customerHasNextPage,
   customerIsFetchingNextPage,
   customerFetchNextPage,
+  onSearchChange,
 }: TransactionModalProps) => {
   const handleScroll = (e: any) => {
     const { target } = e;
@@ -100,7 +102,11 @@ const CustomerTransactionModal = ({
                     )}
                   </>
                 )}
-                loading={customerloading}
+                loading={customerLoading}
+                showSearch
+                filterOption={false}
+                onSearch={onSearchChange}
+                allowClear
               />
             </Form.Item>
           </div>

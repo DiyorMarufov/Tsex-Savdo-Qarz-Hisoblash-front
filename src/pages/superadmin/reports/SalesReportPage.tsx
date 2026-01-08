@@ -29,6 +29,7 @@ const SalesReportPage = () => {
 
   const { getParam, setParams, removeParam } = useParamsHook();
   const [localSearch, setLocalSearch] = useState(getParam("search") || "");
+  const [, setProductFilterSearch] = useState(getParam("product_search") || "");
 
   const { getSalesSummaryForReport, getAllSales } = useSale();
   const { getAllShopsForProductsFilter } = useShop();
@@ -45,6 +46,7 @@ const SalesReportPage = () => {
     const shopId = getParam("shopId") || "";
     const tsexId = getParam("tsexId") || "";
     const productId = getParam("productId") || "";
+    const productFilterSearch = getParam("product_search") || undefined;
 
     const isFirstLoad = s === null && e === null;
 
@@ -63,6 +65,7 @@ const SalesReportPage = () => {
       shopId,
       tsexId,
       productId,
+      productFilterSearch,
     };
   }, [getParam]);
   // Query ends
@@ -136,47 +139,35 @@ const SalesReportPage = () => {
     [setParams]
   );
 
+  const debouncedSetSearchProductFilterQuery = useCallback(
+    debounce((nextValue: string) => {
+      setParams({
+        product_search: nextValue || "",
+        page: 1,
+      });
+    }, 500),
+    [setParams]
+  );
+
   const handleSearchChange = (value: string) => {
     setLocalSearch(value);
     debouncedSetSearchQuery(value);
   };
+
+  const handleSearchProductFilterChange = (value: string) => {
+    setProductFilterSearch(value);
+    debouncedSetSearchProductFilterQuery(value);
+  };
   // Search ends
 
   // SaleReportFilter options start
-  const { data: shops, isLoading: shopLoading } =
-    getAllShopsForProductsFilter(isShopOpen);
-  const shopsOptions = [
-    {
-      value: "",
-      label: "Barcha do'konlar",
-    },
-    ...(shops?.data?.map((st) => ({
-      value: st?.id,
-      label: st?.name,
-    })) || []),
-  ];
-
-  const { data: tsexes, isLoading: tsexLoading } =
-    getAllTsexesForProductsFilter(isTsexOpen);
-  const tsexesOptions = [
-    {
-      value: "",
-      label: "Barcha tsexlar",
-    },
-    ...(tsexes?.data?.map((ts) => ({
-      value: ts?.id,
-      label: ts?.name,
-    })) || []),
-  ];
-
   const {
     data: products,
     isLoading: productLoading,
     fetchNextPage: productFetchNextPage,
     hasNextPage: productHasNextPage,
     isFetchingNextPage: productIsFetchingNextPage,
-  } = getInfiniteProducts(isProductOpen);
-
+  } = getInfiniteProducts(isProductOpen, { search: query.productFilterSearch });
   const productOptions = [
     {
       value: "",
@@ -201,6 +192,32 @@ const SalesReportPage = () => {
         </div>
       ),
     })),
+  ];
+
+  const { data: tsexes, isLoading: tsexLoading } =
+    getAllTsexesForProductsFilter(isTsexOpen);
+  const tsexesOptions = [
+    {
+      value: "",
+      label: "Barcha tsexlar",
+    },
+    ...(tsexes?.data?.map((ts) => ({
+      value: ts?.id,
+      label: ts?.name,
+    })) || []),
+  ];
+
+  const { data: shops, isLoading: shopLoading } =
+    getAllShopsForProductsFilter(isShopOpen);
+  const shopsOptions = [
+    {
+      value: "",
+      label: "Barcha do'konlar",
+    },
+    ...(shops?.data?.map((st) => ({
+      value: st?.id,
+      label: st?.name,
+    })) || []),
   ];
   // SaleReportFilter options end
 
@@ -241,6 +258,7 @@ const SalesReportPage = () => {
         productHasNextPage={productHasNextPage}
         productIsFetchingNextPage={productIsFetchingNextPage}
         productFetchNextPage={productFetchNextPage}
+        onSearchChange={handleSearchProductFilterChange}
         tsexLoading={tsexLoading}
         shopLoading={shopLoading}
       />
