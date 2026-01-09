@@ -31,6 +31,7 @@ export interface QueryParams {
   customerType?: string;
   customerFilterSearch?: string;
   productFilterSearch?: string;
+  is_archived?: any;
 }
 
 export interface TsexTransactionsType {

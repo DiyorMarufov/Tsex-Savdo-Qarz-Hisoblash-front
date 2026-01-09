@@ -17,7 +17,10 @@ import { useCustomer } from "../../../shared/lib/apis/customers/useCustomer";
 import { useParamsHook } from "../../../shared/hooks/params/useParams";
 import { useApiNotification } from "../../../shared/hooks/api-notification/useApiNotification";
 import { debounce } from "../../../shared/lib/functions/debounce";
-import { customerRegions } from "../../../shared/lib/constants";
+import {
+  customerRegions,
+  customerStatusOptions,
+} from "../../../shared/lib/constants";
 import PlusButton from "../../../shared/ui/Button/PlusButton";
 
 const AdminCustomersPage = () => {
@@ -42,6 +45,18 @@ const AdminCustomersPage = () => {
   const handleCancelNewCustomer = () => {
     setNewCustomerOpen(false);
   };
+
+  // Query starts
+  const query: QueryParams = useMemo(() => {
+    const page = Number(getParam("page")) || 1;
+    const limit = Number(getParam("limit")) || 5;
+    const search = getParam("search") || undefined;
+    const region = getParam("region") || undefined;
+    const is_archived = getParam("is_archived") || undefined;
+
+    return { page, limit, search, region, is_archived };
+  }, [getParam]);
+  // Query ends
 
   const newCustomerOnFinish: FormProps<NewCustomerFieldType>["onFinish"] = (
     values: NewCustomerFieldType
@@ -82,17 +97,6 @@ const AdminCustomersPage = () => {
     navigate(`transaction/${id}`);
   };
   // Detail ends
-
-  // Query starts
-  const query: QueryParams = useMemo(() => {
-    const page = Number(getParam("page")) || 1;
-    const limit = Number(getParam("limit")) || 5;
-    const search = getParam("search") || undefined;
-    const region = getParam("region") || undefined;
-
-    return { page, limit, search, region };
-  }, [getParam]);
-  // Query ends
 
   // CustomerData starts
   const { data: allCustomers, isLoading: customerLoading } =
@@ -164,14 +168,13 @@ const AdminCustomersPage = () => {
       </div>
 
       <CustomerFilters
-        regionOptions={[
-          { value: "", label: "Barcha shaharlar/viloyatlar" },
-          ...(customerRegions || []),
-        ]}
+        regionOptions={customerRegions || []}
         onSearchChange={handleSearchChange}
         searchValue={localSearch}
-        regionValue={query.region || ""}
-        onRegionChange={handleFilterChange}
+        regionValue={query.region}
+        onFilterChange={handleFilterChange}
+        statusOptions={customerStatusOptions}
+        statusValue={query.is_archived}
         isSuperadmin={false}
       />
 

@@ -17,7 +17,10 @@ import type {
 } from "../../../shared/lib/types";
 import { useParamsHook } from "../../../shared/hooks/params/useParams";
 import { debounce } from "../../../shared/lib/functions/debounce";
-import { customerRegions } from "../../../shared/lib/constants";
+import {
+  customerRegions,
+  customerStatusOptions,
+} from "../../../shared/lib/constants";
 import CustomerTransactionModal from "../../../widgets/superadmin/customers/CustomerTransactionModal/CustomerTransactionModal";
 import { useApiNotification } from "../../../shared/hooks/api-notification/useApiNotification";
 import { formatPhoneNumber } from "../../../shared/lib/functions/formatPhoneNumber";
@@ -53,6 +56,20 @@ const CustomersPage = () => {
   useEffect(() => {
     window.scroll({ top: 0 });
   }, []);
+
+  // Query starts
+  const query: QueryParams = useMemo(() => {
+    const page = Number(getParam("page")) || 1;
+    const limit = Number(getParam("limit")) || 5;
+    const search = getParam("search") || undefined;
+    const customerFilterSearch = getParam("customer_search") || undefined;
+    const region = getParam("region") || undefined;
+    const is_archived = getParam("is_archived") || undefined;
+
+    return { page, limit, search, region, customerFilterSearch, is_archived };
+  }, [getParam]);
+  // Query ends
+
   // Transaction starts
   const handleLend = () => {
     setTransactionType("lend");
@@ -203,23 +220,9 @@ const CustomersPage = () => {
   };
   // Detail ends
 
-  // Query starts
-  const query: QueryParams = useMemo(() => {
-    const page = Number(getParam("page")) || 1;
-    const limit = Number(getParam("limit")) || 5;
-    const search = getParam("search") || undefined;
-    const customerFilterSearch = getParam("customer_search") || undefined;
-    const region = getParam("region") || undefined;
-
-    return { page, limit, search, region, customerFilterSearch };
-  }, [getParam]);
-  // Query ends
-
   // CustomerData starts
-  const { data: allCustomers, isLoading: customerLoading } = getAllCustomers({
-    search: query.search,
-    region: query.region,
-  });
+  const { data: allCustomers, isLoading: customerLoading } =
+    getAllCustomers(query);
   const customers = allCustomers?.data?.data;
   const total = allCustomers?.data?.total || 0;
   // CustomerData ends
@@ -358,14 +361,13 @@ const CustomersPage = () => {
       <CustomersBalances />
 
       <CustomerFilters
-        regionOptions={[
-          { value: "", label: "Barcha shaharlar/viloyatlar" },
-          ...(customerRegions || []),
-        ]}
+        regionOptions={customerRegions || []}
+        statusOptions={customerStatusOptions || []}
         onSearchChange={handleSearchChange}
         searchValue={localSearch}
-        regionValue={query.region || ""}
-        onRegionChange={handleFilterChange}
+        regionValue={query.region}
+        onFilterChange={handleFilterChange}
+        statusValue={query.is_archived}
       />
 
       <div className="mt-4 max-[500px]:hidden">

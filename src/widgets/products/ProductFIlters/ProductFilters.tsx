@@ -31,14 +31,14 @@ const ProductFilters = ({
   shopLoading,
 }: ProductFiltersProps) => {
   return (
-    <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-2 p-3.5 flex items-center gap-4 max-[900px]:flex-wrap">
+    <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-2 p-3.5 flex items-center gap-3 max-[900px]:flex-wrap">
       <SearchInput
         placeholder="Mahsulot nomi, brandi bo'yicha qidirish"
         className="h-11! min-[900px]:w-[50%]! bg-bg-ty! text-[16px]!"
         value={localSearch}
         onChange={onSearchChange}
       />
-      <div className="flex gap-4 min-[900px]:w-[50%] max-[900px]:w-full max-[370px]:flex-wrap">
+      <div className="flex gap-3 min-[900px]:w-[50%] max-[900px]:w-full max-[370px]:flex-wrap">
         <Filter
           placeholder="Barcha tsexlar"
           className="h-11! min-[900px]:w-[50%]! max-[900px]:w-full! custom-select"

@@ -1,6 +1,7 @@
 import type { Option } from "../types";
 
 export const customerRegions: Option[] = [
+  { value: "", label: "Barcha hududlar" },
   {
     value: "Andijan",
     label: "Andijan",
@@ -57,6 +58,12 @@ export const customerRegions: Option[] = [
     value: "Republic of Karakalpakstan",
     label: "Republic of Karakalpakstan",
   },
+];
+
+export const customerStatusOptions: Option[] = [
+  { value: "all", label: "Barchasi" },
+  { value: "false", label: "Faol" },
+  { value: "true", label: "Arxiv" },
 ];
 
 export const roleOptions: Option[] = [
