@@ -8,7 +8,6 @@ import {
   Tooltip,
   ResponsiveContainer,
   Legend,
-  LabelList,
 } from "recharts";
 import TsexesReportChartSkeleton from "../../../../shared/ui/Skeletons/Reports/TsexesReport/TsexesReportChartSkeleton";
 
@@ -94,28 +93,14 @@ const TsexesReportChart: FC<TsexesReportProps> = ({ data, loading }) => {
                   fill="#3b82f6"
                   radius={[4, 4, 0, 0]}
                   barSize={isMobile ? 10 : 18}
-                >
-                  <LabelList
-                    dataKey="olingan"
-                    position="top"
-                    formatter={(val: any) => val.toLocaleString()}
-                    style={{ fontSize: "10px", fill: "#64748b" }}
-                  />
-                </Bar>
+                ></Bar>
                 <Bar
                   name="To'lovlar"
                   dataKey="tolovlar"
                   fill="#94a3b8"
                   radius={[4, 4, 0, 0]}
                   barSize={isMobile ? 10 : 18}
-                >
-                  <LabelList
-                    dataKey="tolovlar"
-                    position="top"
-                    formatter={(val: any) => val.toLocaleString()}
-                    style={{ fontSize: "10px", fill: "#64748b" }}
-                  />
-                </Bar>
+                ></Bar>
               </BarChart>
             </ResponsiveContainer>
           </div>

@@ -12,6 +12,7 @@ import "dayjs/locale/uz-latn";
 import { useSale } from "../../../../shared/lib/apis/sales/useSale";
 import { useParamsHook } from "../../../../shared/hooks/params/useParams";
 import SalesReportChartSkeleton from "../../../../shared/ui/Skeletons/Reports/SalesReport/SalesReportChartSkeleton";
+import { formatterTickChart } from "../../../../shared/lib/functions/formatterTickChart";
 
 interface SalesReportChartProps {
   params: {
@@ -46,7 +47,7 @@ const SalesReportChart: FC<SalesReportChartProps> = ({
       params.tsexId,
       params.shopId,
       filterType,
-    ],
+    ]
   );
   const { data: salesStatisticsReport, isLoading: salesStatisticsLoading } =
     getSalesStatisticsForReport(query);
@@ -132,16 +133,9 @@ const SalesReportChart: FC<SalesReportChartProps> = ({
                 yAxisId="left"
                 axisLine={false}
                 tickLine={false}
-                tick={{ fill: "#10b981", fontSize: 9 }}
+                tick={{ fill: "#10b981", fontSize: 10 }}
                 width={35}
-                tickFormatter={(value) => {
-                  if (value >= 1000000000)
-                    return `${(value / 1000000000).toFixed(0)}B`;
-                  if (value >= 1000000)
-                    return `${(value / 1000000).toFixed(0)}M`;
-                  if (value >= 1000) return `${(value / 1000).toFixed(0)}K`;
-                  return value;
-                }}
+                tickFormatter={formatterTickChart}
               />
 
               <YAxis
@@ -149,14 +143,8 @@ const SalesReportChart: FC<SalesReportChartProps> = ({
                 orientation="right"
                 axisLine={false}
                 tickLine={false}
-                tick={{ fill: "#6366f1", fontSize: 9 }}
+                tick={{ fill: "#6366f1", fontSize: 10 }}
                 width={30}
-                tickFormatter={(value) => {
-                  if (value >= 1000000)
-                    return `${(value / 1000000).toFixed(0)}M`;
-                  if (value >= 1000) return `${(value / 1000).toFixed(0)}K`;
-                  return value;
-                }}
               />
               <Tooltip
                 formatter={(value: number, name: string) => [
@@ -167,7 +155,7 @@ const SalesReportChart: FC<SalesReportChartProps> = ({
                   borderRadius: "12px",
                   border: "none",
                   boxShadow: "0 10px 15px -3px rgba(0,0,0,0.1)",
-                  fontSize: "11px",
+                  fontSize: "12px",
                 }}
               />
 

@@ -10,6 +10,7 @@ import {
 } from "recharts";
 import { useSale } from "../../../../shared/lib/apis/sales/useSale";
 import DashboardChartSaleSkeleton from "../../../../shared/ui/Skeletons/DashboardBalanceSkeleton/DashboardChartSaleSkeleton";
+import { formatterTickChart } from "../../../../shared/lib/functions/formatterTickChart";
 
 const SaleChart = ({ isAnimationActive = true }) => {
   const { getWeeklySale } = useSale();
@@ -34,7 +35,12 @@ const SaleChart = ({ isAnimationActive = true }) => {
         </defs>
         <CartesianGrid strokeDasharray="3 3" vertical={false} />
         <XAxis dataKey="name" axisLine={false} tickLine={false} />
-        <YAxis axisLine={false} tickLine={false} />
+        <YAxis
+          axisLine={false}
+          tickLine={false}
+          tickFormatter={formatterTickChart}
+          tick={{ fontSize: 10 }}
+        />
         <Tooltip formatter={(val) => `${val.toLocaleString()} uzs`} />
         <Area
           type="monotone"
