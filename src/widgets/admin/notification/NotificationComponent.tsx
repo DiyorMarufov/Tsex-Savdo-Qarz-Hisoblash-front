@@ -9,6 +9,26 @@ const NotificationContent = () => {
       description: "5 daqiqa oldin",
       type: "order",
     },
+    {
+      title: "Mahsulot qo'shish",
+      description: "5 daqiqa oldin",
+      type: "order",
+    },
+    {
+      title: "Mahsulot qo'shish",
+      description: "5 daqiqa oldin",
+      type: "order",
+    },
+    {
+      title: "Mahsulot qo'shish",
+      description: "5 daqiqa oldin",
+      type: "order",
+    },
+    {
+      title: "Mahsulot qo'shish",
+      description: "5 daqiqa oldin",
+      type: "order",
+    },
   ];
 
   return (
@@ -22,6 +42,7 @@ const NotificationContent = () => {
       <List
         itemLayout="horizontal"
         dataSource={data}
+        className="max-h-[200px] overflow-y-auto"
         renderItem={(item) => (
           <List.Item className="cursor-pointer hover:bg-blue-50/50 px-2 transition-all rounded-lg border-none">
             <List.Item.Meta

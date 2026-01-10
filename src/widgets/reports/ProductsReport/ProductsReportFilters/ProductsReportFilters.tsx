@@ -30,6 +30,7 @@ interface ProductReportFiltersProps {
   onSearchChange?: (value: string) => void;
   tsexLoading: boolean;
   shopLoading: boolean;
+  isProduct?: boolean;
 }
 
 const ProductsReportFilters = ({
@@ -52,6 +53,7 @@ const ProductsReportFilters = ({
   onSearchChange,
   tsexLoading,
   shopLoading,
+  isProduct = true,
 }: ProductReportFiltersProps) => {
   const [open, setOpen] = useState(false);
   const [placement] = useState<DrawerProps["placement"]>("right");
@@ -118,33 +120,35 @@ const ProductsReportFilters = ({
         </div>
 
         <div className="col-span-3 grid grid-cols-3 gap-4 max-[1150px]:col-span-1 max-[390px]:grid-cols-1">
-          <div className="w-full">
-            <Filter
-              onPopupScroll={handleScroll}
-              value={tempProductId}
-              options={productOptions}
-              onChange={setTempProductId}
-              placeholder="Barcha mahsulotlar"
-              className="h-11! w-full rounded-lg custom-select border-slate-200"
-              onDropdownVisibleChange={(visible: any) => {
-                if (visible) setIsProductOpen?.(true);
-              }}
-              dropdownRender={(menu: any) => (
-                <>
-                  {menu}
-                  {productIsFetchingNextPage && (
-                    <span className="text-[12px] text-gray-500">
-                      Yuklanmoqda...
-                    </span>
-                  )}
-                </>
-              )}
-              loading={productLoading}
-              showSearch
-              filterOption={false}
-              onSearch={onSearchChange}
-            />
-          </div>
+          {isProduct && (
+            <div className="w-full">
+              <Filter
+                onPopupScroll={handleScroll}
+                value={tempProductId}
+                options={productOptions}
+                onChange={setTempProductId}
+                placeholder="Barcha mahsulotlar"
+                className="h-11! w-full rounded-lg custom-select border-slate-200"
+                onDropdownVisibleChange={(visible: any) => {
+                  if (visible) setIsProductOpen?.(true);
+                }}
+                dropdownRender={(menu: any) => (
+                  <>
+                    {menu}
+                    {productIsFetchingNextPage && (
+                      <span className="text-[12px] text-gray-500">
+                        Yuklanmoqda...
+                      </span>
+                    )}
+                  </>
+                )}
+                loading={productLoading}
+                showSearch
+                filterOption={false}
+                onSearch={onSearchChange}
+              />
+            </div>
+          )}
           <div className="w-full">
             <Filter
               value={tempTsexId}
@@ -217,30 +221,32 @@ const ProductsReportFilters = ({
             />
           </div>
 
-          <div className="w-full">
-            <p className="mb-1 text-sm text-slate-500">Mahsulotlar</p>
-            <Filter
-              onPopupScroll={handleScroll}
-              value={tempProductId}
-              options={productOptions}
-              onChange={setTempProductId}
-              placeholder="Barcha mahsulotlar"
-              className="h-11! w-full rounded-lg custom-select border-slate-200"
-              onDropdownVisibleChange={(visible: boolean) => {
-                if (visible) setIsProductOpen?.(true);
-              }}
-              dropdownRender={(menu: any) => (
-                <>
-                  {menu}
-                  {productIsFetchingNextPage && <div>Yuklanmoqda...</div>}
-                </>
-              )}
-              showSearch
-              filterOption={false}
-              onSearch={onSearchChange}
-              loading={productLoading}
-            />
-          </div>
+          {isProduct && (
+            <div className="w-full">
+              <p className="mb-1 text-sm text-slate-500">Mahsulotlar</p>
+              <Filter
+                onPopupScroll={handleScroll}
+                value={tempProductId}
+                options={productOptions}
+                onChange={setTempProductId}
+                placeholder="Barcha mahsulotlar"
+                className="h-11! w-full rounded-lg custom-select border-slate-200"
+                onDropdownVisibleChange={(visible: boolean) => {
+                  if (visible) setIsProductOpen?.(true);
+                }}
+                dropdownRender={(menu: any) => (
+                  <>
+                    {menu}
+                    {productIsFetchingNextPage && <div>Yuklanmoqda...</div>}
+                  </>
+                )}
+                showSearch
+                filterOption={false}
+                onSearch={onSearchChange}
+                loading={productLoading}
+              />
+            </div>
+          )}
 
           <div className="w-full">
             <p className="mb-1 text-sm text-slate-500">Tsexlar</p>

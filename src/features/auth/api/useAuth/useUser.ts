@@ -36,5 +36,11 @@ export const useUser = () => {
       gcTime: 1000 * 60 * 10,
     });
 
-  return { createUser, signIn, getUser, getAllUsers };
+  const updateUser = useMutation({
+    mutationFn: ({ data, id }: { data: any; id: string }) =>
+      api.patch(`users/${id}`, data).then((res) => res.data),
+    onSuccess: () => client.invalidateQueries({ queryKey: [user, "profile"] }),
+  });
+
+  return { createUser, signIn, getUser, getAllUsers, updateUser };
 };

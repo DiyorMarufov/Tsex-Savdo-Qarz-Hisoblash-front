@@ -212,6 +212,7 @@ const AdminSalesReportPage = () => {
         onSearchChange={handleSearchProductFilterChange}
         tsexLoading={tsexLoading}
         shopLoading={shopLoading}
+        isProduct={false}
       />
 
       <SalesReportBalances

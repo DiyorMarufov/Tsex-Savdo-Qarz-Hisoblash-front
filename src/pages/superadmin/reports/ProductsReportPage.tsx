@@ -229,6 +229,8 @@ const ProductsReportPage = () => {
       ),
     })),
   ];
+  
+  console.log(productLists)
 
   const { data: tsexes, isLoading: tsexLoading } =
     getAllTsexesForProductsFilter(isTsexOpen);
