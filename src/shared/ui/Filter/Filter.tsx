@@ -22,6 +22,7 @@ const Filter: FC<Props> = ({
       options={options}
       value={value}
       onChange={(e) => onChange && onChange(e)}
+      allowClear
       {...rest}
     />
   );

@@ -150,7 +150,7 @@ const CustomerTransactionModal = ({
                   : v
               }
             >
-              <Input className="h-10!" placeholder="0,00 UZS" />
+              <Input className="h-10!" placeholder="0,00 UZS" allowClear/>
             </Form.Item>
           </div>
 
@@ -176,6 +176,7 @@ const CustomerTransactionModal = ({
                 className="h-17!"
                 autoSize={false}
                 placeholder="Izoh"
+                allowClear
               />
             </Form.Item>
           </div>

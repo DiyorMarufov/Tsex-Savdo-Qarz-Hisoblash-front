@@ -129,7 +129,7 @@ const SaleItemsManager = ({
                 options={productOptions}
                 onChange={(val) => handleChange("productId", val)}
                 placeholder={
-                  productListLoading ? "Yuklanmoqda" : "Mahsulotni tanlang"
+                  productListLoading ? "Yuklanmoqda..." : "Mahsulotni tanlang"
                 }
                 className="min-[800px]:w-full custom-select-placeholder"
                 onDropdownVisibleChange={(v) => setIsProductOpen(v)}
@@ -280,7 +280,7 @@ const SaleItemsManager = ({
                 options={shopOptions}
                 onChange={(val) => handleChange("shopId", val)}
                 placeholder={
-                  shopListLoading ? "Yuklanmoqda" : "Do'konni tanlang"
+                  shopListLoading ? "Yuklanmoqda..." : "Do'konni tanlang"
                 }
                 className="h-10! w-full custom-select-placeholder"
                 onDropdownVisibleChange={(v) => setIsShopOpen(v)}

@@ -22,6 +22,7 @@ const SearchInput: FC<Props> = ({
       value={value}
       onChange={(e) => onChange && onChange(e.target.value)}
       prefix={<Search className="mr-1.5" />}
+      allowClear
     />
   );
 };

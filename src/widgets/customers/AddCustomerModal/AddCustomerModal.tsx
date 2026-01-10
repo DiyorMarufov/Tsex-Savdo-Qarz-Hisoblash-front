@@ -68,7 +68,7 @@ const AddCustomerModal = ({
                 { required: true, message: "To'liq ism kiritilishi shart!" },
               ]}
             >
-              <Input className="h-10!" placeholder="To'liq ism" />
+              <Input className="h-10!" placeholder="To'liq ism" allowClear/>
             </Form.Item>
           </div>
 
@@ -106,6 +106,7 @@ const AddCustomerModal = ({
 
                   form.setFieldsValue({ phone_number: formatted });
                 }}
+                allowClear
               />
             </Form.Item>
           </div>
@@ -122,6 +123,7 @@ const AddCustomerModal = ({
                 className="h-10! w-full"
                 placeholder="Viloyat/Shahar tanlash"
                 options={customerRegions}
+                allowClear
               />
             </Form.Item>
           </div>

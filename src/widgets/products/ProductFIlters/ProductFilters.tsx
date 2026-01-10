@@ -40,10 +40,10 @@ const ProductFilters = ({
       />
       <div className="flex gap-3 min-[900px]:w-[50%] max-[900px]:w-full max-[370px]:flex-wrap">
         <Filter
-          placeholder="Barcha tsexlar"
+          placeholder={tsexLoading ? "Yuklanmoqda..." : "Barcha tsexlar"}
           className="h-11! min-[900px]:w-[50%]! max-[900px]:w-full! custom-select"
           options={tsexesOptions}
-          value={tsexId}
+          value={tsexLoading || tsexesOptions.length <= 1 ? undefined : tsexId}
           onChange={(val) => onFilterChange("tsexId", val)}
           onDropdownVisibleChange={(visible: any) => {
             if (visible) setIsTsexOpen(true);
@@ -51,10 +51,10 @@ const ProductFilters = ({
           loading={tsexLoading}
         />
         <Filter
-          placeholder="Barcha do'konlar"
+          placeholder={shopLoading ? "Yuklanmoqda..." : "Barcha do'konlar"}
           className="h-11! min-[900px]:w-[50%]! max-[900px]:w-full! custom-select"
           options={shopsOptions}
-          value={shopId}
+          alue={shopLoading || shopsOptions.length <= 1 ? undefined : shopId}
           onChange={(val) => onFilterChange("shopId", val)}
           onDropdownVisibleChange={(visible: any) => {
             if (visible) setIsShopOpen(true);

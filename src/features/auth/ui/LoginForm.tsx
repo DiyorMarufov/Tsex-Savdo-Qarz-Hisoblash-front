@@ -114,6 +114,7 @@ const LoginForm = () => {
 
                   form.setFieldsValue({ phone_number: formatted });
                 }}
+                allowClear
               />
             </Item>
 
@@ -125,6 +126,7 @@ const LoginForm = () => {
               <Input.Password
                 className="h-[49px]! placeholder:text-bg-sy! placeholder:text-[20px]! bg-bg-ty!"
                 placeholder=""
+                allowClear
               />
             </Item>
 

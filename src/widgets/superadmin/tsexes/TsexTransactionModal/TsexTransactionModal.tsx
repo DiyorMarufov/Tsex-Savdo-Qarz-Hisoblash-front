@@ -74,6 +74,7 @@ const TsexTransactionModal = ({
                   if (visible) setIsTsexOpen(true);
                 }}
                 loading={loading}
+                allowClear
               />
             </Form.Item>
           </div>
@@ -90,6 +91,7 @@ const TsexTransactionModal = ({
                 className="h-10!"
                 options={paymentOptions}
                 placeholder="To'lov turini tanlang"
+                allowClear
               />
             </Form.Item>
           </div>
@@ -141,6 +143,7 @@ const TsexTransactionModal = ({
                 className="h-17!"
                 autoSize={false}
                 placeholder="Izoh yozing"
+                allowClear
               />
             </Form.Item>
           </div>

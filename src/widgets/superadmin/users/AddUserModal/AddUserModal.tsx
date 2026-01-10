@@ -60,7 +60,7 @@ const AddUserModal = ({
                 },
               ]}
             >
-              <Input className="h-10!" placeholder="To'liq ism" />
+              <Input className="h-10!" placeholder="To'liq ism" allowClear/>
             </Form.Item>
           </div>
 
@@ -101,6 +101,7 @@ const AddUserModal = ({
 
                   form.setFieldsValue({ phone_number: formatted });
                 }}
+                allowClear
               />
             </Form.Item>
           </div>
@@ -117,7 +118,7 @@ const AddUserModal = ({
                 },
               ]}
             >
-              <Input.Password className="h-10!" placeholder="****" />
+              <Input.Password className="h-10!" placeholder="****" allowClear/>
             </Form.Item>
           </div>
 
@@ -136,6 +137,7 @@ const AddUserModal = ({
                 className="h-10!"
                 options={roleUserCreationOptions}
                 placeholder="Rol tanlang"
+                allowClear
               />
             </Form.Item>
           </div>

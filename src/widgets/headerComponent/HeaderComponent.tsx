@@ -1,17 +1,9 @@
 import { memo } from "react";
 import logo from "../../shared/assets/logo/Background.svg";
-import { LogOut } from "lucide-react";
-import { useDispatch } from "react-redux";
-import { removeToken } from "../../features/auth/model/authModel";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const handleSignOut = () => {
-    dispatch(removeToken());
-    window.location.replace("?");
-  };
 
   return (
     <div className="flex justify-between w-full">
@@ -25,14 +17,6 @@ const Header = () => {
             Savdo tizimi
           </span>
         </div>
-      </div>
-      <div className="flex justify-center items-center px-3">
-        <button
-          onClick={handleSignOut}
-          className="group flex items-center justify-center p-3 rounded-full bg-red-500 text-white hover:bg-red-600 active:scale-95 transition-all duration-200 ease-in-out border-none outline-none cursor-pointer"
-        >
-          <LogOut size={22} />
-        </button>
       </div>
     </div>
   );
