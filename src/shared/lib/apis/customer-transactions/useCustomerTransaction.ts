@@ -88,29 +88,6 @@ export const useCustomerTransaction = () => {
     },
   });
 
-  const createPaidOffTransaction = useMutation({
-    mutationFn: (data: { transaction_id: string }) =>
-      api.post("customer-transactions/payoff", data).then((res) => res.data),
-    onSuccess: () => {
-      client.invalidateQueries({ queryKey: [customer, "all-customers"] });
-      client.invalidateQueries({
-        queryKey: [customer_transaction, "customer-transactions"],
-      });
-      client.invalidateQueries({
-        queryKey: [customer_transaction, "customer-transactions-parent-id"],
-      });
-      client.invalidateQueries({
-        queryKey: [customer, "customer-balance-summary"],
-      });
-      client.invalidateQueries({
-        queryKey: [customer, "customer-total-balance"],
-      });
-      client.invalidateQueries({
-        queryKey: [customer, "most-debtor-customers"],
-      });
-    },
-  });
-
   const getCustomerTransactionsByCustomerId = (customerId: string) =>
     useQuery<IResponseData>({
       queryKey: [customer_transaction, "customer-transactions", customerId],
@@ -144,7 +121,6 @@ export const useCustomerTransaction = () => {
     createLend,
     createBorrow,
     createLendOrBorrowTransaction,
-    createPaidOffTransaction,
     getCustomerTransactionsByCustomerId,
     getCustomerTransactionsDetailByParentTransactionId,
   };

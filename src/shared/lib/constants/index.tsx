@@ -60,12 +60,6 @@ export const customerRegions: Option[] = [
   },
 ];
 
-export const customerStatusOptions: Option[] = [
-  { value: "all", label: "Barchasi" },
-  { value: "false", label: "Faol" },
-  { value: "true", label: "Arxiv" },
-];
-
 export const roleOptions: Option[] = [
   {
     value: "",

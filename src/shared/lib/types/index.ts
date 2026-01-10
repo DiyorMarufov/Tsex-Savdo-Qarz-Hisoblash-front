@@ -15,7 +15,6 @@ export interface QueryParams {
   search?: string;
   shopId?: string;
   tsexId?: string;
-  productId?: string;
   role?: string;
   status?: string;
   region?: string;
@@ -31,7 +30,6 @@ export interface QueryParams {
   customerType?: string;
   customerFilterSearch?: string;
   productFilterSearch?: string;
-  is_archived?: any;
 }
 
 export interface TsexTransactionsType {

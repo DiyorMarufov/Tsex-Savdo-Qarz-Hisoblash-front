@@ -33,7 +33,6 @@ const CustomerTransactionDetails = () => {
   const {
     getCustomerTransactionsDetailByParentTransactionId,
     createLendOrBorrowTransaction,
-    createPaidOffTransaction,
   } = useCustomerTransaction();
   const { handleApiError, handleSuccess } = useApiNotification();
 
@@ -198,32 +197,6 @@ const CustomerTransactionDetails = () => {
       }
     };
 
-  const handleFinish = () => {
-    const data = {
-      transaction_id: id,
-    };
-    createPaidOffTransaction.mutate(data as { transaction_id: string }, {
-      onSuccess: () => {
-        handleCancelTransaction();
-        navigate("/superadmin/customers");
-      },
-      onError: (err: any) => {
-        const status = err?.response?.data?.statusCode;
-        const msg = err?.response?.data?.message;
-
-        if (status === 404 && msg.startsWith("CustomerTransaction with ID")) {
-          handleApiError("Bunday tranzaksiya mavjud emas", "topRight");
-          return;
-        } else if (status === 404 && msg.startsWith("User with ID")) {
-          handleApiError("Superadmin mavjud emas");
-          return;
-        } else {
-          handleApiError("Serverda xato");
-          return;
-        }
-      },
-    });
-  };
   // Transaction ends
 
   // CustomerTransactionDetail starts
@@ -333,7 +306,6 @@ const CustomerTransactionDetails = () => {
           handlePayment={() =>
             openTransactionModal(type === "borrowing" ? "repayment" : "receive")
           }
-          handleFinish={handleFinish}
         />
       </Drawer>
     </div>

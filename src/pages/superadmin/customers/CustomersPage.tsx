@@ -17,10 +17,7 @@ import type {
 } from "../../../shared/lib/types";
 import { useParamsHook } from "../../../shared/hooks/params/useParams";
 import { debounce } from "../../../shared/lib/functions/debounce";
-import {
-  customerRegions,
-  customerStatusOptions,
-} from "../../../shared/lib/constants";
+import { customerRegions } from "../../../shared/lib/constants";
 import CustomerTransactionModal from "../../../widgets/superadmin/customers/CustomerTransactionModal/CustomerTransactionModal";
 import { useApiNotification } from "../../../shared/hooks/api-notification/useApiNotification";
 import { formatPhoneNumber } from "../../../shared/lib/functions/formatPhoneNumber";
@@ -64,9 +61,8 @@ const CustomersPage = () => {
     const search = getParam("search") || undefined;
     const customerFilterSearch = getParam("customer_search") || undefined;
     const region = getParam("region") || undefined;
-    const is_archived = getParam("is_archived") || undefined;
 
-    return { page, limit, search, region, customerFilterSearch, is_archived };
+    return { page, limit, search, region, customerFilterSearch };
   }, [getParam]);
   // Query ends
 
@@ -362,12 +358,10 @@ const CustomersPage = () => {
 
       <CustomerFilters
         regionOptions={customerRegions || []}
-        statusOptions={customerStatusOptions || []}
         onSearchChange={handleSearchChange}
         searchValue={localSearch}
         regionValue={query.region}
         onFilterChange={handleFilterChange}
-        statusValue={query.is_archived}
       />
 
       <div className="mt-4 max-[500px]:hidden">

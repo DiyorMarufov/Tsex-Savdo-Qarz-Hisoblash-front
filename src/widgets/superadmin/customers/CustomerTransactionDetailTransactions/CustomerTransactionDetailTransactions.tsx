@@ -1,23 +1,21 @@
 import { memo } from "react";
-import { ArrowUp, ArrowDown, CheckCircle } from "lucide-react";
+import { ArrowUp, ArrowDown } from "lucide-react";
 
 interface TransactionActionsProps {
   type: "lending" | "borrowing" | string | null;
   handleActionMore: () => void;
   handlePayment: () => void;
-  handleFinish: () => void;
 }
 
 const CustomerTransactionDetailTransactions = ({
   type,
   handleActionMore,
   handlePayment,
-  handleFinish,
 }: TransactionActionsProps) => {
   const isLending = type === "lending";
 
   return (
-    <div className="grid grid-cols-3 gap-8 px-3">
+    <div className="grid grid-cols-2 gap-8 px-3">
       <div
         className="flex flex-col items-center cursor-pointer text-green-600 hover:text-green-700 transition duration-150"
         onClick={handleActionMore}
@@ -40,16 +38,6 @@ const CustomerTransactionDetailTransactions = ({
         <span className="text-sm font-medium mt-1 text-center">
           {isLending ? "Qabul qilish" : "To'lash"}
         </span>
-      </div>
-
-      <div
-        className="flex flex-col items-center cursor-pointer text-blue-600 hover:text-blue-700 transition duration-150"
-        onClick={handleFinish}
-      >
-        <div className="p-3 border-2 border-blue-600 rounded-full bg-blue-100/50">
-          <CheckCircle className="h-8 w-8" />
-        </div>
-        <span className="text-sm font-medium mt-1 text-center">Tugatish</span>
       </div>
     </div>
   );

@@ -9,8 +9,6 @@ interface CustomerFiltersProps {
   regionValue?: string;
   onFilterChange: (key: string, value: string) => void;
   regionOptions: Option[];
-  statusOptions: Option[];
-  statusValue?: string;
   isSuperadmin?: boolean;
 }
 
@@ -20,8 +18,6 @@ const CustomerFilters = ({
   regionValue,
   onFilterChange,
   regionOptions,
-  statusOptions,
-  statusValue,
   isSuperadmin = true,
 }: CustomerFiltersProps) => {
   return (
@@ -30,24 +26,17 @@ const CustomerFilters = ({
     >
       <SearchInput
         placeholder="Mijoz nomi yoki telefon raqami bo'yicha qidirish"
-        className="h-11! min-[1100px]:w-[50%]! bg-bg-ty! text-[16px]!"
+        className="h-10! min-[1100px]:w-[50%]! bg-bg-ty! text-[16px]!"
         value={searchValue}
         onChange={onSearchChange}
       />
-      <div className="flex gap-3 min-[1100px]:w-[50%] w-full flex-nowrap items-center max-[370px]:flex-wrap">
+      <div className="flex gap-3 min-[1100px]:w-[50%] w-full items-center">
         <Filter
-          className="h-10! bg-bg-ty! text-[14px]! w-full min-[1100px]:w-[50%]! custom-select flex-1"
+          className="h-10! bg-bg-ty! text-[14px]! w-full min-[1100px]:w-[50%]! custom-select"
           placeholder="Barcha hududlar"
           value={regionValue}
           onChange={(val) => onFilterChange("region", val)}
           options={regionOptions}
-        />
-        <Filter
-          placeholder="Barchasi"
-          className="h-10! bg-bg-ty! text-[14px]! w-full min-[1100px]:w-[50%]! custom-select flex-1"
-          value={statusValue}
-          onChange={(val) => onFilterChange("is_archived", val)}
-          options={statusOptions}
         />
       </div>
     </div>
