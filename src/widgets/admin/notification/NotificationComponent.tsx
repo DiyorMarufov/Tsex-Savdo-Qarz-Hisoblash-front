@@ -5,19 +5,9 @@ import { memo } from "react";
 const NotificationContent = () => {
   const data = [
     {
-      title: "Yangi buyurtma #1234",
+      title: "Mahsulot qo'shish",
       description: "5 daqiqa oldin",
       type: "order",
-    },
-    {
-      title: "Tsexda mahsulot kam qoldi",
-      description: "1 soat oldin",
-      type: "warning",
-    },
-    {
-      title: "Admin profilingiz yangilandi",
-      description: "Bugun, 09:41",
-      type: "info",
     },
   ];
 
