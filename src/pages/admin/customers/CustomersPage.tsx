@@ -17,10 +17,7 @@ import { useCustomer } from "../../../shared/lib/apis/customers/useCustomer";
 import { useParamsHook } from "../../../shared/hooks/params/useParams";
 import { useApiNotification } from "../../../shared/hooks/api-notification/useApiNotification";
 import { debounce } from "../../../shared/lib/functions/debounce";
-import {
-  customerRegions,
-  customerStatusOptions,
-} from "../../../shared/lib/constants";
+import { customerRegions } from "../../../shared/lib/constants";
 import PlusButton from "../../../shared/ui/Button/PlusButton";
 
 const AdminCustomersPage = () => {
@@ -173,8 +170,6 @@ const AdminCustomersPage = () => {
         searchValue={localSearch}
         regionValue={query.region}
         onFilterChange={handleFilterChange}
-        statusOptions={customerStatusOptions}
-        statusValue={query.is_archived}
         isSuperadmin={false}
       />
 
