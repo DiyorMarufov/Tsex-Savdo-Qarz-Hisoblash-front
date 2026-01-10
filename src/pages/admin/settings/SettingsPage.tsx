@@ -5,12 +5,19 @@ import ProfileSettings from "../../../widgets/settings/ProfileSettings";
 import SystemParameters from "../../../widgets/settings/SystemParameters";
 import SystemVersion from "../../../widgets/settings/SystemVersion";
 import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
+import { useDispatch } from "react-redux";
+import { removeToken } from "../../../features/auth/model/authModel";
 
 const AdminSettingsPage = () => {
+  const dispatch = useDispatch();
   useEffect(() => {
     window.scroll({ top: 0 });
   }, []);
 
+  const handleSignOut = () => {
+    dispatch(removeToken());
+    window.location.replace("/");
+  };
   return (
     <div className="flex-1 w-full">
       <div className="mb-2">
@@ -27,6 +34,7 @@ const AdminSettingsPage = () => {
           type="text"
           icon={<LogoutOutlined />}
           className="w-45 h-9! bg-red-500! text-white!"
+          onClick={handleSignOut}
         >
           Sign Out (Chiqish)
         </Button>
