@@ -12,6 +12,7 @@ interface ProductMobileListProps {
   pageSize: number;
   onPageChange: (page: number, pageSize?: number) => void;
   onDetail: (id: string) => void;
+  isReport?: boolean;
 }
 
 const ProductMobileList = ({
@@ -22,13 +23,14 @@ const ProductMobileList = ({
   pageSize,
   onPageChange,
   onDetail,
+  isReport = false,
 }: ProductMobileListProps) => {
   if (isLoading) {
     return <ProductCardSkeleton />;
   }
 
   return (
-    <div className="min-[500px]:hidden mt-4">
+    <div className={`min-[500px]:hidden ${isReport ? "" : "mt-4"}`}>
       <div className="grid grid-cols-2 gap-5 max-[330px]:grid-cols-1">
         {products && products.length > 0 ? (
           products.map((pr) => (
@@ -41,13 +43,13 @@ const ProductMobileList = ({
         )}
       </div>
 
-      {total > 0 && (
-        <div className="flex mt-4 justify-center">
+      {total > pageSize && (
+        <div className="flex justify-center">
           <Pagination
             current={currentPage}
             pageSize={pageSize}
-            onChange={onPageChange}
             total={total}
+            onChange={onPageChange}
             showSizeChanger
           />
         </div>

@@ -160,7 +160,7 @@ const AdminCustomersPage = () => {
         <div className="max-[500px]:hidden">
           <Button onClick={handleNewCustomer}>
             <Plus />
-            Yengi mijoz qo'shish
+            Yangi mijoz qo'shish
           </Button>
         </div>
 

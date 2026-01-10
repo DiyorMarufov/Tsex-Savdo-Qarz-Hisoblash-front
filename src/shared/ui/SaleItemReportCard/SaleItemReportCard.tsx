@@ -22,7 +22,7 @@ const SaleItemReportCard = ({ item }: SaleItemRepordCard) => {
           <div className="flex flex-col">
             <span className="text-[15px] font-medium text-[#6B7280]">Soni</span>
             <span className="text-[16px] font-bold text-[#4B5563]">
-              {item.quantity} dona
+              {item.quantity} pochka
             </span>
           </div>
           <div className="flex flex-col">

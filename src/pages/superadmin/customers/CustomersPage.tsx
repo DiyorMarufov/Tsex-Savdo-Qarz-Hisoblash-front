@@ -464,7 +464,7 @@ const CustomersPage = () => {
               <Plus className="h-8 w-8" />
             </div>
             <span className="text-sm font-medium mt-1 whitespace-nowrap text-center">
-              Yengi mijoz
+              Yangi mijoz
             </span>
           </div>
         </div>

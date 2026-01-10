@@ -36,15 +36,17 @@ const SaleItemReportMobileList = ({
               Hozircha ma'lumot yo'q
             </div>
           )}
-          <div className="flex justify-center">
-            <Pagination
-              current={currentPage}
-              pageSize={pageSize}
-              onChange={onPageChange}
-              total={total}
-              showSizeChanger
-            />
-          </div>
+          {total > pageSize && (
+            <div className="flex justify-center">
+              <Pagination
+                current={currentPage}
+                pageSize={pageSize}
+                total={total}
+                onChange={onPageChange}
+                showSizeChanger
+              />
+            </div>
+          )}
         </div>
       )}
     </>

@@ -18,9 +18,9 @@ interface ProductReportFiltersProps {
   tsexId?: string;
   productId?: string;
   shopsOptions: Option[];
-  productOptions: Option[];
+  productOptions?: Option[];
   tsexesOptions: Option[];
-  setIsProductOpen: (open: boolean) => void;
+  setIsProductOpen?: (open: boolean) => void;
   setIsTsexOpen: (open: boolean) => void;
   setIsShopOpen: (open: boolean) => void;
   productLoading?: boolean;
@@ -127,7 +127,7 @@ const ProductsReportFilters = ({
               placeholder="Barcha mahsulotlar"
               className="h-11! w-full rounded-lg custom-select border-slate-200"
               onDropdownVisibleChange={(visible: any) => {
-                if (visible) setIsProductOpen(true);
+                if (visible) setIsProductOpen?.(true);
               }}
               dropdownRender={(menu: any) => (
                 <>
@@ -227,7 +227,7 @@ const ProductsReportFilters = ({
               placeholder="Barcha mahsulotlar"
               className="h-11! w-full rounded-lg custom-select border-slate-200"
               onDropdownVisibleChange={(visible: boolean) => {
-                if (visible) setIsProductOpen(true);
+                if (visible) setIsProductOpen?.(true);
               }}
               dropdownRender={(menu: any) => (
                 <>

@@ -7,8 +7,8 @@ const Header = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex justify-between w-full">
-      <div className="w-full flex items-center gap-35 max-[701px]:pl-3.5">
+    <div className="flex w-full">
+      <div className="w-full flex justify-between items-center max-[701px]:pl-3.5 pr-3">
         <div
           className="flex items-center gap-3 select-none cursor-pointer"
           onClick={() => navigate("/")}
@@ -18,7 +18,7 @@ const Header = () => {
             Savdo tizimi
           </span>
         </div>
-        
+
         <HeaderBell />
       </div>
     </div>

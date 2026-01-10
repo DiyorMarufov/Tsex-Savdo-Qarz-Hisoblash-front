@@ -12,26 +12,17 @@ interface CombinedReportFilterProps {
     dates: string[] | null;
     shopId: string;
     tsexId: string;
-    productId: string;
   }) => void;
   start: Dayjs | undefined | null;
   end: Dayjs | undefined | null;
   shopId?: string;
   tsexId?: string;
-  productId?: string;
   localSearch?: string;
   shopsOptions: Option[];
-  productOptions: Option[];
   tsexesOptions: Option[];
-  setIsProductOpen: (open: boolean) => void;
   setIsTsexOpen: (open: boolean) => void;
   setIsShopOpen: (open: boolean) => void;
   handleSearchChange: (value: string) => void;
-  productLoading: boolean;
-  productHasNextPage?: boolean;
-  productIsFetchingNextPage?: boolean;
-  productFetchNextPage?: any;
-  onSearchProductFilerChange?: (value: string) => void;
   tsexLoading: boolean;
   shopLoading: boolean;
 }
@@ -42,20 +33,12 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
   end,
   shopId,
   tsexId,
-  productId,
   localSearch,
   shopsOptions = [],
-  productOptions = [],
   tsexesOptions = [],
-  setIsProductOpen,
   setIsTsexOpen,
   setIsShopOpen,
   handleSearchChange,
-  productLoading,
-  productHasNextPage,
-  productIsFetchingNextPage,
-  productFetchNextPage,
-  onSearchProductFilerChange,
   tsexLoading,
   shopLoading,
 }) => {
@@ -72,7 +55,6 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
   ]);
   const [tempShopId, setTempShopId] = useState(shopId);
   const [tempTsexId, setTempTsexId] = useState(tsexId);
-  const [tempProductId, setTempProductId] = useState(productId);
 
   useEffect(() => {
     setTempDates([start || null, end || null]);
@@ -82,15 +64,13 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
     ]);
     setTempShopId(shopId);
     setTempTsexId(tsexId);
-    setTempProductId(productId);
-  }, [start, end, shopId, tsexId, productId]);
+  }, [start, end, shopId, tsexId]);
 
   const handleSubmit = () => {
     onFilterSubmit({
       dates: tempDateStrings,
       shopId: tempShopId || "",
       tsexId: tempTsexId || "",
-      productId: tempProductId || "",
     });
     setOpen(false);
   };
@@ -98,15 +78,6 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
   const handleRangeChange = (values: any, dateStrings: [string, string]) => {
     setTempDates(values);
     setTempDateStrings(values ? dateStrings : null);
-  };
-
-  const handleScroll = (e: any) => {
-    const { target } = e;
-    if (target.scrollTop + target.clientHeight >= target.scrollHeight - 10) {
-      if (productHasNextPage && !productIsFetchingNextPage) {
-        productFetchNextPage();
-      }
-    }
   };
 
   return (
@@ -121,7 +92,7 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
           />
         </div>
 
-        <div className="max-[800px]:hidden grid grid-cols-5 gap-3 items-end">
+        <div className="max-[800px]:hidden grid grid-cols-4 gap-3 items-end">
           <div className="w-full">
             <DatePicker.RangePicker
               value={tempDates}
@@ -131,33 +102,6 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
               placeholder={["Boshlanish", "Tugash"]}
               className="h-11 w-full rounded-lg border-slate-200"
               inputReadOnly
-            />
-          </div>
-          <div className="w-full">
-            <Filter
-              onPopupScroll={handleScroll}
-              value={tempProductId}
-              options={productOptions}
-              onChange={setTempProductId}
-              placeholder="Barcha mahsulotlar"
-              className="h-11! w-full rounded-lg custom-select border-slate-200"
-              onDropdownVisibleChange={(visible: any) => {
-                if (visible) setIsProductOpen(true);
-              }}
-              dropdownRender={(menu: any) => (
-                <>
-                  {menu}
-                  {productIsFetchingNextPage && (
-                    <span className="text-[12px] text-gray-500">
-                      Yuklanmoqda...
-                    </span>
-                  )}
-                </>
-              )}
-              loading={productLoading}
-              showSearch
-              filterOption={false}
-              onSearch={onSearchProductFilerChange}
             />
           </div>
           <div className="w-full">
@@ -230,37 +174,6 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
               placeholder={["Boshlanish", "Tugash"]}
               className="h-11! w-full rounded-lg border-slate-200"
               inputReadOnly
-            />
-          </div>
-
-          <div className="w-full">
-            <p className="mb-1 text-sm text-slate-500 font-medium">
-              Mahsulotlar
-            </p>
-            <Filter
-              onPopupScroll={handleScroll}
-              value={tempProductId}
-              options={productOptions}
-              onChange={setTempProductId}
-              placeholder="Barcha mahsulotlar"
-              className="h-11! w-full rounded-lg custom-select border-slate-200"
-              onDropdownVisibleChange={(visible: any) => {
-                if (visible) setIsProductOpen(true);
-              }}
-              dropdownRender={(menu: any) => (
-                <>
-                  {menu}
-                  {productIsFetchingNextPage && (
-                    <span className="text-[12px] text-gray-500">
-                      Yuklanmoqda...
-                    </span>
-                  )}
-                </>
-              )}
-              loading={productLoading}
-              showSearch
-              filterOption={false}
-              onSearch={onSearchProductFilerChange}
             />
           </div>
 

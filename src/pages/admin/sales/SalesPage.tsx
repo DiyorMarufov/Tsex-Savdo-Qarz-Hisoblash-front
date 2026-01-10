@@ -14,24 +14,18 @@ import dayjs from "dayjs";
 import SalesReportMobileList from "../../../widgets/reports/SalesReport/SalesReportMobileList/SalesReportMobileList";
 import { useShop } from "../../../shared/lib/apis/shops/useShop";
 import { useTsex } from "../../../shared/lib/apis/tsexes/useTsex";
-import { useProduct } from "../../../shared/lib/apis/products/useProduct";
 import { debounce } from "../../../shared/lib/functions/debounce";
 
 const AdminSalesPage = () => {
-  const [isProductOpen, setIsProductOpen] = useState<boolean>(false);
   const [isTsexOpen, setIsTsexOpen] = useState<boolean>(false);
   const [isShopOpen, setIsShopOpen] = useState<boolean>(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { getParam, setParams, removeParam } = useParamsHook();
   const [localSearch, setLocalSearch] = useState(getParam("search") || "");
-  const [, setProductFilterSearch] = useState(
-    getParam("product_search") || ""
-  );
   const { getAllSales } = useSale();
   const { getAllShopsForProductsFilter } = useShop();
   const { getAllTsexesForProductsFilter } = useTsex();
-  const { getInfiniteProducts } = useProduct();
 
   useEffect(() => {
     window.scroll({ top: 0 });
@@ -46,7 +40,6 @@ const AdminSalesPage = () => {
     const e = getParam("endDate");
     const shopId = getParam("shopId") || "";
     const tsexId = getParam("tsexId") || "";
-    const productId = getParam("productId") || "";
     const productFilterSearch = getParam("product_search") || undefined;
 
     const isFirstLoad = s === null && e === null;
@@ -65,7 +58,6 @@ const AdminSalesPage = () => {
         : e || "",
       shopId,
       tsexId,
-      productId,
       productFilterSearch,
     };
   }, [getParam]);
@@ -82,7 +74,6 @@ const AdminSalesPage = () => {
     search: query.search,
     startDate: query.startStr,
     endDate: query.endStr,
-    productId: query.productId,
     shopId: query.shopId,
     tsexId: query.tsexId,
   });
@@ -124,62 +115,14 @@ const AdminSalesPage = () => {
     [setParams]
   );
 
-  const debouncedSetSearchProductFilterQuery = useCallback(
-    debounce((nextValue: string) => {
-      setParams({
-        product_search: nextValue || "",
-        page: 1,
-      });
-    }, 500),
-    [setParams]
-  );
-
   const handleSearchChange = (value: string) => {
     setLocalSearch(value);
     debouncedSetSearchQuery(value);
   };
 
-  const handleSearchProductFilterChange = (value: string) => {
-    setProductFilterSearch(value);
-    debouncedSetSearchProductFilterQuery(value);
-  };
   // Search ends
 
   // SaleFilter options start
-  const {
-    data: products,
-    isLoading: productLoading,
-    fetchNextPage: productFetchNextPage,
-    hasNextPage: productHasNextPage,
-    isFetchingNextPage: productIsFetchingNextPage,
-  } = getInfiniteProducts(isProductOpen, { search: query.productFilterSearch });
-
-  const productOptions = [
-    {
-      value: "",
-      label: "Barcha mahsulotlar",
-    },
-    ...(
-      products?.pages?.flatMap((page: any) => {
-        return Array.isArray(page)
-          ? page
-          : page?.data?.data || page?.data || [];
-      }) || []
-    ).map((pr: any) => ({
-      value: pr?.id,
-      label: (
-        <div className="flex justify-between items-center w-full">
-          <span className="text-[14px] font-medium text-slate-800">
-            {pr?.name}
-          </span>
-          <span className="text-[12px] text-slate-400 font-normal ml-2">
-            {pr?.brand}
-          </span>
-        </div>
-      ),
-    })),
-  ];
-
   const { data: tsexes, isLoading: tsexLoading } =
     getAllTsexesForProductsFilter(isTsexOpen);
   const tsexesOptions = [
@@ -213,14 +156,12 @@ const AdminSalesPage = () => {
     dates: string[] | null;
     shopId: string;
     tsexId: string;
-    productId: string;
   }) => {
     setParams({
       startDate: filters.dates?.[0] || "",
       endDate: filters.dates?.[1] || "",
       shopId: filters.shopId || "",
       tsexId: filters.tsexId || "",
-      productId: filters.productId || "",
     });
   };
   // SaleReportFilter onFilterSubmit ends
@@ -247,20 +188,12 @@ const AdminSalesPage = () => {
             end={query.end}
             shopId={query.shopId}
             tsexId={query.tsexId}
-            productId={query.productId}
             localSearch={localSearch}
             shopsOptions={shopsOptions}
             tsexesOptions={tsexesOptions}
-            productOptions={productOptions}
-            setIsProductOpen={setIsProductOpen}
             setIsTsexOpen={setIsTsexOpen}
             setIsShopOpen={setIsShopOpen}
             handleSearchChange={handleSearchChange}
-            productLoading={productLoading}
-            productHasNextPage={productHasNextPage}
-            productIsFetchingNextPage={productIsFetchingNextPage}
-            productFetchNextPage={productFetchNextPage}
-            onSearchProductFilerChange={handleSearchProductFilterChange}
             tsexLoading={tsexLoading}
             shopLoading={shopLoading}
           />

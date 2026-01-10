@@ -332,6 +332,7 @@ const ProductsReportPage = () => {
         onPageChange={handlePageChange}
         isLoading={productLoading}
         onDetail={handleProductDetailOpen}
+        isReport
       />
     </div>
   );

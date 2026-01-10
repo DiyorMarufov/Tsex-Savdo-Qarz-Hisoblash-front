@@ -66,7 +66,7 @@ const TsexesReportChart: FC<TsexesReportProps> = ({ data, loading }) => {
                 <Tooltip
                   cursor={{ fill: "#f8fafc" }}
                   formatter={(value: number, name: string) => [
-                    value.toLocaleString(),
+                    `${value.toLocaleString()} uzs`,
                     name,
                   ]}
                   contentStyle={{

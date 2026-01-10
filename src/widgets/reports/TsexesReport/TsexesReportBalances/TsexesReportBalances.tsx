@@ -25,7 +25,7 @@ const TsexesReportBalances: FC<TsexReportBalanceProps> = ({
       <StatCard
         title="Ombordagi qoldiq"
         value={inventoryBalance}
-        description={`${totalQuantity} dona / ${totalTypes} turdagi tovar`}
+        description={`${totalQuantity} pochka / ${totalTypes} turdagi tovar`}
       />
 
       <StatCard

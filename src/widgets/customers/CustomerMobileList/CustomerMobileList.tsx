@@ -44,7 +44,7 @@ const CustomerMobileList = ({
       )}
 
       {total > pageSize && (
-        <div className="flex justify-center mt-2">
+        <div className="flex justify-center">
           <Pagination
             current={currentPage}
             pageSize={pageSize}

@@ -32,13 +32,13 @@ const UserMobileList = ({
         </div>
       )}
 
-      {total > 0 && (
-        <div className="flex mt-4 justify-center">
+      {total > pageSize && (
+        <div className="flex justify-center">
           <Pagination
             current={currentPage}
             pageSize={pageSize}
-            onChange={onPageChange}
             total={total}
+            onChange={onPageChange}
             showSizeChanger
           />
         </div>

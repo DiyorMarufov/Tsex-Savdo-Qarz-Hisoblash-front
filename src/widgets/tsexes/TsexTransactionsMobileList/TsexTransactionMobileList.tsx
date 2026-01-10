@@ -34,13 +34,13 @@ const TsexTransactionMobileList: React.FC<TsexMobileListProps> = ({
             </div>
           )}
 
-      {!loading && transactions && transactions.length > 0 && (
-        <div className="flex justify-center mt-2">
+      {total > pageSize && (
+        <div className="flex justify-center">
           <Pagination
             current={currentPage}
             pageSize={pageSize}
-            onChange={onPageChange}
             total={total}
+            onChange={onPageChange}
             showSizeChanger
           />
         </div>

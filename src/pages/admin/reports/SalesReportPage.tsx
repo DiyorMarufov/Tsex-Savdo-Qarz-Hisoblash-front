@@ -13,11 +13,9 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import ProductsReportFilters from "../../../widgets/reports/ProductsReport/ProductsReportFilters/ProductsReportFilters";
 import { useShop } from "../../../shared/lib/apis/shops/useShop";
 import { useTsex } from "../../../shared/lib/apis/tsexes/useTsex";
-import { useProduct } from "../../../shared/lib/apis/products/useProduct";
 import { salesColumns } from "../../../shared/lib/model/reports/sales-model";
 
 const AdminSalesReportPage = () => {
-  const [isProductOpen, setIsProductOpen] = useState<boolean>(false);
   const [isTsexOpen, setIsTsexOpen] = useState<boolean>(false);
   const [isShopOpen, setIsShopOpen] = useState<boolean>(false);
   const { pathname } = useLocation();
@@ -30,7 +28,6 @@ const AdminSalesReportPage = () => {
   const { getSalesSummaryForReport, getAllSales } = useSale();
   const { getAllShopsForProductsFilter } = useShop();
   const { getAllTsexesForProductsFilter } = useTsex();
-  const { getInfiniteProducts } = useProduct();
 
   useEffect(() => {
     window.scroll({ top: 0 });
@@ -45,7 +42,6 @@ const AdminSalesReportPage = () => {
     const e = getParam("endDate");
     const shopId = getParam("shopId") || "";
     const tsexId = getParam("tsexId") || "";
-    const productId = getParam("productId") || "";
     const productFilterSearch = getParam("product_search") || undefined;
 
     const isFirstLoad = s === null && e === null;
@@ -64,7 +60,6 @@ const AdminSalesReportPage = () => {
         : e || "",
       shopId,
       tsexId,
-      productId,
       productFilterSearch,
     };
   }, [getParam]);
@@ -79,7 +74,6 @@ const AdminSalesReportPage = () => {
     getSalesSummaryForReport({
       startDate: query.startStr,
       endDate: query.endStr,
-      productId: query.productId,
       shopId: query.shopId,
       tsexId: query.tsexId,
     });
@@ -97,7 +91,6 @@ const AdminSalesReportPage = () => {
     search: query.search,
     startDate: query.startStr,
     endDate: query.endStr,
-    productId: query.productId,
     shopId: query.shopId,
     tsexId: query.tsexId,
   });
@@ -161,40 +154,6 @@ const AdminSalesReportPage = () => {
   // Search ends
 
   // SaleReportFilter options start
-  const {
-    data: products,
-    isLoading: productLoading,
-    fetchNextPage: productFetchNextPage,
-    hasNextPage: productHasNextPage,
-    isFetchingNextPage: productIsFetchingNextPage,
-  } = getInfiniteProducts(isProductOpen, { search: query.productFilterSearch });
-
-  const productOptions = [
-    {
-      value: "",
-      label: "Barcha mahsulotlar",
-    },
-    ...(
-      products?.pages?.flatMap((page: any) => {
-        return Array.isArray(page)
-          ? page
-          : page?.data?.data || page?.data || [];
-      }) || []
-    ).map((pr: any) => ({
-      value: pr?.id,
-      label: (
-        <div className="flex justify-between items-center w-full">
-          <span className="text-[14px] font-medium text-slate-800">
-            {pr?.name}
-          </span>
-          <span className="text-[12px] text-slate-400 font-normal ml-2">
-            {pr?.brand}
-          </span>
-        </div>
-      ),
-    })),
-  ];
-
   const { data: tsexes, isLoading: tsexLoading } =
     getAllTsexesForProductsFilter(isTsexOpen);
   const tsexesOptions = [
@@ -227,14 +186,12 @@ const AdminSalesReportPage = () => {
     dates: string[] | null;
     shopId: string;
     tsexId: string;
-    productId: string;
   }) => {
     setParams({
       startDate: filters.dates?.[0] || "",
       endDate: filters.dates?.[1] || "",
       shopId: filters.shopId || "",
       tsexId: filters.tsexId || "",
-      productId: filters.productId || "",
     });
   };
   // SaleReportFilter onFilterSubmit ends
@@ -248,17 +205,10 @@ const AdminSalesReportPage = () => {
         end={query.end}
         shopId={query.shopId}
         tsexId={query.tsexId}
-        productId={query.productId}
         shopsOptions={shopsOptions}
         tsexesOptions={tsexesOptions}
-        productOptions={productOptions}
-        setIsProductOpen={setIsProductOpen}
         setIsTsexOpen={setIsTsexOpen}
         setIsShopOpen={setIsShopOpen}
-        productLoading={productLoading}
-        productHasNextPage={productHasNextPage}
-        productIsFetchingNextPage={productIsFetchingNextPage}
-        productFetchNextPage={productFetchNextPage}
         onSearchChange={handleSearchProductFilterChange}
         tsexLoading={tsexLoading}
         shopLoading={shopLoading}
@@ -275,7 +225,6 @@ const AdminSalesReportPage = () => {
         params={{
           startDate: query.startStr,
           endDate: query.endStr,
-          productId: query.productId as string,
           tsexId: query.tsexId as string,
           shopId: query.shopId as string,
         }}

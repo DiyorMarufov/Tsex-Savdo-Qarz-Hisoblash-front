@@ -60,7 +60,7 @@ export const HeaderBell = () => (
     arrow={false}
     overlayClassName="notification-popover"
   >
-    <Badge count={3} size="small" offset={[-2, 5]}>
+    <Badge count={1} size="small" offset={[-2, 5]}>
       <Button
         type="text"
         icon={<BellOutlined className="text-[20px] text-gray-600" />}

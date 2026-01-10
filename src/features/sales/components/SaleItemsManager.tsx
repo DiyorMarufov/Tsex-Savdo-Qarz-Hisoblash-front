@@ -163,7 +163,7 @@ const SaleItemsManager = ({
                           key={product.id}
                           className="flex flex-col gap-3 p-4 bg-slate-50 border border-slate-100 rounded-xl"
                         >
-                          <div className="flex justify-between items-start gap-3 max-[450px]:flex-col ">
+                          <div className="flex justify-between items-start gap-3 max-[540px]:flex-col ">
                             <div className="flex flex-col">
                               <span className="text-sm font-bold text-slate-800 leading-tight">
                                 {product.name}
@@ -172,9 +172,10 @@ const SaleItemsManager = ({
                                 {product.brand}
                               </span>
                             </div>
-                            <div className="flex min-[370px]:items-center gap-3 mt-1 max-[370px]:flex-col">
-                              <div
-                                className={`flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-semibold tracking-wide border 
+                            <div className="flex min-[480px]:items-center gap-3 mt-1 max-[480px]:flex-col">
+                              <div className="flex gap-3 min-[385px]:items-center max-[385px]:flex-col">
+                                <div
+                                  className={`flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-semibold tracking-wide border max-[385px]:w-fit
                                         ${
                                           product.quantity > 10
                                             ? "bg-blue-50 text-blue-600 border-blue-100"
@@ -182,31 +183,40 @@ const SaleItemsManager = ({
                                               ? "bg-orange-50 text-orange-600 border-orange-100"
                                               : "bg-red-50 text-red-600 border-red-100"
                                         }`}
-                              >
-                                <span className="relative flex h-2 w-2">
-                                  {product.quantity > 0 &&
-                                    product.quantity <= 10 && (
-                                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                                    )}
-                                  <span
-                                    className={`relative inline-flex rounded-full h-2 w-2 ${
-                                      product.quantity > 10
-                                        ? "bg-blue-500"
-                                        : product.quantity > 0
-                                          ? "bg-orange-500"
-                                          : "bg-red-500"
-                                    }`}
-                                  ></span>
-                                </span>
-                                Qoldiq: {product.quantity} ta
+                                >
+                                  <span className="relative flex h-2 w-2">
+                                    {product.quantity > 0 &&
+                                      product.quantity <= 10 && (
+                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                                      )}
+                                    <span
+                                      className={`relative inline-flex rounded-full h-2 w-2 ${
+                                        product.quantity > 10
+                                          ? "bg-blue-500"
+                                          : product.quantity > 0
+                                            ? "bg-orange-500"
+                                            : "bg-red-500"
+                                      }`}
+                                    ></span>
+                                  </span>
+                                  Qoldiq: {product.quantity} ta
+                                </div>
+
+                                <div className="flex items-center gap-1 px-2 py-0.5 rounded text-[12px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">
+                                  <span className="text-[11px] opacity-60">
+                                    Asl narxi:
+                                  </span>
+                                  {Number(product.price).toLocaleString()}{" "}
+                                  <span className="text-[11px]">uzs</span>
+                                </div>
                               </div>
 
-                              <div className="flex items-center gap-1 px-2 py-0.5 rounded text-[12px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">
-                                <span className="text-[11px] opacity-60">
-                                  Asl narxi:
+                              <div className="flex gap-1 px-2 py-0.5 rounded text-[12px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-100 max-[480px]:w-fit">
+                                <span className="text-[11px] opacity-60 font-semibold tracking-tight">
+                                  Pochkada:
                                 </span>
-                                {Number(product.price).toLocaleString()}{" "}
-                                <span className="text-[11px]">uzs</span>
+                                {product.unit_in_package}{" "}
+                                <span className="text-[11px]">ta</span>
                               </div>
                             </div>
                           </div>

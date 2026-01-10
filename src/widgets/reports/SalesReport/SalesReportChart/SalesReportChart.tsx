@@ -18,7 +18,6 @@ interface SalesReportChartProps {
   params: {
     startDate: string;
     endDate: string;
-    productId: string;
     tsexId: string;
     shopId: string;
   };
@@ -40,14 +39,7 @@ const SalesReportChart: FC<SalesReportChartProps> = ({
       ...params,
       type: filterType,
     }),
-    [
-      params.startDate,
-      params.endDate,
-      params.productId,
-      params.tsexId,
-      params.shopId,
-      filterType,
-    ]
+    [params.startDate, params.endDate, params.tsexId, params.shopId, filterType]
   );
   const { data: salesStatisticsReport, isLoading: salesStatisticsLoading } =
     getSalesStatisticsForReport(query);
@@ -148,7 +140,8 @@ const SalesReportChart: FC<SalesReportChartProps> = ({
               />
               <Tooltip
                 formatter={(value: number, name: string) => [
-                  value.toLocaleString() + (name === "Summa" ? " uzs" : " ta"),
+                  value.toLocaleString() +
+                    (name === "Summa" ? " uzs" : " pochka"),
                   name,
                 ]}
                 contentStyle={{
