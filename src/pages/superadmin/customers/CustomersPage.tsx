@@ -357,7 +357,11 @@ const CustomersPage = () => {
       <CustomersBalances />
 
       <CustomerFilters
-        regionOptions={customerRegions || []}
+        regionOptions={
+          customerRegions
+            ? [{ value: "", label: "Barcha hududlar" }, ...customerRegions]
+            : [{ value: "", label: "Barcha hududlar" }]
+        }
         onSearchChange={handleSearchChange}
         searchValue={localSearch}
         regionValue={query.region}

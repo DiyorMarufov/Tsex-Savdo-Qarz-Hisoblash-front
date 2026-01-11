@@ -25,7 +25,7 @@ const TsexBalances = () => {
                   {ts?.name}
                 </span>
                 <span className="text-[16px] font-bold text-red-500">
-                  -{ts?.balance} UZS
+                  {ts?.balance} UZS
                 </span>
               </div>
             ))

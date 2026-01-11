@@ -13,6 +13,7 @@ const TsexBalances = () => {
   const creditor = tsexBalances?.creditorTotalBalance;
   const debtor = -tsexBalances?.debtorTotalBalance;
   const net = tsexBalances?.netTotalBalance;
+  const finalNet = net > 0 ? -net : Math.abs(net);
 
   if (tsexBalancesLoading) {
     return (
@@ -32,8 +33,8 @@ const TsexBalances = () => {
       />
       <StatCard
         title="Umumiy balans"
-        value={Number(net) > 0 ? -Number(net) : Number(net)}
-        isValueNegative={Number(net) > 0}
+        value={finalNet}
+        isValueNegative={finalNet < 0}
         isColSpan
       />
     </div>

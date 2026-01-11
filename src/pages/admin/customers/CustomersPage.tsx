@@ -165,7 +165,11 @@ const AdminCustomersPage = () => {
       </div>
 
       <CustomerFilters
-        regionOptions={customerRegions || []}
+        regionOptions={
+          customerRegions
+            ? [{ value: "", label: "Barcha hududlar" }, ...customerRegions]
+            : [{ value: "", label: "Barcha hududlar" }]
+        }
         onSearchChange={handleSearchChange}
         searchValue={localSearch}
         regionValue={query.region}

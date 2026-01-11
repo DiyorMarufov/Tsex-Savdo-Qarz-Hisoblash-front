@@ -1,7 +1,6 @@
 import type { Option } from "../types";
 
 export const customerRegions: Option[] = [
-  { value: "", label: "Barcha hududlar" },
   {
     value: "Andijan",
     label: "Andijan",
