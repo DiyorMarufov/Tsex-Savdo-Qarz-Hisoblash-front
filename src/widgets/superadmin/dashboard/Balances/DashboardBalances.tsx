@@ -35,7 +35,9 @@ const DashboardBalances = () => {
 
   // Total debt starts
   const tsexBalance =
-    formattedTsexBalance > 0 ? -formattedTsexBalance : Math.abs(formattedTsexBalance);
+    formattedTsexBalance > 0
+      ? -formattedTsexBalance
+      : Math.abs(formattedTsexBalance);
   const customerBalance = formattedCustomerBalance;
   const totalDebt = tsexBalance + customerBalance;
   // Total debt ends
@@ -63,6 +65,23 @@ const DashboardBalances = () => {
         rawValue={String(totalSales)}
       />
 
+      <DashboardStatCard
+        title="Tsexlar Balansi"
+        value={formattedTsexBalance}
+        suffix="UZS"
+        rawValue={String(totalTsexBalance)}
+        decimals={1}
+        isValueNegative={formattedTsexBalance > 0}
+      />
+
+      <DashboardStatCard
+        title="Mijozlar balansi"
+        value={formattedCustomerBalance}
+        suffix="UZS"
+        rawValue={String(totalCustomerBalance)}
+        decimals={1}
+        isValueNegative={formattedCustomerBalance < 0}
+      />
       <div className="border border-[#E2E8F0] bg-[#ffffff] rounded-2xl flex flex-col py-[25px] px-[25px] max-[560px]:px-[15px]">
         <span className="text-[19px] font-medium text-[#6B7280] max-[560px]:text-[17px] max-[480px]:text-[16px]">
           Umumiy Qarzlar
@@ -83,23 +102,6 @@ const DashboardBalances = () => {
           />
         </span>
       </div>
-      <DashboardStatCard
-        title="Tsexlar Balansi"
-        value={formattedTsexBalance}
-        suffix="UZS"
-        rawValue={String(totalTsexBalance)}
-        decimals={1}
-        isValueNegative={formattedTsexBalance > 0}
-      />
-
-      <DashboardStatCard
-        title="Mijozlar balansi"
-        value={formattedCustomerBalance}
-        suffix="UZS"
-        rawValue={String(totalCustomerBalance)}
-        decimals={1}
-        isValueNegative={formattedCustomerBalance < 0}
-      />
     </div>
   );
 };
