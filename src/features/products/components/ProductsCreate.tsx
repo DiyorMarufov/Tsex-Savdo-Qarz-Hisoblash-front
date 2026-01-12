@@ -382,14 +382,14 @@ const ProductsCreate = () => {
         <div className="flex min-[500px]:justify-end max-[380px]:flex-col-reverse gap-4 pt-4">
           <Button
             onClick={() => navigate(-1)}
-            className="h-10! bg-red-500! text-white! max-[500px]:w-full"
+            className="h-9! bg-red-500! text-white! max-[500px]:w-full"
           >
             Bekor qilish
           </Button>{" "}
           <Button
             type="primary"
             htmlType="submit"
-            className="h-10! max-[500px]:w-full"
+            className="h-9! max-[500px]:w-full"
             loading={createProduct.isPending}
             disabled={createProduct.isPending}
           >

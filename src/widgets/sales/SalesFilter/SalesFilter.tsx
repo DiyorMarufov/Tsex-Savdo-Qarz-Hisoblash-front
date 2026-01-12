@@ -135,7 +135,7 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
               type="primary"
               icon={<FilterOutlined />}
               onClick={handleSubmit}
-              className="h-10! w-full max-w-[150px] bg-indigo-600 rounded-lg font-medium"
+              className="h-9! w-full max-w-[150px] bg-indigo-600 rounded-lg font-medium"
             >
               Filtrlash
             </Button>
@@ -211,7 +211,7 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
             type="primary"
             icon={<FilterOutlined />}
             onClick={handleSubmit}
-            className="h-10! w-full rounded-lg mt-2 bg-indigo-600 flex items-center justify-center font-medium"
+            className="h-9! w-full rounded-lg mt-2 bg-indigo-600 flex items-center justify-center font-medium"
           >
             Filtrlash
           </Button>

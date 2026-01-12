@@ -34,7 +34,7 @@ const SettingsPage = () => {
           danger
           type="text"
           icon={<LogoutOutlined />}
-          className="w-45 h-10! bg-red-500! text-white!"
+          className="w-45 h-9! bg-red-500! text-white!"
           onClick={handleSignOut}
         >
           Sign Out (Chiqish)

@@ -6,6 +6,7 @@ import { useUser } from "../api/useAuth/useUser";
 import { useApiNotification } from "../../../shared/hooks/api-notification/useApiNotification";
 import { jwtDecode } from "jwt-decode";
 import { setToken } from "../model/authModel";
+import { LockOutlined, PhoneOutlined } from "@ant-design/icons";
 
 type FieldType = {
   phone_number: string;
@@ -21,6 +22,7 @@ const LoginForm = () => {
 
   const { handleApiError } = useApiNotification();
   const { signIn } = useUser();
+
   const onFinish: FormProps<FieldType>["onFinish"] = (values: FieldType) => {
     const data: FieldType = {
       phone_number: values.phone_number.split(" ").join(""),
@@ -48,15 +50,12 @@ const LoginForm = () => {
           case "Invalid credentials":
             handleApiError("Raqam yoki parol noto'g'ri", "top");
             break;
-
           case "phone_number must be a valid phone number":
             handleApiError("Telefon raqam noto'g'ri", "top");
             break;
-
           case "You have been blocked by superadmin":
             handleApiError("Siz bloklangansiz", "top");
             break;
-
           default:
             handleApiError("Serverda nosozlik", "top");
             break;
@@ -64,34 +63,40 @@ const LoginForm = () => {
       },
     });
   };
+
   return (
-    <div className="h-screen flex justify-center items-center bg-bg-ty px-3">
-      <div className="h-[606px] w-[450px] flex flex-col gap-8">
-        <div className="flex flex-col items-center gap-3">
-          <span className="text-[32px] font-bold text-[#2D3748]">
+    <div className="min-h-screen flex items-center justify-center px-4 bg-bg-ty">
+      <div className="w-full max-w-[450px] animate-in fade-in zoom-in duration-500">
+        <div className="text-center mb-10">
+          <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight mb-3">
             Xush kelibsiz!
-          </span>
-          <span className="text-bg-sy font-medium text-[18px]">
+          </h1>
+          <p className="text-slate-500 text-lg font-medium">
             Davom etish uchun tizimga kiring
-          </span>
+          </p>
         </div>
-        <div className="h-[366px] pt-11 px-6 rounded-2xl shadow-sm bg-white">
+
+        <div className="h-[310px] bg-[#ffffff] p-8 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-bg-fy">
           <Form
             onFinish={onFinish}
             form={form}
+            layout="vertical"
             initialValues={{ phone_number: "+998 " }}
+            requiredMark={false}
           >
-            <span className="flex mb-1 text-[16px] text-bg-sy">
-              Telefon raqami
-            </span>
             <Item<FieldType>
+              label={
+                <span className="text-slate-600 font-semibold ml-1">
+                  Telefon raqami
+                </span>
+              }
               name="phone_number"
-              rules={[
-                { required: true, message: "Telefon raqam kiritilishi shart" },
-              ]}
+              rules={[{ required: true, message: "Raqamni kiriting" }]}
+              className="mb-6"
             >
               <Input
-                className="h-10! placeholder:text-bg-sy! placeholder:text-[17px]! text-[17px]! bg-bg-ty!"
+                prefix={<PhoneOutlined className="text-slate-400 mr-2" />}
+                className="h-10!"
                 placeholder="+998 90 123 45 67"
                 maxLength={17}
                 onChange={(e) => {
@@ -99,10 +104,8 @@ const LoginForm = () => {
                     e.target.value =
                       "+998" + e.target.value.replace(/\D/g, "").slice(0, 9);
                   }
-
                   const numbers = e.target.value.replace(/\D/g, "").slice(3);
                   let formatted = "+998";
-
                   if (numbers.length > 0)
                     formatted += " " + numbers.slice(0, 2);
                   if (numbers.length > 2)
@@ -111,38 +114,45 @@ const LoginForm = () => {
                     formatted += " " + numbers.slice(5, 7);
                   if (numbers.length > 7)
                     formatted += " " + numbers.slice(7, 9);
-
                   form.setFieldsValue({ phone_number: formatted });
                 }}
-                allowClear
               />
             </Item>
 
-            <span className="flex mb-1 text-[16px] text-bg-sy">Parol</span>
             <Item<FieldType>
+              label={
+                <span className="text-slate-600 font-semibold ml-1">Parol</span>
+              }
               name="password"
-              rules={[{ required: true, message: "Parol kiritilishi shart" }]}
+              rules={[{ required: true, message: "Parolni kiriting" }]}
+              className="mb-8"
             >
               <Input.Password
-                className="h-10! placeholder:text-bg-sy! placeholder:text-[20px]! bg-bg-ty!"
-                placeholder=""
-                allowClear
+                prefix={<LockOutlined className="text-slate-400 mr-2" />}
+                className="h-10!"
+                placeholder="••••••••"
               />
             </Item>
 
-            <Item>
-              <Button
-                type="primary"
-                htmlType="submit"
-                className="h-10! w-full bg-[#3498DB]! text-white! rounded-[12px]! mt-5 text-[17px]!"
-                loading={signIn.isPending}
-                disabled={signIn.isPending}
-              >
-                Kirish
-              </Button>
-            </Item>
+            <div className="pt-3">
+              <Item>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  loading={signIn.isPending}
+                  disabled={signIn.isPending}
+                  className="w-full h-9! border-none! rounded-2xl! text-[15px]! font-bold! transition-all! active:scale-[0.98]!"
+                >
+                  Kirish
+                </Button>
+              </Item>
+            </div>
           </Form>
         </div>
+
+        <p className="text-center mt-8 text-slate-400 text-sm">
+          &copy; 2026 Tsex Savdo. Barcha huquqlar himoyalangan.
+        </p>
       </div>
     </div>
   );

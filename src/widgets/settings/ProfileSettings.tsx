@@ -112,7 +112,7 @@ const ProfileSettings = () => {
               </Form.Item>
             </div>
             <div className="col-span-2 flex justify-end">
-              <Button className="h-10!" type="primary" htmlType="submit">
+              <Button className="h-9!" type="primary" htmlType="submit">
                 {isDisable ? "Tasdiqlash" : "Yangilash"}
               </Button>
             </div>
