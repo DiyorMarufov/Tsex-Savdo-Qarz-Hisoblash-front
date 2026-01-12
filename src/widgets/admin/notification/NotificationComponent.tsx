@@ -85,7 +85,7 @@ export const HeaderBell = () => (
       <Button
         type="text"
         icon={<BellOutlined className="text-[20px] text-gray-600" />}
-        className="flex items-center justify-center h-10 w-10 rounded-full hover:bg-gray-100 transition-all"
+        className="flex items-center justify-center h-10! w-10! rounded-full hover:bg-gray-100 transition-all"
       />
     </Badge>
   </Popover>

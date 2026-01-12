@@ -1,6 +1,6 @@
 import { memo, useEffect } from "react";
 import { Button } from "antd";
-import { LogoutOutlined, SaveOutlined, CloseOutlined } from "@ant-design/icons";
+import { LogoutOutlined } from "@ant-design/icons";
 import ProfileSettings from "../../../widgets/settings/ProfileSettings";
 import SystemParameters from "../../../widgets/settings/SystemParameters";
 import SystemVersion from "../../../widgets/settings/SystemVersion";
@@ -34,28 +34,11 @@ const SettingsPage = () => {
           danger
           type="text"
           icon={<LogoutOutlined />}
-          className="w-45 h-9! bg-red-500! text-white!"
+          className="w-45 h-10! bg-red-500! text-white!"
           onClick={handleSignOut}
         >
           Sign Out (Chiqish)
         </Button>
-        <div className="flex items-center justify-end gap-4 pt-2 max-[800px]:flex-col">
-          <div className="flex gap-3 max-[375px]:flex-col-reverse max-[800px]:w-full">
-            <Button
-              icon={<CloseOutlined />}
-              className="h-9! max-[800px]:w-full"
-            >
-              Bekor qilish
-            </Button>
-            <Button
-              type="primary"
-              icon={<SaveOutlined />}
-              className="h-9! max-[800px]:w-full rounded-lg"
-            >
-              O'zgarishlarni saqlash
-            </Button>
-          </div>
-        </div>
       </div>
     </div>
   );

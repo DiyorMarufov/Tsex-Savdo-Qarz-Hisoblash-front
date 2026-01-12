@@ -83,7 +83,7 @@ const ProductDetailPage = () => {
         </div>
       </div>
       <div className="flex p-4 justify-end">
-        <Button className="bg-green-500! text-white! h-9! max-[500px]:w-full">
+        <Button className="bg-green-500! text-white! h-10! max-[500px]:w-full">
           <Edit />
         </Button>
       </div>

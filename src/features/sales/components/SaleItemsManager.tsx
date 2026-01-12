@@ -122,7 +122,6 @@ const SaleItemsManager = ({
             <div className="flex flex-col gap-1 w-full">
               <span className="text-[16px] text-[#232E2F]">Mahsulot</span>
               <Select
-                size="large"
                 mode="multiple"
                 onPopupScroll={handleScroll}
                 value={selectedIds}
@@ -131,7 +130,7 @@ const SaleItemsManager = ({
                 placeholder={
                   productListLoading ? "Yuklanmoqda..." : "Mahsulotni tanlang"
                 }
-                className="min-[800px]:w-full custom-select-placeholder"
+                className="min-[800px]:w-full h-10! custom-select-placeholder"
                 onDropdownVisibleChange={(v) => setIsProductOpen(v)}
                 dropdownRender={(menu: any) => (
                   <>
@@ -259,7 +258,7 @@ const SaleItemsManager = ({
                                 onChange={(val) =>
                                   updateItemDetails(product.id, "price", val)
                                 }
-                                className="w-full h-9! rounded-md"
+                                className="w-full rounded-md"
                                 formatter={(v) =>
                                   `${v}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 }
@@ -285,14 +284,13 @@ const SaleItemsManager = ({
             <div className="flex flex-col gap-1 w-full">
               <span className="text-[16px] text-[#232E2F]">Do'kon</span>
               <Select
-                size="large"
                 value={shopId}
                 options={shopOptions}
                 onChange={(val) => handleChange("shopId", val)}
                 placeholder={
                   shopListLoading ? "Yuklanmoqda..." : "Do'konni tanlang"
                 }
-                className="h-10! w-full custom-select-placeholder"
+                className="h-10! w-full"
                 onDropdownVisibleChange={(v) => setIsShopOpen(v)}
                 loading={shopListLoading}
                 allowClear

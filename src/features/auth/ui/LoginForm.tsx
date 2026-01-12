@@ -91,7 +91,7 @@ const LoginForm = () => {
               ]}
             >
               <Input
-                className="h-[49px]! placeholder:text-bg-sy! placeholder:text-[17px]! text-[17px]! bg-bg-ty!"
+                className="h-10! placeholder:text-bg-sy! placeholder:text-[17px]! text-[17px]! bg-bg-ty!"
                 placeholder="+998 90 123 45 67"
                 maxLength={17}
                 onChange={(e) => {
@@ -124,7 +124,7 @@ const LoginForm = () => {
               rules={[{ required: true, message: "Parol kiritilishi shart" }]}
             >
               <Input.Password
-                className="h-[49px]! placeholder:text-bg-sy! placeholder:text-[20px]! bg-bg-ty!"
+                className="h-10! placeholder:text-bg-sy! placeholder:text-[20px]! bg-bg-ty!"
                 placeholder=""
                 allowClear
               />
@@ -134,7 +134,7 @@ const LoginForm = () => {
               <Button
                 type="primary"
                 htmlType="submit"
-                className="h-[49px]! w-full bg-[#3498DB]! text-white! rounded-[12px]! mt-5 text-[17px]!"
+                className="h-10! w-full bg-[#3498DB]! text-white! rounded-[12px]! mt-5 text-[17px]!"
                 loading={signIn.isPending}
                 disabled={signIn.isPending}
               >

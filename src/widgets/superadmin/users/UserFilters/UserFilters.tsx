@@ -26,21 +26,21 @@ const UserFilters = ({
     <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-2 p-3.5 flex items-center gap-3 max-[900px]:flex-wrap">
       <SearchInput
         placeholder="Ismi yoki telefon raqami bo'yicha qidirish"
-        className="h-11! min-[900px]:w-[50%]! bg-bg-ty! text-[17px]!"
+        className="h-10! min-[900px]:w-[50%]! bg-bg-ty! text-[17px]!"
         value={localSearch}
         onChange={onSearchChange}
       />
       <div className="flex gap-3 min-[900px]:w-[50%] max-[900px]:w-full max-[370px]:flex-wrap">
         <Filter
           placeholder="Barcha rollar"
-          className="h-11! min-[900px]:w-[50%]! max-[900px]:w-full! custom-select"
+          className="h-10! min-[900px]:w-[50%]! max-[900px]:w-full! custom-select"
           options={roleOptions}
           value={role}
           onChange={(val) => onFilterChange("role", val)}
         />
         <Filter
           placeholder="Barcha statuslar"
-          className="h-11! min-[900px]:w-[50%]! max-[900px]:w-full! custom-select"
+          className="h-10! min-[900px]:w-[50%]! max-[900px]:w-full! custom-select"
           options={statusOptions}
           value={status}
           onChange={(val) => onFilterChange("status", val)}

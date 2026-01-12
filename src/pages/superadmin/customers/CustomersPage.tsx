@@ -329,7 +329,7 @@ const CustomersPage = () => {
 
         <div className="grid grid-cols-3 gap-3 max-[1300px]:w-full max-[830px]:grid-cols-2 max-[365px]:grid-cols-1 max-[500px]:hidden">
           <AntdButton
-            className="py-5! rounded-[10px]! bg-[#E5E7EB]! max-[1300px]:w-full"
+            className="py-4.5! rounded-[10px]! bg-[#E5E7EB]! max-[1300px]:w-full"
             onClick={handleLend}
           >
             {" "}
@@ -337,7 +337,7 @@ const CustomersPage = () => {
             Qarz berish
           </AntdButton>
           <AntdButton
-            className="py-5! rounded-[10px]! bg-[#E5E7EB]! max-[1300px]:w-full"
+            className="py-4.5! rounded-[10px]! bg-[#E5E7EB]! max-[1300px]:w-full"
             onClick={handleBorrow}
           >
             {" "}

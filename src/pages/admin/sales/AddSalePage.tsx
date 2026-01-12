@@ -359,13 +359,13 @@ const AdminAddSalePage = () => {
 
       <div className="flex items-center gap-3 min-[500px]:hidden max-[500px]:mt-3 max-[380px]:flex-col-reverse">
         <Button
-          className="max-[500px]:w-full h-9! bg-red-500! text-white!"
+          className="max-[500px]:w-full h-10! bg-red-500! text-white!"
           onClick={handleCancelSale}
         >
           Bekor qilish
         </Button>
         <Button
-          className="max-[500px]:w-full h-9!"
+          className="max-[500px]:w-full h-10!"
           type="primary"
           htmlType="submit"
           onClick={handleFinishSale}

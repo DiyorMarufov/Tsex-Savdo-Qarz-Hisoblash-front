@@ -89,7 +89,7 @@ const CustomersReportFilter: FC<CustomersReportFilterProps> = ({
             showTime={{ format: "HH:mm" }}
             format="YYYY-MM-DD HH:mm"
             placeholder={["Boshlanish", "Tugash"]}
-            className="h-11 w-full rounded-lg border-slate-200"
+            className="h-10! w-full rounded-lg border-slate-200"
             inputReadOnly
           />
         </div>
@@ -102,7 +102,7 @@ const CustomersReportFilter: FC<CustomersReportFilterProps> = ({
               options={customerOptions}
               onChange={setTempCustomerId}
               placeholder="Barcha mijozlar"
-              className="h-11! w-full rounded-lg custom-select border-slate-200"
+              className="h-10! w-full rounded-lg custom-select border-slate-200"
               onDropdownVisibleChange={(visible: any) => {
                 if (visible) setIsCustomerOpen(true);
               }}
@@ -129,7 +129,7 @@ const CustomersReportFilter: FC<CustomersReportFilterProps> = ({
             type="primary"
             icon={<FilterOutlined />}
             onClick={handleSubmit}
-            className="h-11! w-full max-w-[150px] bg-indigo-600 rounded-lg font-medium"
+            className="h-10! w-full max-w-[150px] bg-indigo-600 rounded-lg font-medium"
           >
             Filtrlash
           </Button>
@@ -140,7 +140,7 @@ const CustomersReportFilter: FC<CustomersReportFilterProps> = ({
         <Button
           icon={<FilterOutlined />}
           onClick={() => setOpen(true)}
-          className="rounded-lg flex items-center bg-white border-slate-200 text-slate-600 h-11"
+          className="rounded-lg flex items-center bg-white border-slate-200 text-slate-600"
         >
           Filtrlar
         </Button>
@@ -162,7 +162,7 @@ const CustomersReportFilter: FC<CustomersReportFilterProps> = ({
               showTime={{ format: "HH:mm" }}
               format="YYYY-MM-DD HH:mm"
               placeholder={["Boshlanish", "Tugash"]}
-              className="h-11! w-full rounded-lg border-slate-200"
+              className="h-10! w-full rounded-lg border-slate-200"
               inputReadOnly
             />
           </div>
@@ -175,7 +175,7 @@ const CustomersReportFilter: FC<CustomersReportFilterProps> = ({
               options={customerOptions}
               onChange={setTempCustomerId}
               placeholder="Barcha mijozlar"
-              className="h-11! w-full rounded-lg custom-select border-slate-200"
+              className="h-10! w-full rounded-lg custom-select border-slate-200"
               onDropdownVisibleChange={(visible: any) => {
                 if (visible) setIsCustomerOpen(true);
               }}
@@ -200,7 +200,7 @@ const CustomersReportFilter: FC<CustomersReportFilterProps> = ({
             type="primary"
             icon={<FilterOutlined />}
             onClick={handleSubmit}
-            className="h-11! w-full rounded-lg mt-2 bg-indigo-600 flex items-center justify-center"
+            className="h-10! w-full rounded-lg mt-2 bg-indigo-600 flex items-center justify-center"
           >
             Filtrlash
           </Button>

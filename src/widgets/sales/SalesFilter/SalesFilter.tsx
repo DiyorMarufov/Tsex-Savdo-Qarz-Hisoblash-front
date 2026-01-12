@@ -86,7 +86,7 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
         <div className="w-full">
           <SearchInput
             placeholder="Do'kon,sotuvchi,mijoz bo'yicha qidirish"
-            className="h-11! bg-bg-ty! text-[16px]! max-[1200px]:w-full!"
+            className="h-10! bg-bg-ty! text-[16px]! max-[1200px]:w-full!"
             value={localSearch}
             onChange={handleSearchChange}
           />
@@ -100,7 +100,7 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
               showTime={{ format: "HH:mm" }}
               format="YYYY-MM-DD HH:mm"
               placeholder={["Boshlanish", "Tugash"]}
-              className="h-11 w-full rounded-lg border-slate-200"
+              className="h-10! w-full rounded-lg border-slate-200"
               inputReadOnly
             />
           </div>
@@ -110,7 +110,7 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
               options={tsexesOptions}
               onChange={setTempTsexId}
               placeholder="Barcha tsexlar"
-              className="h-11! w-full rounded-lg custom-select border-slate-200"
+              className="h-10! w-full rounded-lg custom-select border-slate-200"
               onDropdownVisibleChange={(visible: any) => {
                 if (visible) setIsTsexOpen(true);
               }}
@@ -123,7 +123,7 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
               options={shopsOptions}
               onChange={setTempShopId}
               placeholder="Barcha do'konlar"
-              className="h-11! w-full rounded-lg custom-select border-slate-200"
+              className="h-10! w-full rounded-lg custom-select border-slate-200"
               onDropdownVisibleChange={(visible: any) => {
                 if (visible) setIsShopOpen(true);
               }}
@@ -135,7 +135,7 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
               type="primary"
               icon={<FilterOutlined />}
               onClick={handleSubmit}
-              className="h-11! w-full max-w-[150px] bg-indigo-600 rounded-lg font-medium"
+              className="h-10! w-full max-w-[150px] bg-indigo-600 rounded-lg font-medium"
             >
               Filtrlash
             </Button>
@@ -146,7 +146,7 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
           <Button
             icon={<FilterOutlined />}
             onClick={() => setOpen(true)}
-            className="h-11 rounded-lg flex items-center bg-white border-slate-200 text-slate-600"
+            className="rounded-lg flex items-center bg-white border-slate-200 text-slate-600"
           >
             Filtrlar
           </Button>
@@ -172,7 +172,7 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
               showTime={{ format: "HH:mm" }}
               format="YYYY-MM-DD HH:mm"
               placeholder={["Boshlanish", "Tugash"]}
-              className="h-11! w-full rounded-lg border-slate-200"
+              className="h-10! w-full rounded-lg border-slate-200"
               inputReadOnly
             />
           </div>
@@ -184,7 +184,7 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
               options={tsexesOptions}
               onChange={setTempTsexId}
               placeholder="Barcha tsexlar"
-              className="h-11! w-full rounded-lg custom-select border-slate-200"
+              className="h-10! w-full rounded-lg custom-select border-slate-200"
               onDropdownVisibleChange={(visible: any) => {
                 if (visible) setIsTsexOpen(true);
               }}
@@ -199,7 +199,7 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
               options={shopsOptions}
               onChange={setTempShopId}
               placeholder="Barcha do'konlar"
-              className="h-11! w-full rounded-lg custom-select border-slate-200"
+              className="h-10! w-full rounded-lg custom-select border-slate-200"
               onDropdownVisibleChange={(visible: any) => {
                 if (visible) setIsShopOpen(true);
               }}
@@ -211,7 +211,7 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
             type="primary"
             icon={<FilterOutlined />}
             onClick={handleSubmit}
-            className="h-11! w-full rounded-lg mt-2 bg-indigo-600 flex items-center justify-center font-medium"
+            className="h-10! w-full rounded-lg mt-2 bg-indigo-600 flex items-center justify-center font-medium"
           >
             Filtrlash
           </Button>

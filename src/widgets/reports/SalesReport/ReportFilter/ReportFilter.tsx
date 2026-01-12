@@ -69,7 +69,7 @@ const ReportFilter = ({
             showTime={{ format: "HH:mm" }}
             format="YYYY-MM-DD HH:mm"
             placeholder={["Boshlanish", "Tugash"]}
-            className="h-11 w-full rounded-lg border-slate-200"
+            className="h-10! w-full rounded-lg border-slate-200"
             inputReadOnly
           />
         </div>
@@ -81,7 +81,7 @@ const ReportFilter = ({
               options={tsexesOptions}
               onChange={setTempTsexId}
               placeholder="Barcha tsexlar"
-              className="h-11! w-full rounded-lg custom-select border-slate-200"
+              className="h-10! w-full rounded-lg custom-select border-slate-200"
               onDropdownVisibleChange={(visible: any) => {
                 if (visible) setIsTsexOpen(true);
               }}
@@ -94,7 +94,7 @@ const ReportFilter = ({
           <Button
             type="primary"
             icon={<FilterOutlined />}
-            className="h-11! w-full max-w-[150px] bg-indigo-600 rounded-lg font-medium"
+            className="h-10! w-full max-w-[150px] bg-indigo-600 rounded-lg font-medium"
             onClick={handleSubmit}
           >
             Filtrlash
@@ -105,7 +105,7 @@ const ReportFilter = ({
         <Button
           icon={<FilterOutlined />}
           onClick={() => setOpen(true)}
-          className="rounded-lg flex items-center bg-white border-slate-200 text-slate-600 h-11"
+          className="rounded-lg flex items-center bg-white border-slate-200 text-slate-600"
         >
           Filtrlar
         </Button>
@@ -127,7 +127,7 @@ const ReportFilter = ({
               showTime={{ format: "HH:mm" }}
               format="YYYY-MM-DD HH:mm"
               placeholder={["Boshlanish", "Tugash"]}
-              className="h-11! w-full rounded-lg border-slate-200"
+              className="h-10! w-full rounded-lg border-slate-200"
               inputReadOnly
             />
           </div>
@@ -139,7 +139,7 @@ const ReportFilter = ({
               options={tsexesOptions}
               onChange={setTempTsexId}
               placeholder="Barcha tsexlar"
-              className="h-11! w-full rounded-lg custom-select border-slate-200"
+              className="h-10! w-full rounded-lg custom-select border-slate-200"
               onDropdownVisibleChange={(visible: any) => {
                 if (visible) setIsTsexOpen(true);
               }}
@@ -149,7 +149,7 @@ const ReportFilter = ({
 
           <Button
             type="primary"
-            className="h-11! w-full rounded-lg mt-2 bg-indigo-600"
+            className="h-10! w-full rounded-lg mt-2 bg-indigo-600"
             onClick={handleSubmit}
           >
             Filtrlash
