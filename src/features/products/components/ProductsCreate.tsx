@@ -8,33 +8,33 @@ import {
 } from "antd";
 import Dragger from "antd/es/upload/Dragger";
 import { Inbox, Plus } from "lucide-react";
-import { memo, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useShop } from "../../../shared/lib/apis/shops/useShop";
-import { useTsex } from "../../../shared/lib/apis/tsexes/useTsex";
+import { memo, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useProduct } from "../../../shared/lib/apis/products/useProduct";
 import { useApiNotification } from "../../../shared/hooks/api-notification/useApiNotification";
+import {
+  colorOptions,
+  productSizeOptions,
+  productUnitInPackageOptions,
+} from "../../../shared/lib/constants";
+import { useProductModel } from "../../../shared/lib/apis/product-models/useProductModel";
 
 type FieldType = {
-  name: string;
-  brand: string;
+  model_id: string;
+  color: string;
   price: number;
   quantity: number;
   unit_in_package: number;
   size: string;
-  shop_id: string;
-  tsex_id: string;
 };
 
 const ProductsCreate = () => {
   const [fileList, setFileList] = useState<any>(null);
-  const [isTsexOpen, setIsTsexOpen] = useState<boolean>(false);
-  const [isShopOpen, setIsShopOpen] = useState<boolean>(false);
   const navigate = useNavigate();
   const [form] = Form.useForm();
+  const { id } = useParams();
 
-  const { getAllShopsForProductsFilter } = useShop();
-  const { getAllTsexesForProductsFilter } = useTsex();
+  const { getProductModelByIdForFilter } = useProductModel();
   const { createProduct } = useProduct();
   const { handleApiError } = useApiNotification();
 
@@ -76,7 +76,8 @@ const ProductsCreate = () => {
     createProduct.mutate(formData, {
       onSuccess: () => {
         form.resetFields();
-        navigate("/admin/products");
+        localStorage.removeItem("tsex_id");
+        navigate(`/admin/models/product/${id}`);
       },
       onError: (err: any) => {
         const status = err?.response?.data?.statusCode;
@@ -93,11 +94,8 @@ const ProductsCreate = () => {
             "topRight"
           );
           return;
-        } else if (status === 404 && msg.startsWith("Tsex with ID")) {
-          handleApiError("Tsex topilmadi", "topRight");
-          return;
-        } else if (status === 404 && msg.startsWith("Shop with ID")) {
-          handleApiError("Do'kon topilmadi", "topRight");
+        } else if (status === 404 && msg.startsWith("Model with ID")) {
+          handleApiError("Model topilmadi", "topRight");
           return;
         } else if (status === 404 && msg.startsWith("User with ID")) {
           handleApiError("Superadmin topilmadi", "topRight");
@@ -111,22 +109,32 @@ const ProductsCreate = () => {
   };
 
   // Options start
-  const { data: tsexes, isLoading: tsexLoading } =
-    getAllTsexesForProductsFilter(isTsexOpen);
-  const tsexesOptions =
-    tsexes?.data?.map((ts) => ({
-      value: ts?.id,
-      label: ts?.name,
-    })) || [];
 
-  const { data: shops, isLoading: shopLoading } =
-    getAllShopsForProductsFilter(isShopOpen);
-  const shopsOptions =
-    shops?.data?.map((st) => ({
-      value: st?.id,
-      label: st?.name,
-    })) || [];
+  // Options start
+  const { data: productModel, isLoading: productModelLoading } =
+    getProductModelByIdForFilter(id as string);
+
+  const colorOptionsWithDot = colorOptions.map((color) => ({
+    value: color.value,
+    label: (
+      <div className="flex items-center gap-2 py-0.5">
+        <div
+          className="w-3.5 h-3.5 rounded-full border border-gray-200 shrink-0 shadow-sm"
+          style={{ backgroundColor: color.hex }}
+        />
+        <span className="text-[14px] text-slate-700 font-medium">
+          {color.label}
+        </span>
+      </div>
+    ),
+  }));
   // Options end
+
+  useEffect(() => {
+    if (id) {
+      form.setFieldsValue({ model_id: id });
+    }
+  }, [id, form]);
 
   return (
     <Form
@@ -138,35 +146,51 @@ const ProductsCreate = () => {
       <div className="grid grid-cols-2 gap-x-6">
         <div>
           <span className="text-[16px] max-[500px]:text-[15px] text-[#232E2F] flex mb-1">
-            Nomi
+            Model
           </span>
+          <Form.Item label="" noStyle>
+            <Input
+              className="h-10! font-medium text-slate-800"
+              placeholder="Model"
+              value={
+                productModel
+                  ? `${productModel?.data?.name} - ${productModel?.data?.brand}`
+                  : productModelLoading
+                    ? "Yuklanmoqda..."
+                    : id
+              }
+              disabled
+            />
+          </Form.Item>
+
           <Form.Item<FieldType>
-            name="name"
-            rules={[
-              {
-                required: true,
-                message: "Mahsulot nomini kiritish majburiy!",
-              },
-            ]}
+            name="model_id"
+            noStyle
+            rules={[{ required: true }]}
           >
-            <Input className="h-10!" placeholder="Nomi" allowClear />
+            <Input type="hidden" />
           </Form.Item>
         </div>
 
         <div>
           <span className="text-[16px] max-[500px]:text-[15px] text-[#232E2F] flex mb-1">
-            Brand
+            Rangi
           </span>
           <Form.Item<FieldType>
-            name="brand"
+            name="color"
             rules={[
               {
                 required: true,
-                message: "Mahsulot brandini kiritish majburiy!",
+                message: "Mahsulot rangini tanlash majburiy!",
               },
             ]}
           >
-            <Input className="h-10!" placeholder="Brand" allowClear />
+            <Select
+              className="h-10!"
+              placeholder="Rangi"
+              options={colorOptionsWithDot}
+              allowClear
+            />
           </Form.Item>
         </div>
       </div>
@@ -263,28 +287,16 @@ const ProductsCreate = () => {
             rules={[
               {
                 required: true,
-                message: "Mahsulot pochkadagi sonini kiritish majburiy!",
-              },
-              {
-                validator: (_, value) => {
-                  if (!value) {
-                    return Promise.resolve();
-                  }
-
-                  const numericValue = Number(String(value).replace(/,/g, ""));
-
-                  if (numericValue > 0) {
-                    return Promise.resolve();
-                  }
-
-                  return Promise.reject(
-                    new Error("Pochkadagi soni 0 dan baland bo'lishi kerak!")
-                  );
-                },
+                message: "Mahsulot pochkadagi sonini tanlash majburiy!",
               },
             ]}
           >
-            <Input className="h-10!" placeholder="Pochkadagi soni" allowClear />
+            <Select
+              className="h-10!"
+              placeholder="Pochkadagi soni"
+              options={productUnitInPackageOptions}
+              allowClear
+            />
           </Form.Item>
         </div>
 
@@ -297,64 +309,14 @@ const ProductsCreate = () => {
             rules={[
               {
                 required: true,
-                message: "Mahsulot razmerini kiritish majburiy!",
-              },
-            ]}
-          >
-            <Input className="h-10!" placeholder="Razmeri" allowClear />
-          </Form.Item>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-x-6">
-        <div>
-          <span className="text-[16px] max-[500px]:text-[15px] text-[#232E2F] flex mb-1">
-            Tsex
-          </span>
-          <Form.Item<FieldType>
-            name="tsex_id"
-            rules={[
-              {
-                required: true,
-                message: "Tsex tanlanishi majburiy!",
+                message: "Mahsulot razmerini tanlash majburiy!",
               },
             ]}
           >
             <Select
               className="h-10!"
-              placeholder="Tsex"
-              options={tsexesOptions}
-              onDropdownVisibleChange={(visible: any) => {
-                if (visible) setIsTsexOpen(true);
-              }}
-              loading={tsexLoading}
-              showSearch
-              allowClear
-            />
-          </Form.Item>
-        </div>
-
-        <div>
-          <span className="text-[16px] max-[500px]:text-[15px] text-[#232E2F] flex mb-1">
-            Do'kon
-          </span>
-          <Form.Item<FieldType>
-            name="shop_id"
-            rules={[
-              {
-                required: true,
-                message: "Do'kon tanlanishi majburiy!",
-              },
-            ]}
-          >
-            <Select
-              className="h-10!"
-              placeholder="Do'kon"
-              options={shopsOptions}
-              onDropdownVisibleChange={(visible: any) => {
-                if (visible) setIsShopOpen(true);
-              }}
-              loading={shopLoading}
+              placeholder="Razmeri"
+              options={productSizeOptions}
               allowClear
             />
           </Form.Item>

@@ -7,7 +7,7 @@ interface Props {
 
 const LargeTitle: FC<Props> = ({ title, className = "" }) => {
   return (
-    <h1 className={`text-bg-py text-[28px] font-bold ${className}`}>{title}</h1>
+    <h1 className={`text-bg-py text-[28px] font-bold max-[500px]:text-[25px] ${className}`}>{title}</h1>
   );
 };
 

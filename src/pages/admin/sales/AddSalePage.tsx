@@ -297,7 +297,7 @@ const AdminAddSalePage = () => {
   return (
     <div>
       <ArrowLeft
-        className="hover:opacity-75 cursor-pointer"
+        className="hover:opacity-75 cursor-pointer mb-1"
         onClick={handleCancelSale}
       />
       <div className="flex justify-between gap-3">

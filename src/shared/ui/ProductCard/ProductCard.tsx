@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { Image, Button as AntdButton } from "antd";
-import type { ProductTableListItem } from "../../lib/model/products/product-table-model";
+import type { ProductTableListItem } from "../../lib/model/products/products-model";
 
 interface ProductCardProps {
   product: ProductTableListItem;
@@ -18,20 +18,26 @@ const ProductCard = ({ product, onDetail }: ProductCardProps) => {
         />
       </div>
       <div className="flex flex-col gap-1 justify-between px-3.5 py-2.5">
-        <div className="flex flex-col">
-          <span className="text-[16px] font-bold line-clamp-1">
-            {product.name}
-          </span>
-          <span className="text-[14px] font-bold text-[#6B7280]">
-            {product.brand}
-          </span>
+        <div className="flex justify-between items-center">
+          <div className="flex flex-col">
+            <span className="text-[16px] font-bold line-clamp-1">
+              {product.product_model.name}
+            </span>
+            <span className="text-[14px] font-bold text-blue-500">
+              {product.product_model.brand}
+            </span>
+          </div>
+
+          <div
+            className={`h-fit w-fit p-2 rounded-full bg-${product.color}`}
+          ></div>
         </div>
         <span className="text-[17px] text-green-500 font-bold">
           {product.price.toLocaleString()}
         </span>
       </div>
 
-      <div className="w-full h-px bg-bg-fy"></div>
+      <div className={`w-full h-px bg-bg-fy`}></div>
 
       <div className="mt-1 px-3.5 pt-2 pb-3">
         <div className="flex justify-end">

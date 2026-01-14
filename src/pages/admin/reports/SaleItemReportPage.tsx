@@ -68,7 +68,7 @@ const AdminSaleItemReportPage = () => {
   return (
     <div className="flex flex-col gap-5">
       <ArrowLeft
-        className="hover:opacity-75 cursor-pointer"
+        className="hover:opacity-75 cursor-pointer mb-1"
         onClick={() => navigate(-1)}
       />
       <div className="min-[500px]:hidden">

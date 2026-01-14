@@ -1,23 +1,26 @@
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
-import LargeTitle from "../../../shared/ui/Title/LargeTItle/LargeTitle";
-import { ProTable } from "@ant-design/pro-components";
-import { useProduct } from "../../../shared/lib/apis/products/useProduct";
+import LargeTitle from "../../../../shared/ui/Title/LargeTItle/LargeTitle";
+import ProductFilters from "../../../../widgets/products/ProductFIlters/ProductFilters";
+import ProTable from "@ant-design/pro-table";
+import { productModelColumns } from "../../../../shared/lib/model/product-models/product-models-model";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { debounce } from "../../../shared/lib/functions/debounce";
-import type { QueryParams } from "../../../shared/lib/types";
-import { useParamsHook } from "../../../shared/hooks/params/useParams";
-import { useTsex } from "../../../shared/lib/apis/tsexes/useTsex";
-import { useShop } from "../../../shared/lib/apis/shops/useShop";
-import ProductFilters from "../../../widgets/products/ProductFIlters/ProductFilters";
-import ProductMobileList from "../../../widgets/products/ProductMobileList/ProductMobileList";
-import { productColumns } from "../../../shared/lib/model/products/product-table-model";
+import { useShop } from "../../../../shared/lib/apis/shops/useShop";
+import { useTsex } from "../../../../shared/lib/apis/tsexes/useTsex";
+import { useParamsHook } from "../../../../shared/hooks/params/useParams";
+import type { QueryParams } from "../../../../shared/lib/types";
+import { debounce } from "../../../../shared/lib/functions/debounce";
+import { useProductModel } from "../../../../shared/lib/apis/product-models/useProductModel";
+import ProductModelMobileList from "../../../../widgets/products/ProductModelMobileList/ProductModelMobileList";
+import Button from "../../../../shared/ui/Button/Button";
+import { Plus } from "lucide-react";
+import PlusButton from "../../../../shared/ui/Button/PlusButton";
 
-const ProductsPage = () => {
+const ProductModelsPage = () => {
   const [isTsexOpen, setIsTsexOpen] = useState<boolean>(false);
   const [isShopOpen, setIsShopOpen] = useState<boolean>(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const { getAllProducts } = useProduct();
+  const { getAllProductModels } = useProductModel();
   const { getAllShopsForProductsFilter } = useShop();
   const { getAllTsexesForProductsFilter } = useTsex();
 
@@ -32,7 +35,7 @@ const ProductsPage = () => {
   // Query starts
   const query: QueryParams = useMemo(() => {
     const page = Number(getParam("page")) || 1;
-    const limit = Number(getParam("limit")) || 10;
+    const limit = Number(getParam("limit")) || 5;
     const search = getParam("search") || undefined;
     const shopId = getParam("shopId") || undefined;
     const tsexId = getParam("tsexId") || undefined;
@@ -42,15 +45,15 @@ const ProductsPage = () => {
   // Query ends
 
   // Products start
-  const { data: allProducts, isLoading: productLoading } =
-    getAllProducts(query);
-  const products = allProducts?.data?.data;
-  const total = allProducts?.data?.total || 0;
+  const { data: allProductModels, isLoading: productLoading } =
+    getAllProductModels(query);
+  const productModels = allProductModels?.data?.data;
+  const total = allProductModels?.data?.total || 0;
   // Products end
 
   // Product detail starts
   const handleProductDetailOpen = (id: string) => {
-    navigate(`${id}`);
+    navigate(`product/${id}`);
   };
   // Product detail ends
 
@@ -62,7 +65,7 @@ const ProductsPage = () => {
       updateParams.page = newPage;
     }
 
-    if (newPageSize && newPageSize !== 10) {
+    if (newPageSize && newPageSize !== 5) {
       updateParams.limit = newPageSize;
     }
 
@@ -71,7 +74,7 @@ const ProductsPage = () => {
     if (newPage === 1) {
       removeParam("page");
     }
-    if (newPageSize === 10 && getParam("limit")) {
+    if (newPageSize === 5 && getParam("limit")) {
       removeParam("limit");
     }
   };
@@ -85,7 +88,7 @@ const ProductsPage = () => {
         page: 1,
       });
     }, 500),
-    [setParams],
+    [setParams]
   );
 
   const handleSearchChange = (value: string) => {
@@ -129,10 +132,21 @@ const ProductsPage = () => {
   ];
   // Filter ends
 
-  if (pathname.startsWith(`/superadmin/products/`)) return <Outlet />;
+  if (pathname.startsWith(`/admin/models/`)) return <Outlet />;
+
   return (
     <div>
-      <LargeTitle title="Mahsulotlar" />
+      <div className="flex justify-between gap-3">
+        <LargeTitle title="Modellar" />
+        <div className="max-[500px]:hidden">
+          <Button onClick={() => navigate("add")}>
+            <Plus />
+            Yangi model qo'shish
+          </Button>
+        </div>
+
+        <PlusButton setOpen={() => navigate("add")} />
+      </div>
 
       <ProductFilters
         localSearch={localSearch}
@@ -150,7 +164,7 @@ const ProductsPage = () => {
 
       <div className="max-[500px]:hidden mt-4">
         <ProTable
-          dataSource={products}
+          dataSource={productModels}
           rowKey="id"
           pagination={{
             showSizeChanger: true,
@@ -160,7 +174,7 @@ const ProductsPage = () => {
             total,
             onChange: handlePageChange,
           }}
-          columns={productColumns(handleProductDetailOpen)}
+          columns={productModelColumns(handleProductDetailOpen)}
           search={false}
           dateFormatter="string"
           scroll={{ x: "max-content" }}
@@ -168,8 +182,8 @@ const ProductsPage = () => {
         />
       </div>
 
-      <ProductMobileList
-        products={products}
+      <ProductModelMobileList
+        models={productModels}
         currentPage={Number(query.page)}
         pageSize={Number(query.limit)}
         total={total}
@@ -181,4 +195,4 @@ const ProductsPage = () => {
   );
 };
 
-export default memo(ProductsPage);
+export default memo(ProductModelsPage);

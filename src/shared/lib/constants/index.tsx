@@ -147,3 +147,51 @@ export const salesReportrawData = {
     { name: "Dek", "Sotuvlar soni": 9500, Summa: 310000000 },
   ],
 };
+
+export const colorOptions = [
+  { value: "white", label: "White", hex: "#FFFFFF" },
+  { value: "black", label: "Black", hex: "#000000" },
+  { value: "red", label: "Red", hex: "#FF0000" },
+  { value: "blue", label: "Blue", hex: "#0000FF" },
+  { value: "yellow", label: "Yellow", hex: "#FFFF00" },
+  { value: "green", label: "Green", hex: "#008000" },
+  { value: "orange", label: "Orange", hex: "#FFA500" },
+  { value: "purple", label: "Purple", hex: "#800080" },
+  { value: "pink", label: "Pink", hex: "#FFC0CB" },
+  { value: "brown", label: "Brown", hex: "#A52A2A" },
+  { value: "grey", label: "Grey", hex: "#808080" },
+
+  { value: "navy", label: "Navy Blue", hex: "#000080" },
+  { value: "beige", label: "Beige", hex: "#F5F5DC" },
+  { value: "ivory", label: "Ivory", hex: "#FFFFF0" },
+  { value: "khaki", label: "Khaki", hex: "#F0E68C" },
+  { value: "charcoal", label: "Charcoal", hex: "#36454F" },
+  { value: "silver", label: "Silver", hex: "#C0C0C0" },
+
+  { value: "sky-blue", label: "Sky Blue", hex: "#87CEEB" },
+  { value: "turquoise", label: "Turquoise", hex: "#40E0D0" },
+  { value: "olive", label: "Olive", hex: "#808000" },
+  { value: "mint", label: "Mint", hex: "#98FF98" },
+  { value: "lavender", label: "Lavender", hex: "#E6E6FA" },
+  { value: "magenta", label: "Magenta", hex: "#FF00FF" },
+  { value: "maroon", label: "Maroon", hex: "#800000" },
+  { value: "emerald", label: "Emerald", hex: "#50C878" },
+  { value: "gold", label: "Gold", hex: "#FFD700" },
+  { value: "coral", label: "Coral", hex: "#FF7F50" },
+
+  { value: "light-blue", label: "Light Blue", hex: "#ADD8E6" },
+  { value: "dark-green", label: "Dark Green", hex: "#006400" },
+  { value: "pale-pink", label: "Pale Pink", hex: "#FADADD" },
+  { value: "burgundy", label: "Burgundy", hex: "#800020" },
+];
+
+export const productUnitInPackageOptions = [
+  { value: 4, label: 4 },
+  { value: 5, label: 5 },
+  { value: 6, label: 6 },
+];
+
+export const productSizeOptions = [
+  { value: "39-43", label: "39-43" },
+  { value: "40-44", label: "40-44" },
+];

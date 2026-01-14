@@ -2,7 +2,7 @@ import { memo } from "react";
 import { Pagination } from "antd";
 import ProductCardSkeleton from "../../../shared/ui/Skeletons/Products/ProductCardSkeleton";
 import ProductCard from "../../../shared/ui/ProductCard/ProductCard";
-import type { ProductTableListItem } from "../../../shared/lib/model/products/product-table-model";
+import type { ProductTableListItem } from "../../../shared/lib/model/products/products-model";
 
 interface ProductMobileListProps {
   products: ProductTableListItem[] | undefined;

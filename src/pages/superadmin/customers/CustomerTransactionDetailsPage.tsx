@@ -234,7 +234,7 @@ const CustomerTransactionDetails = () => {
   return (
     <div className="pb-12">
       <ArrowLeft
-        className="hover:opacity-75 cursor-pointer mb-2"
+        className="hover:opacity-75 cursor-pointer mb-1"
         onClick={() => navigate(-1)}
       />
       <div className="flex flex-col">

@@ -1,36 +1,44 @@
-import { memo, useState, useEffect } from "react";
+import { memo, useEffect, useState } from "react";
 import Filter from "../../../../shared/ui/Filter/Filter";
-import { DatePicker, Drawer, Button, type DrawerProps } from "antd";
+import { DatePicker, Drawer, Button, Form } from "antd";
 import { FilterOutlined } from "@ant-design/icons";
 import type { Option } from "../../../../shared/lib/types";
 import type { Dayjs } from "dayjs";
 
+// --- INTERFACE START ---
 interface ProductReportFiltersProps {
   onFilterSubmit: (filters: {
     dates: string[] | null;
     shopId: string;
     tsexId: string;
-    productId: string;
+    modelId: string;
   }) => void;
   start: Dayjs | undefined | null;
   end: Dayjs | undefined | null;
   shopId?: string;
   tsexId?: string;
-  productId?: string;
+  modelId?: string;
   shopsOptions: Option[];
-  productOptions?: Option[];
+  modelOptions?: Option[];
   tsexesOptions: Option[];
-  setIsProductOpen?: (open: boolean) => void;
+  setIsModelOpen?: (open: boolean) => void;
   setIsTsexOpen: (open: boolean) => void;
   setIsShopOpen: (open: boolean) => void;
-  productLoading?: boolean;
-  productHasNextPage?: boolean;
-  productIsFetchingNextPage?: boolean;
-  productFetchNextPage?: any;
+  modelLoading?: boolean;
+  modelHasNextPage?: boolean;
+  modeltIsFetchingNextPage?: boolean;
+  modelFetchNextPage?: any;
   onSearchChange?: (value: string) => void;
   tsexLoading: boolean;
   shopLoading: boolean;
   isProduct?: boolean;
+}
+
+interface FilterFormValues {
+  range: [Dayjs | null, Dayjs | null];
+  shopId: string;
+  tsexId: string;
+  modelId: string;
 }
 
 const ProductsReportFilters = ({
@@ -39,144 +47,158 @@ const ProductsReportFilters = ({
   end,
   shopId,
   tsexId,
-  productId,
+  modelId,
   shopsOptions = [],
-  productOptions = [],
+  modelOptions = [],
   tsexesOptions = [],
-  setIsProductOpen,
+  setIsModelOpen,
   setIsTsexOpen,
   setIsShopOpen,
-  productLoading,
-  productHasNextPage,
-  productIsFetchingNextPage,
-  productFetchNextPage,
+  modelLoading,
+  modelHasNextPage,
+  modeltIsFetchingNextPage,
+  modelFetchNextPage,
   onSearchChange,
   tsexLoading,
   shopLoading,
   isProduct = true,
 }: ProductReportFiltersProps) => {
+  const [form] = Form.useForm<FilterFormValues>();
   const [open, setOpen] = useState(false);
-  const [placement] = useState<DrawerProps["placement"]>("right");
-
-  const [tempDates, setTempDates] = useState<[Dayjs | null, Dayjs | null]>([
-    start || null,
-    end || null,
-  ]);
-  const [tempDateStrings, setTempDateStrings] = useState<string[] | null>([
-    start ? start.format("YYYY-MM-DD HH:mm:ss") : "",
-    end ? end.format("YYYY-MM-DD HH:mm:ss") : "",
-  ]);
-  const [tempShopId, setTempShopId] = useState(shopId);
-  const [tempTsexId, setTempTsexId] = useState(tsexId);
-  const [tempProductId, setTempProductId] = useState(productId);
 
   useEffect(() => {
-    setTempDates([start || null, end || null]);
-    setTempDateStrings([
-      start ? start.format("YYYY-MM-DD HH:mm:ss") : "",
-      end ? end.format("YYYY-MM-DD HH:mm:ss") : "",
-    ]);
-    setTempShopId(shopId);
-    setTempTsexId(tsexId);
-    setTempProductId(productId);
-  }, [start, end, shopId, tsexId, productId]);
+    form.setFieldsValue({
+      range: [start || null, end || null],
+      shopId: shopId || undefined,
+      tsexId: tsexId || undefined,
+      modelId: modelId || undefined,
+    });
+  }, [start, end, shopId, tsexId, modelId, form]);
 
   const handleSubmit = () => {
+    const values = form.getFieldsValue();
+    const range = values.range;
+
     onFilterSubmit({
-      dates: tempDateStrings,
-      shopId: tempShopId || "",
-      tsexId: tempTsexId || "",
-      productId: tempProductId || "",
+      dates:
+        range && range[0] && range[1]
+          ? [
+              range[0].format("YYYY-MM-DD HH:mm:ss"),
+              range[1].format("YYYY-MM-DD HH:mm:ss"),
+            ]
+          : null,
+      shopId: values.shopId || "",
+      tsexId: values.tsexId || "",
+      modelId: values.modelId || "",
     });
     setOpen(false);
-  };
-
-  const handleRangeChange = (values: any, dateStrings: [string, string]) => {
-    setTempDates(values);
-    setTempDateStrings(values ? dateStrings : null);
   };
 
   const handleScroll = (e: any) => {
     const { target } = e;
     if (target.scrollTop + target.clientHeight >= target.scrollHeight - 10) {
-      if (productHasNextPage && !productIsFetchingNextPage) {
-        productFetchNextPage();
+      if (modelHasNextPage && !modeltIsFetchingNextPage) {
+        modelFetchNextPage();
       }
     }
   };
-  return (
-    <div>
-      <div className="rounded-[12px] border border-bg-fy bg-white p-3.5 gap-4 grid grid-cols-5 max-[1150px]:grid-cols-1 max-[800px]:hidden items-end">
-        <div className="w-full">
+
+  const renderFilterFields = (isVertical: boolean) => (
+    <>
+      <div className="w-full">
+        {isVertical && (
+          <p className="mb-1 text-sm text-slate-500">Sana oralig'i</p>
+        )}
+        <Form.Item name="range" noStyle>
           <DatePicker.RangePicker
-            value={tempDates}
-            onChange={handleRangeChange}
             showTime={{ format: "HH:mm" }}
             format="YYYY-MM-DD HH:mm"
             placeholder={["Boshlanish", "Tugash"]}
             className="h-10! w-full rounded-lg border-slate-200"
             inputReadOnly
           />
-        </div>
+        </Form.Item>
+      </div>
 
-        <div className="col-span-3 grid grid-cols-3 gap-4 max-[1150px]:col-span-1 max-[390px]:grid-cols-1">
-          {isProduct && (
-            <div className="w-full">
+      <div
+        className={
+          isVertical
+            ? "flex flex-col gap-4"
+            : "col-span-3 grid grid-cols-3 gap-4 max-[1150px]:col-span-1 max-[390px]:grid-cols-1"
+        }
+      >
+        {isProduct && (
+          <div className="w-full">
+            {isVertical && (
+              <p className="mb-1 text-sm text-slate-500">Modellar</p>
+            )}
+            <Form.Item name="modelId" noStyle>
               <Filter
                 onPopupScroll={handleScroll}
-                value={tempProductId}
-                options={productOptions}
-                onChange={setTempProductId}
-                placeholder="Barcha mahsulotlar"
+                options={modelOptions}
+                placeholder={
+                  modelLoading ? "Yuklanmoqda..." : "Barcha modellar"
+                }
                 className="h-10! w-full rounded-lg custom-select border-slate-200"
-                onDropdownVisibleChange={(visible: any) => {
-                  if (visible) setIsProductOpen?.(true);
-                }}
+                onOpenChange={(visible: boolean) =>
+                  visible && setIsModelOpen?.(true)
+                }
                 dropdownRender={(menu: any) => (
                   <>
                     {menu}
-                    {productIsFetchingNextPage && (
+                    {modeltIsFetchingNextPage && (
                       <span className="text-[12px] text-gray-500">
                         Yuklanmoqda...
                       </span>
                     )}
                   </>
                 )}
-                loading={productLoading}
+                loading={modelLoading}
                 showSearch
                 filterOption={false}
                 onSearch={onSearchChange}
               />
-            </div>
-          )}
-          <div className="w-full">
+            </Form.Item>
+          </div>
+        )}
+        <div className="w-full">
+          {isVertical && <p className="mb-1 text-sm text-slate-500">Tsexlar</p>}
+          <Form.Item name="tsexId" noStyle>
             <Filter
-              value={tempTsexId}
               options={tsexesOptions}
-              onChange={setTempTsexId}
               placeholder="Barcha tsexlar"
               className="h-10! w-full rounded-lg custom-select border-slate-200"
-              onDropdownVisibleChange={(visible: any) => {
-                if (visible) setIsTsexOpen(true);
-              }}
+              onOpenChange={(visible: boolean) =>
+                visible && setIsTsexOpen(true)
+              }
               loading={tsexLoading}
             />
-          </div>
-          <div className="w-full">
+          </Form.Item>
+        </div>
+        <div className="w-full">
+          {isVertical && (
+            <p className="mb-1 text-sm text-slate-500">Do'konlar</p>
+          )}
+          <Form.Item name="shopId" noStyle>
             <Filter
-              value={tempShopId}
               options={shopsOptions}
-              onChange={setTempShopId}
               placeholder="Barcha do'konlar"
               className="h-10! w-full rounded-lg custom-select border-slate-200"
-              onDropdownVisibleChange={(visible: any) => {
-                if (visible) setIsShopOpen(true);
-              }}
+              onOpenChange={(visible: boolean) =>
+                visible && setIsShopOpen(true)
+              }
               loading={shopLoading}
             />
-          </div>
+          </Form.Item>
         </div>
+      </div>
+    </>
+  );
 
+  return (
+    <Form form={form} component={false}>
+      <div className="rounded-[12px] border border-bg-fy bg-white p-3.5 gap-4 grid grid-cols-5 max-[1150px]:grid-cols-1 max-[800px]:hidden items-end">
+        {renderFilterFields(false)}
         <div className="flex justify-end">
           <Button
             type="primary"
@@ -201,83 +223,13 @@ const ProductsReportFilters = ({
 
       <Drawer
         title="Filtrlar"
-        placement={placement}
+        placement="right"
         onClose={() => setOpen(false)}
         open={open}
-        key={placement}
         width={300}
       >
         <div className="flex flex-col gap-4">
-          <div className="w-full">
-            <p className="mb-1 text-sm text-slate-500">Sana oralig'i</p>
-            <DatePicker.RangePicker
-              value={tempDates}
-              onChange={handleRangeChange}
-              showTime={{ format: "HH:mm" }}
-              format="YYYY-MM-DD HH:mm"
-              placeholder={["Boshlanish", "Tugash"]}
-              className="h-10! w-full rounded-lg border-slate-200"
-              inputReadOnly
-            />
-          </div>
-
-          {isProduct && (
-            <div className="w-full">
-              <p className="mb-1 text-sm text-slate-500">Mahsulotlar</p>
-              <Filter
-                onPopupScroll={handleScroll}
-                value={tempProductId}
-                options={productOptions}
-                onChange={setTempProductId}
-                placeholder="Barcha mahsulotlar"
-                className="h-10! w-full rounded-lg custom-select border-slate-200"
-                onDropdownVisibleChange={(visible: boolean) => {
-                  if (visible) setIsProductOpen?.(true);
-                }}
-                dropdownRender={(menu: any) => (
-                  <>
-                    {menu}
-                    {productIsFetchingNextPage && <div>Yuklanmoqda...</div>}
-                  </>
-                )}
-                showSearch
-                filterOption={false}
-                onSearch={onSearchChange}
-                loading={productLoading}
-              />
-            </div>
-          )}
-
-          <div className="w-full">
-            <p className="mb-1 text-sm text-slate-500">Tsexlar</p>
-            <Filter
-              value={tempTsexId}
-              options={tsexesOptions}
-              onChange={setTempTsexId}
-              placeholder="Barcha tsexlar"
-              className="h-10! w-full rounded-lg custom-select border-slate-200"
-              onDropdownVisibleChange={(visible: any) => {
-                if (visible) setIsTsexOpen(true);
-              }}
-              loading={tsexLoading}
-            />
-          </div>
-
-          <div className="w-full">
-            <p className="mb-1 text-sm text-slate-500">Do'konlar</p>
-            <Filter
-              value={tempShopId}
-              options={shopsOptions}
-              onChange={setTempShopId}
-              placeholder="Barcha do'konlar"
-              className="h-10! w-full rounded-lg custom-select border-slate-200"
-              onDropdownVisibleChange={(visible: any) => {
-                if (visible) setIsShopOpen(true);
-              }}
-              loading={shopLoading}
-            />
-          </div>
-
+          {renderFilterFields(true)}
           <Button
             type="primary"
             className="h-9! w-full rounded-lg mt-2 bg-indigo-600"
@@ -287,7 +239,7 @@ const ProductsReportFilters = ({
           </Button>
         </div>
       </Drawer>
-    </div>
+    </Form>
   );
 };
 

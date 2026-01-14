@@ -14,16 +14,20 @@ export const useProduct = () => {
     mutationFn: (data: any) =>
       api.post("products", data).then((res) => res.data),
     onSuccess: () => (
-      client.invalidateQueries({ queryKey: [product, "all-products"] }),
+      client.invalidateQueries({ queryKey: [product, "all-products-by-id"] }),
       client.invalidateQueries({ queryKey: ["tsex", "total-balance"] }),
-      client.invalidateQueries({ queryKey: ["tsex", "most-debtor-tsexes"] })
+      client.invalidateQueries({ queryKey: ["tsex", "most-debtor-tsexes"] }),
+      client.invalidateQueries({
+        queryKey: ["product_model", "all-product-models"],
+      })
     ),
   });
 
-  const getAllProducts = (params?: any) =>
+  const getAllProducts = (params?: any, id?: string) =>
     useQuery({
-      queryKey: [product, "all-products", params],
-      queryFn: () => api.get("products", { params }).then((res) => res.data),
+      queryKey: [product, "all-products-by-id", params, id],
+      queryFn: () =>
+        api.get(`products/model/${id}`, { params }).then((res) => res.data),
       refetchOnWindowFocus: false,
       staleTime: 1000 * 60 * 5,
       gcTime: 1000 * 60 * 10,

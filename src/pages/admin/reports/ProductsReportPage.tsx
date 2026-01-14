@@ -13,28 +13,30 @@ import ProductMobileList from "../../../widgets/products/ProductMobileList/Produ
 import { useNavigate } from "react-router-dom";
 import { debounce } from "../../../shared/lib/functions/debounce";
 import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
-import { productColumns } from "../../../shared/lib/model/products/product-table-model";
+import { productColumns } from "../../../shared/lib/model/products/products-model";
+import { useProductModel } from "../../../shared/lib/apis/product-models/useProductModel";
 
 const AdminProductsReportPage = () => {
-  const [isProductOpen, setIsProductOpen] = useState<boolean>(false);
+  const [isModelOpen, setIsModelOpen] = useState<boolean>(false);
   const [isTsexOpen, setIsTsexOpen] = useState<boolean>(false);
   const [isShopOpen, setIsShopOpen] = useState<boolean>(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scroll({ top: 0 });
+  }, []);
+
   const { getAllShopsForProductsFilter } = useShop();
   const { getAllTsexesForProductsFilter } = useTsex();
   const {
     getAllProducts,
     getProductsSummaryForReport,
-    getInfiniteProducts,
     getAllTop5ProductsForReport,
   } = useProduct();
+  const { getInfiniteProductModels } = useProductModel();
   const { getParam, setParams, removeParam } = useParamsHook();
   const [localSearch, setLocalSearch] = useState(getParam("search") || "");
   const [, setProductFilterSearch] = useState(getParam("product_search") || "");
-
-  useEffect(() => {
-    window.scroll({ top: 0 });
-  }, []);
 
   // Query starts
   const query: QueryParams = useMemo(() => {
@@ -45,7 +47,7 @@ const AdminProductsReportPage = () => {
     const e = getParam("endDate");
     const shopId = getParam("shopId") || "";
     const tsexId = getParam("tsexId") || "";
-    const productId = getParam("productId") || "";
+    const modelId = getParam("modelId") || "";
     const productFilterSearch = getParam("product_search") || undefined;
 
     const isFirstLoad = s === null && e === null;
@@ -64,7 +66,7 @@ const AdminProductsReportPage = () => {
         : e || "",
       shopId,
       tsexId,
-      productId,
+      modelId,
       productFilterSearch,
     };
   }, [getParam]);
@@ -75,7 +77,7 @@ const AdminProductsReportPage = () => {
     getProductsSummaryForReport({
       startDate: query.startStr,
       endDate: query.endStr,
-      productId: query.productId,
+      modelId: query.modelId,
       tsexId: query.tsexId,
       shopId: query.shopId,
     });
@@ -92,110 +94,21 @@ const AdminProductsReportPage = () => {
     dates: string[] | null;
     shopId: string;
     tsexId: string;
-    productId: string;
+    modelId: string;
   }) => {
     setParams({
       startDate: filters.dates?.[0] || "",
       endDate: filters.dates?.[1] || "",
       shopId: filters.shopId || "",
       tsexId: filters.tsexId || "",
-      productId: filters.productId || "",
+      modelId: filters.modelId || "",
     });
   };
   // ProductReportFilter onFilterSubmit ends
 
-  // ProductReportChart starts
-  const { data: allTopProducts, isLoading: topProductChartLoading } =
-    getAllTop5ProductsForReport({
-      startDate: query.startStr,
-      endDate: query.endStr,
-      productId: query.productId,
-      shopId: query.shopId,
-      tsexId: query.tsexId,
-    });
-  const topProducts = allTopProducts?.data;
-  // ProductReportChart ends
-
-  // ProductsReport start
-  const { data: allProducts, isLoading: productLoading } = getAllProducts({
-    page: query.page,
-    limit: query.limit,
-    startDate: query.startStr,
-    endDate: query.endStr,
-    search: query.search,
-    productId: query.productId,
-    shopId: query.shopId,
-    tsexId: query.tsexId,
-  });
-  const products = allProducts?.data?.data;
-  const total = allProducts?.data?.total || 0;
-  // ProductsReport end
-
-  // ProductReportFilter options start
-  const {
-    data: productLists,
-    isLoading: productListLoading,
-    fetchNextPage: productFetchNextPage,
-    hasNextPage: productHasNextPage,
-    isFetchingNextPage: productIsFetchingNextPage,
-  } = getInfiniteProducts(isProductOpen, { search: query.productFilterSearch });
-
-  const productOptions = [
-    {
-      value: "",
-      label: "Barcha mahsulotlar",
-    },
-    ...(
-      productLists?.pages?.flatMap((page: any) => {
-        return Array.isArray(page)
-          ? page
-          : page?.data?.data || page?.data || [];
-      }) || []
-    ).map((pr: any) => ({
-      value: pr?.id,
-      label: (
-        <div className="flex justify-between items-center w-full">
-          <span className="text-[14px] font-medium text-slate-800">
-            {pr?.name}
-          </span>
-          <span className="text-[12px] text-slate-400 font-normal ml-2">
-            {pr?.brand}
-          </span>
-        </div>
-      ),
-    })),
-  ];
-
-  const { data: tsexes, isLoading: tsexLoading } =
-    getAllTsexesForProductsFilter(isTsexOpen);
-  const tsexesOptions = [
-    {
-      value: "",
-      label: "Barcha tsexlar",
-    },
-    ...(tsexes?.data?.map((ts) => ({
-      value: ts?.id,
-      label: ts?.name,
-    })) || []),
-  ];
-
-  const { data: shops, isLoading: shopLoading } =
-    getAllShopsForProductsFilter(isShopOpen);
-  const shopsOptions = [
-    {
-      value: "",
-      label: "Barcha do'konlar",
-    },
-    ...(shops?.data?.map((st) => ({
-      value: st?.id,
-      label: st?.name,
-    })) || []),
-  ];
-  // ProductReportFilter options end
-
   // Product detail starts
   const handleProductDetailOpen = (id: string) => {
-    navigate(`/admin/products/${id}`);
+    navigate(`/superadmin/products/${id}`);
   };
   // Product detail ends
 
@@ -254,6 +167,97 @@ const AdminProductsReportPage = () => {
   };
   // PageChange ends
 
+  // ProductReportChart starts
+  const { data: allTopProducts, isLoading: topProductChartLoading } =
+    getAllTop5ProductsForReport({
+      startDate: query.startStr,
+      endDate: query.endStr,
+      modelId: query.modelId,
+      shopId: query.shopId,
+      tsexId: query.tsexId,
+    });
+  const topProducts = allTopProducts?.data;
+  // ProductReportChart ends
+
+  // ProductsReport start
+  const { data: allProducts, isLoading: productLoading } = getAllProducts({
+    page: query.page,
+    limit: query.limit,
+    startDate: query.startStr,
+    endDate: query.endStr,
+    search: query.search,
+    modelId: query.modelId,
+    shopId: query.shopId,
+    tsexId: query.tsexId,
+  });
+  const products = allProducts?.data?.data;
+  const total = allProducts?.data?.total || 0;
+  // ProductsReport end
+
+  // ProductReportFilter options start
+  const {
+    data: modelLists,
+    isLoading: modelListLoading,
+    fetchNextPage: modelFetchNextPage,
+    hasNextPage: modelHasNextPage,
+    isFetchingNextPage: modelIsFetchingNextPage,
+  } = getInfiniteProductModels(isModelOpen, {
+    search: query.productFilterSearch,
+  });
+
+  const productOptions = [
+    {
+      value: "",
+      label: "Barcha modellar",
+    },
+    ...(
+      modelLists?.pages?.flatMap((page: any) => {
+        return Array.isArray(page)
+          ? page
+          : page?.data?.data || page?.data || [];
+      }) || []
+    ).map((pr: any) => ({
+      value: pr?.id,
+      label: (
+        <div className="flex justify-between items-center w-full">
+          <span className="text-[14px] font-medium text-slate-800">
+            {pr?.name}
+          </span>
+          <span className="text-[12px] text-slate-400 font-normal ml-2">
+            {pr?.brand}
+          </span>
+        </div>
+      ),
+    })),
+  ];
+
+  const { data: tsexes, isLoading: tsexLoading } =
+    getAllTsexesForProductsFilter(isTsexOpen);
+  const tsexesOptions = [
+    {
+      value: "",
+      label: "Barcha tsexlar",
+    },
+    ...(tsexes?.data?.map((ts) => ({
+      value: ts?.id,
+      label: ts?.name,
+    })) || []),
+  ];
+
+  const { data: shops, isLoading: shopLoading } =
+    getAllShopsForProductsFilter(isShopOpen);
+  const shopsOptions = [
+    {
+      value: "",
+      label: "Barcha do'konlar",
+    },
+    ...(shops?.data?.map((st) => ({
+      value: st?.id,
+      label: st?.name,
+    })) || []),
+  ];
+  // ProductReportFilter options end
+
   return (
     <div className="flex flex-col gap-5">
       <ProductsReportFilters
@@ -262,17 +266,17 @@ const AdminProductsReportPage = () => {
         end={query.end}
         shopId={query.shopId}
         tsexId={query.tsexId}
-        productId={query.productId}
+        modelId={query.modelId}
         shopsOptions={shopsOptions}
         tsexesOptions={tsexesOptions}
-        productOptions={productOptions}
-        setIsProductOpen={setIsProductOpen}
+        modelOptions={productOptions}
+        setIsModelOpen={setIsModelOpen}
         setIsTsexOpen={setIsTsexOpen}
         setIsShopOpen={setIsShopOpen}
-        productLoading={productListLoading}
-        productHasNextPage={productHasNextPage}
-        productIsFetchingNextPage={productIsFetchingNextPage}
-        productFetchNextPage={productFetchNextPage}
+        modelLoading={modelListLoading}
+        modelHasNextPage={modelHasNextPage}
+        modeltIsFetchingNextPage={modelIsFetchingNextPage}
+        modelFetchNextPage={modelFetchNextPage}
         onSearchChange={handleSearchProductFilterChange}
         tsexLoading={tsexLoading}
         shopLoading={shopLoading}

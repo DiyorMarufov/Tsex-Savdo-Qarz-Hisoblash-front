@@ -42,7 +42,7 @@ const ProductReportBalances = ({
               start={0}
               end={totalTypes}
               duration={2.5}
-              suffix=" xil turda"
+              suffix=" xil modelda"
             />
           </span>
         </div>
@@ -67,7 +67,7 @@ const ProductReportBalances = ({
               start={0}
               end={totalSoldTypes}
               duration={2.5}
-              suffix=" xil turda"
+              suffix=" xil modelda"
             />
           </span>
         </div>

@@ -1,9 +1,9 @@
 import { memo, useEffect } from "react";
-import { useProduct } from "../../../shared/lib/apis/products/useProduct";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, Image } from "antd";
-import ProductDetailCardSkeleton from "../../../shared/ui/Skeletons/Products/ProductDetailCardSkeleton";
 import { ArrowLeft, Edit } from "lucide-react";
+import ProductDetailCardSkeleton from "../../../../shared/ui/Skeletons/Products/ProductDetailCardSkeleton";
+import { useProduct } from "../../../../shared/lib/apis/products/useProduct";
 
 const ProductDetailPage = () => {
   const navigate = useNavigate();
@@ -33,7 +33,7 @@ const ProductDetailPage = () => {
     <div className="mx-auto bg-white rounded-[5px]">
       <div className="flex items-center justify-center p-4 border-b relative">
         <ArrowLeft
-          className="absolute left-3 cursor-pointer hover:opacity-80"
+          className="absolute left-3 cursor-pointer hover:opacity-80 mb-1"
           onClick={() => navigate(-1)}
         />
         <h2 className="text-[18px] font-semibold">Mahsulot Tafsilotlari</h2>
@@ -55,24 +55,33 @@ const ProductDetailPage = () => {
           </div>
 
           <div className="min-[1380px]:w-1/2">
-            <a className="text-[22px] font-bold">{product.name}</a>
+            <a className="text-[22px] font-bold">
+              {product?.product_model.name}
+            </a>
             <p className="text-bg-sy mb-6 text-[18px]">
-              {product.brand || "Noma'lum brend"}
+              {product?.product_model.brand || "Noma'lum brend"}
             </p>
 
             <div className="divide-y rounded-xl overflow-hidden">
               <InfoRow label="Narxi" value={`${price} UZS`} highlight />
+              <InfoRow label="Rangi" value={product?.color} />
               <InfoRow label="Miqdori" value={product.quantity} />
               <InfoRow
                 label="Pochkadagi soni"
                 value={product.unit_in_package || "—"}
               />
               <InfoRow label="O‘lchami" value={product.size || "—"} />
-              <InfoRow label="Do‘kon" value={`${product.shop?.name}` || "—"} />
-              <InfoRow label="Tsex" value={`${product.tsex?.name}` || "—"} />
+              <InfoRow
+                label="Do‘kon"
+                value={`${product?.product_model.shop?.name}` || "—"}
+              />
+              <InfoRow
+                label="Tsex"
+                value={`${product?.product_model.tsex?.name}` || "—"}
+              />
               <InfoRow
                 label="Kim kiritgan"
-                value={product.user?.full_name || "—"}
+                value={product?.product_model?.created_by?.full_name || "—"}
               />
               <InfoRow
                 label="Sana"

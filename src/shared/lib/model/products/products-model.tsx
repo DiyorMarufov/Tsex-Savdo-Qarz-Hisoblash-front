@@ -4,8 +4,12 @@ import { Edit } from "lucide-react";
 
 export type ProductTableListItem = {
   id: string;
-  name: string;
-  brand: string;
+  product_model: {
+    id: string;
+    name: string;
+    brand: string;
+  };
+  color: string;
   price: number;
   images: [{ id: string; image_url: string }];
   created_at: Date;
@@ -23,11 +27,12 @@ export const productColumns = (
     render: (_, record) => (
       <Image
         src={record.images[0].image_url || "https://via.placeholder.com/50"}
-        alt={record.name}
+        alt={record.product_model.name}
         style={{
           width: "40px",
           height: "40px",
           objectFit: "contain",
+          borderRadius: "4px",
         }}
       />
     ),
@@ -36,12 +41,19 @@ export const productColumns = (
     title: "Nomi",
     dataIndex: "name",
     width: 150,
-    render: (_, record) => <a>{record.name}</a>,
+    render: (_, record) => <a>{record.product_model.name}</a>,
   },
   {
     title: "Brendi",
     dataIndex: "brand",
     width: 120,
+    render: (_, record) => record.product_model.brand,
+  },
+  {
+    title: "Rangi",
+    dataIndex: "color",
+    width: 120,
+    render: (_, record) => <span className="capitalize">{record.color}</span>,
   },
   {
     title: "Narxi",

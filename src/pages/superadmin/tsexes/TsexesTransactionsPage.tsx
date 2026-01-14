@@ -83,7 +83,7 @@ const TsexesTransactions = () => {
   return (
     <div>
       <ArrowLeft
-        className="hover:opacity-75 cursor-pointer mb-2"
+        className="hover:opacity-75 cursor-pointer mb-1"
         onClick={() => navigate(-1)}
       />
       {tsexTranscationLoading ? (

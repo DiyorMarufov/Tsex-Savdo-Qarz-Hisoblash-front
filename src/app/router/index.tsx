@@ -1,5 +1,6 @@
 import { lazy, memo } from "react";
 import { useRoutes } from "react-router-dom";
+import ProductModelsPage from "../../pages/superadmin/product-models/product-models/ProductModelsPage";
 
 const SaleItemReportPage = lazy(
   () => import("../../pages/superadmin/reports/SaleItemReportPage")
@@ -57,10 +58,17 @@ const AdminAddSalePage = lazy(
 );
 const AdminSalesPage = lazy(() => import("../../pages/admin/sales/SalesPage"));
 const AdminProductsAddPage = lazy(
-  () => import("../../pages/admin/products/ProductsAddPage")
+  () => import("../../pages/admin/products/products/ProductsAddPage")
 );
 const AdminProductsPage = lazy(
-  () => import("../../pages/admin/products/ProductsPage")
+  () => import("../../pages/admin/products/products/ProductsPage")
+);
+const AdminProductCreateModelPage = lazy(
+  () =>
+    import("../../pages/admin/products/product-models/ProductModelCreatePage")
+);
+const AdminProductModelsPage = lazy(
+  () => import("../../pages/admin/products/product-models/ProductModelsPage")
 );
 const AdminDashboardPage = lazy(
   () => import("../../pages/admin/dashboard/DashboardPage")
@@ -86,10 +94,11 @@ const DashboardPage = lazy(
 );
 const AuthGuard = lazy(() => import("../providers/router/guards/AuthGuard"));
 const ProductDetailPage = lazy(
-  () => import("../../pages/superadmin/products/ProductDetailPage")
+  () =>
+    import("../../pages/superadmin/product-models/products/ProductDetailPage")
 );
 const ProductsPage = lazy(
-  () => import("../../pages/superadmin/products/ProductsPage")
+  () => import("../../pages/superadmin/product-models/products/ProductsPage")
 );
 const ShopsPage = lazy(() => import("../../pages/superadmin/shops/ShopsPage"));
 const TsexesPage = lazy(
@@ -126,9 +135,17 @@ const Router = () => {
                   element: <DashboardPage />,
                 },
                 {
-                  path: "products",
-                  element: <ProductsPage />,
-                  children: [{ path: ":id", element: <ProductDetailPage /> }],
+                  path: "models",
+                  element: <ProductModelsPage />,
+                  children: [
+                    {
+                      path: "product/:id",
+                      element: <ProductsPage />,
+                      children: [
+                        { path: "detail/:id", element: <ProductDetailPage /> },
+                      ],
+                    },
+                  ],
                 },
                 {
                   path: "shops",
@@ -210,11 +227,18 @@ const Router = () => {
                   element: <AdminDashboardPage />,
                 },
                 {
-                  path: "products",
-                  element: <AdminProductsPage />,
+                  path: "models",
+                  element: <AdminProductModelsPage />,
                   children: [
-                    { path: "add", element: <AdminProductsAddPage /> },
-                    { path: ":id", element: <ProductDetailPage /> },
+                    { path: "add", element: <AdminProductCreateModelPage /> },
+                    {
+                      path: "product/:id",
+                      element: <AdminProductsPage />,
+                      children: [
+                        { path: "add", element: <AdminProductsAddPage /> },
+                        { path: "detail/:id", element: <ProductDetailPage /> },
+                      ],
+                    },
                   ],
                 },
                 {

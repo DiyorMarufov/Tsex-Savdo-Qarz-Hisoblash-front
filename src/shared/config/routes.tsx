@@ -26,8 +26,8 @@ export const SuperadminSidebarNavigation: SidebarNavItem[] = [
   },
   {
     id: 2,
-    to: "/superadmin/products",
-    label: "Mahsulotlar",
+    to: "/superadmin/models",
+    label: "Modellar",
     icon: <Package className="w-5 h-5" />,
   },
   {
@@ -77,8 +77,8 @@ export const AdminSidebarNavigation: SidebarNavItem[] = [
   },
   {
     id: 2,
-    to: "/admin/products",
-    label: "Mahsulotlar",
+    to: "/admin/models",
+    label: "Modellar",
     icon: <Package className="w-5 h-5" />,
   },
   {

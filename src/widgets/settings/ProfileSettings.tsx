@@ -70,7 +70,7 @@ const ProfileSettings = () => {
           }}
           form={form}
         >
-          <div className="grid grid-cols-2 gap-4 max-[400px]:grid-cols-1">
+          <div className="grid grid-cols-2 gap-3 max-[350px]:grid-cols-1">
             <div>
               <span className="text-sm font-semibold text-gray-700 flex mb-1">
                 To'liq ism
@@ -111,8 +111,14 @@ const ProfileSettings = () => {
                 />
               </Form.Item>
             </div>
-            <div className="col-span-2 flex justify-end">
-              <Button className="h-9!" type="primary" htmlType="submit">
+            <div className="col-span-2 max-[350px]:col-span-1 flex justify-end">
+              <Button
+                className="h-9!"
+                type="primary"
+                htmlType="submit"
+                loading={updateUser.isPending}
+                disabled={updateUser.isPending}
+              >
                 {isDisable ? "Tasdiqlash" : "Yangilash"}
               </Button>
             </div>

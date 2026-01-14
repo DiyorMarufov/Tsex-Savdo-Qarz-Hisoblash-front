@@ -13,10 +13,11 @@ import ProductMobileList from "../../../widgets/products/ProductMobileList/Produ
 import { useNavigate } from "react-router-dom";
 import { debounce } from "../../../shared/lib/functions/debounce";
 import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
-import { productColumns } from "../../../shared/lib/model/products/product-table-model";
+import { productColumns } from "../../../shared/lib/model/products/products-model";
+import { useProductModel } from "../../../shared/lib/apis/product-models/useProductModel";
 
 const ProductsReportPage = () => {
-  const [isProductOpen, setIsProductOpen] = useState<boolean>(false);
+  const [isModelOpen, setIsModelOpen] = useState<boolean>(false);
   const [isTsexOpen, setIsTsexOpen] = useState<boolean>(false);
   const [isShopOpen, setIsShopOpen] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -30,14 +31,12 @@ const ProductsReportPage = () => {
   const {
     getAllProducts,
     getProductsSummaryForReport,
-    getInfiniteProducts,
     getAllTop5ProductsForReport,
   } = useProduct();
+  const { getInfiniteProductModels } = useProductModel();
   const { getParam, setParams, removeParam } = useParamsHook();
   const [localSearch, setLocalSearch] = useState(getParam("search") || "");
-  const [, setProductFilterSearch] = useState(
-    getParam("product_search") || ""
-  );
+  const [, setProductFilterSearch] = useState(getParam("product_search") || "");
 
   // Query starts
   const query: QueryParams = useMemo(() => {
@@ -48,7 +47,7 @@ const ProductsReportPage = () => {
     const e = getParam("endDate");
     const shopId = getParam("shopId") || "";
     const tsexId = getParam("tsexId") || "";
-    const productId = getParam("productId") || "";
+    const modelId = getParam("modelId") || "";
     const productFilterSearch = getParam("product_search") || undefined;
 
     const isFirstLoad = s === null && e === null;
@@ -67,7 +66,7 @@ const ProductsReportPage = () => {
         : e || "",
       shopId,
       tsexId,
-      productId,
+      modelId,
       productFilterSearch,
     };
   }, [getParam]);
@@ -78,7 +77,7 @@ const ProductsReportPage = () => {
     getProductsSummaryForReport({
       startDate: query.startStr,
       endDate: query.endStr,
-      productId: query.productId,
+      modelId: query.modelId,
       tsexId: query.tsexId,
       shopId: query.shopId,
     });
@@ -95,14 +94,14 @@ const ProductsReportPage = () => {
     dates: string[] | null;
     shopId: string;
     tsexId: string;
-    productId: string;
+    modelId: string;
   }) => {
     setParams({
       startDate: filters.dates?.[0] || "",
       endDate: filters.dates?.[1] || "",
       shopId: filters.shopId || "",
       tsexId: filters.tsexId || "",
-      productId: filters.productId || "",
+      modelId: filters.modelId || "",
     });
   };
   // ProductReportFilter onFilterSubmit ends
@@ -173,7 +172,7 @@ const ProductsReportPage = () => {
     getAllTop5ProductsForReport({
       startDate: query.startStr,
       endDate: query.endStr,
-      productId: query.productId,
+      modelId: query.modelId,
       shopId: query.shopId,
       tsexId: query.tsexId,
     });
@@ -187,7 +186,7 @@ const ProductsReportPage = () => {
     startDate: query.startStr,
     endDate: query.endStr,
     search: query.search,
-    productId: query.productId,
+    modelId: query.modelId,
     shopId: query.shopId,
     tsexId: query.tsexId,
   });
@@ -197,20 +196,22 @@ const ProductsReportPage = () => {
 
   // ProductReportFilter options start
   const {
-    data: productLists,
-    isLoading: productListLoading,
-    fetchNextPage: productFetchNextPage,
-    hasNextPage: productHasNextPage,
-    isFetchingNextPage: productIsFetchingNextPage,
-  } = getInfiniteProducts(isProductOpen, { search: query.productFilterSearch });
+    data: modelLists,
+    isLoading: modelListLoading,
+    fetchNextPage: modelFetchNextPage,
+    hasNextPage: modelHasNextPage,
+    isFetchingNextPage: modelIsFetchingNextPage,
+  } = getInfiniteProductModels(isModelOpen, {
+    search: query.productFilterSearch,
+  });
 
   const productOptions = [
     {
       value: "",
-      label: "Barcha mahsulotlar",
+      label: "Barcha modellar",
     },
     ...(
-      productLists?.pages?.flatMap((page: any) => {
+      modelLists?.pages?.flatMap((page: any) => {
         return Array.isArray(page)
           ? page
           : page?.data?.data || page?.data || [];
@@ -229,8 +230,6 @@ const ProductsReportPage = () => {
       ),
     })),
   ];
-  
-  console.log(productLists)
 
   const { data: tsexes, isLoading: tsexLoading } =
     getAllTsexesForProductsFilter(isTsexOpen);
@@ -267,17 +266,17 @@ const ProductsReportPage = () => {
         end={query.end}
         shopId={query.shopId}
         tsexId={query.tsexId}
-        productId={query.productId}
+        modelId={query.modelId}
         shopsOptions={shopsOptions}
         tsexesOptions={tsexesOptions}
-        productOptions={productOptions}
-        setIsProductOpen={setIsProductOpen}
+        modelOptions={productOptions}
+        setIsModelOpen={setIsModelOpen}
         setIsTsexOpen={setIsTsexOpen}
         setIsShopOpen={setIsShopOpen}
-        productLoading={productListLoading}
-        productHasNextPage={productHasNextPage}
-        productIsFetchingNextPage={productIsFetchingNextPage}
-        productFetchNextPage={productFetchNextPage}
+        modelLoading={modelListLoading}
+        modelHasNextPage={modelHasNextPage}
+        modeltIsFetchingNextPage={modelIsFetchingNextPage}
+        modelFetchNextPage={modelFetchNextPage}
         onSearchChange={handleSearchProductFilterChange}
         tsexLoading={tsexLoading}
         shopLoading={shopLoading}
