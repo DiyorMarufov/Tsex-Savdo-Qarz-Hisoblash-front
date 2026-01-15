@@ -2,7 +2,7 @@ import { memo } from "react";
 
 const ShopCardSkeleton = () => {
   return (
-    <div className="min-[500px]:hidden flex flex-col gap-5 mt-4">
+    <div className="min-[500px]:hidden flex flex-col gap-3 mt-4">
       {Array.from({ length: 5 }).map((_, index) => (
         <div
           key={index}

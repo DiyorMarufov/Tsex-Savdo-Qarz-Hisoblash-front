@@ -226,6 +226,7 @@ const TsexesReportPage = () => {
         onPageChange={handlePageChange}
         loading={tsexLoading}
         onDetail={handleOpenDetail}
+        isReport
       />
     </div>
   );

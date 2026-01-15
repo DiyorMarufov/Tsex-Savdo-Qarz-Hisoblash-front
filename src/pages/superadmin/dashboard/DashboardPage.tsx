@@ -16,10 +16,10 @@ const DashboardPage = () => {
         <DashboardBalances />
       </div>
 
-      <div className="mt-5 flex gap-6 max-[1350px]:flex-col">
+      <div className="mt-4 flex gap-4 max-[1350px]:flex-col">
         <SaleDynamics />
 
-        <div className="flex min-[1350px]:flex-col gap-6 min-[1350px]:w-[30%] max-[970px]:flex-wrap">
+        <div className="flex min-[1350px]:flex-col gap-4 min-[1350px]:w-[30%] max-[970px]:flex-wrap">
           <TsexBalances />
           <CustomerBalances />
         </div>

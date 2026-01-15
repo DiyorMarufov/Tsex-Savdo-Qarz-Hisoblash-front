@@ -29,7 +29,7 @@ const AdminProductsReportPage = () => {
   const { getAllShopsForProductsFilter } = useShop();
   const { getAllTsexesForProductsFilter } = useTsex();
   const {
-    getAllProducts,
+    getAllProductsForReport,
     getProductsSummaryForReport,
     getAllTop5ProductsForReport,
   } = useProduct();
@@ -180,7 +180,7 @@ const AdminProductsReportPage = () => {
   // ProductReportChart ends
 
   // ProductsReport start
-  const { data: allProducts, isLoading: productLoading } = getAllProducts({
+  const { data: allProducts, isLoading: productLoading } = getAllProductsForReport({
     page: query.page,
     limit: query.limit,
     startDate: query.startStr,

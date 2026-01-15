@@ -69,9 +69,9 @@ const ProductsReportFilters = ({
   useEffect(() => {
     form.setFieldsValue({
       range: [start || null, end || null],
-      shopId: shopId || undefined,
-      tsexId: tsexId || undefined,
-      modelId: modelId || undefined,
+      shopId: shopId || "",
+      tsexId: tsexId || "",
+      modelId: modelId || "",
     });
   }, [start, end, shopId, tsexId, modelId, form]);
 

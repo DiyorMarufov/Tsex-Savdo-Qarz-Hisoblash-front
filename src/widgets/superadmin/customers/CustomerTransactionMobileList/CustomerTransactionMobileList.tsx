@@ -20,7 +20,7 @@ const TransactionMobileList = ({
   if (loading) return <CustomerCardSkeleton />;
 
   return (
-    <div className="min-[500px]:hidden flex flex-col gap-5 mt-3">
+    <div className="min-[500px]:hidden flex flex-col gap-3 mt-3">
       {transactions && transactions.length > 0 ? (
         transactions.map((trd) => (
           <CustomerTransactionCard

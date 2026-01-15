@@ -10,8 +10,9 @@ interface TsexMobileListProps {
   total: number;
   currentPage: number;
   pageSize: number;
-  onPageChange: (page: number, pageSize?: number) => void;
+  onPageChange: (page: number, pageSize: number) => void;
   onDetail: (id: string) => void;
+  isReport?: boolean;
 }
 
 const TsexMobileList = ({
@@ -22,11 +23,14 @@ const TsexMobileList = ({
   pageSize,
   onPageChange,
   onDetail,
+  isReport = false,
 }: TsexMobileListProps) => {
   if (loading) return <TsexCardSkeleton />;
 
   return (
-    <div className="min-[500px]:hidden flex flex-col gap-5 mt-4">
+    <div
+      className={`min-[500px]:hidden flex flex-col gap-3 ${isReport ? "" : "mt-4"}`}
+    >
       {data && data.length > 0 ? (
         data.map((ts) => <TsexCard key={ts.id} ts={ts} onDetail={onDetail} />)
       ) : (

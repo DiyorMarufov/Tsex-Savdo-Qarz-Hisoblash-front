@@ -33,6 +33,16 @@ export const useProduct = () => {
       gcTime: 1000 * 60 * 10,
     });
 
+  const getAllProductsForReport = (params?: any) =>
+    useQuery({
+      queryKey: [product, "all-products-for-report", params],
+      queryFn: () =>
+        api.get(`products/reports`, { params }).then((res) => res.data),
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 10,
+    });
+
   const getProductsSummaryForReport = (params?: any) =>
     useQuery({
       queryKey: [product, "all-products-summary", params],
@@ -102,6 +112,7 @@ export const useProduct = () => {
   return {
     createProduct,
     getAllProducts,
+    getAllProductsForReport,
     getInfiniteProducts,
     getProductsSummaryForReport,
     getAllProductsForProductsFilter,

@@ -2,7 +2,7 @@ import { memo } from "react";
 
 const SaleReportCardSkeleton = () => {
   return (
-    <div className="min-[500px]:hidden flex flex-col gap-5">
+    <div className="min-[500px]:hidden flex flex-col gap-3">
       {Array.from({ length: 5 }).map((_, inx: number) => (
         <div
           key={inx}

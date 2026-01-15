@@ -226,6 +226,7 @@ const AdminTsexesReportPage = () => {
         onPageChange={handlePageChange}
         loading={tsexLoading}
         onDetail={handleOpenDetail}
+        isReport
       />
     </div>
   );
