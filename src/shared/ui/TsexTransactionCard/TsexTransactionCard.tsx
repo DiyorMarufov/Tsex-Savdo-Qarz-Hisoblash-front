@@ -1,5 +1,5 @@
-import React, { type JSX } from "react";
-import { Edit } from "lucide-react"; // Yoki sizda qaysi kutubxona bo'lsa
+import React from "react";
+import { Edit, History, FileText, User, Wallet } from "lucide-react";
 
 interface Props {
   data: any;
@@ -7,86 +7,109 @@ interface Props {
 
 const TsexTransactionCard: React.FC<Props> = ({ data }) => {
   const renderStatus = (type: string) => {
-    const statusMap: Record<string, JSX.Element> = {
-      "To'liq to'lov": (
-        <span className="bg-green-100 rounded-full text-green-500 px-2 py-1">
-          To'liq To'lov
-        </span>
-      ),
-      "Qisman to'lov": (
-        <span className="bg-yellow-100 rounded-full text-yellow-500 px-2 py-1">
-          Qisman To'lov
-        </span>
-      ),
-      "Qo'shimcha to'lov": (
-        <span className="bg-blue-100 rounded-full text-blue-500 px-2 py-1">
-          Avans (Oldindan)
-        </span>
-      ),
-      "Mol olish": (
-        <span className="bg-red-100 rounded-full text-red-500 px-2 py-1">
-          Mol Olish
-        </span>
-      ),
+    const statusMap: Record<
+      string,
+      { bg: string; text: string; label: string }
+    > = {
+      "To'liq to'lov": {
+        bg: "bg-emerald-50",
+        text: "text-emerald-600",
+        label: "To'liq To'lov",
+      },
+      "Qisman to'lov": {
+        bg: "bg-amber-50",
+        text: "text-amber-600",
+        label: "Qisman To'lov",
+      },
+      "Qo'shimcha to'lov": {
+        bg: "bg-blue-50",
+        text: "text-blue-600",
+        label: "Avans",
+      },
+      "Mol olish": {
+        bg: "bg-rose-50",
+        text: "text-rose-600",
+        label: "Mol Olish",
+      },
     };
-    return statusMap[type] || type;
+
+    const status = statusMap[type] || {
+      bg: "bg-slate-50",
+      text: "text-slate-600",
+      label: type,
+    };
+
+    return (
+      <span
+        className={`${status.bg} ${status.text} text-[11px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide`}
+      >
+        {status.label}
+      </span>
+    );
   };
 
+  const isBalanceNegative = data.balance_after > 0;
+
   return (
-    <div className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px] overflow-hidden">
-      <div className="px-3.5 py-2.5 flex justify-between items-center">
-        <a className="text-[16px] font-bold">{data.tsex}</a>
-        <span className="text-[12px] font-bold">{renderStatus(data.type)}</span>
-      </div>
-
-      <div className="w-full h-px bg-bg-fy"></div>
-
-      <div className="flex flex-col gap-3">
-        <div className="grid grid-cols-2 gap-3 px-3.5 py-2.5">
-          <div className="flex flex-col w-1/2 justify-start">
-            <span className="text-[15px] font-medium text-[#6B7280]">
-              Miqdori
-            </span>
-            <span className="text-[16px] font-bold text-green-600">
-              {data.amount.toLocaleString()}
-            </span>
-          </div>
-
-          <div className="flex flex-col items-end">
-            <span className="text-[15px] font-medium text-[#6B7280] whitespace-nowrap">
-              Balans (Keyin)
-            </span>
-            <span
-              className={`text-[16px] font-bold ${
-                data.balance_after > 0 ? "text-red-500" : "text-green-500"
-              }`}
-            >
-              {data.balance_after > 0
-                ? `-${data.balance_after.toLocaleString()}`
-                : data.balance_after.toLocaleString()}
-            </span>
-          </div>
-
-          <div className="flex flex-col col-span-2">
-            <span className="text-[15px] font-medium text-[#6B7280]">Izoh</span>
-            <span className="text-[16px] font-bold text-[#4B5563]">
-              {data.description || "Izoh yo'q"}
+    <div className="flex flex-col border border-bg-fy bg-white rounded-2xl p-4  gap-4">
+      <div className="flex justify-between items-start gap-2">
+        <div className="flex flex-col min-w-0">
+          <h3 className="text-[17px] font-bold text-slate-900 truncate tracking-tight">
+            {data.tsex}
+          </h3>
+          <div className="flex items-center gap-1.5 text-slate-500 mt-1">
+            <User size={14} />
+            <span className="text-[14px] font-medium truncate italic text-slate-400">
+              {data.created_by}
             </span>
           </div>
         </div>
 
-        <div className="flex justify-between items-center bg-bg-ty px-3.5">
-          <div className="py-2 flex flex-col">
-            <span className="text-[#6D7482] font-bold text-[15px]">
-              {data.created_by}
-            </span>
-            <span className="text-[#6D7482] font-bold text-[15px]">
-              {new Date(data.created_at).toLocaleString("uz-UZ")}
+        <div className="flex flex-col items-end shrink-0">
+          <span className="text-[18px] font-bold text-green-500 tabular-nums leading-tight">
+            +{data.amount.toLocaleString()} UZS
+          </span>
+          <div className="mt-1">{renderStatus(data.type)}</div>
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-slate-400">
+            <Wallet size={14} />
+            <span className="text-[13px]">
+              Balans (Keyin):{" "}
+              <span
+                className={`font-bold ${isBalanceNegative ? "text-red-500" : "text-green-500"}`}
+              >
+                {isBalanceNegative ? "-" : ""}
+                {Math.abs(data.balance_after).toLocaleString()}
+              </span>
             </span>
           </div>
-          <div>
-            <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
-          </div>
+        </div>
+
+        <div className="flex items-start gap-2">
+          <FileText size={14} className="text-slate-400 mt-0.5 shrink-0" />
+          <span className="text-[12px] font-bold text-slate-500 tracking-tight line-clamp-1">
+            {data.description || "Izoh qoldirilmagan"}
+          </span>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between pt-2 border-t border-slate-50">
+        <div className="flex items-center gap-2 text-slate-400">
+          <History size={14} />
+          <span className="text-[12px] font-medium">
+            {new Date(data.created_at).toLocaleString("uz-UZ")}
+          </span>
+        </div>
+
+        <div className="p-2 hover:bg-slate-50 rounded-lg cursor-pointer transition-colors group">
+          <Edit
+            size={18}
+            className="text-slate-400 group-hover:text-emerald-600"
+          />
         </div>
       </div>
     </div>

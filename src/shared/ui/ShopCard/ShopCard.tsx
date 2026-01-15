@@ -1,44 +1,54 @@
 import { memo } from "react";
-import { Edit, Trash } from "lucide-react";
+import { Edit, Trash, MapPin, Calendar } from "lucide-react";
 import type { StoresTableListItem } from "../../lib/model/shops/shops-table-model";
 
 interface StoreCardProps {
   store: StoresTableListItem;
-  onEdit?: (id: string) => void;
-  onDelete?: (id: string) => void;
 }
 
-const StoreCard = ({ store, onEdit, onDelete }: StoreCardProps) => {
+const StoreCard = ({ store }: StoreCardProps) => {
   return (
-    <div className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]">
-      <div className="px-3.5 py-2.5 flex justify-between">
-        <div className="flex flex-col gap-1">
-          <span className="text-[16px] font-bold">{store?.name}</span>
-          <span className="font-bold text-[15px] text-[#4B5563]">
-            {store?.address}
-          </span>
+    <div className="flex flex-col border border-bg-fy bg-white rounded-2xl p-4 gap-4">
+      <div className="flex justify-between items-start gap-2">
+        <div className="flex flex-col min-w-0">
+          <h3 className="text-[17px] font-bold text-slate-900 truncate tracking-tight">
+            {store?.name}
+          </h3>
+
+          <div className="flex items-start gap-1.5 text-slate-500 mt-1">
+            <MapPin size={14} className="mt-0.5 shrink-0" />
+            <span className="text-[14px] font-medium leading-tight">
+              {store?.address}
+            </span>
+          </div>
         </div>
-        <div className="flex items-center gap-5">
-          <Edit
-            className="text-green-600 cursor-pointer hover:opacity-80"
-            onClick={() => onEdit?.(store.id)}
-          />
-          <Trash
-            className="text-red-600 cursor-pointer hover:opacity-80"
-            onClick={() => onDelete?.(store.id)}
-          />
+
+        <div className="flex items-center gap-1 shrink-0">
+          <div className="p-2 hover:bg-slate-50 rounded-lg cursor-pointer transition-colors group">
+            <Edit
+              size={18}
+              className="text-slate-400 group-hover:text-emerald-600"
+            />
+          </div>
+          <div className="p-2 hover:bg-rose-50 rounded-lg cursor-pointer transition-colors group">
+            <Trash
+              size={18}
+              className="text-slate-400 group-hover:text-rose-600"
+            />
+          </div>
         </div>
       </div>
 
-      <div className="w-full h-px bg-bg-fy"></div>
-
-      <div className="px-3.5 py-2.5">
-        <span className="text-[15px] font-medium text-[#6B7280]">
-          Kiritilgan sana:{" "}
-          <span className="text-[16px] font-bold text-[#4B5563]">
-            {new Date(store.created_at)?.toLocaleString("uz-UZ")}
+      <div className="flex items-center pt-3 border-t border-slate-50">
+        <div className="flex items-center gap-2 text-slate-400">
+          <Calendar size={14} />
+          <span className="text-[13px] font-medium text-slate-500">
+            Kiritilgan sana:{" "}
+            <span className="font-bold">
+              {new Date(store.created_at).toLocaleDateString("uz-UZ")}
+            </span>
           </span>
-        </span>
+        </div>
       </div>
     </div>
   );

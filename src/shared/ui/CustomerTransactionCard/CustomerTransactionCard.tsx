@@ -1,4 +1,4 @@
-import { Edit, Trash } from "lucide-react";
+import { Edit, Trash, History, FileText, Calendar, Circle } from "lucide-react";
 import { Button as AntdButton } from "antd";
 import { memo } from "react";
 import type { CustomerTranscationsListItemsType } from "../../lib/model/customers/customer-transactions-model";
@@ -9,104 +9,111 @@ interface TransactionCardProps {
 }
 
 const CustomerTransactionCard = ({ trd, onDetail }: TransactionCardProps) => {
+  const isBalanceDebt = trd.balance_after < 0;
+
   return (
-    <div className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]">
-      <div className="flex justify-between items-center px-3.5 py-2.5">
-        <a className="text-[16px] font-bold text-green-600 w-fit">
-          {trd.customer.full_name}
-        </a>
-        <div className="mt-1 whitespace-nowrap">
-          {trd.type === "borrowing" ? (
-            <span className="bg-red-100 text-[12px] rounded-full text-red-600 font-bold px-2 py-1">
-              Qarz olish
-            </span>
-          ) : (
-            <span className="bg-blue-100 text-[12px] rounded-full text-blue-600 font-bold px-2 py-1">
-              Qarz berish
-            </span>
-          )}
+    <div className="flex flex-col border border-bg-fy bg-white rounded-2xl p-4 gap-3">
+      <div className="flex justify-between items-start gap-2">
+        <div className="flex flex-col min-w-0">
+          <h3 className="text-[17px] font-bold text-slate-900 truncate tracking-tight">
+            {trd.customer.full_name}
+          </h3>
+          <div className="mt-1">
+            {trd.type === "borrowing" ? (
+              <span className="bg-rose-50 text-[11px] rounded-full text-rose-600 font-bold px-2 py-0.5 uppercase tracking-wide">
+                Qarz olish
+              </span>
+            ) : (
+              <span className="bg-blue-50 text-[11px] rounded-full text-blue-600 font-bold px-2 py-0.5 uppercase tracking-wide">
+                Qarz berish
+              </span>
+            )}
+          </div>
+        </div>
+
+        <div className="flex flex-col items-end shrink-0">
+          <span className="text-[18px] font-bold text-green-500 tabular-nums leading-tight">
+            {trd.amount.toLocaleString()} UZS
+          </span>
+          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+            Miqdor
+          </span>
         </div>
       </div>
 
-      <div className="w-full h-px bg-bg-fy"></div>
-
-      <div className="p-3.5 py-2.5 flex flex-col gap-3">
-        <div className="grid grid-cols-2 gap-3">
-          <div className="flex flex-col">
-            <span className="text-[15px] font-medium text-[#6B7280]">
-              Miqdor
-            </span>
-            <span className="text-[16px] font-bold text-green-600">
-              {trd.amount.toLocaleString()}
-            </span>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-[15px] font-medium text-[#6B7280]">
-              Keyingi Balans
+      <div className="flex flex-col gap-2 bg-slate-50/50 p-3 rounded-xl border border-slate-100/50">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-slate-600">
+            <span className="text-[13px] font-medium text-slate-400">
+              Keyingi balans:
             </span>
             <span
-              className={`text-[16px] font-bold ${
-                trd.balance_after < 0 ? "text-red-500" : "text-green-500"
-              }`}
+              className={`text-[15px] font-bold ${isBalanceDebt ? "text-red-500" : "text-green-500"}`}
             >
-              {trd.balance_after < 0 ? "-" : ""}
+              {isBalanceDebt ? "-" : ""}
               {Math.abs(trd.balance_after).toLocaleString()}
             </span>
           </div>
-          <div className="flex flex-col">
-            <span className="text-[15px] font-medium text-[#6B7280]">
-              Muddati
-            </span>
-            <span className="text-[16px] font-bold text-[#4B5563]">
-              {new Date(trd.due_date).toLocaleDateString("uz-UZ")}
-            </span>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-[15px] font-medium text-[#6B7280]">
-              Holati
-            </span>
-            <div className="flex items-center gap-2">
-              <div
-                className={`h-3 w-3 rounded-full ${
-                  trd.status === "open" ? "bg-green-500" : "bg-gray-400"
-                }`}
-              />
-              <span className="text-[16px] font-bold text-[#4B5563]">
-                {trd.status === "open" ? "Ochiq" : "Yopilgan"}
+        </div>
+
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-slate-400">
+            <Calendar size={14} />
+            <span className="text-[13px]">
+              Muddati:{" "}
+              <span className="text-slate-600 font-bold">
+                {new Date(trd.due_date).toLocaleDateString("uz-UZ")}
               </span>
-            </div>
+            </span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <Circle
+              size={8}
+              fill={trd.status === "open" ? "#10b981" : "#94a3b8"}
+              className={
+                trd.status === "open" ? "text-emerald-500" : "text-slate-400"
+              }
+            />
+            <span className="text-[12px] font-bold text-slate-500 uppercase">
+              {trd.status === "open" ? "Ochiq" : "Yopilgan"}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex items-start gap-2 px-1">
+        <FileText size={14} className="text-slate-400 mt-0.5 shrink-0" />
+        <p className="text-[13px] text-slate-500 font-medium leading-tight italic truncate">
+          {trd.description || "Izoh qoldirilmagan"}
+        </p>
+      </div>
+
+      <div className="flex items-center justify-between pt-2 border-t border-slate-50">
+        <div className="flex items-center gap-2">
+          <div className="p-2 hover:bg-emerald-50 rounded-lg cursor-pointer transition-colors group">
+            <Edit
+              size={18}
+              className="text-slate-400 group-hover:text-emerald-600"
+            />
+          </div>
+          <div className="p-2 hover:bg-rose-50 rounded-lg cursor-pointer transition-colors group">
+            <Trash
+              size={18}
+              className="text-slate-400 group-hover:text-rose-600"
+            />
           </div>
         </div>
 
-        <div className="flex flex-col">
-          <span className="font-medium text-[#6B7280] text-[15px]">Izoh</span>
-          <span className="text-[16px] font-bold text-[#4B5563]">
-            {trd.description || "-"}
-          </span>
-        </div>
-
-        <div className="flex flex-col">
-          <span className="font-medium text-[#6B7280] text-[15px]">
-            Kiritilgan sana
-          </span>
-          <span className="text-[16px] font-bold text-[#4B5563]">
-            {new Date(trd.created_at).toLocaleString("uz-UZ")}
-          </span>
-        </div>
-
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-5">
-            <Edit
-              size={20}
-              className="text-green-600 cursor-pointer hover:opacity-80 w-6 h-6"
-            />
-            <Trash
-              size={20}
-              className="text-red-600 cursor-pointer hover:opacity-80 w-6 h-6"
-            />
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5 text-slate-400">
+            <History size={14} />
+            <span className="text-[12px]">
+              {new Date(trd.created_at).toLocaleString("uz-UZ")}
+            </span>
           </div>
           <AntdButton
-            className="bg-[#1D4ED8]! text-white!"
+            type="primary"
+            className="h-9! px-6! rounded-xl! border-none!"
             onClick={() =>
               onDetail(trd.id as string, trd.type as "lending" | "borrowing")
             }
