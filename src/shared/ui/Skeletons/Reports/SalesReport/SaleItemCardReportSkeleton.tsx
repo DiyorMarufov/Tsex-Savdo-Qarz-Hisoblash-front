@@ -6,40 +6,39 @@ const SaleItemCardReportSkeleton = () => {
       {Array.from({ length: 5 }).map((_, inx: number) => (
         <div
           key={inx}
-          className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px] animate-pulse"
+          className="flex flex-col border border-gray-100 bg-white rounded-2xl p-4 gap-3 animate-pulse"
         >
-          <div className="flex justify-between px-3.5 py-2.5">
-            <div className="flex flex-col gap-2 w-full">
-              <div className="h-4 w-16 bg-gray-200 rounded"></div> {/* Brand */}
-              <div className="h-5 w-3/4 bg-gray-200 rounded"></div>{" "}
+          <div className="flex justify-between items-start gap-2">
+            <div className="flex flex-col gap-2 min-w-0">
+              <div className="h-5 w-32 bg-gray-200 rounded" />{" "}
+              <div className="h-4 w-20 bg-gray-100 rounded" />
+            </div>
+
+            <div className="flex flex-col items-end shrink-0 gap-1.5">
+              <div className="h-5 w-24 bg-gray-200 rounded" />
+              <div className="h-3 w-14 bg-gray-100 rounded" />
             </div>
           </div>
 
-          <div className="flex flex-col gap-3">
-            <div className="grid grid-cols-2 gap-3 px-3.5">
-              <div className="flex flex-col gap-2">
-                <div className="h-3.5 w-10 bg-gray-100 rounded"></div>
-                <div className="h-5 w-16 bg-gray-200 rounded"></div>
-              </div>
-              <div className="flex flex-col gap-2">
-                <div className="h-3.5 w-20 bg-gray-100 rounded"></div>
-                <div className="h-5 w-24 bg-gray-200 rounded"></div>
-              </div>
-              <div className="flex flex-col gap-2 border-t border-gray-50 pt-2">
-                <div className="h-3.5 w-16 bg-gray-100 rounded"></div>
-                <div className="h-5 w-20 bg-gray-200 rounded"></div>
-              </div>
-              <div className="flex flex-col gap-2 border-t border-gray-50 pt-2">
-                <div className="h-3.5 w-16 bg-gray-100 rounded"></div>
-                <div className="h-5 w-14 bg-gray-200 rounded"></div>
-              </div>
+          <div className="grid grid-cols-2 gap-4 bg-slate-50/50 p-3 rounded-xl border border-slate-100/50">
+            <div className="flex flex-col gap-2">
+              <div className="h-3 w-10 bg-gray-100 rounded" />
+              <div className="h-5 w-16 bg-gray-200 rounded" />
             </div>
+            <div className="flex flex-col items-end gap-2">
+              <div className="h-3 w-20 bg-gray-100 rounded" />
+              <div className="h-5 w-24 bg-gray-200 rounded" />
+            </div>
+          </div>
 
-            <div className="w-full h-px bg-bg-fy mt-1"></div>
-
-            <div className="flex justify-end items-center gap-2 px-3.5 pb-4 pt-1">
-              <div className="h-4 w-24 bg-gray-100 rounded"></div>{" "}
-              <div className="h-6 w-28 bg-gray-200 rounded"></div>{" "}
+          <div className="flex flex-col gap-3 pt-1">
+            <div className="flex justify-between items-center">
+              <div className="h-4 w-24 bg-gray-100 rounded" />
+              <div className="h-4 w-16 bg-gray-200 rounded" />
+            </div>
+            <div className="flex justify-between items-center">
+              <div className="h-4 w-20 bg-gray-100 rounded" />
+              <div className="h-4 w-24 bg-gray-200 rounded" />
             </div>
           </div>
         </div>

@@ -11,7 +11,7 @@ interface ProductMobileListProps {
   currentPage: number;
   pageSize: number;
   onPageChange: (page: number, pageSize?: number) => void;
-  onDetail: (id: string) => void;
+  onDetail: (model_id: string, id: string) => void;
   isReport?: boolean;
 }
 

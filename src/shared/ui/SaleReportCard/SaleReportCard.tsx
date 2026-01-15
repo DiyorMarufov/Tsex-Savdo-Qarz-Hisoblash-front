@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { Button as AntdButton, Image } from "antd";
+import { User, Store, Calendar, CreditCard, Wallet } from "lucide-react";
 import type { SalesTableListItem } from "../../lib/model/reports/sales-model";
 
 interface SaleReportCardProps {
@@ -8,114 +9,136 @@ interface SaleReportCardProps {
 }
 
 const SaleReportCard = ({ item, onDetail }: SaleReportCardProps) => {
+  const isDebt = item.debt > 0;
+
+  const renderStatus = (type: string) => {
+    const statusMap: Record<
+      string,
+      { bg: string; text: string; label: string }
+    > = {
+      full_payment: {
+        bg: "bg-emerald-50",
+        text: "text-emerald-600",
+        label: "To'liq to'lov",
+      },
+      partial_payment: {
+        bg: "bg-amber-50",
+        text: "text-amber-600",
+        label: "Qisman to'lov",
+      },
+      real: { bg: "bg-blue-50", text: "text-blue-600", label: "Real" },
+    };
+
+    const status = statusMap[type] || {
+      bg: "bg-slate-50",
+      text: "text-slate-600",
+      label: type,
+    };
+
+    return (
+      <span
+        className={`${status.bg} ${status.text} text-[11px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide`}
+      >
+        {status.label}
+      </span>
+    );
+  };
+
   return (
-    <div className="flex flex-col border border-bg-fy bg-[#ffffff] rounded-[12px]">
-      <div className="flex justify-between px-3.5 py-2.5">
-        <div className="flex gap-3">
-          <div className="w-[50px] h-[50px] shrink-0">
+    <div className="flex flex-col border border-bg-fy bg-white rounded-2xl p-4 gap-3">
+      <div className="flex justify-between items-start gap-2">
+        <div className="flex gap-3 min-w-0">
+          <div className="w-12 h-12 border border-bg-fy rounded-xl overflow-hidden">
             <Image
-              src={
-                item.images?.[0]?.image_url ||
-                "https://os.alipayobjects.com/rmsportal/mqaQswcyDLcXyDKnZfES.png"
-              }
+              src={item.images?.[0]?.image_url}
               alt="sale"
-              className="w-full h-full object-cover rounded-[10px] border border-bg-fy"
+              className="w-full! h-full! object-cover!"
+              wrapperClassName="w-full h-full"
             />
           </div>
 
-          <div className="flex flex-col">
-            <span className="text-[14px] font-bold text-[#6B7280] leading-tight">
-              {item.shop.name}
-            </span>
-            <a className="text-[16px] font-bold text-[#111827] leading-tight">
+          <div className="flex flex-col min-w-0">
+            <h3 className="text-[16px] font-bold text-slate-900 truncate leading-tight">
               {item.customer.full_name}
-            </a>
+            </h3>
+            <div className="flex items-center gap-1.5 text-slate-500 mt-1">
+              <Store size={14} className="text-slate-400" />
+              <span className="text-[13px] font-medium truncate italic">
+                {item.shop.name}
+              </span>
+            </div>
           </div>
         </div>
 
-        <div className="flex items-start">
-          <div
-            className={`px-2 py-0.5 rounded-full text-[12px] font-bold 
-        ${
-          item.type === "full_payment"
-            ? "bg-green-100 text-green-700"
-            : item.type === "partial_payment"
-              ? "bg-yellow-100 text-yellow-700"
-              : item.type === "real"
-                ? "bg-blue-100 text-blue-700"
-                : "bg-gray-100 text-[#4B5563]"
-        }`}
-          >
-            {item.type === "full_payment"
-              ? "To'liq to'lov"
-              : item.type === "partial_payment"
-                ? "Qisman to'lov"
-                : item.type === "real"
-                  ? "Real"
-                  : item.type}
-          </div>
+        <div className="flex flex-col items-end shrink-0 gap-1.5">
+          <span className="text-[17px] font-bold text-green-500 tabular-nums leading-tight">
+            {item.total_amount.toLocaleString()} uzs
+          </span>
+          {renderStatus(item.type)}
         </div>
       </div>
 
-      <div className="flex flex-col gap-3">
-        <div className="grid grid-cols-2 gap-3 px-3.5">
-          <div className="flex flex-col justify-start">
-            <span className="text-[15px] font-medium text-[#6B7280]">
-              Summa
-            </span>
-            <span className="text-[16px] font-bold text-green-600">
-              {item.total_amount.toLocaleString()}
-            </span>
-          </div>
-          <div className="flex flex-col justify-start">
-            <span className="text-[15px] font-medium text-[#6B7280]">
+      <div className="grid grid-cols-2 gap-4 bg-slate-50/50 p-3 rounded-xl border border-slate-100/50">
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-1.5 text-slate-400">
+            <CreditCard size={13} />
+            <span className="text-[10px] font-bold uppercase tracking-tight">
               To'langan
             </span>
-            <span className="text-[16px] font-bold text-green-600">
-              {item.paid_amount.toLocaleString()}
+          </div>
+          <span className="text-[15px] font-bold text-green-500">
+            {item.paid_amount.toLocaleString()} uzs
+          </span>
+        </div>
+
+        <div className="flex flex-col gap-1 items-end">
+          <div className="flex items-center gap-1.5 text-slate-400">
+            <Wallet size={13} />
+            <span className="text-[10px] font-bold uppercase tracking-tight">
+              Qarz
             </span>
           </div>
-          <div className="flex flex-col justify-start">
-            <span className="text-[15px] font-medium text-[#6B7280]">Qarz</span>
-            <span
-              className={`text-[16px] font-bold ${
-                item.debt > 0 ? "text-red-500" : "text-green-600"
-              }`}
-            >
-              {item.debt > 0
-                ? `-${item.debt.toLocaleString()}`
-                : item.debt.toLocaleString()}
-            </span>
-          </div>
-          <div className="flex flex-col justify-start">
-            <span className="text-[15px] font-medium text-[#6B7280]">
-              Sotuvchi
-            </span>
-            <span className="text-[16px] font-bold text-[#4B5563]">
+          <span
+            className={`text-[15px] font-bold ${isDebt ? "text-red-500" : "text-emerald-500"}`}
+          >
+            {isDebt ? "-" : ""}
+            {Math.abs(item.debt).toLocaleString()}
+          </span>
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-1.5 px-1">
+        <div className="flex items-center gap-2 text-slate-500">
+          <User size={14} className="text-slate-400" />
+          <span className="text-[13px] font-medium">
+            Sotuvchi:{" "}
+            <span className="text-slate-700 font-bold">
               {item.seller.full_name}
             </span>
-          </div>
-        </div>
-
-        <div className="flex flex-col justify-start px-3.5">
-          <span className="text-[15px] font-medium text-[#6B7280]">
-            Kiritilgan sana
-          </span>
-          <span className="text-[16px] font-bold text-[#4B5563]">
-            {new Date(item.created_at).toLocaleString("uz-UZ")}
           </span>
         </div>
-
-        <div className="w-full h-px bg-bg-fy"></div>
-
-        <div className="flex justify-end px-3.5 pb-3">
-          <AntdButton
-            className="bg-[#1D4ED8]! text-white!"
-            onClick={() => onDetail(item.id as string)}
-          >
-            Batafsil
-          </AntdButton>
+        <div className="flex items-center gap-2 text-slate-400">
+          <Calendar size={14} className="text-slate-400" />
+          <span className="text-[13px] font-medium">
+            Sana:{" "}
+            <span className="font-bold text-slate-600">
+              {new Date(item.created_at).toLocaleString("uz-UZ", {
+                dateStyle: "medium",
+                timeStyle: "short",
+              })}
+            </span>
+          </span>
         </div>
+      </div>
+
+      <div className="flex items-center justify-end pt-2 border-t border-slate-50">
+        <AntdButton
+          type="primary"
+          className="h-8! rounded-xl! border-none!"
+          onClick={() => onDetail(item.id as string)}
+        >
+          Batafsil
+        </AntdButton>
       </div>
     </div>
   );

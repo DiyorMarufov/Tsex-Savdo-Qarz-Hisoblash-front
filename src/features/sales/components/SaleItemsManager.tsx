@@ -165,10 +165,10 @@ const SaleItemsManager = ({
                           <div className="flex justify-between items-start gap-3 max-[540px]:flex-col ">
                             <div className="flex flex-col">
                               <span className="text-sm font-bold text-slate-800 leading-tight">
-                                {product.name}
+                                {product.product_model.name}
                               </span>
                               <span className="text-[11px] text-slate-500 font-semibold">
-                                {product.brand}
+                                {product.product_model.brand}
                               </span>
                             </div>
                             <div className="flex min-[480px]:items-center gap-3 mt-1 max-[480px]:flex-col">

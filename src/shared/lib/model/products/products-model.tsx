@@ -89,7 +89,7 @@ export const productColumns = (
     render: (_, record) => (
       <div
         className="text-[15px] text-green-500 cursor-pointer hover:opacity-80"
-        onClick={() => handleOpenDetail(record.id)}
+        onClick={() => handleOpenDetail(record.product_model.id, record.id)}
       >
         Batafsil
       </div>

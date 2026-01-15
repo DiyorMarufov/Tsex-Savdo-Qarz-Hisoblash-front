@@ -45,7 +45,7 @@ const ProductsPage = () => {
   // Products end
 
   // Product detail starts
-  const handleProductDetailOpen = (id: string) => {
+  const handleProductDetailOpen = (_: any, id: string) => {
     navigate(`detail/${id}`);
   };
   // Product detail ends
@@ -104,7 +104,7 @@ const ProductsPage = () => {
       />
       <LargeTitle title="Mahsulotlar" />
 
-      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-2 p-3.6">
+      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] p-3.5">
         <SearchInput
           placeholder="Mahsulot rangi bo'yicha qidirish"
           className="h-10! min-[900px]:w-[40%]! bg-bg-ty! text-[16px]!"

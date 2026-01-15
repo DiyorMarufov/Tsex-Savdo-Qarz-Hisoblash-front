@@ -150,7 +150,7 @@ const AdminAddSalePage = () => {
       </div>
     ),
   }));
-  
+
   const shouldFetchProducts = isProductOpen || !!query.productId;
   const {
     data: productLists,
@@ -175,10 +175,10 @@ const AdminAddSalePage = () => {
           <div className="flex items-center justify-between w-full py-1">
             <div className="flex flex-col gap-0.5">
               <span className="text-[14px] font-medium text-slate-800 leading-tight">
-                {pr?.name}
+                {pr?.product_model?.name}
               </span>
               <span className="text-[11px] text-slate-400 font-normal">
-                {pr?.brand}
+                {pr?.product_model?.brand}
               </span>
             </div>
             <div className="flex flex-col items-end gap-0.5">
@@ -193,7 +193,7 @@ const AdminAddSalePage = () => {
             </div>
           </div>
         ),
-        displayLabel: `${pr?.name} - ${pr?.brand}`,
+        displayLabel: `${pr?.product_model?.name} - ${pr?.product_model?.brand}`,
         originalProduct: pr,
       })) || []
     );

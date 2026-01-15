@@ -58,9 +58,7 @@ const TsexCard = ({ ts, onDetail }: TsexCardProps) => {
             }
           />
           <span className="text-[12px] font-bold text-slate-500 tracking-tight">
-            {ts?.last_transaction
-              ? ts?.last_transaction
-              : "Hozircha yo'q"}
+            {ts?.last_transaction ? ts?.last_transaction : "Hozircha yo'q"}
           </span>
         </div>
       </div>
@@ -75,7 +73,7 @@ const TsexCard = ({ ts, onDetail }: TsexCardProps) => {
 
         <AntdButton
           type="primary"
-          className="h-9! px-6! rounded-xl! border-none!"
+          className="h-8! rounded-xl! border-none!"
           onClick={() => onDetail(ts.id)}
         >
           Batafsil

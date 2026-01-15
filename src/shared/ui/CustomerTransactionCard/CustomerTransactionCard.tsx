@@ -113,7 +113,7 @@ const CustomerTransactionCard = ({ trd, onDetail }: TransactionCardProps) => {
           </div>
           <AntdButton
             type="primary"
-            className="h-9! px-6! rounded-xl! border-none!"
+            className="h-8! rounded-xl! border-none!"
             onClick={() =>
               onDetail(trd.id as string, trd.type as "lending" | "borrowing")
             }
