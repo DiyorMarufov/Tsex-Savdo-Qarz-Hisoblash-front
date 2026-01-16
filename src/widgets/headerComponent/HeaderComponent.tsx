@@ -2,9 +2,20 @@ import { memo } from "react";
 import logo from "../../shared/assets/logo/Background.svg";
 import { useNavigate } from "react-router-dom";
 import { HeaderBell } from "../admin/notification/NotificationComponent";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../app/store";
+import { jwtDecode } from "jwt-decode";
+import { useWarning } from "../../shared/lib/apis/warnings/useWarning";
 
 const Header = () => {
   const navigate = useNavigate();
+
+  const token = useSelector((state: RootState) => state.setToken.token);
+  const { role } = jwtDecode<{ role: string }>(token as string);
+
+  const { getActiveWarnings } = useWarning();
+  const { data: allActiveWarnings } = getActiveWarnings();
+  const activeWarnings = allActiveWarnings?.data;
 
   return (
     <div className="flex w-full">
@@ -18,8 +29,7 @@ const Header = () => {
             Savdo tizimi
           </span>
         </div>
-
-        <HeaderBell />
+        {role === "admin" && <HeaderBell data={activeWarnings} />}
       </div>
     </div>
   );

@@ -1,63 +1,91 @@
-import { Badge, Popover, List, Avatar, Button } from "antd";
-import { BellOutlined } from "@ant-design/icons";
-import { memo } from "react";
+import { Badge, Popover, List, Avatar, Button, Popconfirm } from "antd";
+import {
+  BellOutlined,
+  CheckOutlined,
+  QuestionCircleOutlined,
+} from "@ant-design/icons";
+import { memo, type FC } from "react";
+import { useWarning } from "../../../shared/lib/apis/warnings/useWarning";
+import { useApiNotification } from "../../../shared/hooks/api-notification/useApiNotification";
 
-const NotificationContent = () => {
-  const data = [
-    {
-      title: "Mahsulot qo'shish",
-      description: "5 daqiqa oldin",
-      type: "order",
-    },
-    {
-      title: "Mahsulot qo'shish",
-      description: "5 daqiqa oldin",
-      type: "order",
-    },
-    {
-      title: "Mahsulot qo'shish",
-      description: "5 daqiqa oldin",
-      type: "order",
-    },
-    {
-      title: "Mahsulot qo'shish",
-      description: "5 daqiqa oldin",
-      type: "order",
-    },
-    {
-      title: "Mahsulot qo'shish",
-      description: "5 daqiqa oldin",
-      type: "order",
-    },
-  ];
+interface Props {
+  data: any[];
+}
+
+const NotificationContent: FC<Props> = ({ data }) => {
+  const { updateStatus } = useWarning();
+  const { handleApiError, handleSuccess } = useApiNotification();
+  const handleConfirm = (id: string) => {
+    updateStatus.mutate(id, {
+      onSuccess: () => {
+        handleSuccess("Muvaffaqiyatli tasdiqlandi");
+      },
+      onError: (err: any) => {
+        const status = err?.response?.data?.statusCode;
+        const msg = err?.response?.data?.message;
+
+        if (status === 404 && msg.startsWith("Warning with ID")) {
+          handleApiError("Ogohlantirish topilmadi");
+          return;
+        } else {
+          handleApiError("Serverda xato");
+          return;
+        }
+      },
+    });
+  };
 
   return (
     <div className="w-[300px]">
-      <div className="flex justify-between items-center border-b pb-2 mb-2 px-2">
+      <div className="border-b pb-2 mb-2 px-2">
         <span className="font-bold text-slate-800">Bildirishnomalar</span>
-        <Button type="link" size="small" className="text-[12px]">
-          Tozalash
-        </Button>
       </div>
       <List
         itemLayout="horizontal"
         dataSource={data}
         className="max-h-[200px] overflow-y-auto"
-        renderItem={(item) => (
-          <List.Item className="cursor-pointer hover:bg-blue-50/50 px-2 transition-all rounded-lg border-none">
+        renderItem={(item: any) => (
+          <List.Item
+            actions={[
+              <Popconfirm
+                title="Tasdiqlash"
+                description="Rostdan tasdiqlamohchimisz?"
+                okText="Ha"
+                cancelText="Yo'q"
+                onConfirm={() => handleConfirm(item?.id)}
+                icon={<QuestionCircleOutlined style={{ color: "red" }} />}
+              >
+                <Button
+                  type="primary"
+                  size="small"
+                  className="rounded-full! py-3.5!"
+                  loading={updateStatus.isPending}
+                  disabled={updateStatus.isPending}
+                >
+                  <CheckOutlined className="text-white!" />
+                </Button>
+              </Popconfirm>,
+            ]}
+          >
             <List.Item.Meta
               avatar={
                 <Avatar
                   icon={<BellOutlined />}
-                  className="bg-blue-100 text-blue-600"
+                  className={
+                    item.status === "OPEN"
+                      ? "bg-blue-100 text-blue-600"
+                      : "bg-gray-100 text-gray-400"
+                  }
                 />
               }
               title={
-                <span className="text-[13px] font-medium">{item.title}</span>
+                <span className="text-[13px] font-medium">
+                  {item?.description}
+                </span>
               }
               description={
                 <span className="text-[11px] text-gray-400">
-                  {item.description}
+                  {new Date(item?.created_at).toLocaleString()}
                 </span>
               }
             />
@@ -65,7 +93,7 @@ const NotificationContent = () => {
         )}
       />
       <div className="text-center pt-2 border-t mt-2">
-        <Button type="text" block className="text-gray-500 text-[12px]">
+        <Button type="text" block>
           Barchasini ko'rish
         </Button>
       </div>
@@ -73,15 +101,15 @@ const NotificationContent = () => {
   );
 };
 
-export const HeaderBell = () => (
+export const HeaderBell: FC<Props> = ({ data }) => (
   <Popover
-    content={<NotificationContent />}
+    content={<NotificationContent data={data} />}
     trigger="click"
     placement="bottomRight"
     arrow={false}
     overlayClassName="notification-popover"
   >
-    <Badge count={1} size="small" offset={[-2, 5]}>
+    <Badge count={data?.length} size="small" offset={[-2, 5]}>
       <Button
         type="text"
         icon={<BellOutlined className="text-[20px] text-gray-600" />}
