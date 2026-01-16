@@ -1,6 +1,5 @@
 import { lazy, memo } from "react";
 import { useRoutes } from "react-router-dom";
-import ProductModelsPage from "../../pages/superadmin/product-models/product-models/ProductModelsPage";
 
 const SaleItemReportPage = lazy(
   () => import("../../pages/superadmin/reports/SaleItemReportPage")
@@ -94,11 +93,14 @@ const DashboardPage = lazy(
 );
 const AuthGuard = lazy(() => import("../providers/router/guards/AuthGuard"));
 const ProductDetailPage = lazy(
+  () => import("../../pages/superadmin/products/products/ProductDetailPage")
+);
+const ProductModelsPage = lazy(
   () =>
-    import("../../pages/superadmin/product-models/products/ProductDetailPage")
+    import("../../pages/superadmin/products/product-models/ProductModelsPage")
 );
 const ProductsPage = lazy(
-  () => import("../../pages/superadmin/product-models/products/ProductsPage")
+  () => import("../../pages/superadmin/products/products/ProductsPage")
 );
 const ShopsPage = lazy(() => import("../../pages/superadmin/shops/ShopsPage"));
 const TsexesPage = lazy(
