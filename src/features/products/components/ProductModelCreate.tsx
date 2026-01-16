@@ -35,7 +35,10 @@ const ProductModelCreate = () => {
         const status = err?.response?.data?.statusCode;
         const msg = err?.response?.data?.message;
 
-        if (status === 404 && msg.startsWith("Tsex with ID")) {
+        if (status === 409 && msg.startsWith("Model already exists")) {
+          handleApiError("Model allaqachon mavjud", "topRight");
+          return;
+        } else if (status === 404 && msg.startsWith("Tsex with ID")) {
           handleApiError("Tsex topilmadi", "topRight");
           return;
         } else if (status === 404 && msg.startsWith("Shop with ID")) {
