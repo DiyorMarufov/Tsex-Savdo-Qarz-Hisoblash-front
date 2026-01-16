@@ -21,9 +21,7 @@ const SettingsPage = () => {
 
   return (
     <div className="flex-1 w-full">
-      <div className="mb-2">
-        <LargeTitle title="Sozlamalar" />
-      </div>
+      <LargeTitle title="Sozlamalar" />
 
       <div className="flex flex-col gap-5">
         <ProfileSettings />
@@ -34,10 +32,10 @@ const SettingsPage = () => {
           danger
           type="text"
           icon={<LogoutOutlined />}
-          className="w-45 h-9! bg-red-500! text-white!"
+          className="w-25 h-9! bg-red-500! text-white!"
           onClick={handleSignOut}
         >
-          Sign Out (Chiqish)
+          Chiqish{" "}
         </Button>
       </div>
     </div>

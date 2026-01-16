@@ -174,7 +174,6 @@ const AdminCustomersPage = () => {
         searchValue={localSearch}
         regionValue={query.region}
         onFilterChange={handleFilterChange}
-        isSuperadmin={false}
       />
 
       <div className="mt-4 max-[500px]:hidden">

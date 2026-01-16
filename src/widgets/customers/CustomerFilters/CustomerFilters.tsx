@@ -9,7 +9,6 @@ interface CustomerFiltersProps {
   regionValue?: string;
   onFilterChange: (key: string, value: string) => void;
   regionOptions: Option[];
-  isSuperadmin?: boolean;
 }
 
 const CustomerFilters = ({
@@ -18,11 +17,10 @@ const CustomerFilters = ({
   regionValue,
   onFilterChange,
   regionOptions,
-  isSuperadmin = true,
 }: CustomerFiltersProps) => {
   return (
     <div
-      className={`rounded-[12px] border border-e-bg-fy bg-[#ffffff] ${isSuperadmin ? "mt-4" : "mt-2"}  p-3.5 flex items-center gap-3 max-[1100px]:flex-wrap`}
+      className={`rounded-[12px] border border-e-bg-fy bg-[#ffffff] p-3.5 flex items-center gap-3 max-[1100px]:flex-wrap`}
     >
       <SearchInput
         placeholder="Mijoz nomi yoki telefon raqami bo'yicha qidirish"

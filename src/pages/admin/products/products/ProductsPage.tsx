@@ -47,7 +47,7 @@ const AdminProductsPage = () => {
   // Products end
 
   // Product detail starts
-  const handleProductDetailOpen = (id: string) => {
+  const handleProductDetailOpen = (_: any, id: string) => {
     navigate(`detail/${id}`);
   };
   // Product detail ends
@@ -117,7 +117,7 @@ const AdminProductsPage = () => {
         <PlusButton setOpen={() => navigate("add")} />
       </div>
 
-      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-2 p-3.5 ">
+      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] p-3.5 ">
         <SearchInput
           placeholder="Mahsulot nomi, brandi bo'yicha qidirish"
           className="h-10! min-[900px]:w-[50%]! bg-bg-ty! text-[16px]!"

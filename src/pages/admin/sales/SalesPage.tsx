@@ -181,23 +181,21 @@ const AdminSalesPage = () => {
         <PlusButton setOpen={() => navigate("add")} />
       </div>
       <div className="flex flex-col gap-5">
-        <div className="min-[500px]:mt-2">
-          <SalesFilter
-            onFilterSubmit={onFilterSubmit}
-            start={query.start}
-            end={query.end}
-            shopId={query.shopId}
-            tsexId={query.tsexId}
-            localSearch={localSearch}
-            shopsOptions={shopsOptions}
-            tsexesOptions={tsexesOptions}
-            setIsTsexOpen={setIsTsexOpen}
-            setIsShopOpen={setIsShopOpen}
-            handleSearchChange={handleSearchChange}
-            tsexLoading={tsexLoading}
-            shopLoading={shopLoading}
-          />
-        </div>
+        <SalesFilter
+          onFilterSubmit={onFilterSubmit}
+          start={query.start}
+          end={query.end}
+          shopId={query.shopId}
+          tsexId={query.tsexId}
+          localSearch={localSearch}
+          shopsOptions={shopsOptions}
+          tsexesOptions={tsexesOptions}
+          setIsTsexOpen={setIsTsexOpen}
+          setIsShopOpen={setIsShopOpen}
+          handleSearchChange={handleSearchChange}
+          tsexLoading={tsexLoading}
+          shopLoading={shopLoading}
+        />
 
         <div className="max-[500px]:hidden">
           <ProTable

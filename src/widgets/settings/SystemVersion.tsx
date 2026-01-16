@@ -9,12 +9,12 @@ const SystemVersion = () => (
             Tizim versiyasi
           </span>
           <span className="text-xs text-gray-500">
-            Oxirgi yangilanish: 15.05.2024
+            Oxirgi yangilanish: {new Date(Date.now()).toLocaleDateString("uz-UZ")}
           </span>
         </div>
       </div>
       <div className="px-3 py-1 bg-white border border-gray-200 rounded-md shadow-sm">
-        <span className="text-xs font-bold text-[#137fec]">v2.4.12-stable</span>
+        <span className="text-xs font-bold text-[#137fec]">v1.0.0-stable</span>
       </div>
     </div>
   </div>

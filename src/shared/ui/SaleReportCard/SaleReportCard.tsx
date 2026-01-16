@@ -122,10 +122,7 @@ const SaleReportCard = ({ item, onDetail }: SaleReportCardProps) => {
           <span className="text-[13px] font-medium">
             Sana:{" "}
             <span className="font-bold text-slate-600">
-              {new Date(item.created_at).toLocaleString("uz-UZ", {
-                dateStyle: "medium",
-                timeStyle: "short",
-              })}
+              {new Date(item.created_at).toLocaleString("uz-UZ")}
             </span>
           </span>
         </div>

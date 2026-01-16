@@ -16,15 +16,11 @@ const TsexBalances = () => {
   const finalNet = net > 0 ? -net : Math.abs(net);
 
   if (tsexBalancesLoading) {
-    return (
-      <div className="mt-2">
-        <BalanceStatCardSkeleton />
-      </div>
-    );
+    return <BalanceStatCardSkeleton />;
   }
   // TsexStatCard ends
   return (
-    <div className="mt-2 grid grid-cols-3 gap-5 max-[1250px]:grid-cols-2 max-[500px]:grid-cols-1">
+    <div className="grid grid-cols-3 gap-5 max-[1250px]:grid-cols-2 max-[500px]:grid-cols-1">
       <StatCard title="Jami haqdorlik" value={Number(creditor)} />
       <StatCard
         title="Jami qarzdorlik"
