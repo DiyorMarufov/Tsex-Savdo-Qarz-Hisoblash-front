@@ -1,4 +1,5 @@
 import {
+  BellRing,
   ChartBar,
   LayoutDashboard,
   Package,
@@ -101,12 +102,18 @@ export const AdminSidebarNavigation: SidebarNavItem[] = [
   },
   {
     id: 6,
+    to: "/admin/warnings", 
+    label: "Ogohlantirishlar",
+    icon: <BellRing className="w-5 h-5" />,
+  },
+  {
+    id: 7,
     to: "/admin/reports/sale",
     label: "Hisobotlar",
     icon: <ChartBar className="w-5 h-5" />,
   },
   {
-    id: 7,
+    id: 8,
     to: "/admin/settings",
     label: "Sozlamalar",
     icon: <Settings className="w-5 h-5" />,

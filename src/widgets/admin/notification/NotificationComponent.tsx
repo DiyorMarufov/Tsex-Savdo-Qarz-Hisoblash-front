@@ -4,15 +4,18 @@ import {
   CheckOutlined,
   QuestionCircleOutlined,
 } from "@ant-design/icons";
-import { memo, type FC } from "react";
+import { memo, useState, type FC } from "react";
 import { useWarning } from "../../../shared/lib/apis/warnings/useWarning";
 import { useApiNotification } from "../../../shared/hooks/api-notification/useApiNotification";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   data: any[];
+  closePopover?: () => void;
 }
 
-const NotificationContent: FC<Props> = ({ data }) => {
+const NotificationContent: FC<Props> = ({ data, closePopover }) => {
+  const navigate = useNavigate();
   const { updateStatus } = useWarning();
   const { handleApiError, handleSuccess } = useApiNotification();
   const handleConfirm = (id: string) => {
@@ -35,6 +38,10 @@ const NotificationContent: FC<Props> = ({ data }) => {
     });
   };
 
+  const handleViewAll = () => {
+    closePopover?.();
+    navigate("/admin/warnings");
+  };
   return (
     <div className="w-[300px]">
       <div className="border-b pb-2 mb-2 px-2">
@@ -93,7 +100,7 @@ const NotificationContent: FC<Props> = ({ data }) => {
         )}
       />
       <div className="text-center pt-2 border-t mt-2">
-        <Button type="text" block>
+        <Button type="text" block onClick={handleViewAll}>
           Barchasini ko'rish
         </Button>
       </div>
@@ -101,22 +108,31 @@ const NotificationContent: FC<Props> = ({ data }) => {
   );
 };
 
-export const HeaderBell: FC<Props> = ({ data }) => (
-  <Popover
-    content={<NotificationContent data={data} />}
-    trigger="click"
-    placement="bottomRight"
-    arrow={false}
-    overlayClassName="notification-popover"
-  >
-    <Badge count={data?.length} size="small" offset={[-2, 5]}>
-      <Button
-        type="text"
-        icon={<BellOutlined className="text-[20px] text-gray-600" />}
-        className="flex items-center justify-center h-10! w-10! rounded-full hover:bg-gray-100 transition-all"
-      />
-    </Badge>
-  </Popover>
-);
+export const HeaderBell: FC<Props> = ({ data }) => {
+  const [open, setOpen] = useState(false);
+
+  const handleOpenChange = (newOpen: boolean) => setOpen(newOpen);
+
+  const closePopover = () => setOpen(false);
+  return (
+    <Popover
+      open={open}
+      onOpenChange={handleOpenChange}
+      content={<NotificationContent data={data} closePopover={closePopover} />}
+      trigger="click"
+      placement="bottomRight"
+      arrow={false}
+      overlayClassName="notification-popover"
+    >
+      <Badge count={data?.length} size="small" offset={[-2, 5]}>
+        <Button
+          type="text"
+          icon={<BellOutlined className="text-[20px] text-gray-600" />}
+          className="flex items-center justify-center h-10! w-10! rounded-full hover:bg-gray-100 transition-all"
+        />
+      </Badge>
+    </Popover>
+  );
+};
 
 export default memo(NotificationContent);

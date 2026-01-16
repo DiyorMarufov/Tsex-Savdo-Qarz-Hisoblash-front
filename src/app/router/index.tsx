@@ -22,6 +22,9 @@ const NotFoundPage = lazy(
 const AdminSettingsPage = lazy(
   () => import("../../pages/admin/settings/SettingsPage")
 );
+const AdminWarningsPage = lazy(
+  () => import("../../pages/admin/warnings/WarningsPage")
+);
 const AdminTsexesReportPage = lazy(
   () => import("../../pages/admin/reports/TsexesReportPage")
 );
@@ -307,6 +310,8 @@ const Router = () => {
                     },
                   ],
                 },
+                { path: "warnings", element: <AdminWarningsPage /> },
+
                 {
                   path: "settings",
                   element: <AdminSettingsPage />,
