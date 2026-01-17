@@ -10,8 +10,14 @@ interface ProductModelCardProps {
 
 const ProductModelCard = ({ item, onDetail }: ProductModelCardProps) => {
   return (
-    <div className="bg-white rounded-2xl p-3 flex items-center gap-3 border border-bg-fy active:bg-gray-50 transition-colors cursor-pointer">
-      <div className="w-16 h-16 rounded-xl bg-gray-100 overflow-hidden shrink-0">
+    <div
+      className="bg-white rounded-2xl p-3 flex items-center gap-3 border border-bg-fy active:bg-gray-50 transition-colors cursor-pointer"
+      onClick={() => onDetail(item.id)}
+    >
+      <div
+        className="w-16 h-16 rounded-xl bg-gray-100 overflow-hidden shrink-0"
+        onClick={(e) => e.stopPropagation()}
+      >
         <Image
           src={item.products?.[0]?.images?.[0]?.image_url}
           alt={item.name}
@@ -50,10 +56,7 @@ const ProductModelCard = ({ item, onDetail }: ProductModelCardProps) => {
         </div>
       </div>
 
-      <div
-        className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-50"
-        onClick={() => onDetail(item.id)}
-      >
+      <div className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-50">
         <ChevronRight size={18} />
       </div>
     </div>

@@ -57,6 +57,10 @@ export const customerRegions: Option[] = [
     value: "Republic of Karakalpakstan",
     label: "Republic of Karakalpakstan",
   },
+  {
+    value: "Kazakhstan",
+    label: "Kazakhstan",
+  },
 ];
 
 export const roleOptions: Option[] = [
@@ -114,45 +118,12 @@ export const roleTranslationToUzbek: Record<string, string> = {
   tsex_manager: "Tsex boshqaruvchi",
 };
 
-export const salesReportrawData = {
-  day: [
-    { name: "04:00", "Sotuvlar soni": 400, Summa: 1230000 },
-    { name: "05:00", "Sotuvlar soni": 400, Summa: 1230000 },
-    { name: "06:00", "Sotuvlar soni": 400, Summa: 1230000 },
-    { name: "07:00", "Sotuvlar soni": 400, Summa: 1230000 },
-    { name: "08:00", "Sotuvlar soni": 400, Summa: 1230000 },
-    { name: "09:00", "Sotuvlar soni": 400, Summa: 1230000 },
-    { name: "10:00", "Sotuvlar soni": 400, Summa: 1230000 },
-    { name: "11:00", "Sotuvlar soni": 400, Summa: 1230000 },
-    { name: "12:00", "Sotuvlar soni": 400, Summa: 1230000 },
-    { name: "13:00", "Sotuvlar soni": 400, Summa: 1230000 },
-  ],
-  month: Array.from({ length: 31 }, (_, i) => ({
-    name: (i + 1).toString(),
-    "Sotuvlar soni": Math.floor(Math.random() * (600 - 200) + 200),
-    Summa: Math.floor(Math.random() * (8000000 - 3000000) + 3000000),
-  })),
-  year: [
-    { name: "Yan", "Sotuvlar soni": 4500, Summa: 125000000 },
-    { name: "Fev", "Sotuvlar soni": 5200, Summa: 148000000 },
-    { name: "Mar", "Sotuvlar soni": 4800, Summa: 135000000 },
-    { name: "Apr", "Sotuvlar soni": 6100, Summa: 180000000 },
-    { name: "May", "Sotuvlar soni": 7200, Summa: 210000000 },
-    { name: "Iyun", "Sotuvlar soni": 6800, Summa: 195000000 },
-    { name: "Iyul", "Sotuvlar soni": 7500, Summa: 225000000 },
-    { name: "Avg", "Sotuvlar soni": 8200, Summa: 250000000 },
-    { name: "Sen", "Sotuvlar soni": 6400, Summa: 185000000 },
-    { name: "Okt", "Sotuvlar soni": 5900, Summa: 165000000 },
-    { name: "Noy", "Sotuvlar soni": 6700, Summa: 190000000 },
-    { name: "Dek", "Sotuvlar soni": 9500, Summa: 310000000 },
-  ],
-};
-
 export const colorOptions = [
-  { value: "white", label: "White", hex: "#FFFFFF" },
   { value: "black", label: "Black", hex: "#000000" },
-  { value: "red", label: "Red", hex: "#FF0000" },
+  { value: "navy", label: "Navy Blue", hex: "#000080" },
   { value: "blue", label: "Blue", hex: "#0000FF" },
+  { value: "white", label: "White", hex: "#FFFFFF" },
+  { value: "red", label: "Red", hex: "#FF0000" },
   { value: "yellow", label: "Yellow", hex: "#FFFF00" },
   { value: "green", label: "Green", hex: "#008000" },
   { value: "orange", label: "Orange", hex: "#FFA500" },
@@ -161,7 +132,6 @@ export const colorOptions = [
   { value: "brown", label: "Brown", hex: "#A52A2A" },
   { value: "grey", label: "Grey", hex: "#808080" },
 
-  { value: "navy", label: "Navy Blue", hex: "#000080" },
   { value: "beige", label: "Beige", hex: "#F5F5DC" },
   { value: "ivory", label: "Ivory", hex: "#FFFFF0" },
   { value: "khaki", label: "Khaki", hex: "#F0E68C" },
@@ -186,6 +156,7 @@ export const colorOptions = [
 ];
 
 export const productUnitInPackageOptions = [
+  { value: 3, label: 3 },
   { value: 4, label: 4 },
   { value: 5, label: 5 },
   { value: 6, label: 6 },
@@ -193,5 +164,8 @@ export const productUnitInPackageOptions = [
 
 export const productSizeOptions = [
   { value: "39-43", label: "39-43" },
+  { value: "39-44", label: "39-44" },
   { value: "40-44", label: "40-44" },
+  { value: "44-46", label: "44-46" },
+  { value: "44-47", label: "44-47" },
 ];

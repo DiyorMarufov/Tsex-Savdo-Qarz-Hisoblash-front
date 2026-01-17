@@ -11,7 +11,9 @@ const AdminDashboardPage = () => {
   return (
     <div>
       <LargeTitle title="Boshqaruv paneli" />
-      <DashboardBalances />
+      <div className="min-[500px]:mt-1">
+        <DashboardBalances />
+      </div>
 
       <div className="mt-4 flex gap-4 max-[1350px]:flex-col">
         <SaleDynamics />

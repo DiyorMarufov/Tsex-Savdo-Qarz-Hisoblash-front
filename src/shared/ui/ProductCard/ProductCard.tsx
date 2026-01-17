@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { Image, Button as AntdButton } from "antd";
 import type { ProductTableListItem } from "../../lib/model/products/products-model";
+import { colorOptions } from "../../lib/constants";
 
 interface ProductCardProps {
   product: ProductTableListItem;
@@ -8,6 +9,10 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product, onDetail }: ProductCardProps) => {
+  const findColor = colorOptions.find((color) =>
+    color.value === product.color ? color.hex : "",
+  );
+
   return (
     <div className="flex flex-col border border-bg-fy bg-white rounded-2xl p-3 gap-3">
       <div className="flex justify-center items-center bg-slate-50/50 rounded-xl overflow-hidden shrink-0 aspect-square max-h-[100px]">
@@ -31,8 +36,8 @@ const ProductCard = ({ product, onDetail }: ProductCardProps) => {
           </div>
 
           <div
-            className="h-4 w-4 rounded-full border border-slate-200 shrink-0 mt-1 shadow-sm"
-            style={{ backgroundColor: product.color }}
+            className="h-4.5 w-4.5 rounded-full border border-slate-200 shrink-0 mt-1 shadow-sm"
+            style={{ backgroundColor: findColor?.hex }}
           ></div>
         </div>
 

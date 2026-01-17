@@ -16,12 +16,14 @@ import { base64ToFile } from "../../../shared/lib/functions/base64ToFile";
 import { useSale } from "../../../shared/lib/apis/sales/useSale";
 import { useApiNotification } from "../../../shared/hooks/api-notification/useApiNotification";
 import { debounce } from "../../../shared/lib/functions/debounce";
+import { colorOptions } from "../../../shared/lib/constants";
 
 const AdminAddSalePage = () => {
   const navigate = useNavigate();
   const [isCustomerOpen, setIsCustomerOpen] = useState<boolean>(false);
   const [isProductOpen, setIsProductOpen] = useState<boolean>(false);
   const [isShopOpen, setIsShopOpen] = useState<boolean>(false);
+  const [isPriceVisible, setIsPriceVisible] = useState<boolean>(false);
   const { getInfiniteCustomers } = useCustomer();
   const { getInfiniteProducts } = useProduct();
   const { getAllShopsForProductsFilter } = useShop();
@@ -29,7 +31,7 @@ const AdminAddSalePage = () => {
 
   const { getParam, setParams, removeParams } = useParamsHook();
   const [, setCustomerModalSearch] = useState(
-    getParam("customer_search") || ""
+    getParam("customer_search") || "",
   );
   const [, setProductFilterSearch] = useState(getParam("product_search") || "");
   const { handleApiError } = useApiNotification();
@@ -68,7 +70,7 @@ const AdminAddSalePage = () => {
         page: 1,
       });
     }, 500),
-    [setParams]
+    [setParams],
   );
 
   const debouncedSetSearchProductFilterQuery = useCallback(
@@ -78,7 +80,7 @@ const AdminAddSalePage = () => {
         page: 1,
       });
     }, 500),
-    [setParams]
+    [setParams],
   );
 
   const handleSearchCustomerModalChange = (value: string) => {
@@ -95,7 +97,7 @@ const AdminAddSalePage = () => {
   // HanldeChangeSelect starts
   const handleChange = (
     key: "customerId" | "productId" | "shopId",
-    value: string | string[]
+    value: string | string[],
   ) => {
     if (key === "productId") {
       const savedData = localStorage.getItem("selected_product_ids");
@@ -162,47 +164,69 @@ const AdminAddSalePage = () => {
     search: query.productFilterSearch,
   });
   const productOptions = useMemo(() => {
-    return (
-      (
-        productLists?.pages.flatMap((page: any) => {
-          return Array.isArray(page)
-            ? page
-            : page?.data?.data || page?.data || [];
-        }) || []
-      ).map((pr: any) => ({
+    const allProducts =
+      productLists?.pages.flatMap((page: any) => {
+        return Array.isArray(page)
+          ? page
+          : page?.data?.data || page?.data || [];
+      }) || [];
+
+    return allProducts.map((pr: any) => {
+      const findColor = colorOptions.find((color) =>
+        color.value === pr?.color ? color.hex : "",
+      );
+
+      return {
         value: pr?.id,
         label: (
           <div className="flex items-center justify-between w-full py-1">
-            <div className="flex flex-col gap-0.5">
-              <span className="text-[14px] font-medium text-slate-800 leading-tight">
+            <div className="flex flex-col gap-0.5 overflow-hidden">
+              <span className="text-[14px] font-medium text-slate-800 leading-tight truncate">
                 {pr?.product_model?.name}
               </span>
-              <span className="text-[11px] text-slate-400 font-normal">
-                {pr?.product_model?.brand}
-              </span>
+
+              <div className="flex items-center gap-1.5 text-[11px] text-slate-400 font-normal">
+                <span className="shrink-0">{pr?.product_model?.brand}</span>
+                <span className="text-slate-300">|</span>
+                <div className="flex items-center gap-1 shrink-0">
+                  <span className="capitalize">{pr?.color}</span>
+                  <div
+                    className="h-3 w-3 rounded-full border border-slate-200 shadow-sm"
+                    style={{ backgroundColor: findColor?.hex }}
+                  ></div>
+                </div>
+                <span className="text-slate-300">|</span>
+                <span className="truncate">
+                  {pr?.product_model?.tsex?.name}
+                </span>
+              </div>
             </div>
-            <div className="flex flex-col items-end gap-0.5">
+
+            <div className="flex flex-col items-end gap-0.5 shrink-0 ml-2">
               <span className="text-[13px] font-bold text-emerald-600 tabular-nums">
-                {Number(pr?.price).toLocaleString()} uzs
+                {isPriceVisible ? Number(pr?.price).toLocaleString() : "******"}{" "}
+                uzs
               </span>
               <span
-                className={`text-[11px] font-medium ${pr?.quantity > 0 ? "text-blue-500" : "text-red-500"}`}
+                className={`text-[11px] font-medium ${
+                  pr?.quantity > 0 ? "text-blue-500" : "text-red-500"
+                }`}
               >
                 Qoldiq: {pr?.quantity} ta
               </span>
             </div>
           </div>
         ),
-        displayLabel: `${pr?.product_model?.name} - ${pr?.product_model?.brand}`,
+        displayLabel: `${pr?.product_model?.name} - ${pr?.product_model?.brand} - ${pr?.color ? pr?.color?.charAt(0)?.toUpperCase() + pr?.color?.slice(1) : ""}`,
         originalProduct: pr,
-      })) || []
-    );
-  }, [productLists]);
+      };
+    });
+  }, [productLists, isPriceVisible]);
 
   const tagRender = (props: any) => {
     const { value, closable, onClose } = props;
     const selectedOption = productOptions.find(
-      (opt: any) => opt.value === value
+      (opt: any) => opt.value === value,
     );
 
     return (
@@ -324,7 +348,7 @@ const AdminAddSalePage = () => {
         </div>
       </div>
 
-      <div className="flex items-start gap-5 mt-2 max-[1750px]:flex-col">
+      <div className="flex items-start gap-5 min-[500px]:mt-1 max-[1750px]:flex-col">
         <div className="flex flex-col gap-5 w-3/1 max-[1750px]:w-full">
           <ClientInfoForm
             customerId={query.customerId}
@@ -352,6 +376,8 @@ const AdminAddSalePage = () => {
             setIsShopOpen={setIsShopOpen}
             handleChange={handleChange}
             tagRender={tagRender}
+            isPriceVisible={isPriceVisible}
+            setIsPriceVisible={setIsPriceVisible}
           />
         </div>
         <PaymentAndSummary />

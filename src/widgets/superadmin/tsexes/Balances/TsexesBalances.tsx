@@ -20,7 +20,7 @@ const TsexBalances = () => {
   }
   // TsexStatCard ends
   return (
-    <div className="grid grid-cols-3 gap-5 max-[1250px]:grid-cols-2 max-[500px]:grid-cols-1">
+    <div className="min-[500px]:mt-1 grid grid-cols-3 gap-5 max-[1250px]:grid-cols-2 max-[500px]:grid-cols-1">
       <StatCard title="Jami haqdorlik" value={Number(creditor)} />
       <StatCard
         title="Jami qarzdorlik"

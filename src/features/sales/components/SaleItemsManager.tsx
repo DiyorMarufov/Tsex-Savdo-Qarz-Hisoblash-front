@@ -3,6 +3,8 @@ import { memo, useMemo, useState, useEffect } from "react";
 import type { Option } from "../../../shared/lib/types";
 import type { SelectProps } from "antd/es/select";
 import { useProduct } from "../../../shared/lib/apis/products/useProduct";
+import { colorOptions } from "../../../shared/lib/constants";
+import { Eye, EyeOff } from "lucide-react";
 
 type TagRenderType = SelectProps["tagRender"];
 
@@ -21,6 +23,8 @@ interface SaleItemsManagerProps {
   setIsShopOpen: (visible: boolean) => void;
   handleChange: (key: "shopId" | "productId", value: string[] | string) => void;
   tagRender: TagRenderType;
+  isPriceVisible: boolean;
+  setIsPriceVisible: any;
 }
 
 const SaleItemsManager = ({
@@ -38,6 +42,8 @@ const SaleItemsManager = ({
   setIsShopOpen,
   handleChange,
   tagRender,
+  isPriceVisible,
+  setIsPriceVisible,
 }: SaleItemsManagerProps) => {
   const { getInfiniteProducts } = useProduct();
   const { data: productsData } = getInfiniteProducts(true);
@@ -67,7 +73,7 @@ const SaleItemsManager = ({
     let currentSaved = saved ? JSON.parse(saved) : [];
 
     let filtered = currentSaved.filter((item: any) =>
-      selectedIds.includes(item.product_id)
+      selectedIds.includes(item.product_id),
     );
 
     selectedIds.forEach((id) => {
@@ -90,11 +96,11 @@ const SaleItemsManager = ({
   const updateItemDetails = (
     id: string,
     field: "quantity" | "price",
-    value: number | null
+    value: number | null,
   ) => {
     setItems((prev) => {
       const newItems = prev.map((item) =>
-        item.product_id === id ? { ...item, [field]: value } : item
+        item.product_id === id ? { ...item, [field]: value } : item,
       );
       localStorage.setItem("sale_items", JSON.stringify(newItems));
       return newItems;
@@ -111,14 +117,24 @@ const SaleItemsManager = ({
       }
     }
   };
+
   return (
     <div className="flex flex-col gap-2 bg-[#ffffff] p-4 border border-bg-fy rounded-[5px] overflow-hidden">
       <div className="flex flex-col gap-1.5">
-        <span className="text-[18px] text-[#232E2F] font-medium">
-          Mahsulot va do'kon malumotlari
-        </span>
+        <div className="flex justify-between items-center gap-3">
+          <span className="text-[18px] text-[#232E2F] font-medium">
+            Mahsulot va do'kon malumotlari
+          </span>
+          <div onClick={() => setIsPriceVisible((p: boolean) => !p)}>
+            {isPriceVisible ? (
+              <Eye className="w-4.5 h-4.5" />
+            ) : (
+              <EyeOff className="w-4.5 h-4.5" />
+            )}
+          </div>
+        </div>
         <div className="flex flex-col gap-3">
-          <div className="flex max-[820px]:flex-col gap-3">
+          <div className="flex max-[1170px]:flex-col gap-3">
             <div className="flex flex-col gap-1 w-full">
               <span className="text-[16px] text-[#232E2F]">Mahsulot</span>
               <Select
@@ -155,42 +171,58 @@ const SaleItemsManager = ({
                   {selectedProducts.length > 0 ? (
                     selectedProducts.map((product: any) => {
                       const currentItem = items.find(
-                        (i) => i.product_id === product.id
+                        (i) => i.product_id === product.id,
+                      );
+
+                      const findColor = colorOptions.find((color) =>
+                        color.value === product?.color ? color.hex : "",
                       );
                       return (
                         <div
                           key={product.id}
                           className="flex flex-col gap-3 p-4 bg-slate-50 border border-slate-100 rounded-xl"
                         >
-                          <div className="flex justify-between items-start gap-3 max-[540px]:flex-col ">
+                          <div className="flex justify-between items-start gap-3 max-[540px]:flex-col">
                             <div className="flex flex-col">
-                              <span className="text-sm font-bold text-slate-800 leading-tight">
+                              <span className="text-sm font-bold text-slate-800 leading-tight flex items-center gap-2">
                                 {product.product_model.name}
                               </span>
                               <span className="text-[11px] text-slate-500 font-semibold">
                                 {product.product_model.brand}
                               </span>
                             </div>
-                            <div className="flex min-[480px]:items-center gap-3 mt-1 max-[480px]:flex-col">
-                              <div className="flex gap-3 min-[385px]:items-center max-[385px]:flex-col">
+
+                            <div className="flex flex-col items-end gap-2 max-[540px]:items-start max-[540px]:w-full">
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <div className="flex items-center gap-2 px-2 py-0.5 rounded text-[11px] font-bold bg-white text-slate-600 border border-slate-200">
+                                  <span className="opacity-70">
+                                    {product?.product_model?.tsex?.name}
+                                  </span>
+                                  <div
+                                    className="h-3 w-3 rounded-full border border-slate-300 shrink-0"
+                                    style={{
+                                      backgroundColor: findColor?.hex,
+                                    }}
+                                  ></div>
+                                </div>
+
                                 <div
-                                  className={`flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-semibold tracking-wide border max-[385px]:w-fit
-                                        ${
-                                          product.quantity > 10
-                                            ? "bg-blue-50 text-blue-600 border-blue-100"
-                                            : product.quantity > 0
-                                              ? "bg-orange-50 text-orange-600 border-orange-100"
-                                              : "bg-red-50 text-red-600 border-red-100"
-                                        }`}
+                                  className={`flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-semibold tracking-wide border ${
+                                    product.quantity >= 10
+                                      ? "bg-blue-50 text-blue-600 border-blue-100"
+                                      : product.quantity > 0
+                                        ? "bg-orange-50 text-orange-600 border-orange-100"
+                                        : "bg-red-50 text-red-600 border-red-100"
+                                  }`}
                                 >
                                   <span className="relative flex h-2 w-2">
                                     {product.quantity > 0 &&
-                                      product.quantity <= 10 && (
+                                      product.quantity <= 9 && (
                                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
                                       )}
                                     <span
                                       className={`relative inline-flex rounded-full h-2 w-2 ${
-                                        product.quantity > 10
+                                        product.quantity >= 10
                                           ? "bg-blue-500"
                                           : product.quantity > 0
                                             ? "bg-orange-500"
@@ -200,22 +232,26 @@ const SaleItemsManager = ({
                                   </span>
                                   Qoldiq: {product.quantity} ta
                                 </div>
-
-                                <div className="flex items-center gap-1 px-2 py-0.5 rounded text-[12px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">
-                                  <span className="text-[11px] opacity-60">
-                                    Asl narxi:
-                                  </span>
-                                  {Number(product.price).toLocaleString()}{" "}
-                                  <span className="text-[11px]">uzs</span>
-                                </div>
                               </div>
 
-                              <div className="flex gap-1 px-2 py-0.5 rounded text-[12px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-100 max-[480px]:w-fit">
-                                <span className="text-[11px] opacity-60 font-semibold tracking-tight">
-                                  Pochkada:
-                                </span>
-                                {product.unit_in_package}{" "}
-                                <span className="text-[11px]">ta</span>
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <div className="flex items-center gap-1 px-2 py-0.5 rounded text-[12px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">
+                                  <span className="text-[11px] opacity-60 font-medium">
+                                    Asl narxi:
+                                  </span>
+                                  {isPriceVisible
+                                    ? Number(product.price).toLocaleString()
+                                    : "******"}
+                                  <span className="text-[11px]">uzs</span>
+                                </div>
+
+                                <div className="flex gap-1 px-2 py-0.5 rounded text-[12px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-100">
+                                  <span className="text-[11px] opacity-60 font-semibold tracking-tight">
+                                    Pochkada:
+                                  </span>
+                                  {product.unit_in_package}{" "}
+                                  <span className="text-[11px]">ta</span>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -260,7 +296,10 @@ const SaleItemsManager = ({
                                 }
                                 className="w-full rounded-md"
                                 formatter={(v) =>
-                                  `${v}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                  `${isPriceVisible ? v : "******"}`.replace(
+                                    /\B(?=(\d{3})+(?!\d))/g,
+                                    ",",
+                                  )
                                 }
                                 parser={(v) => v!.replace(/[^\d]/g, "")}
                                 addonAfter={

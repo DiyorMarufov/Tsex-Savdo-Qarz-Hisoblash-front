@@ -39,7 +39,7 @@ const AdminProductsPage = () => {
   // Products start
   const { data: allProducts, isLoading: productLoading } = getAllProducts(
     query,
-    id
+    id,
   );
   const products = allProducts?.data?.data;
   const total = allProducts?.data?.total || 0;
@@ -83,7 +83,7 @@ const AdminProductsPage = () => {
         page: 1,
       });
     }, 500),
-    [setParams]
+    [setParams],
   );
 
   const handleSearchChange = (value: string) => {
@@ -93,7 +93,7 @@ const AdminProductsPage = () => {
   // Search ends
 
   const isChildPage = /^\/admin\/models\/product\/[^/]+\/(add|detail)/.test(
-    pathname
+    pathname,
   );
 
   if (isChildPage) {
@@ -117,7 +117,7 @@ const AdminProductsPage = () => {
         <PlusButton setOpen={() => navigate("add")} />
       </div>
 
-      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] p-3.5 ">
+      <div className="min-[500px]:mt-1 rounded-[12px] border border-e-bg-fy bg-[#ffffff] p-3.5">
         <SearchInput
           placeholder="Mahsulot nomi, brandi bo'yicha qidirish"
           className="h-10! min-[900px]:w-[50%]! bg-bg-ty! text-[16px]!"

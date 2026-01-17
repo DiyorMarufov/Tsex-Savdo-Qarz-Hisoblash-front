@@ -88,7 +88,7 @@ const ProductModelsPage = () => {
         page: 1,
       });
     }, 500),
-    [setParams]
+    [setParams],
   );
 
   const handleSearchChange = (value: string) => {

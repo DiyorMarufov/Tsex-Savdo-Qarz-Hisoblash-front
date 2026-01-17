@@ -31,7 +31,7 @@ const ProductFilters = ({
   shopLoading,
 }: ProductFiltersProps) => {
   return (
-    <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] p-3.5 flex items-center gap-3 max-[900px]:flex-wrap">
+    <div className="min-[500px]:mt-1 rounded-[12px] border border-e-bg-fy bg-[#ffffff] p-3.5 flex items-center gap-3 max-[900px]:flex-wrap">
       <SearchInput
         placeholder="Model nomi,brandi bo'yicha qidirish"
         className="h-10! min-[900px]:w-[50%]! bg-bg-ty! text-[16px]!"

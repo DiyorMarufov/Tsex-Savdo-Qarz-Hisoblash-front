@@ -64,7 +64,15 @@ const ProductDetailPage = () => {
 
             <div className="divide-y rounded-xl overflow-hidden">
               <InfoRow label="Narxi" value={`${price} UZS`} highlight />
-              <InfoRow label="Rangi" value={product?.color} />
+              <InfoRow
+                label="Rangi"
+                value={
+                  product?.color
+                    ? product.color.charAt(0).toUpperCase() +
+                      product.color.slice(1)
+                    : ""
+                }
+              />
               <InfoRow label="Miqdori" value={product.quantity} />
               <InfoRow
                 label="Pochkadagi soni"

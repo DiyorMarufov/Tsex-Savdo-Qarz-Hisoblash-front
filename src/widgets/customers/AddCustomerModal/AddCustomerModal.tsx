@@ -68,7 +68,7 @@ const AddCustomerModal = ({
                 { required: true, message: "To'liq ism kiritilishi shart!" },
               ]}
             >
-              <Input className="h-10!" placeholder="To'liq ism" allowClear/>
+              <Input className="h-10!" placeholder="To'liq ism" allowClear />
             </Form.Item>
           </div>
 
@@ -120,10 +120,16 @@ const AddCustomerModal = ({
               rules={[{ required: true, message: "Viloyat tanlanishi shart!" }]}
             >
               <Select
+                showSearch
                 className="h-10! w-full"
                 placeholder="Viloyat/Shahar tanlash"
                 options={customerRegions}
                 allowClear
+                filterOption={(input: any, option: any) =>
+                  (option?.label ?? "")
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
               />
             </Form.Item>
           </div>

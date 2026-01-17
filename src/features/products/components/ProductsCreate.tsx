@@ -86,12 +86,12 @@ const ProductsCreate = () => {
         if (
           status === 400 &&
           msg.startsWith(
-            "Price or quantity or unit in package should not be negative"
+            "Price or quantity or unit in package should not be negative",
           )
         ) {
           handleApiError(
             "Narxi,miqdori,pochkadagi soni positiv bolishi kerak",
-            "topRight"
+            "topRight",
           );
           return;
         } else if (status === 404 && msg.startsWith("Model with ID")) {
@@ -115,7 +115,7 @@ const ProductsCreate = () => {
     getProductModelByIdForFilter(id as string);
 
   const colorOptionsWithDot = colorOptions.map((color) => ({
-    value: color.hex,
+    value: color.value,
     label: (
       <div className="flex items-center gap-2 py-0.5">
         <div
@@ -220,7 +220,7 @@ const ProductsCreate = () => {
                   }
 
                   return Promise.reject(
-                    new Error("Narx 0 dan baland bo'lishi kerak!")
+                    new Error("Narx 0 dan baland bo'lishi kerak!"),
                   );
                 },
               },
@@ -261,7 +261,7 @@ const ProductsCreate = () => {
                   }
 
                   return Promise.reject(
-                    new Error("Miqdori 0 dan baland bo'lishi kerak!")
+                    new Error("Miqdori 0 dan baland bo'lishi kerak!"),
                   );
                 },
               },
