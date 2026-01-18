@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { Package, Tag, Calculator, Layers } from "lucide-react";
+import { Package, Tag, Layers } from "lucide-react";
 import type { SaleItemsTableListItem } from "../../lib/model/reports/sales-items-detail-model";
 
 interface SaleItemRepordCard {
@@ -65,16 +65,6 @@ const SaleItemReportCard = ({ item }: SaleItemRepordCard) => {
           </div>
           <span className="font-bold text-slate-600">
             {item.product_unit_in_package} talik
-          </span>
-        </div>
-
-        <div className="flex items-center justify-between text-[13px]">
-          <div className="flex items-center gap-2 text-slate-400">
-            <Calculator size={14} />
-            <span>Tannarxi:</span>
-          </div>
-          <span className="font-bold text-green-500">
-            {item.product_price?.toLocaleString()} uzs
           </span>
         </div>
       </div>

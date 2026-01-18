@@ -31,8 +31,8 @@ const AdminTsexesReportPage = lazy(
 const AdminProductsReportPage = lazy(
   () => import("../../pages/admin/reports/ProductsReportPage")
 );
-const AdminSaleItemReportPage = lazy(
-  () => import("../../pages/admin/reports/SaleItemReportPage")
+const AdminSaleItemsPage = lazy(
+  () => import("../../pages/admin/sales/SaleItemsPage")
 );
 const AdminSalesReportPage = lazy(
   () => import("../../pages/admin/reports/SalesReportPage")
@@ -296,7 +296,7 @@ const Router = () => {
                       children: [
                         {
                           path: ":id",
-                          element: <AdminSaleItemReportPage />,
+                          element: <AdminSaleItemsPage />,
                         },
                       ],
                     },

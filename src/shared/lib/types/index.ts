@@ -32,6 +32,8 @@ export interface QueryParams {
   customerType?: string;
   customerFilterSearch?: string;
   productFilterSearch?: string;
+  categorySearch?: string;
+  materialTypeSearch?: string;
 }
 
 export interface TsexTransactionsType {

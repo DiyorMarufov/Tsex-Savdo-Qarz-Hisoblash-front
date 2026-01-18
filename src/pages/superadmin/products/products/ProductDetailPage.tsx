@@ -4,6 +4,10 @@ import { Button, Image } from "antd";
 import { ArrowLeft, Edit } from "lucide-react";
 import ProductDetailCardSkeleton from "../../../../shared/ui/Skeletons/Products/ProductDetailCardSkeleton";
 import { useProduct } from "../../../../shared/lib/apis/products/useProduct";
+import {
+  productCategories,
+  productMaterialTypes,
+} from "../../../../shared/lib/constants";
 
 const ProductDetailPage = () => {
   const navigate = useNavigate();
@@ -64,6 +68,20 @@ const ProductDetailPage = () => {
 
             <div className="divide-y rounded-xl overflow-hidden">
               <InfoRow label="Narxi" value={`${price} UZS`} highlight />
+              <InfoRow
+                label="Kategoriya"
+                value={
+                  productCategories[product?.product_category?.name || "-"]
+                }
+              />
+              <InfoRow
+                label="Material turi"
+                value={
+                  productMaterialTypes[
+                    product?.product_material_type?.name || "-"
+                  ]
+                }
+              />
               <InfoRow
                 label="Rangi"
                 value={

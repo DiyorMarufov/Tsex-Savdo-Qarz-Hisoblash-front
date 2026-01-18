@@ -13,7 +13,7 @@ import {
 } from "../../../shared/lib/model/reports/sales-items-detail-model";
 import { ArrowLeft } from "lucide-react";
 
-const AdminSaleItemReportPage = () => {
+const AdminSaleItemsReportPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { getSaleItemsBySaleId } = useSaleItem();
@@ -147,4 +147,4 @@ const AdminSaleItemReportPage = () => {
   );
 };
 
-export default memo(AdminSaleItemReportPage);
+export default memo(AdminSaleItemsReportPage);

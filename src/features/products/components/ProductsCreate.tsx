@@ -8,19 +8,28 @@ import {
 } from "antd";
 import Dragger from "antd/es/upload/Dragger";
 import { Inbox, Plus } from "lucide-react";
-import { memo, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useProduct } from "../../../shared/lib/apis/products/useProduct";
 import { useApiNotification } from "../../../shared/hooks/api-notification/useApiNotification";
 import {
   colorOptions,
+  productCategories,
+  productMaterialTypes,
   productSizeOptions,
   productUnitInPackageOptions,
 } from "../../../shared/lib/constants";
 import { useProductModel } from "../../../shared/lib/apis/product-models/useProductModel";
+import { useProductCategory } from "../../../shared/lib/apis/product-categories/useProductCategory";
+import { useProductMaterialType } from "../../../shared/lib/apis/product-material-types/useProductMaterialType";
+import { useParamsHook } from "../../../shared/hooks/params/useParams";
+import type { QueryParams } from "../../../shared/lib/types";
+import { debounce } from "../../../shared/lib/functions/debounce";
 
 type FieldType = {
   model_id: string;
+  category_id: string;
+  material_type_id: string;
   color: string;
   price: number;
   quantity: number;
@@ -30,11 +39,22 @@ type FieldType = {
 
 const ProductsCreate = () => {
   const [fileList, setFileList] = useState<any>(null);
+  const [isCategoryOpen, setIsCategoryOpen] = useState<boolean>(false);
+  const [isMaterialTypeOpen, setIsMaterialTypeOpen] = useState<boolean>(false);
+  const { getParam, setParams } = useParamsHook();
+  const [, setCategorySearch] = useState(getParam("category_search") || "");
+  const [, setMaterialTypeSearch] = useState(
+    getParam("material_type_search") || "",
+  );
+
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const { id } = useParams();
 
   const { getProductModelByIdForFilter } = useProductModel();
+  const { getAllProductCategoriesForFilter } = useProductCategory();
+  const { getAllProductMaterialTypesForFilter } = useProductMaterialType();
+
   const { createProduct } = useProduct();
   const { handleApiError } = useApiNotification();
 
@@ -51,6 +71,15 @@ const ProductsCreate = () => {
       console.log("Dropped files", e.dataTransfer.files);
     },
   };
+
+  // Query starts
+  const query: QueryParams = useMemo(() => {
+    const categorySearch = getParam("category_search") || undefined;
+    const materialTypeSearch = getParam("material_type_search") || undefined;
+
+    return { categorySearch, materialTypeSearch };
+  }, [getParam]);
+  // Query ends
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values: FieldType) => {
     const formData = new FormData();
@@ -97,6 +126,12 @@ const ProductsCreate = () => {
         } else if (status === 404 && msg.startsWith("Model with ID")) {
           handleApiError("Model topilmadi", "topRight");
           return;
+        } else if (status === 404 && msg.startsWith("Category with ID")) {
+          handleApiError("Kategoriya topilmadi", "topRight");
+          return;
+        } else if (status === 404 && msg.startsWith("Material type with ID")) {
+          handleApiError("Material turi topilmadi", "topRight");
+          return;
         } else if (status === 404 && msg.startsWith("User with ID")) {
           handleApiError("Superadmin topilmadi", "topRight");
           return;
@@ -109,6 +144,54 @@ const ProductsCreate = () => {
   };
 
   // Options start
+
+  // Search starts
+  const debouncedSetCategorySearchQuery = useCallback(
+    debounce((nextValue: string) => {
+      setParams({
+        category_search: nextValue || "",
+      });
+    }, 500),
+    [setParams],
+  );
+
+  const handleCategorySearchChange = (value: string) => {
+    setCategorySearch(value);
+
+    if (!value.trim()) {
+      debouncedSetCategorySearchQuery("");
+      return;
+    }
+
+    const englishKey = Object.keys(productCategories).find((key) =>
+      productCategories[key].toLowerCase().includes(value.toLowerCase()),
+    );
+    debouncedSetCategorySearchQuery(englishKey as string);
+  };
+
+  const debouncedSetMaterialTypeSearchQuery = useCallback(
+    debounce((nextValue: string) => {
+      setParams({
+        material_type_search: nextValue || "",
+      });
+    }, 500),
+    [setParams],
+  );
+
+  const handleMaterialTypeSearchChange = (value: string) => {
+    setMaterialTypeSearch(value);
+
+    if (!value.trim()) {
+      debouncedSetMaterialTypeSearchQuery("");
+      return;
+    }
+
+    const englishKey = Object.keys(productMaterialTypes).find((key) =>
+      productMaterialTypes[key].toLowerCase().includes(value.toLowerCase()),
+    );
+    debouncedSetMaterialTypeSearchQuery(englishKey as string);
+  };
+  // Search ends
 
   // Options start
   const { data: productModel, isLoading: productModelLoading } =
@@ -128,6 +211,29 @@ const ProductsCreate = () => {
       </div>
     ),
   }));
+
+  const { data: allProductCategories, isLoading: productCategoryLoading } =
+    getAllProductCategoriesForFilter(isCategoryOpen, {
+      search: query.categorySearch,
+    });
+  const productCategoryOptions = allProductCategories?.data?.map((ct: any) => ({
+    value: ct?.id,
+    label: productCategories[ct?.name],
+  }));
+
+  const {
+    data: allProductMaterialTypes,
+    isLoading: productMaterialTypeLoading,
+  } = getAllProductMaterialTypesForFilter(isMaterialTypeOpen, {
+    search: query.materialTypeSearch,
+  });
+  const productMaterialTypeOptions = allProductMaterialTypes?.data?.map(
+    (ct: any) => ({
+      value: ct?.id,
+      label: productMaterialTypes[ct?.name],
+    }),
+  );
+
   // Options end
 
   useEffect(() => {
@@ -169,6 +275,66 @@ const ProductsCreate = () => {
             rules={[{ required: true }]}
           >
             <Input type="hidden" />
+          </Form.Item>
+        </div>
+
+        <div>
+          <span className="text-[16px] max-[500px]:text-[15px] text-[#232E2F] flex mb-1">
+            Kategoriya
+          </span>
+          <Form.Item<FieldType>
+            name="category_id"
+            rules={[
+              {
+                required: true,
+                message: "Mahsulot kategoriyasini tanlash majburiy!",
+              },
+            ]}
+          >
+            <Select
+              showSearch
+              className="h-10!"
+              placeholder="Kategoriya"
+              options={productCategoryOptions}
+              onDropdownVisibleChange={(visible: any) => {
+                if (visible) setIsCategoryOpen(true);
+              }}
+              onSearch={handleCategorySearchChange}
+              filterOption={false}
+              loading={productCategoryLoading}
+              allowClear
+            />
+          </Form.Item>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-x-6">
+        <div>
+          <span className="text-[16px] max-[500px]:text-[15px] text-[#232E2F] flex mb-1">
+            Material turi
+          </span>
+          <Form.Item<FieldType>
+            name="material_type_id"
+            rules={[
+              {
+                required: true,
+                message: "Mahsulot material turini tanlash majburiy!",
+              },
+            ]}
+          >
+            <Select
+              showSearch
+              className="h-10!"
+              placeholder="Material turi"
+              options={productMaterialTypeOptions}
+              onDropdownVisibleChange={(visible: any) => {
+                if (visible) setIsMaterialTypeOpen(true);
+              }}
+              onSearch={handleMaterialTypeSearchChange}
+              loading={productMaterialTypeLoading}
+              filterOption={false}
+              allowClear
+            />
           </Form.Item>
         </div>
 

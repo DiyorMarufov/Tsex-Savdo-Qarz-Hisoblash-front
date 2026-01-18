@@ -107,8 +107,8 @@ const AdminProductsReportPage = () => {
   // ProductReportFilter onFilterSubmit ends
 
   // Product detail starts
-  const handleProductDetailOpen = (id: string) => {
-    navigate(`/superadmin/products/${id}`);
+  const handleProductDetailOpen = (model_id: string, id: string) => {
+    navigate(`/admin/models/product/${model_id}/detail/${id}`);
   };
   // Product detail ends
 
@@ -120,7 +120,7 @@ const AdminProductsReportPage = () => {
         page: 1,
       });
     }, 500),
-    [setParams]
+    [setParams],
   );
 
   const debouncedSetSearchProductFilterQuery = useCallback(
@@ -130,7 +130,7 @@ const AdminProductsReportPage = () => {
         page: 1,
       });
     }, 500),
-    [setParams]
+    [setParams],
   );
 
   const handleSearchChange = (value: string) => {
@@ -180,16 +180,17 @@ const AdminProductsReportPage = () => {
   // ProductReportChart ends
 
   // ProductsReport start
-  const { data: allProducts, isLoading: productLoading } = getAllProductsForReport({
-    page: query.page,
-    limit: query.limit,
-    startDate: query.startStr,
-    endDate: query.endStr,
-    search: query.search,
-    modelId: query.modelId,
-    shopId: query.shopId,
-    tsexId: query.tsexId,
-  });
+  const { data: allProducts, isLoading: productLoading } =
+    getAllProductsForReport({
+      page: query.page,
+      limit: query.limit,
+      startDate: query.startStr,
+      endDate: query.endStr,
+      search: query.search,
+      modelId: query.modelId,
+      shopId: query.shopId,
+      tsexId: query.tsexId,
+    });
   const products = allProducts?.data?.data;
   const total = allProducts?.data?.total || 0;
   // ProductsReport end
