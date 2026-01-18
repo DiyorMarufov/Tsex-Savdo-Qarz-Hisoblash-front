@@ -1,6 +1,6 @@
 import { memo, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Button, Image } from "antd";
+import { Image } from "antd";
 import { ArrowLeft, Edit } from "lucide-react";
 import ProductDetailCardSkeleton from "../../../../shared/ui/Skeletons/Products/ProductDetailCardSkeleton";
 import { useProduct } from "../../../../shared/lib/apis/products/useProduct";
@@ -35,12 +35,22 @@ const ProductDetailPage = () => {
 
   return (
     <div className="mx-auto bg-white rounded-[5px]">
-      <div className="flex items-center justify-center p-4 border-b relative">
+      <div className="flex items-center justify-between px-3 h-14 border-b bg-white">
         <ArrowLeft
-          className="absolute left-3 cursor-pointer hover:opacity-80 mb-1"
+          className="hover:opacity-75 cursor-pointer"
           onClick={() => navigate(-1)}
         />
-        <h2 className="text-[18px] font-semibold">Mahsulot Tafsilotlari</h2>
+
+        <h2 className="text-[17px] font-bold text-slate-800">
+          Mahsulot Tafsilotlari
+        </h2>
+
+        <div className="p-2 hover:bg-emerald-50 rounded-lg cursor-pointer transition-colors group">
+          <Edit
+            size={18}
+            className="text-slate-400 group-hover:text-emerald-600"
+          />
+        </div>
       </div>
 
       <div className="p-4 lg:p-8">
@@ -117,11 +127,6 @@ const ProductDetailPage = () => {
           </div>
         </div>
       </div>
-      <div className="flex p-4 justify-end">
-        <Button className="bg-green-500! text-white! h-10! max-[500px]:w-full">
-          <Edit />
-        </Button>
-      </div>
     </div>
   );
 };
@@ -136,10 +141,10 @@ const InfoRow = ({
   highlight?: boolean;
 }) => (
   <div className="flex justify-between items-center py-3">
-    <span className="text-bg-sy text-[15px]">{label}</span>
+    <span className="text-bg-sy text-[14px]">{label}</span>
     <span
-      className={`text-[16px] font-bold ${
-        highlight ? "text-green-500 font-semibold" : "text-gray-800"
+      className={`text-[15px] font-bold ${
+        highlight ? "text-green-500 font-semibold" : "text-gray-700"
       }`}
     >
       {value}

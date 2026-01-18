@@ -64,7 +64,7 @@ const TsexCard = ({ ts, onDetail }: TsexCardProps) => {
       </div>
 
       <div className="flex items-center justify-between pt-2 border-t border-slate-50">
-        <div className="p-2 hover:bg-slate-50 rounded-lg cursor-pointer transition-colors group">
+        <div className="p-2 hover:bg-emerald-50 rounded-lg cursor-pointer transition-colors group">
           <Edit
             size={18}
             className="text-slate-400 group-hover:text-emerald-600"

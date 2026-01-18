@@ -67,7 +67,7 @@ const CustomerCard = ({ cs, onDetail }: Props) => {
       </div>
 
       <div className="flex items-center justify-between pt-2 border-t border-slate-50">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1">
           <div className="p-2 hover:bg-emerald-50 rounded-lg cursor-pointer transition-colors group">
             <Edit
               size={18}

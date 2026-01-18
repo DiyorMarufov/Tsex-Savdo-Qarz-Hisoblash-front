@@ -64,10 +64,20 @@ export const useProductModel = () => {
       gcTime: Infinity,
     });
 
+  const deleteProductModelById = useMutation({
+    mutationFn: (id: string) =>
+      api.delete(`product-models/${id}`).then((res) => res.data),
+    onSuccess: () =>
+      client.invalidateQueries({
+        queryKey: [product_model, "all-product-models"],
+      }),
+  });
+
   return {
     createProductModel,
     getAllProductModels,
     getInfiniteProductModels,
     getProductModelByIdForFilter,
+    deleteProductModelById,
   };
 };

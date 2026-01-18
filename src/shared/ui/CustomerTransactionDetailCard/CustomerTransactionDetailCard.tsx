@@ -99,7 +99,7 @@ const CustomerTransactionDetailCard = ({ trd }: TransactionDetailCardProps) => {
           </span>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
           <div className="p-2 hover:bg-emerald-50 rounded-lg cursor-pointer transition-colors group">
             <Edit
               size={18}

@@ -1,7 +1,10 @@
 import { memo } from "react";
-import { ChevronRight, Factory, Store } from "lucide-react";
+import { Edit, Factory, Store, Trash } from "lucide-react";
 import type { ProductModelTableItem } from "../../../shared/lib/model/product-models/product-models-model";
-import { Image } from "antd";
+import { Image, Popconfirm } from "antd";
+import { QuestionCircleOutlined } from "@ant-design/icons";
+import { useProductModel } from "../../lib/apis/product-models/useProductModel";
+import { useApiNotification } from "../../hooks/api-notification/useApiNotification";
 
 interface ProductModelCardProps {
   item: ProductModelTableItem;
@@ -9,6 +12,34 @@ interface ProductModelCardProps {
 }
 
 const ProductModelCard = ({ item, onDetail }: ProductModelCardProps) => {
+  const { deleteProductModelById } = useProductModel();
+  const { handleApiError, handleSuccess } = useApiNotification();
+  const handleDelete = (id: string) => {
+    deleteProductModelById.mutate(id, {
+      onSuccess: () => {
+        handleSuccess("Muvaffaqiyatli o'chirildi");
+      },
+      onError: (err: any) => {
+        const status = err?.response?.data?.statusCode;
+        const msg = err?.response?.data?.message;
+
+        if (status === 404 && msg.startsWith("Product model with ID")) {
+          handleApiError("Model topilmadi", "topRight");
+          return;
+        } else if (
+          status === 400 &&
+          msg.startsWith("Product model has products")
+        ) {
+          handleApiError("Model mahsulotlarga ega", "topRight");
+          return;
+        } else {
+          handleApiError("Serverda xato", "topRight");
+          return;
+        }
+      },
+    });
+  };
+
   return (
     <div
       className="bg-white rounded-2xl p-3 flex items-center gap-3 border border-bg-fy active:bg-gray-50 transition-colors cursor-pointer"
@@ -56,8 +87,36 @@ const ProductModelCard = ({ item, onDetail }: ProductModelCardProps) => {
         </div>
       </div>
 
-      <div className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-50">
-        <ChevronRight size={18} />
+      <div className="flex items-center gap-1">
+        <div className="p-2 hover:bg-emerald-50 rounded-lg cursor-pointer transition-colors group">
+          <Edit
+            size={18}
+            className="text-slate-400 group-hover:text-emerald-600"
+          />
+        </div>
+        <div
+          className="p-2 hover:bg-rose-50 rounded-lg cursor-pointer transition-colors group"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <Popconfirm
+            title="Tasdiqlash"
+            description="Rostdan o'chirmohchimisz?"
+            okText="Ha"
+            cancelText="Yo'q"
+            onConfirm={() => handleDelete(item?.id)}
+            icon={<QuestionCircleOutlined style={{ color: "red" }} />}
+            okButtonProps={{
+              danger: true,
+              disabled: deleteProductModelById.isPending,
+              loading: deleteProductModelById.isPending,
+            }}
+          >
+            <Trash
+              size={18}
+              className="text-slate-400 group-hover:text-rose-600"
+            />
+          </Popconfirm>
+        </div>
       </div>
     </div>
   );
