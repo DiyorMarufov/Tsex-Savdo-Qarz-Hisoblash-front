@@ -160,6 +160,7 @@ const ProductModelsPage = () => {
         setIsShopOpen={setIsShopOpen}
         tsexLoading={tsexLoading}
         shopLoading={shopLoading}
+        isAdmin
       />
 
       <div className="max-[500px]:hidden mt-4">

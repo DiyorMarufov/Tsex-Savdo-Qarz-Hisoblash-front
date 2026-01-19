@@ -7,7 +7,7 @@ interface Props {
 
 const StatCardSkeleton: FC<Props> = ({ descriptionIndexes, count = 3 }) => {
   return (
-    <div className="grid grid-cols-3 gap-5 max-[1250px]:grid-cols-2 max-[500px]:grid-cols-1">
+    <div className="grid grid-cols-3 gap-4 max-[1250px]:grid-cols-2 max-[500px]:grid-cols-1">
       {Array.from({ length: count }).map((_, inx: number) => {
         const hasDescription = descriptionIndexes?.includes(inx);
         const isLast = inx === count - 1;

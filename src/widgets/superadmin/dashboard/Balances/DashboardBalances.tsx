@@ -47,11 +47,7 @@ const DashboardBalances = () => {
     totalSalesLoading || totalTsexBalanceLoading || totalCustomerBalanceLoading;
 
   if (isAnyLoading) {
-    return (
-      <div className="grid grid-cols-4 gap-4 max-[1350px]:grid-cols-3 max-[1100px]:grid-cols-2 max-[380px]:grid-cols-1">
-        <DashboardBalanceSkeleton />
-      </div>
-    );
+    return <DashboardBalanceSkeleton />;
   }
   // Loading ends
 

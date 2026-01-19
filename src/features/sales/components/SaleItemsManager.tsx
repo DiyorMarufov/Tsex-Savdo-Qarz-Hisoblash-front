@@ -3,7 +3,11 @@ import { memo, useMemo, useState, useEffect } from "react";
 import type { Option } from "../../../shared/lib/types";
 import type { SelectProps } from "antd/es/select";
 import { useProduct } from "../../../shared/lib/apis/products/useProduct";
-import { colorOptions } from "../../../shared/lib/constants";
+import {
+  colorOptions,
+  productCategories,
+  productMaterialTypes,
+} from "../../../shared/lib/constants";
 import { Eye, EyeOff } from "lucide-react";
 
 type TagRenderType = SelectProps["tagRender"];
@@ -125,7 +129,10 @@ const SaleItemsManager = ({
           <span className="text-[18px] text-[#232E2F] font-medium">
             Mahsulot va do'kon malumotlari
           </span>
-          <div className="cursor-pointer" onClick={() => setIsPriceVisible((p: boolean) => !p)}>
+          <div
+            className="cursor-pointer"
+            onClick={() => setIsPriceVisible((p: boolean) => !p)}
+          >
             {isPriceVisible ? (
               <Eye className="w-4.5 h-4.5" />
             ) : (
@@ -164,6 +171,7 @@ const SaleItemsManager = ({
                 filterOption={false}
                 onSearch={onSearchChange}
                 allowClear
+                maxTagCount="responsive"
               />
 
               <Spin spinning={productListLoading}>
@@ -180,7 +188,7 @@ const SaleItemsManager = ({
                       return (
                         <div
                           key={product.id}
-                          className="flex flex-col gap-3 p-4 bg-slate-50 border border-slate-100 rounded-xl"
+                          className="flex flex-col gap-3 p-3 bg-slate-50 border border-slate-100 rounded-xl"
                         >
                           <div className="flex justify-between items-start gap-3 max-[540px]:flex-col">
                             <div className="flex flex-col">
@@ -194,9 +202,26 @@ const SaleItemsManager = ({
 
                             <div className="flex flex-col items-end gap-2 max-[540px]:items-start max-[540px]:w-full">
                               <div className="flex items-center gap-2 flex-wrap">
-                                <div className="flex items-center gap-2 px-2 py-0.5 rounded text-[11px] font-bold bg-white text-slate-600 border border-slate-200">
+                                <div className="flex items-center gap-[5px] px-2 py-0.5 rounded text-[11px] font-bold bg-sky-50 text-sky-700 border border-sky-100">
                                   <span className="opacity-70">
-                                    {product?.product_model?.tsex?.name}
+                                    {
+                                      productCategories[
+                                        product?.product_category?.name
+                                      ]
+                                    }
+                                  </span>
+                                  /
+                                  <span className="opacity-70">
+                                    {
+                                      productMaterialTypes[
+                                        product?.product_material_type?.name
+                                      ]
+                                    }
+                                  </span>
+                                  /
+                                  <span className="opacity-70">
+                                    {product?.color?.charAt(0).toUpperCase() +
+                                      product?.color?.slice(1)}
                                   </span>
                                   <div
                                     className="h-3 w-3 rounded-full border border-slate-300 shrink-0"
@@ -207,7 +232,7 @@ const SaleItemsManager = ({
                                 </div>
 
                                 <div
-                                  className={`flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-semibold tracking-wide border ${
+                                  className={`flex items-center gap-[5px] px-2 py-0.5 rounded text-[11px] font-semibold tracking-wide border ${
                                     product.quantity >= 10
                                       ? "bg-blue-50 text-blue-600 border-blue-100"
                                       : product.quantity > 0
@@ -235,7 +260,7 @@ const SaleItemsManager = ({
                               </div>
 
                               <div className="flex items-center gap-2 flex-wrap">
-                                <div className="flex items-center gap-1 px-2 py-0.5 rounded text-[12px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">
+                                <div className="flex items-center gap-[5px] px-2 py-0.5 rounded text-[12px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">
                                   <span className="text-[11px] opacity-60 font-medium">
                                     Asl narxi:
                                   </span>
@@ -245,7 +270,7 @@ const SaleItemsManager = ({
                                   <span className="text-[11px]">uzs</span>
                                 </div>
 
-                                <div className="flex gap-1 px-2 py-0.5 rounded text-[12px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-100">
+                                <div className="flex items-center gap-[5px] px-2 py-0.5 rounded text-[12px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-100">
                                   <span className="text-[11px] opacity-60 font-semibold tracking-tight">
                                     Pochkada:
                                   </span>

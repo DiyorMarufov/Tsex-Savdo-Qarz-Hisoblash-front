@@ -16,7 +16,11 @@ import { base64ToFile } from "../../../shared/lib/functions/base64ToFile";
 import { useSale } from "../../../shared/lib/apis/sales/useSale";
 import { useApiNotification } from "../../../shared/hooks/api-notification/useApiNotification";
 import { debounce } from "../../../shared/lib/functions/debounce";
-import { colorOptions } from "../../../shared/lib/constants";
+import {
+  colorOptions,
+  productCategories,
+  productMaterialTypes,
+} from "../../../shared/lib/constants";
 
 const AdminAddSalePage = () => {
   const navigate = useNavigate();
@@ -181,12 +185,23 @@ const AdminAddSalePage = () => {
         label: (
           <div className="flex items-center justify-between w-full py-1">
             <div className="flex flex-col gap-0.5 overflow-hidden">
-              <span className="text-[14px] font-medium text-slate-800 leading-tight truncate">
-                {pr?.product_model?.name}
-              </span>
+              <div className="flex gap-1.5">
+                <span className="text-[14px] font-medium text-slate-800 leading-tight truncate">
+                  {pr?.product_model?.name}
+                </span>
+                <span className="text-[11px] text-slate-600 font-normal shrink-0">
+                  {pr?.product_model?.brand}
+                </span>
+              </div>
 
               <div className="flex items-center gap-1.5 text-[11px] text-slate-400 font-normal">
-                <span className="shrink-0">{pr?.product_model?.brand}</span>
+                <span className="truncate">
+                  {productCategories[pr?.product_category?.name]}
+                </span>
+                -
+                <span className="truncate">
+                  {productMaterialTypes[pr?.product_material_type?.name]}
+                </span>
                 <span className="text-slate-300">|</span>
                 <div className="flex items-center gap-1 shrink-0">
                   <span className="capitalize">{pr?.color}</span>
@@ -195,10 +210,6 @@ const AdminAddSalePage = () => {
                     style={{ backgroundColor: findColor?.hex }}
                   ></div>
                 </div>
-                <span className="text-slate-300">|</span>
-                <span className="truncate">
-                  {pr?.product_model?.tsex?.name}
-                </span>
               </div>
             </div>
 
@@ -230,8 +241,8 @@ const AdminAddSalePage = () => {
     );
 
     return (
-      <div className="flex items-center gap-1 bg-blue-50 border border-blue-200 text-blue-700 px-2 py-0.5 m-0.5 rounded-lg text-[13px]">
-        <span>{selectedOption?.displayLabel || "Yuklanmoqda..."}</span>
+      <div className="flex items-center gap-1 bg-blue-50 border border-blue-200 text-blue-700 px-2 py-[5px] m-0.5 rounded-lg text-[13px]">
+        <span>{selectedOption?.displayLabel || "N+"}</span>
         {closable && (
           <span onClick={onClose} className="cursor-pointer ml-1">
             ✕

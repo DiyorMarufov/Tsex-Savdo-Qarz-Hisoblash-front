@@ -4,7 +4,7 @@ const TsexTransactionCardSkeleton = () => {
   const pulseClass = "animate-pulse";
 
   return (
-    <div className="min-[500px]:hidden flex flex-col gap-3 mt-4">
+    <div className="min-[500px]:hidden flex flex-col gap-4 mt-4">
       {Array.from({ length: 5 }).map((_, inx: number) => (
         <div
           key={inx}
