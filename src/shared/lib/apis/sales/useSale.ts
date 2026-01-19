@@ -8,17 +8,29 @@ export const useSale = () => {
   const client = useQueryClient();
   const createSale = useMutation({
     mutationFn: (data: any) => api.post("sales", data).then((res) => res.data),
-    onSuccess: () => (
-      client.invalidateQueries({ queryKey: [sale, "all-sales"] }),
-      client.invalidateQueries({ queryKey: [sale, "total-sales"] }),
-      client.invalidateQueries({ queryKey: [sale, "weekly-sale"] }),
+    onSuccess: () => {
+      client.invalidateQueries({ queryKey: [sale, "all-sales"] });
+      client.invalidateQueries({ queryKey: [sale, "total-sales"] });
+      client.invalidateQueries({ queryKey: [sale, "weekly-sale"] });
       client.invalidateQueries({
         queryKey: [sale, "sales-summary-for-report"],
-      }),
+      });
       client.invalidateQueries({
         queryKey: [sale, "sales-statistics-for-report"],
-      })
-    ),
+      });
+      client.invalidateQueries({
+        queryKey: ["product", "all-products-summary"],
+      });
+      client.invalidateQueries({
+        queryKey: ["product", "all-infinite-products"],
+      });
+      client.invalidateQueries({
+        queryKey: ["product", "products-top"],
+      });
+      client.invalidateQueries({
+        queryKey: ["product"],
+      });
+    },
   });
 
   const getAllSales = (params?: any) =>

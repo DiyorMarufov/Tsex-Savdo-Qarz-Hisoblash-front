@@ -13,14 +13,31 @@ export const useProduct = () => {
   const createProduct = useMutation({
     mutationFn: (data: any) =>
       api.post("products", data).then((res) => res.data),
-    onSuccess: () => (
-      client.invalidateQueries({ queryKey: [product, "all-products-by-id"] }),
-      client.invalidateQueries({ queryKey: ["tsex", "total-balance"] }),
-      client.invalidateQueries({ queryKey: ["tsex", "most-debtor-tsexes"] }),
+    onSuccess: () => {
+      client.invalidateQueries({ queryKey: [product, "all-products-by-id"] });
       client.invalidateQueries({
         queryKey: ["product_model", "all-product-models"],
-      })
-    ),
+      });
+      client.invalidateQueries({
+        queryKey: [product, "all-products-for-report"],
+      });
+      client.invalidateQueries({
+        queryKey: [product, "all-products-summary"],
+      });
+      client.invalidateQueries({
+        queryKey: [product, "products-filter"],
+      });
+      client.invalidateQueries({
+        queryKey: [product, "all-infinite-products"],
+      });
+      client.invalidateQueries({ queryKey: ["tsex", "total-balance"] });
+      client.invalidateQueries({ queryKey: ["tsex", "most-debtor-tsexes"] });
+      client.invalidateQueries({ queryKey: ["tsex", "tsex-balance-summary"] });
+      client.invalidateQueries({ queryKey: ["tsex", "all-tsex"] });
+      client.invalidateQueries({ queryKey: ["tsex", "all-tsex-summary"] });
+      client.invalidateQueries({ queryKey: ["tsex", "all-tsex-statistics"] });
+      client.invalidateQueries({ queryKey: ["tsex_transaction"] });
+    },
   });
 
   const getAllProducts = (params?: any, id?: string) =>

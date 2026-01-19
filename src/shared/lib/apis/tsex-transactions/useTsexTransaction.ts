@@ -18,13 +18,10 @@ export const useTsexTransaction = () => {
       client.invalidateQueries({ queryKey: [tsex_transaction] });
       client.invalidateQueries({ queryKey: ["tsex", "all-tsex"] });
       client.invalidateQueries({ queryKey: ["tsex", "tsex-balance-summary"] });
-      client.invalidateQueries({
-        queryKey: ["tsex", "creditor-total-balance"],
-      });
-      client.invalidateQueries({ queryKey: ["tsex", "debtor-total-balance"] });
-      client.invalidateQueries({ queryKey: ["tsex", "net-total-balance"] });
       client.invalidateQueries({ queryKey: ["tsex", "total-balance"] });
       client.invalidateQueries({ queryKey: ["tsex", "most-debtor-tsexes"] });
+      client.invalidateQueries({ queryKey: ["tsex", "all-tsex-summary"] });
+      client.invalidateQueries({ queryKey: ["tsex", "all-tsex-statistics"] });
     },
   });
 

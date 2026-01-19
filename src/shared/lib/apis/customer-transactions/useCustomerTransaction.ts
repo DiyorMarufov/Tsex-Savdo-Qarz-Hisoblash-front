@@ -33,6 +33,9 @@ export const useCustomerTransaction = () => {
       client.invalidateQueries({
         queryKey: [customer, "most-debtor-customers"],
       });
+      client.invalidateQueries({
+        queryKey: [customer, "all-customers-statistics-for-report"],
+      });
     },
   });
 
@@ -48,13 +51,16 @@ export const useCustomerTransaction = () => {
         queryKey: [customer_transaction, "customer-transactions"],
       });
       client.invalidateQueries({
-        queryKey: [customer, "customer-transactions-parent-id"],
+        queryKey: [customer_transaction, "customer-transactions-parent-id"],
       });
       client.invalidateQueries({
         queryKey: [customer, "customer-total-balance"],
       });
       client.invalidateQueries({
         queryKey: [customer, "most-debtor-customers"],
+      });
+      client.invalidateQueries({
+        queryKey: [customer, "all-customers-statistics-for-report"],
       });
     },
   });
@@ -71,19 +77,22 @@ export const useCustomerTransaction = () => {
     onSuccess: () => {
       client.invalidateQueries({ queryKey: [customer, "all-customers"] });
       client.invalidateQueries({
+        queryKey: [customer, "customer-balance-summary"],
+      });
+      client.invalidateQueries({
         queryKey: [customer_transaction, "customer-transactions"],
       });
       client.invalidateQueries({
         queryKey: [customer_transaction, "customer-transactions-parent-id"],
       });
       client.invalidateQueries({
-        queryKey: [customer, "customer-balance-summary"],
-      });
-      client.invalidateQueries({
         queryKey: [customer, "customer-total-balance"],
       });
       client.invalidateQueries({
         queryKey: [customer, "most-debtor-customers"],
+      });
+      client.invalidateQueries({
+        queryKey: [customer, "all-customers-statistics-for-report"],
       });
     },
   });
@@ -101,7 +110,7 @@ export const useCustomerTransaction = () => {
     });
 
   const getCustomerTransactionsDetailByParentTransactionId = (
-    parent_transaction_id: string
+    parent_transaction_id: string,
   ) =>
     useQuery({
       queryKey: [
