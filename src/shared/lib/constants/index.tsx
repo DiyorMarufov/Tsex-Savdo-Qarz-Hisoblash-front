@@ -171,11 +171,11 @@ export const productSizeOptions = [
 ];
 
 export const productCategories: Record<string, string> = {
-  barsovka: "Barsovkalar",
-  loafers: "Loferlar",
+  barsovka: "Barsovka",
+  loafers: "Lofer",
   pumps: "Tufli",
-  boots: "Etiklar",
-  moccasins: "Mokasinlar",
+  boots: "Etik",
+  moccasins: "Mokasin",
   pol_classica: "Pol classica",
   keda: "Keta",
 };

@@ -54,7 +54,7 @@ export const useProduct = () => {
 
   const getAllProductsForProductsFilter = (
     enabled: boolean = false,
-    params?: any
+    params?: any,
   ) =>
     useQuery({
       queryKey: [product, "products-filter", params],
@@ -109,6 +109,32 @@ export const useProduct = () => {
       staleTime: Infinity,
       gcTime: 1000 * 60 * 10,
     });
+
+  const deleteProductById = useMutation({
+    mutationFn: (id: string) =>
+      api.delete(`products/${id}`).then((res) => res.data),
+    onSuccess: () => (
+      client.invalidateQueries({ queryKey: [product, "all-products-by-id"] }),
+      client.invalidateQueries({
+        queryKey: ["product_model", "all-product-models"],
+      }),
+      client.invalidateQueries({
+        queryKey: [product, "all-products-for-report"],
+      }),
+      client.invalidateQueries({ queryKey: [product, "all-products-summary"] }),
+      client.invalidateQueries({ queryKey: [product, "products-filter"] }),
+      client.invalidateQueries({
+        queryKey: [product, "all-infinite-products"],
+      }),
+      client.invalidateQueries({ queryKey: ["tsex", "total-balance"] }),
+      client.invalidateQueries({ queryKey: ["tsex", "most-debtor-tsexes"] }),
+      client.invalidateQueries({ queryKey: ["tsex", "tsex-balance-summary"] }),
+      client.invalidateQueries({ queryKey: ["tsex", "all-tsex"] }),
+      client.invalidateQueries({ queryKey: ["tsex", "all-tsex-summary"] }),
+      client.invalidateQueries({ queryKey: ["tsex", "all-tsex-statistics"] }),
+      client.invalidateQueries({ queryKey: ["tsex_transaction"] })
+    ),
+  });
   return {
     createProduct,
     getAllProducts,
@@ -118,5 +144,6 @@ export const useProduct = () => {
     getAllProductsForProductsFilter,
     getAllTop5ProductsForReport,
     getProductById,
+    deleteProductById,
   };
 };

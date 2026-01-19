@@ -33,8 +33,8 @@ export const productColumns = (
     fixed: "left",
     render: (_, record) => (
       <Image
-        src={record.images[0].image_url || "https://via.placeholder.com/50"}
-        alt={record.product_category.name}
+        src={record.images?.[0]?.image_url}
+        alt={record?.product_category?.name}
         style={{
           width: "40px",
           height: "40px",
