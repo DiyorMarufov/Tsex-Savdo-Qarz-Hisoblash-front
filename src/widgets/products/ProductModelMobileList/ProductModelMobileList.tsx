@@ -28,7 +28,7 @@ const ProductModelMobileList = ({
   }
 
   return (
-    <div className="min-[500px]:hidden flex flex-col gap-3 mt-4">
+    <div className="min-[500px]:hidden flex flex-col gap-4 mt-4">
       {models && models.length > 0 ? (
         models.map((item) => (
           <ProductModelCard key={item.id} item={item} onDetail={onDetail} />

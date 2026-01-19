@@ -21,7 +21,7 @@ const TsexesReportBalances: FC<TsexReportBalanceProps> = ({
 }) => {
   if (loading) return <BalanceStatCardSkeleton descriptionIndexes={[0]} />;
   return (
-    <div className="grid grid-cols-3 gap-5 max-[1250px]:grid-cols-2 max-[500px]:grid-cols-1">
+    <div className="grid grid-cols-3 gap-4 max-[1250px]:grid-cols-2 max-[500px]:grid-cols-1">
       <StatCard
         title="Ombordagi qoldiq"
         value={inventoryBalance}

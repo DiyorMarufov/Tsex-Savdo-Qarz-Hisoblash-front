@@ -144,7 +144,7 @@ const UsersPage = () => {
 
   return (
     <div className="pb-12">
-      <div className="flex justify-between gap-3 items-center max-[750px]:flex-wrap">
+      <div className="flex justify-between gap-4 items-center max-[750px]:flex-wrap">
         <div>
           <LargeTitle title="Foydalanuvchilar" />
         </div>

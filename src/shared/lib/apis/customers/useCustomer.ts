@@ -22,6 +22,9 @@ export const useCustomer = () => {
       client.invalidateQueries({
         queryKey: [customer, "all-customers-for-transaction"],
       });
+      client.invalidateQueries({
+        queryKey: [customer, "all-infinite-customers"],
+      });
     },
   });
   const getTotalCustomerBalance = () =>

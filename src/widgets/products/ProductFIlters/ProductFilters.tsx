@@ -15,6 +15,7 @@ interface ProductFiltersProps {
   setIsShopOpen: (open: boolean) => void;
   tsexLoading: boolean;
   shopLoading: boolean;
+  isAdmin?: boolean;
 }
 
 const ProductFilters = ({
@@ -29,16 +30,19 @@ const ProductFilters = ({
   setIsShopOpen,
   tsexLoading,
   shopLoading,
+  isAdmin = false,
 }: ProductFiltersProps) => {
   return (
-    <div className="min-[500px]:mt-1 rounded-[12px] border border-e-bg-fy bg-[#ffffff] p-3.5 flex items-center gap-3 max-[900px]:flex-wrap">
+    <div
+      className={`${isAdmin ? "min-[500px]:mt-1" : ""} rounded-[12px] border border-e-bg-fy bg-[#ffffff] p-3.5 flex items-center gap-4 max-[900px]:flex-wrap`}
+    >
       <SearchInput
         placeholder="Model nomi,brandi bo'yicha qidirish"
         className="h-10! min-[900px]:w-[50%]! bg-bg-ty! text-[16px]!"
         value={localSearch}
         onChange={onSearchChange}
       />
-      <div className="flex gap-3 min-[900px]:w-[50%] max-[900px]:w-full max-[370px]:flex-wrap">
+      <div className="flex gap-4 min-[900px]:w-[50%] max-[900px]:w-full max-[370px]:flex-wrap">
         <Filter
           placeholder={tsexLoading ? "Yuklanmoqda..." : "Barcha tsexlar"}
           className="h-10! min-[900px]:w-[50%]! max-[900px]:w-full! custom-select"

@@ -65,7 +65,7 @@ const SaleItemReportPage = () => {
   // PageChange ends
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-4">
       <ArrowLeft
         className="hover:opacity-75 cursor-pointer mb-1"
         onClick={() => navigate(-1)}

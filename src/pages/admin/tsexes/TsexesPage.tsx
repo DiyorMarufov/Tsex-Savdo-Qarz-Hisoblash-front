@@ -92,7 +92,7 @@ const AdminTsexesPage = () => {
         <LargeTitle title="Tsexlar" />
       </div>
 
-      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] p-3.5 flex items-center gap-5 max-[960px]:flex-wrap">
+      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] p-3.5">
         <SearchInput
           placeholder="Tsex nomi yoki operatsiya bo'yicha qidirish"
           className="h-10! bg-bg-ty! text-[17px]!"

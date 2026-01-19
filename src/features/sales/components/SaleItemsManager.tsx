@@ -125,7 +125,7 @@ const SaleItemsManager = ({
           <span className="text-[18px] text-[#232E2F] font-medium">
             Mahsulot va do'kon malumotlari
           </span>
-          <div onClick={() => setIsPriceVisible((p: boolean) => !p)}>
+          <div className="cursor-pointer" onClick={() => setIsPriceVisible((p: boolean) => !p)}>
             {isPriceVisible ? (
               <Eye className="w-4.5 h-4.5" />
             ) : (

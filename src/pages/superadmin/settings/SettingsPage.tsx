@@ -23,7 +23,7 @@ const SettingsPage = () => {
     <div className="flex-1 w-full">
       <LargeTitle title="Sozlamalar" />
 
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-4">
         <ProfileSettings />
         <SystemParameters />
         <SystemVersion />

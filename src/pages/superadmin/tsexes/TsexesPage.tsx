@@ -283,7 +283,7 @@ const TsexesPage = () => {
 
   return (
     <div className="pb-12">
-      <div className="flex items-center justify-between gap-3 max-[500px]:flex-wrap">
+      <div className="flex items-center justify-between gap-4 max-[500px]:flex-wrap">
         <div>
           <LargeTitle title="Tsexlar" />
         </div>
@@ -297,7 +297,7 @@ const TsexesPage = () => {
 
       <TsexesBalances />
 
-      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-4 p-3.5 flex items-center gap-5 max-[960px]:flex-wrap">
+      <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] mt-4 p-3.5 max-[960px]:flex-wrap">
         <SearchInput
           placeholder="Tsex nomi yoki operatsiya bo'yicha qidirish"
           className="h-10! bg-bg-ty! text-[17px]!"

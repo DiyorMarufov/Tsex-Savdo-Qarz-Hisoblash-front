@@ -136,7 +136,7 @@ const ProductModelsPage = () => {
 
   return (
     <div>
-      <div className="flex justify-between gap-3">
+      <div className="flex justify-between gap-4">
         <LargeTitle title="Modellar" />
         <div className="max-[500px]:hidden">
           <Button onClick={() => navigate("add")}>

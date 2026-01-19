@@ -82,7 +82,7 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
 
   return (
     <div>
-      <div className="min-[500px]:mt-1 rounded-[12px] border border-e-bg-fy bg-[#ffffff] grid grid-cols-[300px_1fr] max-[1200px]:grid-cols-1 p-3.5 gap-3 items-center">
+      <div className="min-[500px]:mt-1 rounded-[12px] border border-e-bg-fy bg-[#ffffff] grid grid-cols-[300px_1fr] max-[1200px]:grid-cols-1 p-3.5 gap-4 items-center">
         <div className="w-full">
           <SearchInput
             placeholder="Do'kon,sotuvchi,mijoz bo'yicha qidirish"
@@ -92,7 +92,7 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
           />
         </div>
 
-        <div className="max-[800px]:hidden grid grid-cols-4 gap-3 items-end">
+        <div className="max-[800px]:hidden grid grid-cols-4 gap-4 items-end">
           <div className="w-full">
             <DatePicker.RangePicker
               value={tempDates}

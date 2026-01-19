@@ -105,7 +105,7 @@ const AdminProductsPage = () => {
         className="hover:opacity-75 cursor-pointer mb-1"
         onClick={() => navigate(-1)}
       />
-      <div className="flex justify-between gap-3">
+      <div className="flex justify-between gap-4">
         <LargeTitle title="Mahsulotlar" />
         <div className="max-[500px]:hidden">
           <Button onClick={() => navigate("add")}>
@@ -120,7 +120,7 @@ const AdminProductsPage = () => {
       <div className="min-[500px]:mt-1 rounded-[12px] border border-e-bg-fy bg-[#ffffff] p-3.5">
         <SearchInput
           placeholder="Mahsulot nomi, brandi bo'yicha qidirish"
-          className="h-10! min-[900px]:w-[50%]! bg-bg-ty! text-[16px]!"
+          className="h-10! bg-bg-ty! text-[16px]!"
           value={localSearch}
           onChange={handleSearchChange}
         />

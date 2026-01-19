@@ -152,7 +152,7 @@ const AdminCustomersPage = () => {
   // Filter ends
   return (
     <div>
-      <div className="flex justify-between gap-3">
+      <div className="flex justify-between gap-4">
         <LargeTitle title="Mijozlar" />
         <div className="max-[500px]:hidden">
           <Button onClick={handleNewCustomer}>

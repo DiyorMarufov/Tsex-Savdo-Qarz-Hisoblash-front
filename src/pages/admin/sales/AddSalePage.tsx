@@ -324,10 +324,10 @@ const AdminAddSalePage = () => {
         className="hover:opacity-75 cursor-pointer mb-1"
         onClick={handleCancelSale}
       />
-      <div className="flex justify-between gap-3">
+      <div className="flex justify-between gap-4">
         <LargeTitle title="Yangi sotuv" />
 
-        <div className="flex items-center gap-3 max-[500px]:hidden">
+        <div className="flex items-center gap-4 max-[500px]:hidden">
           <Button
             className="h-9! bg-red-500! text-white!"
             onClick={handleCancelSale}
@@ -348,8 +348,8 @@ const AdminAddSalePage = () => {
         </div>
       </div>
 
-      <div className="flex items-start gap-5 min-[500px]:mt-1 max-[1750px]:flex-col">
-        <div className="flex flex-col gap-5 w-3/1 max-[1750px]:w-full">
+      <div className="flex items-start gap-4 min-[500px]:mt-1 max-[1750px]:flex-col">
+        <div className="flex flex-col gap-4 w-3/1 max-[1750px]:w-full">
           <ClientInfoForm
             customerId={query.customerId}
             handleChange={handleChange}
@@ -383,7 +383,7 @@ const AdminAddSalePage = () => {
         <PaymentAndSummary />
       </div>
 
-      <div className="flex items-center gap-3 min-[500px]:hidden max-[500px]:mt-3 max-[380px]:flex-col-reverse">
+      <div className="flex items-center gap-4 min-[500px]:hidden max-[500px]:mt-3 max-[380px]:flex-col-reverse">
         <Button
           className="max-[500px]:w-full h-10! bg-red-500! text-white!"
           onClick={handleCancelSale}

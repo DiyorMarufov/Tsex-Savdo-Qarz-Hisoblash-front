@@ -42,7 +42,7 @@ const CustomersPage = () => {
   const { getParam, setParams, removeParam } = useParamsHook();
   const [localSearch, setLocalSearch] = useState(getParam("search") || "");
   const [, setCustomerModalSearch] = useState(
-    getParam("customer_search") || ""
+    getParam("customer_search") || "",
   );
   const [form] = Form.useForm();
 
@@ -83,7 +83,7 @@ const CustomersPage = () => {
   };
 
   const transactionOnFinish: FormProps<TransactionFieldType>["onFinish"] = (
-    values: TransactionFieldType
+    values: TransactionFieldType,
   ) => {
     const { customer_id, amount, description, due_date } = values;
     const data = {
@@ -176,7 +176,7 @@ const CustomersPage = () => {
   };
 
   const newCustomerOnFinish: FormProps<NewCustomerFieldType>["onFinish"] = (
-    values: NewCustomerFieldType
+    values: NewCustomerFieldType,
   ) => {
     const { full_name, phone_number, region } = values;
     const data = {
@@ -197,7 +197,7 @@ const CustomersPage = () => {
           case 409:
             handleApiError(
               `${phone_number} raqamli foydalanuvchi mavjud`,
-              "topRight"
+              "topRight",
             );
             break;
 
@@ -254,7 +254,7 @@ const CustomersPage = () => {
         page: 1,
       });
     }, 500),
-    [setParams]
+    [setParams],
   );
 
   const debouncedSetSearchCustomerModalQuery = useCallback(
@@ -264,7 +264,7 @@ const CustomersPage = () => {
         page: 1,
       });
     }, 500),
-    [setParams]
+    [setParams],
   );
 
   const handleSearchChange = (value: string) => {
@@ -321,13 +321,13 @@ const CustomersPage = () => {
 
   return (
     <div className="pb-12">
-      <div className="flex items-center justify-between gap-3 max-[1300px]:flex-wrap">
+      <div className="flex items-center justify-between gap-4 max-[1300px]:flex-wrap">
         <div>
           <LargeTitle title="Mijozlar" />
         </div>
         <PlusButton setOpen={() => setOpenDrawer(true)} />
 
-        <div className="grid grid-cols-3 gap-3 max-[1300px]:w-full max-[830px]:grid-cols-2 max-[365px]:grid-cols-1 max-[500px]:hidden">
+        <div className="grid grid-cols-3 gap-4 max-[1300px]:w-full max-[830px]:grid-cols-2 max-[365px]:grid-cols-1 max-[500px]:hidden">
           <AntdButton
             className="py-4.5! rounded-[10px]! bg-[#E5E7EB]! max-[1300px]:w-full"
             onClick={handleLend}
@@ -356,17 +356,19 @@ const CustomersPage = () => {
 
       <CustomersBalances />
 
-      <CustomerFilters
-        regionOptions={
-          customerRegions
-            ? [{ value: "", label: "Barcha hududlar" }, ...customerRegions]
-            : [{ value: "", label: "Barcha hududlar" }]
-        }
-        onSearchChange={handleSearchChange}
-        searchValue={localSearch}
-        regionValue={query.region}
-        onFilterChange={handleFilterChange}
-      />
+      <div className="mt-4">
+        <CustomerFilters
+          regionOptions={
+            customerRegions
+              ? [{ value: "", label: "Barcha hududlar" }, ...customerRegions]
+              : [{ value: "", label: "Barcha hududlar" }]
+          }
+          onSearchChange={handleSearchChange}
+          searchValue={localSearch}
+          regionValue={query.region}
+          onFilterChange={handleFilterChange}
+        />
+      </div>
 
       <div className="mt-4 max-[500px]:hidden">
         <ProTable

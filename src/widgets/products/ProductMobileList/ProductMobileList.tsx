@@ -31,7 +31,7 @@ const ProductMobileList = ({
 
   return (
     <div className={`min-[500px]:hidden ${isReport ? "" : "mt-4"}`}>
-      <div className="grid grid-cols-2 gap-5 max-[330px]:grid-cols-1">
+      <div className="grid grid-cols-2 gap-4 max-[330px]:grid-cols-1">
         {products && products.length > 0 ? (
           products.map((pr) => (
             <ProductCard key={pr.id} product={pr} onDetail={onDetail} />

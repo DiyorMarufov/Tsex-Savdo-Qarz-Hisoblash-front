@@ -13,7 +13,7 @@ const ShopsMobileList = ({ data, isLoading }: ShopsMobileListProps) => {
   if (isLoading) return <ShopCardSkeleton />;
 
   return (
-    <div className="min-[500px]:hidden flex flex-col gap-3 mt-4">
+    <div className="min-[500px]:hidden flex flex-col gap-4 mt-4">
       {data?.map((st) => (
         <ShopCard key={st.id} store={st} />
       ))}

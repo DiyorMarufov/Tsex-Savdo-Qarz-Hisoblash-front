@@ -23,7 +23,7 @@ const TsexTransactionMobileList: React.FC<TsexMobileListProps> = ({
 }) => {
   if (loading) return <TsexTransactionCardSkeleton />;
   return (
-    <div className="min-[500px]:hidden flex flex-col gap-3">
+    <div className="min-[500px]:hidden flex flex-col gap-4">
       {!loading && transactions && transactions.length > 0
         ? transactions.map((dt) => (
             <TsexTransactionCard key={dt.id} data={dt} />

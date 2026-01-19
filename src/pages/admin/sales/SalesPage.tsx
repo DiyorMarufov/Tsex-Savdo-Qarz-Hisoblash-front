@@ -169,7 +169,7 @@ const AdminSalesPage = () => {
   if (pathname.startsWith("/admin/sales/")) return <Outlet />;
   return (
     <div className="pb-12">
-      <div className="flex justify-between gap-3">
+      <div className="flex justify-between gap-4">
         <LargeTitle title="Sotuvlar" />
         <div className="max-[500px]:hidden">
           <Button onClick={() => navigate("add")}>
@@ -180,7 +180,7 @@ const AdminSalesPage = () => {
 
         <PlusButton setOpen={() => navigate("add")} />
       </div>
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-4">
         <SalesFilter
           onFilterSubmit={onFilterSubmit}
           start={query.start}

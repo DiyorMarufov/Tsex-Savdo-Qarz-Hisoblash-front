@@ -17,7 +17,7 @@ const CustomersReportBalances = ({
 }: CustomersReportBalancesProps) => {
   if (loading) return <BalanceStatCardSkeleton />;
   return (
-    <div className="grid grid-cols-3 gap-5 max-[1250px]:grid-cols-2 max-[500px]:grid-cols-1">
+    <div className="grid grid-cols-3 gap-4 max-[1250px]:grid-cols-2 max-[500px]:grid-cols-1">
       <StatCard title="Jami haqdorlik" value={creditor} />
       <StatCard title="Jami qarzdorlik" value={debtor} isValueNegative />
       <StatCard

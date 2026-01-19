@@ -166,7 +166,7 @@ const AdminTsexesReportPage = () => {
   // Search ends
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-4">
       <ReportFilter
         onFilterSubmit={onFilterSubmit}
         start={query.start}

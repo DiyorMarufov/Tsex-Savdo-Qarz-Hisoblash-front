@@ -23,7 +23,7 @@ const UserMobileList = ({
 }: UserMobileListProps) => {
   if (isLoading) return <UserCardSkeleton />;
   return (
-    <div className="min-[500px]:hidden flex flex-col gap-3 mt-4">
+    <div className="min-[500px]:hidden flex flex-col gap-4 mt-4">
       {data && data.length > 0 ? (
         data?.map((user) => <UserCard key={user.id} user={user} />)
       ) : (

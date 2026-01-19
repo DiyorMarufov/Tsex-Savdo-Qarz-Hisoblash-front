@@ -26,7 +26,7 @@ const SalesReportMobileList = ({
   if (isLoading) return <SalesReportCardSkeleton />;
   return (
     <div className="min-[500px]:hidden">
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-4">
         {data && data.length > 0 ? (
           data?.map((sl) => (
             <SaleReportCard key={sl.id} item={sl} onDetail={onDetail} />

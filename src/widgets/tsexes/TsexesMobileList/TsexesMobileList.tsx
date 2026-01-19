@@ -29,7 +29,7 @@ const TsexMobileList = ({
 
   return (
     <div
-      className={`min-[500px]:hidden flex flex-col gap-3 ${isReport ? "" : "mt-4"}`}
+      className={`min-[500px]:hidden flex flex-col gap-4 ${isReport ? "" : "mt-4"}`}
     >
       {data && data.length > 0 ? (
         data.map((ts) => <TsexCard key={ts.id} ts={ts} onDetail={onDetail} />)
