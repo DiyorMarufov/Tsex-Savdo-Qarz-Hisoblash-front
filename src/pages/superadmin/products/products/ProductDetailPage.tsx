@@ -72,7 +72,7 @@ const ProductDetailPage = () => {
             <a className="text-[22px] font-bold">
               {product?.product_model.name}
             </a>
-            <p className="text-bg-sy mb-6 text-[18px]">
+            <p className="text-bg-sy mb-3 text-[18px]">
               {product?.product_model.brand || "Noma'lum brend"}
             </p>
 

@@ -1,13 +1,20 @@
 import type { ProColumns } from "@ant-design/pro-table";
 import { Image } from "antd";
 import { Edit } from "lucide-react";
+import { productCategories, productMaterialTypes } from "../../constants";
 
 export type ProductTableListItem = {
   id: string;
   product_model: {
     id: string;
+  };
+  product_category: {
+    id: string;
     name: string;
-    brand: string;
+  };
+  product_material_type: {
+    id: string;
+    name: string;
   };
   color: string;
   price: number;
@@ -16,7 +23,7 @@ export type ProductTableListItem = {
 };
 
 export const productColumns = (
-  handleOpenDetail: any
+  handleOpenDetail: any,
 ): ProColumns<ProductTableListItem>[] => [
   {
     title: "Rasm",
@@ -27,7 +34,7 @@ export const productColumns = (
     render: (_, record) => (
       <Image
         src={record.images[0].image_url || "https://via.placeholder.com/50"}
-        alt={record.product_model.name}
+        alt={record.product_category.name}
         style={{
           width: "40px",
           height: "40px",
@@ -38,16 +45,19 @@ export const productColumns = (
     ),
   },
   {
-    title: "Nomi",
-    dataIndex: "name",
+    title: "Kategoriyasi",
+    dataIndex: ["product_model", "name"],
     width: 150,
-    render: (_, record) => <a>{record.product_model.name}</a>,
+    render: (_, record) => (
+      <a>{productCategories[record.product_category.name]}</a>
+    ),
   },
   {
-    title: "Brendi",
-    dataIndex: "brand",
+    title: "Material turi",
+    dataIndex: ["product_material_type", "name"],
     width: 120,
-    render: (_, record) => record.product_model.brand,
+    render: (_, record) =>
+      productMaterialTypes[record.product_material_type.name],
   },
   {
     title: "Rangi",

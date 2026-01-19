@@ -1,7 +1,11 @@
 import { memo } from "react";
 import { Image, Button as AntdButton } from "antd";
 import type { ProductTableListItem } from "../../lib/model/products/products-model";
-import { colorOptions } from "../../lib/constants";
+import {
+  colorOptions,
+  productCategories,
+  productMaterialTypes,
+} from "../../lib/constants";
 
 interface ProductCardProps {
   product: ProductTableListItem;
@@ -18,7 +22,7 @@ const ProductCard = ({ product, onDetail }: ProductCardProps) => {
       <div className="flex justify-center items-center bg-slate-50/50 rounded-xl overflow-hidden shrink-0 aspect-square max-h-[100px]">
         <Image
           src={product.images?.[0]?.image_url}
-          alt={product.product_model.name}
+          alt={product.product_category.name}
           className="w-full! h-full! object-contain!"
           wrapperClassName="w-full! h-full! flex! justify-center! items-center!"
         />
@@ -28,10 +32,10 @@ const ProductCard = ({ product, onDetail }: ProductCardProps) => {
         <div className="flex justify-between items-start gap-2">
           <div className="flex flex-col min-w-0">
             <h3 className="text-[15px] font-bold text-slate-900 line-clamp-1 leading-tight tracking-tight">
-              {product.product_model.name}
+              {productCategories[product.product_category.name]}
             </h3>
             <span className="text-[13px] font-bold text-blue-500 tracking-tighter mt-0.5">
-              {product.product_model.brand}
+              {productMaterialTypes[product.product_material_type.name]}
             </span>
           </div>
 
