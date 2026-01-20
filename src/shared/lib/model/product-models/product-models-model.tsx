@@ -1,6 +1,7 @@
 import type { ProColumns } from "@ant-design/pro-table";
-import { Image } from "antd";
-import { Edit } from "lucide-react";
+import { Image, Popconfirm } from "antd";
+import { Edit, Trash } from "lucide-react";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 
 export type ProductModelTableItem = {
   id: string;
@@ -24,7 +25,14 @@ export type ProductModelTableItem = {
 };
 
 export const productModelColumns = (
-  handleOpenDetail: (id: string) => void
+  handleOpenDetail: (id: string) => void,
+  {
+    handleDelete,
+    deleteProductModelById,
+  }: {
+    handleDelete: (id: string) => void;
+    deleteProductModelById: any;
+  },
 ): ProColumns<ProductModelTableItem>[] => [
   {
     title: "Rasm",
@@ -78,9 +86,24 @@ export const productModelColumns = (
     title: "Amallar",
     width: 100,
     valueType: "option",
-    render: () => (
+    render: (_, record) => (
       <div className="flex gap-3">
         <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
+        <Popconfirm
+          title="Tasdiqlash"
+          description="Rostdan o'chirmohchimisz?"
+          okText="Ha"
+          cancelText="Yo'q"
+          onConfirm={() => handleDelete?.(record.id)}
+          icon={<QuestionCircleOutlined style={{ color: "red" }} />}
+          okButtonProps={{
+            danger: true,
+            disabled: deleteProductModelById.isPending,
+            loading: deleteProductModelById.isPending,
+          }}
+        >
+          <Trash className="text-red-600 cursor-pointer hover:opacity-80" />
+        </Popconfirm>
       </div>
     ),
   },

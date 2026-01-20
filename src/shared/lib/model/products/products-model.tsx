@@ -1,6 +1,5 @@
 import type { ProColumns } from "@ant-design/pro-table";
 import { Image } from "antd";
-import { Edit } from "lucide-react";
 import { productCategories, productMaterialTypes } from "../../constants";
 
 export type ProductTableListItem = {
@@ -81,16 +80,6 @@ export const productColumns = (
     width: 160,
     valueType: "dateTime",
     sorter: true,
-  },
-  {
-    title: "Amallar",
-    width: 100,
-    valueType: "option",
-    render: (_) => (
-      <div className="flex gap-3">
-        <Edit className="text-green-600 cursor-pointer hover:opacity-80" />
-      </div>
-    ),
   },
   {
     title: "",

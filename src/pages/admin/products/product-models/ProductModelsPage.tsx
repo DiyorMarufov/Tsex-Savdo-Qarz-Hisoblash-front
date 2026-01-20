@@ -14,19 +14,21 @@ import ProductModelMobileList from "../../../../widgets/products/ProductModelMob
 import Button from "../../../../shared/ui/Button/Button";
 import { Plus } from "lucide-react";
 import PlusButton from "../../../../shared/ui/Button/PlusButton";
+import { useApiNotification } from "../../../../shared/hooks/api-notification/useApiNotification";
 
 const ProductModelsPage = () => {
   const [isTsexOpen, setIsTsexOpen] = useState<boolean>(false);
   const [isShopOpen, setIsShopOpen] = useState<boolean>(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const { getAllProductModels } = useProductModel();
+  const { getAllProductModels, deleteProductModelById } = useProductModel();
   const { getAllShopsForProductsFilter } = useShop();
   const { getAllTsexesForProductsFilter } = useTsex();
 
   const { getParam, setParams, removeParam } = useParamsHook();
 
   const [localSearch, setLocalSearch] = useState(getParam("search") || "");
+  const { handleApiError, handleSuccess } = useApiNotification();
 
   useEffect(() => {
     window.scroll({ top: 0 });
@@ -132,6 +134,34 @@ const ProductModelsPage = () => {
   ];
   // Filter ends
 
+  // DeleteProductModel starts
+  const handleDelete = (id: string) => {
+    deleteProductModelById.mutate(id, {
+      onSuccess: () => {
+        handleSuccess("Muvaffaqiyatli o'chirildi");
+      },
+      onError: (err: any) => {
+        const status = err?.response?.data?.statusCode;
+        const msg = err?.response?.data?.message;
+
+        if (status === 404 && msg.startsWith("Product model with ID")) {
+          handleApiError("Model topilmadi", "topRight");
+          return;
+        } else if (
+          status === 400 &&
+          msg.startsWith("Product model has products")
+        ) {
+          handleApiError("Model mahsulotlarga ega", "topRight");
+          return;
+        } else {
+          handleApiError("Serverda xato", "topRight");
+          return;
+        }
+      },
+    });
+  };
+  // DeleteProductModel ends
+
   if (pathname.startsWith(`/admin/models/`)) return <Outlet />;
 
   return (
@@ -175,7 +205,10 @@ const ProductModelsPage = () => {
             total,
             onChange: handlePageChange,
           }}
-          columns={productModelColumns(handleProductDetailOpen)}
+          columns={productModelColumns(handleProductDetailOpen, {
+            handleDelete,
+            deleteProductModelById,
+          })}
           search={false}
           dateFormatter="string"
           scroll={{ x: "max-content" }}

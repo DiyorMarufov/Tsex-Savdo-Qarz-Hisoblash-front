@@ -15,7 +15,8 @@ const ProductDetailPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { getProductById, deleteProductById } = useProduct();
-
+  const { handleApiError } = useApiNotification();
+  
   const { data, isLoading, isError } = getProductById(id as string);
   const product = data?.data;
 
@@ -35,7 +36,6 @@ const ProductDetailPage = () => {
 
   const price = product.price.toLocaleString("uz-UZ");
 
-  const { handleApiError } = useApiNotification();
   const handleDelete = (id: string) => {
     deleteProductById.mutate(id, {
       onSuccess: () => {
@@ -74,7 +74,6 @@ const ProductDetailPage = () => {
           Mahsulot Tafsilotlari
         </h2>
       </div>
-
       <div className="p-4 lg:p-8">
         <div className="flex max-[1380px]:flex-col gap-3">
           <div className="min-[1380px]:w-1/2">
@@ -91,14 +90,47 @@ const ProductDetailPage = () => {
           </div>
 
           <div className="min-[1380px]:w-1/2">
-            <a className="text-[22px] font-bold">
-              {product?.product_model.name}
-            </a>
-            <p className="text-bg-sy mb-3 text-[18px]">
-              {product?.product_model.brand || "Noma'lum brend"}
-            </p>
+            <div className="flex justify-between items-start mb-4">
+              <div>
+                <a className="text-[22px] font-bold block leading-tight">
+                  {product?.product_model.name}
+                </a>
+                <p className="text-bg-sy text-[18px]">
+                  {product?.product_model.brand || "Noma'lum brend"}
+                </p>
+              </div>
 
-            <div className="divide-y rounded-xl overflow-hidden">
+              <div className="flex items-center gap-1">
+                <div className="p-2 hover:bg-emerald-50 rounded-lg cursor-pointer transition-colors group">
+                  <Edit
+                    size={18}
+                    className="text-slate-400 group-hover:text-emerald-600"
+                  />
+                </div>
+                <div className="p-2 hover:bg-rose-50 rounded-lg cursor-pointer transition-colors group">
+                  <Popconfirm
+                    title="Tasdiqlash"
+                    description="Rostdan o'chirmoqchimisiz?"
+                    okText="Ha"
+                    cancelText="Yo'q"
+                    onConfirm={() => handleDelete(product?.id)}
+                    icon={<QuestionCircleOutlined style={{ color: "red" }} />}
+                    okButtonProps={{
+                      danger: true,
+                      disabled: deleteProductById.isPending,
+                      loading: deleteProductById.isPending,
+                    }}
+                  >
+                    <Trash
+                      size={18}
+                      className="text-slate-400 group-hover:text-rose-600"
+                    />
+                  </Popconfirm>
+                </div>
+              </div>
+            </div>
+
+            <div className="divide-y rounded-xl overflow-hidden border-t">
               <InfoRow label="Narxi" value={`${price} UZS`} highlight />
               <InfoRow
                 label="Kategoriya"
@@ -145,34 +177,6 @@ const ProductDetailPage = () => {
                 label="Sana"
                 value={new Date(product?.created_at).toLocaleString("uz-UZ")}
               />
-            </div>
-          </div>
-          <div className="flex items-center justify-end gap-1">
-            <div className="p-2 hover:bg-emerald-50 rounded-lg cursor-pointer transition-colors group">
-              <Edit
-                size={18}
-                className="text-slate-400 group-hover:text-emerald-600"
-              />
-            </div>
-            <div className="p-2 hover:bg-rose-50 rounded-lg cursor-pointer transition-colors group">
-              <Popconfirm
-                title="Tasdiqlash"
-                description="Rostdan o'chirmohchimisz?"
-                okText="Ha"
-                cancelText="Yo'q"
-                onConfirm={() => handleDelete(product?.id)}
-                icon={<QuestionCircleOutlined style={{ color: "red" }} />}
-                okButtonProps={{
-                  danger: true,
-                  disabled: deleteProductById.isPending,
-                  loading: deleteProductById.isPending,
-                }}
-              >
-                <Trash
-                  size={18}
-                  className="text-slate-400 group-hover:text-rose-600"
-                />
-              </Popconfirm>
             </div>
           </div>
         </div>
