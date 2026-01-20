@@ -18,8 +18,8 @@ const CustomersReportBalances = ({
   if (loading) return <BalanceStatCardSkeleton />;
   return (
     <div className="grid grid-cols-3 gap-4 max-[1250px]:grid-cols-2 max-[500px]:grid-cols-1">
-      <StatCard title="Jami haqdorlik" value={creditor} />
-      <StatCard title="Jami qarzdorlik" value={debtor} isValueNegative />
+      <StatCard title="Umumiy haqdorlik" value={creditor} />
+      <StatCard title="Umumiy qarzdorlik" value={debtor} isValueNegative />
       <StatCard
         title="Umumiy balans"
         value={net}

@@ -16,7 +16,7 @@ const AdminProductModelCreatePage = () => {
         onClick={() => navigate(-1)}
       />
       <MediumTitle title="Yangi model qo'shish" />
-      <div className="flex justify-center items-center min-[700px]:h-[77vh] max-[700px]:mt-5">
+      <div className="flex justify-center items-center min-[700px]:h-[75vh] max-[700px]:mt-5">
         <ProductModelCreate />
       </div>
     </div>

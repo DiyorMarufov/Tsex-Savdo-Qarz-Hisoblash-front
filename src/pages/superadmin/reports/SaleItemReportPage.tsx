@@ -82,14 +82,14 @@ const SaleItemReportPage = () => {
           <div className="px-4 py-3 border-b border-bg-fy flex justify-between items-center bg-gray-50/50">
             <div className="flex items-center gap-2">
               <h3 className="text-[16px] font-bold text-[#374151]">
-                Sotilgan mahsulotlar ro'yxati
+                {saleInfo?.customerName} ning xaridlari
               </h3>
             </div>
             {saleItemLoading ? (
               <div className="h-[26px] w-[110px] bg-gray-200 animate-pulse rounded border border-gray-100"></div>
             ) : (
               <span className="text-[12px] text-gray-400 font-medium bg-white px-2 py-1 rounded border border-bg-fy">
-                Jami: {total || 0} ta mahsulot
+                Umumiy: {total || 0} ta mahsulot, {saleInfo?.totalUnits} juft
               </span>
             )}
           </div>
@@ -115,7 +115,7 @@ const SaleItemReportPage = () => {
           <div className="px-6 py-4 bg-gray-50 border-t border-bg-fy flex justify-end items-center gap-10">
             <div className="flex flex-col items-end">
               <span className="text-[13px] text-[#6B7280] font-bold uppercase tracking-wider">
-                Mahsulotlar jami summasi
+                Mahsulotlar umumiy summasi
               </span>
               <div className="flex items-baseline gap-1">
                 {saleItemLoading ? (

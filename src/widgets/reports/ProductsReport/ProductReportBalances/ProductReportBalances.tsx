@@ -25,7 +25,7 @@ const ProductReportBalances = ({
     <div className="grid grid-cols-3 gap-4 max-[1250px]:grid-cols-2 max-[500px]:grid-cols-1">
       <div className="border border-bg-fy bg-[#ffffff] rounded-2xl p-7 flex flex-col gap-1 max-[500px]:items-center">
         <span className="text-[22px] font-medium text-bg-py max-[900px]:text-[20px] max-[500px]:text-[17px]">
-          Jami mahsulotlar
+          Umumiy mahsulotlar
         </span>
         <div className="flex flex-col max-[500px]:items-center">
           <span className="font-bold text-[30px] text-green-500 max-[900px]:text-[25px] max-[500px]:text-[22px]">
@@ -50,7 +50,7 @@ const ProductReportBalances = ({
 
       <div className="border border-bg-fy bg-[#ffffff] rounded-2xl p-7 flex flex-col gap-1 max-[500px]:items-center">
         <span className="text-[22px] font-medium text-bg-py max-[900px]:text-[20px] max-[500px]:text-[17px]">
-          Jami sotilgan mahsulotlar
+          Umumiy sotilgan mahsulotlar
         </span>
         <div className="flex flex-col max-[500px]:items-center">
           <span className="font-bold text-[30px] text-green-500 max-[900px]:text-[25px] max-[500px]:text-[22px]">

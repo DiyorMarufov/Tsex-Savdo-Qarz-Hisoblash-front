@@ -126,7 +126,7 @@ const PaymentAndSummary = () => {
 
       <div className="flex flex-col gap-3">
         <div className="flex justify-between gap-3">
-          <span className="text-gray-700 text-[16px]">Jami summa</span>
+          <span className="text-gray-700 text-[16px]">Umumiy summa</span>
           <span className="text-[17px]">
             {totalAmount.toLocaleString()} UZS
           </span>

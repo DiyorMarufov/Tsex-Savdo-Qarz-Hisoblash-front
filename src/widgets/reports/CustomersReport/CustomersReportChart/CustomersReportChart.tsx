@@ -69,7 +69,7 @@ const CustomersReportChart: FC<CustomersReportProps> = ({
                   {formatNumber(total)}
                 </span>
                 <span className="text-[9px] text-slate-400 font-bold uppercase tracking-widest">
-                  Jami
+                  Umumiy
                 </span>
               </div>
 
