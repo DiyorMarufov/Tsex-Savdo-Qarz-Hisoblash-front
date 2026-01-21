@@ -15,9 +15,17 @@ export const useProduct = () => {
       api.post("products", data).then((res) => res.data),
     onSuccess: () => {
       client.invalidateQueries({ queryKey: [product, "all-products-by-id"] });
+      client.invalidateQueries({ queryKey: [product] });
       client.invalidateQueries({
         queryKey: ["product_model", "all-product-models"],
       });
+      client.invalidateQueries({
+        queryKey: [
+          "product_history",
+          "all-infinite-product-histories-by-product-id",
+        ],
+      });
+
       client.invalidateQueries({
         queryKey: [product, "all-products-for-report"],
       });
@@ -29,6 +37,9 @@ export const useProduct = () => {
       });
       client.invalidateQueries({
         queryKey: [product, "all-infinite-products"],
+      });
+      client.invalidateQueries({
+        queryKey: [product, "latest-product"],
       });
       client.invalidateQueries({ queryKey: ["tsex", "total-balance"] });
       client.invalidateQueries({ queryKey: ["tsex", "most-debtor-tsexes"] });
@@ -117,6 +128,16 @@ export const useProduct = () => {
       gcTime: 1000 * 60 * 10,
     });
 
+  const getLatestProductForProductCreate = (id: string) =>
+    useQuery({
+      queryKey: [product, "latest-product", id],
+      queryFn: () => api.get(`products/latest/${id}`).then((res) => res.data),
+      enabled: !!id,
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 10,
+    });
+
   const getProductById = (id: string) =>
     useQuery({
       queryKey: [product, id],
@@ -143,6 +164,9 @@ export const useProduct = () => {
       client.invalidateQueries({
         queryKey: [product, "all-infinite-products"],
       }),
+      client.invalidateQueries({
+        queryKey: [product, "latest-product"],
+      }),
       client.invalidateQueries({ queryKey: ["tsex", "total-balance"] }),
       client.invalidateQueries({ queryKey: ["tsex", "most-debtor-tsexes"] }),
       client.invalidateQueries({ queryKey: ["tsex", "tsex-balance-summary"] }),
@@ -160,6 +184,7 @@ export const useProduct = () => {
     getProductsSummaryForReport,
     getAllProductsForProductsFilter,
     getAllTop5ProductsForReport,
+    getLatestProductForProductCreate,
     getProductById,
     deleteProductById,
   };

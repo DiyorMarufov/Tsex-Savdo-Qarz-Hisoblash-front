@@ -2,11 +2,17 @@ import type { ProColumns } from "@ant-design/pro-table";
 import { Image, Popconfirm } from "antd";
 import { Edit, Trash } from "lucide-react";
 import { QuestionCircleOutlined } from "@ant-design/icons";
+import { productCategories } from "../../constants";
 
 export type ProductModelTableItem = {
   id: string;
   name: string;
-  brand: string;
+  product_category: {
+    id: string;
+    name: string;
+  };
+  price: number;
+  size: string;
   shop: {
     id: string;
     name: string;
@@ -54,16 +60,36 @@ export const productModelColumns = (
     ),
   },
   {
-    title: "Model Nomi",
+    title: "Nomi",
     dataIndex: "name",
     width: 120,
     render: (_, record) => <a>{record.name}</a>,
   },
   {
-    title: "Brendi",
-    dataIndex: "brand",
+    title: "Kategoriya",
+    dataIndex: ["product_category", "name"],
+    width: 120,
+    render: (_, record) =>
+      productCategories[
+        record.product_category.name as keyof typeof productCategories
+      ],
+  },
+  {
+    title: "Narxi",
+    dataIndex: "price",
+    width: 120,
+    render: (_, record) => (
+      <div className="text-green-600 font-bold">
+        {record.price.toLocaleString()}
+      </div>
+    ),
+  },
+  {
+    title: "Razmeri",
+    dataIndex: "size",
     width: 120,
   },
+
   {
     title: "Tsex (Ishlab chiqaruvchi)",
     dataIndex: ["tsex", "name"],

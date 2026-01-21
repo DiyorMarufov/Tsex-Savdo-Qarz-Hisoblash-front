@@ -185,18 +185,13 @@ const AdminAddSalePage = () => {
         label: (
           <div className="flex items-center justify-between w-full py-1">
             <div className="flex flex-col gap-0.5 overflow-hidden">
-              <div className="flex gap-1.5">
-                <span className="text-[14px] font-medium text-slate-800 leading-tight truncate">
-                  {pr?.product_model?.name}
-                </span>
-                <span className="text-[11px] text-slate-600 font-normal shrink-0">
-                  {pr?.product_model?.brand}
-                </span>
-              </div>
+              <span className="text-[14px] font-medium text-slate-800 leading-tight truncate">
+                {pr?.product_model?.name}
+              </span>
 
               <div className="flex items-center gap-1.5 text-[11px] text-slate-400 font-normal">
                 <span className="truncate">
-                  {productCategories[pr?.product_category?.name]}
+                  {productCategories[pr?.product_model?.product_category?.name]}
                 </span>
                 -
                 <span className="truncate">
@@ -215,7 +210,7 @@ const AdminAddSalePage = () => {
 
             <div className="flex flex-col items-end gap-0.5 shrink-0 ml-2">
               <span className="text-[13px] font-bold text-emerald-600 tabular-nums">
-                {isPriceVisible ? Number(pr?.price).toLocaleString() : "******"}{" "}
+                {isPriceVisible ? Number(pr?.product_model?.price).toLocaleString() : "******"}{" "}
                 uzs
               </span>
               <span
@@ -228,7 +223,7 @@ const AdminAddSalePage = () => {
             </div>
           </div>
         ),
-        displayLabel: `${pr?.product_model?.name} - ${pr?.product_model?.brand} - ${pr?.color ? pr?.color?.charAt(0)?.toUpperCase() + pr?.color?.slice(1) : ""}`,
+        displayLabel: `${pr?.product_model?.name} - ${pr?.color ? pr?.color?.charAt(0)?.toUpperCase() + pr?.color?.slice(1) : ""}`,
         originalProduct: pr,
       };
     });

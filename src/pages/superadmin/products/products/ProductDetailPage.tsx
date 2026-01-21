@@ -1,6 +1,6 @@
 import { memo, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Image, Popconfirm } from "antd";
+import { Button, Image, Popconfirm } from "antd";
 import { ArrowLeft, Edit, Trash } from "lucide-react";
 import ProductDetailCardSkeleton from "../../../../shared/ui/Skeletons/Products/ProductDetailCardSkeleton";
 import { useProduct } from "../../../../shared/lib/apis/products/useProduct";
@@ -10,21 +10,35 @@ import {
 } from "../../../../shared/lib/constants";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { useApiNotification } from "../../../../shared/hooks/api-notification/useApiNotification";
+import { useProductHistory } from "../../../../shared/lib/apis/product-histories/useProductHistory";
+import ProductHistorySkeleton from "../../../../shared/ui/Skeletons/Products/ProductHistorySkeleton";
 
 const ProductDetailPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { getProductById, deleteProductById } = useProduct();
+  const { getAllProductHistoriesByProductId } = useProductHistory();
   const { handleApiError } = useApiNotification();
-  
-  const { data, isLoading, isError } = getProductById(id as string);
+
+  const {
+    data,
+    isLoading: productDetailLoading,
+    isError,
+  } = getProductById(id as string);
   const product = data?.data;
 
+  const {
+    data: allProductHistories,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+    isLoading: productHistoriesLoading,
+  } = getAllProductHistoriesByProductId(id as string);
   useEffect(() => {
     window.scroll({ top: 0 });
   }, []);
 
-  if (isLoading) {
+  if (productDetailLoading) {
     return <ProductDetailCardSkeleton />;
   }
 
@@ -34,7 +48,7 @@ const ProductDetailPage = () => {
     );
   }
 
-  const price = product.price.toLocaleString("uz-UZ");
+  const price = product?.product_model?.price?.toLocaleString("uz-UZ");
 
   const handleDelete = (id: string) => {
     deleteProductById.mutate(id, {
@@ -62,15 +76,21 @@ const ProductDetailPage = () => {
     });
   };
 
+  const productHistories =
+    allProductHistories?.pages.flatMap((page: any) => {
+      return Array.isArray(page) ? page : page?.data?.data || page?.data || [];
+    }) || [];
+
   return (
     <div className="mx-auto bg-white rounded-[5px]">
-      <div className="flex items-center px-3 gap-12 h-12 border-b bg-white">
+      <div className="relative flex items-center px-4 lg:px-8 h-12 border-b bg-white">
         <ArrowLeft
-          className="hover:opacity-75 cursor-pointer"
+          className="hover:opacity-75 cursor-pointer z-10"
           onClick={() => navigate(-1)}
+          size={20}
         />
 
-        <h2 className="text-[17px] font-bold text-slate-800">
+        <h2 className="absolute inset-0 flex items-center justify-center text-[17px] font-bold text-slate-800 pointer-events-none">
           Mahsulot Tafsilotlari
         </h2>
       </div>
@@ -95,9 +115,6 @@ const ProductDetailPage = () => {
                 <a className="text-[22px] font-bold block leading-tight">
                   {product?.product_model.name}
                 </a>
-                <p className="text-bg-sy text-[18px]">
-                  {product?.product_model.brand || "Noma'lum brend"}
-                </p>
               </div>
 
               <div className="flex items-center gap-1">
@@ -135,7 +152,9 @@ const ProductDetailPage = () => {
               <InfoRow
                 label="Kategoriya"
                 value={
-                  productCategories[product?.product_category?.name || "-"]
+                  productCategories[
+                    product?.product_model?.product_category?.name || "-"
+                  ]
                 }
               />
               <InfoRow
@@ -160,7 +179,10 @@ const ProductDetailPage = () => {
                 label="Pochkadagi soni"
                 value={product.unit_in_package || "—"}
               />
-              <InfoRow label="O‘lchami" value={product.size || "—"} />
+              <InfoRow
+                label="O‘lchami"
+                value={product?.product_model?.size || "—"}
+              />
               <InfoRow
                 label="Do‘kon"
                 value={`${product?.product_model.shop?.name}` || "—"}
@@ -180,30 +202,91 @@ const ProductDetailPage = () => {
             </div>
           </div>
         </div>
+
+        <div className="mt-3 bg-gray-50/50">
+          <h3 className="text-[18px] font-bold text-slate-800 mb-1">
+            Kirimlar Tarixi
+          </h3>
+
+          <div className="bg-white rounded-xl border px-3.5 pt-px pb-4 h-[340px] overflow-y-auto main-outlet">
+            {productHistoriesLoading ? (
+              Array.from({ length: 5 }).map((_, index: number) => (
+                <ProductHistorySkeleton key={index} />
+              ))
+            ) : productHistories?.length > 0 ? (
+              <>
+                <div className="max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                  {productHistories.map((history: any) => (
+                    <ProductHistoryItem key={history.id} history={history} />
+                  ))}
+
+                  {hasNextPage && (
+                    <div className="flex justify-center min-[500px]:justify-end mt-4">
+                      <Button
+                        type="primary"
+                        onClick={() => fetchNextPage()}
+                        disabled={isFetchingNextPage}
+                        loading={isFetchingNextPage}
+                        className="w-full min-[500px]:w-[150px]!"
+                      >
+                        {isFetchingNextPage ? "Yuklanmoqda..." : "Yana yuklash"}
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              </>
+            ) : (
+              <div className="text-center py-6 text-gray-400">
+                Hozircha kirimlar tarixi mavjud emas
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
-const InfoRow = ({
-  label,
-  value,
-  highlight,
-}: {
-  label: string;
-  value: string;
-  highlight?: boolean;
-}) => (
-  <div className="flex justify-between items-center py-3">
-    <span className="text-bg-sy text-[14px]">{label}</span>
-    <span
-      className={`text-[15px] font-bold ${
-        highlight ? "text-green-500 font-semibold" : "text-gray-700"
-      }`}
-    >
-      {value}
-    </span>
-  </div>
+const InfoRow = memo(
+  ({
+    label,
+    value,
+    highlight,
+  }: {
+    label: string;
+    value: string;
+    highlight?: boolean;
+  }) => (
+    <div className="flex justify-between items-center py-3">
+      <span className="text-bg-sy text-[14px]">{label}</span>
+      <span
+        className={`text-[15px] font-bold ${
+          highlight ? "text-green-500 font-semibold" : "text-gray-700"
+        }`}
+      >
+        {value}
+      </span>
+    </div>
+  ),
 );
+
+const ProductHistoryItem = memo(({ history }: { history: any }) => (
+  <div className="flex justify-between items-center py-3 border-b last:border-0 border-gray-100">
+    <div className="flex flex-col">
+      <span className="text-[14px] font-medium text-slate-700">
+        +{history.quantity} pochka
+      </span>
+      <span className="text-[12px] text-gray-400">
+        {new Date(history.created_at).toLocaleString("uz-UZ")}
+      </span>
+    </div>
+    <div className="text-right">
+      <span className="text-[13px] text-gray-500 block">Kiritdi:</span>
+      <span className="text-[13px] font-semibold text-slate-600">
+        {history.created_by?.full_name || "Noma'lum"}
+      </span>
+    </div>
+  </div>
+));
 
 export default memo(ProductDetailPage);

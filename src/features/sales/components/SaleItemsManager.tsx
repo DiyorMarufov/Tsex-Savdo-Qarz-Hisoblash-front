@@ -191,14 +191,9 @@ const SaleItemsManager = ({
                           className="flex flex-col gap-3 p-3 bg-slate-50 border border-slate-100 rounded-xl"
                         >
                           <div className="flex justify-between items-start gap-3 max-[540px]:flex-col">
-                            <div className="flex flex-col">
-                              <span className="text-sm font-bold text-slate-800 leading-tight flex items-center gap-2">
-                                {product.product_model.name}
-                              </span>
-                              <span className="text-[11px] text-slate-500 font-semibold">
-                                {product.product_model.brand}
-                              </span>
-                            </div>
+                            <span className="text-sm font-bold text-slate-800 leading-tight flex items-center gap-2">
+                              {product.product_model.name}
+                            </span>
 
                             <div className="flex flex-col items-end gap-2 max-[540px]:items-start max-[540px]:w-full">
                               <div className="flex items-center gap-2 flex-wrap">
@@ -206,7 +201,8 @@ const SaleItemsManager = ({
                                   <span className="opacity-70">
                                     {
                                       productCategories[
-                                        product?.product_category?.name
+                                        product?.product_model?.product_category
+                                          ?.name
                                       ]
                                     }
                                   </span>
@@ -261,13 +257,19 @@ const SaleItemsManager = ({
 
                               <div className="flex items-center gap-2 flex-wrap">
                                 <div className="flex items-center gap-[5px] px-2 py-0.5 rounded text-[12px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">
-                                  <span className="text-[11px] opacity-60 font-medium">
-                                    Asl narxi:
-                                  </span>
-                                  {isPriceVisible
-                                    ? Number(product.price).toLocaleString()
-                                    : "******"}
-                                  <span className="text-[11px]">uzs</span>
+                                  {isPriceVisible ? (
+                                    <>
+                                      <span className="text-[11px] opacity-60 font-medium">
+                                        Asl narxi:
+                                      </span>
+                                      {Number(
+                                        product?.product_model?.price,
+                                      ).toLocaleString()}
+                                      <span className="text-[11px]">uzs</span>
+                                    </>
+                                  ) : (
+                                    "********************"
+                                  )}
                                 </div>
 
                                 <div className="flex items-center gap-[5px] px-2 py-0.5 rounded text-[12px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-100">
@@ -309,7 +311,6 @@ const SaleItemsManager = ({
                               <InputNumber
                                 min={1}
                                 controls={false}
-                                value={currentItem?.price ?? product.price}
                                 stringMode={false}
                                 onKeyPress={(e) => {
                                   if (!/[0-9]/.test(e.key)) {
@@ -321,12 +322,9 @@ const SaleItemsManager = ({
                                 }
                                 className="w-full rounded-md"
                                 formatter={(v) =>
-                                  `${isPriceVisible ? v : "******"}`.replace(
-                                    /\B(?=(\d{3})+(?!\d))/g,
-                                    ",",
-                                  )
+                                  v.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 }
-                                parser={(v) => v!.replace(/[^\d]/g, "")}
+                                parser={(v: any) => v!.replace(/[^\d]/g, "")}
                                 addonAfter={
                                   <span className="text-[10px]">uzs</span>
                                 }

@@ -6,17 +6,17 @@ export type ProductTableListItem = {
   id: string;
   product_model: {
     id: string;
-  };
-  product_category: {
-    id: string;
-    name: string;
+    product_category: {
+      id: string;
+      name: string;
+    };
+    price: number;
   };
   product_material_type: {
     id: string;
     name: string;
   };
   color: string;
-  price: number;
   images: [{ id: string; image_url: string }];
   created_at: Date;
 };
@@ -33,7 +33,7 @@ export const productColumns = (
     render: (_, record) => (
       <Image
         src={record.images?.[0]?.image_url}
-        alt={record?.product_category?.name}
+        alt={record?.product_model.product_category?.name}
         style={{
           width: "40px",
           height: "40px",
@@ -45,10 +45,10 @@ export const productColumns = (
   },
   {
     title: "Kategoriyasi",
-    dataIndex: ["product_model", "name"],
+    dataIndex: ["product_model", "product_category", "name"],
     width: 150,
     render: (_, record) => (
-      <a>{productCategories[record.product_category.name]}</a>
+      <a>{productCategories[record.product_model.product_category.name]}</a>
     ),
   },
   {
@@ -66,11 +66,11 @@ export const productColumns = (
   },
   {
     title: "Narxi",
-    dataIndex: "price",
+    dataIndex: ["product_model", "price"],
     width: 120,
     render: (_, record) => (
       <div className="text-green-600 font-bold">
-        {record.price.toLocaleString()}
+        {record.product_model.price.toLocaleString()}
       </div>
     ),
   },

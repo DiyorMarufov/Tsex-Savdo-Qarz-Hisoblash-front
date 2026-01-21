@@ -31,9 +31,18 @@ const AdminTsexesTransactions = () => {
     window.scroll({ top: 0 });
   }, []);
 
+  // Query starts
+  const query: QueryParams = useMemo(() => {
+    const page = Number(getParam("page")) || 1;
+    const limit = Number(getParam("limit")) || 5;
+
+    return { page, limit };
+  }, [getParam]);
+  // Query ends
+
   // TsexTranscationsData start
   const { data: allTsexTransactions, isLoading: tsexTranscationLoading } =
-    getTsexTransactionsByTsexId(id as string);
+    getTsexTransactionsByTsexId(id as string, query);
   const tsexTransactions = allTsexTransactions?.data?.data?.map((att: any) => ({
     id: att?.id,
     tsex: att?.tsex?.name,
@@ -47,15 +56,6 @@ const AdminTsexesTransactions = () => {
   const total = allTsexTransactions?.data?.total || 0;
 
   // TsexTranscationsData end
-
-  // Query starts
-  const query: QueryParams = useMemo(() => {
-    const page = Number(getParam("page")) || 1;
-    const limit = Number(getParam("limit")) || 5;
-
-    return { page, limit };
-  }, [getParam]);
-  // Query ends
 
   // PageChange starts
   const handlePageChange = (newPage: number, newPageSize?: number) => {
@@ -84,7 +84,7 @@ const AdminTsexesTransactions = () => {
     <div>
       <ArrowLeft
         className="hover:opacity-75 cursor-pointer mb-1"
-        onClick={() => navigate(-1)}
+        onClick={() => navigate("/admin/tsexes")}
       />
       {tsexTranscationLoading ? (
         <NameSkeleton />

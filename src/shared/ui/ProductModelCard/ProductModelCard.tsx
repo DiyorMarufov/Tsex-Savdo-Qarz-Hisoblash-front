@@ -5,6 +5,7 @@ import { Image, Popconfirm } from "antd";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { useProductModel } from "../../lib/apis/product-models/useProductModel";
 import { useApiNotification } from "../../hooks/api-notification/useApiNotification";
+import { productCategories } from "../../lib/constants";
 
 interface ProductModelCardProps {
   item: ProductModelTableItem;
@@ -42,80 +43,90 @@ const ProductModelCard = ({ item, onDetail }: ProductModelCardProps) => {
 
   return (
     <div
-      className="bg-white rounded-2xl p-3 flex items-center gap-3 border border-bg-fy active:bg-gray-50 transition-colors cursor-pointer"
+      className="bg-white rounded-2xl p-3 flex flex-col min-[385px]:flex-row min-[385px]:items-center gap-4 border border-bg-fy hover:bg-gray-50 transition-all cursor-pointer"
       onClick={() => onDetail(item.id)}
     >
       <div
-        className="w-16 h-16 rounded-xl bg-gray-100 overflow-hidden shrink-0"
+        className="w-16 h-16 rounded-xl bg-gray-100 overflow-hidden shrink-0 border border-gray-50"
         onClick={(e) => e.stopPropagation()}
       >
         <Image
           src={item.products?.[0]?.images?.[0]?.image_url}
           alt={item.name}
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-          }}
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
           wrapperClassName="w-full h-full"
+          preview={false}
         />
       </div>
 
-      <div className="flex-1 overflow-hidden">
-        <div className="flex flex-col">
-          <h3 className="text-[15px] font-semibold text-gray-900 truncate leading-tight">
-            {item.name}
-          </h3>
-          <span className="text-[10px] font-bold text-blue-500 tracking-wider">
-            {item.brand}
+      <div className="flex-1 min-w-0">
+        <h3 className="text-[15px] font-bold text-gray-900 truncate leading-tight">
+          {item.name}
+        </h3>
+        <div className="flex w-full justify-between items-center gap-2">
+          <span className="text-[11px] font-bold text-blue-500 tracking-wider">
+            {
+              productCategories[
+                item.product_category?.name as keyof typeof productCategories
+              ]
+            }
           </span>
         </div>
 
-        <div className="flex flex-col mt-1 gap-0.5">
-          <div className="flex items-center gap-1.5 text-gray-500 text-[11px]">
-            <Factory size={12} className="text-gray-400" />
-            <span className="truncate">
-              {item.tsex?.name || "Tsex kiritilmagan"}
-            </span>
-          </div>
-          <div className="flex items-center gap-1.5 text-gray-500 text-[11px]">
-            <Store size={12} className="text-gray-400" />
-            <span className="truncate">
-              {item.shop?.name || "Do'kon kiritilmagan"}
-            </span>
+        <div className="flex items-center gap-2">
+          <span className="text-[11px] font-medium text-gray-400 bg-gray-50 rounded">
+            {item.size}
+          </span>
+          <div className="flex items-center gap-2 text-gray-400 text-[11px]">
+            <div className="flex items-center gap-1">
+              <Factory size={11} />
+              <span className="truncate max-w-[70px]">{item.tsex?.name}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Store size={11} />
+              <span className="truncate max-w-[70px]">{item.shop?.name}</span>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="flex items-center gap-1">
-        <div className="p-2 hover:bg-emerald-50 rounded-lg cursor-pointer transition-colors group">
-          <Edit
-            size={18}
-            className="text-slate-400 group-hover:text-emerald-600"
-          />
+      <div className="flex flex-row min-[385px]:flex-col items-center min-[385px]:items-end justify-between min-[385px]:justify-start gap-1">
+        <div className="flex">
+          <span className="font-bold text-green-600 shrink-0 text-[14px]">
+            {Number(item.price).toLocaleString()} uzs
+          </span>
         </div>
-        <div
-          className="p-2 hover:bg-rose-50 rounded-lg cursor-pointer transition-colors group"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <Popconfirm
-            title="Tasdiqlash"
-            description="Rostdan o'chirmohchimisz?"
-            okText="Ha"
-            cancelText="Yo'q"
-            onConfirm={() => handleDelete(item?.id)}
-            icon={<QuestionCircleOutlined style={{ color: "red" }} />}
-            okButtonProps={{
-              danger: true,
-              disabled: deleteProductModelById.isPending,
-              loading: deleteProductModelById.isPending,
-            }}
-          >
-            <Trash
+
+        <div className="flex gap-1">
+          <div className="p-2 hover:bg-emerald-50 rounded-lg cursor-pointer transition-colors group">
+            <Edit
               size={18}
-              className="text-slate-400 group-hover:text-rose-600"
+              className="text-slate-400 group-hover:text-emerald-600"
             />
-          </Popconfirm>
+          </div>
+          <div
+            className="p-2 hover:bg-rose-50 rounded-lg cursor-pointer transition-colors group"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Popconfirm
+              title="Tasdiqlash"
+              description="Rostdan o'chirmohchimisz?"
+              okText="Ha"
+              cancelText="Yo'q"
+              onConfirm={() => handleDelete(item?.id)}
+              icon={<QuestionCircleOutlined style={{ color: "red" }} />}
+              okButtonProps={{
+                danger: true,
+                disabled: deleteProductModelById.isPending,
+                loading: deleteProductModelById.isPending,
+              }}
+            >
+              <Trash
+                size={18}
+                className="text-slate-400 group-hover:text-rose-600"
+              />
+            </Popconfirm>
+          </div>
         </div>
       </div>
     </div>

@@ -25,11 +25,14 @@ export const useTsexTransaction = () => {
     },
   });
 
-  const getTsexTransactionsByTsexId = (id: string) =>
+  const getTsexTransactionsByTsexId = (id: string, params?: any) =>
     useQuery({
-      queryKey: [tsex_transaction, id],
+      queryKey: [tsex_transaction, id, params],
       queryFn: () =>
-        api.get(`tsex-transactions/tsexes/${id}`).then((res) => res.data),
+        api
+          .get(`tsex-transactions/tsexes/${id}`, { params })
+          .then((res) => res.data),
+      enabled: !!id,
       refetchOnWindowFocus: false,
       staleTime: 1000 * 60 * 5,
       gcTime: 1000 * 60 * 10,
