@@ -220,14 +220,9 @@ const AdminProductsReportPage = () => {
     ).map((pr: any) => ({
       value: pr?.id,
       label: (
-        <div className="flex justify-between items-center w-full">
-          <span className="text-[14px] font-medium text-slate-800">
-            {pr?.name}
-          </span>
-          <span className="text-[12px] text-slate-400 font-normal ml-2">
-            {pr?.brand}
-          </span>
-        </div>
+        <span className="text-[14px] font-medium text-slate-800">
+          {pr?.name}
+        </span>
       ),
     })),
   ];
@@ -299,7 +294,7 @@ const AdminProductsReportPage = () => {
 
       <div className="rounded-[12px] border border-e-bg-fy bg-[#ffffff] p-3.5">
         <SearchInput
-          placeholder="Mahsulot nomi,brandi bo'yicha qidirish"
+          placeholder="Mahsulot nomi bo'yicha qidirish"
           className="h-10! bg-bg-ty! text-[16px]!"
           value={localSearch}
           onChange={handleSearchChange}

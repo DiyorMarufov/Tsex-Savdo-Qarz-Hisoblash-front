@@ -20,7 +20,6 @@ type FieldType = {
   category_id: string;
   price: string;
   size: string;
-  brand: string;
   tsex_id: string;
   shop_id: string;
 };

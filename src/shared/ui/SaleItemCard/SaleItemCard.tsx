@@ -18,7 +18,7 @@ const SaleItemReportCard = ({ item }: SaleItemRepordCard) => {
           <div className="flex items-center gap-1.5 text-slate-500 mt-1">
             <Tag size={13} className="text-slate-400 shrink-0" />
             <span className="text-[13px] font-medium truncate italic text-slate-400">
-              {item.product_brand}, {productCategories[item.product_category]}
+              {productCategories[item.product_category]}
               {` • ${productMaterialTypes[item.product_material_type]}`}
             </span>
           </div>

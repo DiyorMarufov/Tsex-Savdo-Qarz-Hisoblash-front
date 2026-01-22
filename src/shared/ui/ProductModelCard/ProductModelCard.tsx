@@ -55,7 +55,6 @@ const ProductModelCard = ({ item, onDetail }: ProductModelCardProps) => {
           alt={item.name}
           style={{ width: "100%", height: "100%", objectFit: "cover" }}
           wrapperClassName="w-full h-full"
-          preview={false}
         />
       </div>
 

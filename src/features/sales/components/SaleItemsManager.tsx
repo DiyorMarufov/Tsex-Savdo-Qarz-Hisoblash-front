@@ -1,7 +1,6 @@
-import { InputNumber, Select, Spin } from "antd";
+import { InputNumber, Select, Spin, Tag } from "antd";
 import { memo, useMemo, useState, useEffect } from "react";
 import type { Option } from "../../../shared/lib/types";
-import type { SelectProps } from "antd/es/select";
 import { useProduct } from "../../../shared/lib/apis/products/useProduct";
 import {
   colorOptions,
@@ -9,24 +8,21 @@ import {
   productMaterialTypes,
 } from "../../../shared/lib/constants";
 import { Eye, EyeOff } from "lucide-react";
-
-type TagRenderType = SelectProps["tagRender"];
+import { useParamsHook } from "../../../shared/hooks/params/useParams";
 
 interface SaleItemsManagerProps {
   productId?: string;
   shopId?: string;
-  productOptions: Option[];
+  productModelOptions?: any[];
   shopOptions: Option[];
-  productListLoading: boolean;
-  productHasNextPage?: boolean;
-  productIsFetchingNextPage?: boolean;
-  productFetchNextPage?: any;
+  productModelListLoading?: boolean;
+  productModelHasNextPage?: boolean;
+  productModelIsFetchingNextPage?: boolean;
+  productModelFetchNextPage?: any;
   onSearchChange?: (value: string) => void;
   shopListLoading: boolean;
-  setIsProductOpen: (visible: boolean) => void;
   setIsShopOpen: (visible: boolean) => void;
   handleChange: (key: "shopId" | "productId", value: string[] | string) => void;
-  tagRender: TagRenderType;
   isPriceVisible: boolean;
   setIsPriceVisible: any;
 }
@@ -34,94 +30,222 @@ interface SaleItemsManagerProps {
 const SaleItemsManager = ({
   productId,
   shopId,
-  productOptions,
+  productModelOptions,
   shopOptions,
-  productListLoading,
-  productHasNextPage,
-  productIsFetchingNextPage,
-  productFetchNextPage,
+  productModelListLoading,
+  productModelHasNextPage,
+  productModelIsFetchingNextPage,
+  productModelFetchNextPage,
   onSearchChange,
   shopListLoading,
-  setIsProductOpen,
   setIsShopOpen,
   handleChange,
-  tagRender,
   isPriceVisible,
   setIsPriceVisible,
 }: SaleItemsManagerProps) => {
-  const { getInfiniteProducts } = useProduct();
-  const { data: productsData } = getInfiniteProducts(true);
-
   const [items, setItems] = useState<any[]>(() => {
     const saved = localStorage.getItem("sale_items");
     return saved ? JSON.parse(saved) : [];
   });
+  const { setParams, removeParam } = useParamsHook();
 
-  const selectedIds = useMemo(() => {
+  const selectedModelIds = useMemo(() => {
     return productId ? productId.split(",").filter(Boolean) : [];
   }, [productId]);
 
-  const selectedProducts = useMemo(() => {
-    if (!productOptions) return [];
-
-    return selectedIds
-      .map((id) => {
-        const option: any = productOptions.find((opt) => opt.value === id);
-        return option?.originalProduct || null;
-      })
-      .filter(Boolean);
-  }, [selectedIds, productOptions]);
-
   useEffect(() => {
-    const saved = localStorage.getItem("sale_items");
-    let currentSaved = saved ? JSON.parse(saved) : [];
+    setItems((prev) => {
+      const filtered = prev.filter((item: any) =>
+        selectedModelIds.includes(item.model_id),
+      );
+      selectedModelIds.forEach((id) => {
+        const exists = filtered.find((item: any) => item.model_id === id);
+        if (!exists) {
+          const modelInfo = productModelOptions?.find(
+            (opt) => opt.value === id,
+          )?.originalProduct;
+          filtered.push({
+            model_id: id,
+            model_name: modelInfo?.name || "Yuklanmoqda...",
+            category_name: modelInfo?.product_category?.name || "",
+            base_price: modelInfo?.price || 0,
+            product_id: null,
+            quantity: 1,
+            price: 0,
+            unit_in_package: 0,
+          });
+        }
+      });
 
-    let filtered = currentSaved.filter((item: any) =>
-      selectedIds.includes(item.product_id),
-    );
-
-    selectedIds.forEach((id) => {
-      const exists = filtered.find((item: any) => item.product_id === id);
-      if (!exists) {
-        const option: any = productOptions.find((opt) => opt.value === id);
-        const product = option?.originalProduct;
-        filtered.push({
-          product_id: id,
-          quantity: 1,
-          price: product?.price || 0,
-          unit_in_package: product?.unit_in_package,
-        });
-      }
+      localStorage.setItem("sale_items", JSON.stringify(filtered));
+      if (filtered.length === 0) removeParam("product_search");
+      return filtered;
     });
-    localStorage.setItem("sale_items", JSON.stringify(filtered));
-    setItems(filtered);
-  }, [productId, productsData]);
+  }, [productId, productModelOptions, removeParam]);
 
-  const updateItemDetails = (
-    id: string,
-    field: "quantity" | "price",
-    value: number | null,
-  ) => {
+  const updateItemDetails = (modelId: string, field: string, value: any) => {
     setItems((prev) => {
       const newItems = prev.map((item) =>
-        item.product_id === id ? { ...item, [field]: value } : item,
+        item.model_id === modelId ? { ...item, [field]: value } : item,
       );
       localStorage.setItem("sale_items", JSON.stringify(newItems));
+      setParams({ p_ref: Date.now().toString() });
       return newItems;
     });
+  };
 
-    handleChange("productId", productId || "");
+  const handleVariantSelect = (modelId: string, variant: any) => {
+    setItems((prev) => {
+      const newItems = prev.map((item) => {
+        if (item.model_id === modelId) {
+          if (variant) {
+            return {
+              ...item,
+              product_id: variant.id,
+              price: variant.product_model?.price || 0,
+              unit_in_package: variant.unit_in_package,
+              stock: variant.quantity,
+              variant_data: variant,
+            };
+          }
+          return {
+            ...item,
+            product_id: null,
+            price: 0,
+            unit_in_package: 0,
+            stock: 0,
+            variant_data: null,
+          };
+        }
+        return item;
+      });
+      localStorage.setItem("sale_items", JSON.stringify(newItems));
+      setParams({ p_ref: Date.now().toString() });
+      return newItems;
+    });
   };
 
   const handleScroll = (e: any) => {
     const { target } = e;
     if (target.scrollTop + target.clientHeight >= target.scrollHeight - 10) {
-      if (productHasNextPage && !productIsFetchingNextPage) {
-        productFetchNextPage();
+      if (productModelHasNextPage && !productModelIsFetchingNextPage) {
+        productModelFetchNextPage();
       }
     }
   };
 
+  const customTagRender = (props: any) => {
+    const { value, closable, onClose } = props;
+
+    const selectedOption: any = productModelOptions?.find(
+      (opt: any) => opt.value === value,
+    );
+
+    const onPreventMouseDown = (event: React.MouseEvent<HTMLSpanElement>) => {
+      event.preventDefault();
+      event.stopPropagation();
+    };
+
+    return (
+      <Tag
+        color="blue"
+        onMouseDown={onPreventMouseDown}
+        closable={closable}
+        onClose={onClose}
+        className="ml-px! mt-1! py-[3px]!"
+      >
+        {selectedOption?.displayLabel || "N+"}
+      </Tag>
+    );
+  };
+
+  const ProductVariantPicker = ({
+    modelId,
+    currentVariantId,
+    onVariantSelect,
+  }: any) => {
+    const { getAllProductsForSaleCreate } = useProduct();
+    const { data, isLoading } = getAllProductsForSaleCreate(modelId);
+
+    const options = useMemo(() => {
+      const productsList = data?.data?.data || data?.data || [];
+
+      return productsList.map((p: any) => {
+        const findColor = colorOptions.find((color) => color.value === p.color);
+
+        return {
+          value: p.id,
+          label: (
+            <div className="flex items-center justify-between w-full">
+              <div className="flex flex-col justify-center overflow-hidden">
+                <span className="text-[13px]">
+                  {productMaterialTypes[p?.product_material_type?.name]}
+                </span>
+                <div className="flex items-center gap-1 text-[11px] text-slate-400 font-normal">
+                  <div className="flex items-center gap-1">
+                    <span>
+                      {p.color.charAt(0).toUpperCase() + p.color.slice(1)}
+                    </span>
+                    <div
+                      className="h-3 w-3 rounded-full border border-slate-200 shrink-0 shadow-sm"
+                      style={{
+                        backgroundColor: findColor?.hex || "transparent",
+                      }}
+                    ></div>
+                  </div>
+                  {p.unit_in_package && (
+                    <>
+                      <span className="text-slate-300">|</span>
+                      <span className="truncate">
+                        {p.unit_in_package} talik
+                      </span>
+                    </>
+                  )}
+                </div>
+              </div>
+              <div className="flex flex-col items-end gap-0.5 shrink-0">
+                <span
+                  className={`text-[11px] font-bold tabular-nums ${
+                    p.quantity >= 10 ? "text-emerald-600" : "text-red-500"
+                  }`}
+                >
+                  Qoldiq: {p.quantity} ta
+                </span>
+              </div>
+            </div>
+          ),
+          displayLabel: (
+            <span className="text-blue-700">
+              {productMaterialTypes[p?.product_material_type?.name]} -{" "}
+              {p.color.charAt(0).toUpperCase() + p.color.slice(1)}
+            </span>
+          ),
+          original: p,
+        };
+      });
+    }, [data]);
+
+    return (
+      <div className="flex flex-col gap-1 w-full">
+        <span className="text-[11px] text-slate-400 font-medium ml-1">
+          Variantni (Rang/Material) tanlang:
+        </span>
+        <Select
+          placeholder="Variantni tanlang"
+          loading={isLoading}
+          value={currentVariantId}
+          options={options}
+          tagRender={customTagRender}
+          optionLabelProp="displayLabel"
+          className="w-full h-9!"
+          onChange={(val, opt: any) => {
+            onVariantSelect(val ? opt.original : null);
+          }}
+          allowClear
+        />
+      </div>
+    );
+  };
   return (
     <div className="flex flex-col gap-2 bg-[#ffffff] p-4 border border-bg-fy rounded-[5px] overflow-hidden">
       <div className="flex flex-col gap-1.5">
@@ -140,33 +264,28 @@ const SaleItemsManager = ({
             )}
           </div>
         </div>
+
         <div className="flex flex-col gap-3">
           <div className="flex max-[1170px]:flex-col gap-3">
             <div className="flex flex-col gap-1 w-full">
-              <span className="text-[16px] text-[#232E2F]">Mahsulot</span>
+              <span className="text-[16px] text-[#232E2F]">
+                Mahsulot (Model)
+              </span>
               <Select
                 mode="multiple"
                 onPopupScroll={handleScroll}
-                value={selectedIds}
-                options={productOptions}
-                onChange={(val) => handleChange("productId", val)}
+                value={selectedModelIds}
+                options={productModelOptions}
+                onChange={(val) => {
+                  handleChange("productId", val);
+                }}
                 placeholder={
-                  productListLoading ? "Yuklanmoqda..." : "Mahsulotni tanlang"
+                  productModelListLoading ? "Yuklanmoqda..." : "Modelni tanlang"
                 }
                 className="min-[800px]:w-full h-10! custom-select-placeholder"
-                onDropdownVisibleChange={(v) => setIsProductOpen(v)}
-                dropdownRender={(menu: any) => (
-                  <>
-                    {menu}
-                    {productIsFetchingNextPage && (
-                      <span className="text-[12px] text-gray-500">
-                        Yuklanmoqda...
-                      </span>
-                    )}
-                  </>
-                )}
-                loading={productListLoading}
-                tagRender={tagRender}
+                tagRender={customTagRender}
+                optionLabelProp="displayLabel"
+                loading={productModelListLoading}
                 showSearch
                 filterOption={false}
                 onSearch={onSearchChange}
@@ -174,169 +293,131 @@ const SaleItemsManager = ({
                 maxTagCount="responsive"
               />
 
-              <Spin spinning={productListLoading}>
+              <Spin spinning={productModelListLoading}>
                 <div className="flex flex-col gap-3 max-h-[400px] overflow-y-auto mt-3 pr-1">
-                  {selectedProducts.length > 0 ? (
-                    selectedProducts.map((product: any) => {
+                  {items.length > 0 ? (
+                    items.map((model: any) => {
                       const currentItem = items.find(
-                        (i) => i.product_id === product.id,
+                        (i) => i.model_id === model.model_id,
+                      );
+                      const variant = currentItem?.variant_data;
+                      const findColor = colorOptions.find(
+                        (c) => c.value === variant?.color,
                       );
 
-                      const findColor = colorOptions.find((color) =>
-                        color.value === product?.color ? color.hex : "",
-                      );
                       return (
                         <div
-                          key={product.id}
+                          key={model.id}
                           className="flex flex-col gap-3 p-3 bg-slate-50 border border-slate-100 rounded-xl"
                         >
-                          <div className="flex justify-between items-start gap-3 max-[540px]:flex-col">
-                            <span className="text-sm font-bold text-slate-800 leading-tight flex items-center gap-2">
-                              {product.product_model.name}
+                          <div className="flex justify-between items-start">
+                            <span className="text-sm font-bold text-slate-800 leading-tight">
+                              {model.model_name}
                             </span>
+                            <span className="text-emerald-600 font-bold text-[12px]">
+                              {isPriceVisible
+                                ? `${Number(model.base_price).toLocaleString()} uzs`
+                                : "******"}
+                            </span>
+                          </div>
 
-                            <div className="flex flex-col items-end gap-2 max-[540px]:items-start max-[540px]:w-full">
+                          <ProductVariantPicker
+                            modelId={model.model_id}
+                            currentVariantId={currentItem?.product_id}
+                            onVariantSelect={(v: any) =>
+                              handleVariantSelect(model.model_id, v)
+                            }
+                          />
+
+                          {currentItem?.product_id && (
+                            <>
                               <div className="flex items-center gap-2 flex-wrap">
                                 <div className="flex items-center gap-[5px] px-2 py-0.5 rounded text-[11px] font-bold bg-sky-50 text-sky-700 border border-sky-100">
-                                  <span className="opacity-70">
-                                    {
-                                      productCategories[
-                                        product?.product_model?.product_category
-                                          ?.name
-                                      ]
-                                    }
+                                  <span>
+                                    {productCategories[model.category_name]}
                                   </span>
-                                  /
-                                  <span className="opacity-70">
-                                    {
-                                      productMaterialTypes[
-                                        product?.product_material_type?.name
-                                      ]
-                                    }
-                                  </span>
-                                  /
-                                  <span className="opacity-70">
-                                    {product?.color?.charAt(0).toUpperCase() +
-                                      product?.color?.slice(1)}
+                                  <span className="opacity-40">|</span>
+                                  <span className="capitalize">
+                                    {variant?.color}
                                   </span>
                                   <div
-                                    className="h-3 w-3 rounded-full border border-slate-300 shrink-0"
-                                    style={{
-                                      backgroundColor: findColor?.hex,
-                                    }}
+                                    className="h-2.5 w-2.5 rounded-full border"
+                                    style={{ backgroundColor: findColor?.hex }}
                                   ></div>
                                 </div>
-
                                 <div
-                                  className={`flex items-center gap-[5px] px-2 py-0.5 rounded text-[11px] font-semibold tracking-wide border ${
-                                    product.quantity >= 10
-                                      ? "bg-blue-50 text-blue-600 border-blue-100"
-                                      : product.quantity > 0
-                                        ? "bg-orange-50 text-orange-600 border-orange-100"
-                                        : "bg-red-50 text-red-600 border-red-100"
-                                  }`}
+                                  className={`px-2 py-0.5 rounded text-[11px] font-semibold border ${currentItem.stock > 0 ? "bg-blue-50 text-blue-600" : "bg-red-50 text-red-600"}`}
                                 >
-                                  <span className="relative flex h-2 w-2">
-                                    {product.quantity > 0 &&
-                                      product.quantity <= 9 && (
-                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                                      )}
-                                    <span
-                                      className={`relative inline-flex rounded-full h-2 w-2 ${
-                                        product.quantity >= 10
-                                          ? "bg-blue-500"
-                                          : product.quantity > 0
-                                            ? "bg-orange-500"
-                                            : "bg-red-500"
-                                      }`}
-                                    ></span>
-                                  </span>
-                                  Qoldiq: {product.quantity} ta
+                                  Qoldiq: {currentItem.stock} ta
                                 </div>
                               </div>
 
-                              <div className="flex items-center gap-2 flex-wrap">
-                                <div className="flex items-center gap-[5px] px-2 py-0.5 rounded text-[12px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">
-                                  {isPriceVisible ? (
-                                    <>
-                                      <span className="text-[11px] opacity-60 font-medium">
-                                        Asl narxi:
-                                      </span>
-                                      {Number(
-                                        product?.product_model?.price,
-                                      ).toLocaleString()}
-                                      <span className="text-[11px]">uzs</span>
-                                    </>
-                                  ) : (
-                                    "********************"
-                                  )}
-                                </div>
-
-                                <div className="flex items-center gap-[5px] px-2 py-0.5 rounded text-[12px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-100">
-                                  <span className="text-[11px] opacity-60 font-semibold tracking-tight">
-                                    Pochkada:
+                              <div className="flex gap-3 max-[370px]:flex-col">
+                                <div className="flex-1 flex flex-col gap-1">
+                                  <span className="text-[11px] text-slate-400 font-medium ml-1">
+                                    Miqdori
                                   </span>
-                                  {product.unit_in_package}{" "}
-                                  <span className="text-[11px]">ta</span>
+                                  <InputNumber
+                                    min={1}
+                                    controls={false}
+                                    max={currentItem.stock}
+                                    value={currentItem?.quantity}
+                                    stringMode={false}
+                                    onKeyPress={(e) => {
+                                      if (!/[0-9]/.test(e.key)) {
+                                        e.preventDefault();
+                                      }
+                                    }}
+                                    onChange={(val) =>
+                                      updateItemDetails(
+                                        model.id,
+                                        "quantity",
+                                        val,
+                                      )
+                                    }
+                                    className="w-full rounded-md"
+                                  />
+                                </div>
+                                <div className="flex-1 flex flex-col gap-1">
+                                  <span className="text-[11px] text-slate-400 font-medium ml-1">
+                                    Sotuv narxi
+                                  </span>
+                                  <InputNumber
+                                    min={1}
+                                    controls={false}
+                                    onChange={(val) =>
+                                      updateItemDetails(model.id, "price", val)
+                                    }
+                                    className="w-full rounded-md"
+                                    stringMode={false}
+                                    onKeyPress={(e) => {
+                                      if (!/[0-9]/.test(e.key)) {
+                                        e.preventDefault();
+                                      }
+                                    }}
+                                    formatter={(v) =>
+                                      `${v}`.replace(
+                                        /\B(?=(\d{3})+(?!\d))/g,
+                                        ",",
+                                      )
+                                    }
+                                    parser={(v: any) =>
+                                      v!.replace(/[^\d]/g, "")
+                                    }
+                                    addonAfter={
+                                      <span className="text-[10px]">uzs</span>
+                                    }
+                                  />
                                 </div>
                               </div>
-                            </div>
-                          </div>
-
-                          <div className="flex gap-3 max-[370px]:flex-col">
-                            <div className="flex-1 flex flex-col gap-1">
-                              <span className="text-[11px] text-slate-400 font-medium ml-1">
-                                Miqdori
-                              </span>
-                              <InputNumber
-                                min={1}
-                                controls={false}
-                                value={currentItem?.quantity ?? 1}
-                                stringMode={false}
-                                onKeyPress={(e) => {
-                                  if (!/[0-9]/.test(e.key)) {
-                                    e.preventDefault();
-                                  }
-                                }}
-                                onChange={(val) =>
-                                  updateItemDetails(product.id, "quantity", val)
-                                }
-                                className="w-[75px]! rounded-md max-[370px]:w-full!"
-                              />
-                            </div>
-                            <div className="flex-1 flex flex-col gap-1">
-                              <span className="text-[11px] text-slate-400 font-medium ml-1">
-                                Sotuv narxi
-                              </span>
-                              <InputNumber
-                                min={1}
-                                controls={false}
-                                stringMode={false}
-                                onKeyPress={(e) => {
-                                  if (!/[0-9]/.test(e.key)) {
-                                    e.preventDefault();
-                                  }
-                                }}
-                                onChange={(val) =>
-                                  updateItemDetails(product.id, "price", val)
-                                }
-                                className="w-full rounded-md"
-                                formatter={(v) =>
-                                  v.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                }
-                                parser={(v: any) => v!.replace(/[^\d]/g, "")}
-                                addonAfter={
-                                  <span className="text-[10px]">uzs</span>
-                                }
-                              />
-                            </div>
-                          </div>
+                            </>
+                          )}
                         </div>
                       );
                     })
                   ) : (
                     <div className="text-center py-8 border-2 border-dashed border-slate-100 rounded-xl text-slate-400 text-sm">
-                      Hali mahsulot tanlanmagan
+                      Hali model tanlanmagan
                     </div>
                   )}
                 </div>
@@ -352,8 +433,10 @@ const SaleItemsManager = ({
                 placeholder={
                   shopListLoading ? "Yuklanmoqda..." : "Do'konni tanlang"
                 }
+                onDropdownVisibleChange={(visible) => {
+                  if (visible) setIsShopOpen(visible);
+                }}
                 className="h-10! w-full"
-                onDropdownVisibleChange={(v) => setIsShopOpen(v)}
                 loading={shopListLoading}
                 allowClear
               />

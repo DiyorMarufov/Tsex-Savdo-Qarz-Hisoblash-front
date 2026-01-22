@@ -39,6 +39,9 @@ export const useProduct = () => {
         queryKey: [product, "all-infinite-products"],
       });
       client.invalidateQueries({
+        queryKey: [product, "all-products-for-sale-create"],
+      });
+      client.invalidateQueries({
         queryKey: [product, "latest-product"],
       });
       client.invalidateQueries({ queryKey: ["tsex", "total-balance"] });
@@ -128,6 +131,17 @@ export const useProduct = () => {
       gcTime: 1000 * 60 * 10,
     });
 
+  const getAllProductsForSaleCreate = (id: string) =>
+    useQuery({
+      queryKey: [product, "all-products-for-sale-create", id],
+      queryFn: () =>
+        api.get(`products/product-model/${id}`).then((res) => res.data),
+      enabled: !!id,
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 10,
+    });
+
   const getLatestProductForProductCreate = (id: string) =>
     useQuery({
       queryKey: [product, "latest-product", id],
@@ -184,6 +198,7 @@ export const useProduct = () => {
     getProductsSummaryForReport,
     getAllProductsForProductsFilter,
     getAllTop5ProductsForReport,
+    getAllProductsForSaleCreate,
     getLatestProductForProductCreate,
     getProductById,
     deleteProductById,

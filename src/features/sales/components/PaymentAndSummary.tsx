@@ -9,7 +9,7 @@ const PaymentAndSummary = () => {
   const { getParam } = useParamsHook();
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [paidAmount, setPaidAmount] = useState<any>(
-    Number(localStorage.getItem("paid_amount")) || 0
+    Number(localStorage.getItem("paid_amount")) || 0,
   );
 
   const pRef = getParam("p_ref") || "";
@@ -68,6 +68,7 @@ const PaymentAndSummary = () => {
   };
 
   const debt = paidAmount - totalAmount;
+
   return (
     <div className="w-full bg-[#ffffff] px-5 py-4 flex flex-col gap-5 border border-bg-fy rounded-[5px] overflow-hidden">
       <span className="text-[20px] font-medium text-[#232E2F]">To'lov</span>

@@ -19,6 +19,9 @@ export const useProductModel = () => {
       }),
       client.invalidateQueries({
         queryKey: [product_model, "all-infinite-products-models"],
+      }),
+      client.invalidateQueries({
+        queryKey: [product_model, "all-infinite-product-models-for-add-sale"],
       })
     ),
   });
@@ -53,6 +56,29 @@ export const useProductModel = () => {
       staleTime: 1000 * 60 * 5,
     });
 
+  const getInfiniteProductModelsForAddSale = (params?: any) =>
+    useInfiniteQuery({
+      queryKey: [
+        product_model,
+        "all-infinite-product-models-for-add-sale",
+        params,
+      ],
+      queryFn: ({ pageParam = 1 }) =>
+        api
+          .get("product-models/sale/filters-list", {
+            params: { ...params, page: pageParam, limit: 5 },
+          })
+          .then((res) => res.data),
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage?.data?.data.length === 5
+          ? allPages.length + 1
+          : undefined;
+      },
+      initialPageParam: 1,
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5,
+    });
+
   const getProductModelByIdForFilter = (id: string) =>
     useQuery({
       queryKey: [product_model, "product-model-by-id", id],
@@ -77,6 +103,7 @@ export const useProductModel = () => {
     createProductModel,
     getAllProductModels,
     getInfiniteProductModels,
+    getInfiniteProductModelsForAddSale,
     getProductModelByIdForFilter,
     deleteProductModelById,
   };

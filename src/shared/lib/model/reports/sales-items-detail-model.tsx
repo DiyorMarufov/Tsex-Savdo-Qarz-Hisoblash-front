@@ -4,7 +4,6 @@ import { productCategories, productMaterialTypes } from "../../constants";
 export type SaleItemsTableListItem = {
   id: string;
   product: string;
-  product_brand: string;
   product_category: string;
   product_material_type: string;
   product_unit_in_package: number;
@@ -23,13 +22,6 @@ export const salesItemColumns: ProColumns<SaleItemsTableListItem>[] = [
     fixed: "left",
     sorter: true,
     render: (_, record) => <a>{record.product}</a>,
-  },
-  {
-    title: "Brend",
-    dataIndex: "product_brand",
-    width: 130,
-    sorter: true,
-    render: (_, record) => record.product_brand,
   },
   {
     title: "Kategoriya",

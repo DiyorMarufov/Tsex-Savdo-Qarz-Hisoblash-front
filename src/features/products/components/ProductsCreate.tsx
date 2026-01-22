@@ -199,12 +199,14 @@ const ProductsCreate = () => {
       form.setFieldsValue({ model_id: id });
     }
 
-    if (latestProductOption) {
+    const currentUnitValue = form.getFieldValue("unit_in_package");
+
+    if (latestProductOption?.value && !currentUnitValue) {
       form.setFieldsValue({
-        unit_in_package: latestProductOption?.value,
+        unit_in_package: latestProductOption.value,
       });
     }
-  }, [id, latestProductOption, form]);
+  }, [id, latestProductOption?.value, form]);
 
   return (
     <Form

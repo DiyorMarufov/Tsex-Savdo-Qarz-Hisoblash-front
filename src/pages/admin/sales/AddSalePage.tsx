@@ -10,26 +10,21 @@ import { useCustomer } from "../../../shared/lib/apis/customers/useCustomer";
 import type { Option, QueryParams } from "../../../shared/lib/types";
 import { formatPhoneNumber } from "../../../shared/lib/functions/formatPhoneNumber";
 import { useParamsHook } from "../../../shared/hooks/params/useParams";
-import { useProduct } from "../../../shared/lib/apis/products/useProduct";
 import { useShop } from "../../../shared/lib/apis/shops/useShop";
 import { base64ToFile } from "../../../shared/lib/functions/base64ToFile";
 import { useSale } from "../../../shared/lib/apis/sales/useSale";
 import { useApiNotification } from "../../../shared/hooks/api-notification/useApiNotification";
 import { debounce } from "../../../shared/lib/functions/debounce";
-import {
-  colorOptions,
-  productCategories,
-  productMaterialTypes,
-} from "../../../shared/lib/constants";
+import { productCategories } from "../../../shared/lib/constants";
+import { useProductModel } from "../../../shared/lib/apis/product-models/useProductModel";
 
 const AdminAddSalePage = () => {
   const navigate = useNavigate();
   const [isCustomerOpen, setIsCustomerOpen] = useState<boolean>(false);
-  const [isProductOpen, setIsProductOpen] = useState<boolean>(false);
   const [isShopOpen, setIsShopOpen] = useState<boolean>(false);
   const [isPriceVisible, setIsPriceVisible] = useState<boolean>(false);
   const { getInfiniteCustomers } = useCustomer();
-  const { getInfiniteProducts } = useProduct();
+  const { getInfiniteProductModelsForAddSale } = useProductModel();
   const { getAllShopsForProductsFilter } = useShop();
   const { createSale } = useSale();
 
@@ -157,95 +152,55 @@ const AdminAddSalePage = () => {
     ),
   }));
 
-  const shouldFetchProducts = isProductOpen || !!query.productId;
   const {
-    data: productLists,
-    isLoading: productListLoading,
-    fetchNextPage: productFetchNextPage,
-    hasNextPage: productHasNextPage,
-    isFetchingNextPage: productIsFetchingNextPage,
-  } = getInfiniteProducts(shouldFetchProducts, {
+    data: allProductModelsForAddSale,
+    isLoading: productModelLoading,
+    fetchNextPage: productModelFetchNextPage,
+    hasNextPage: productModelHasNextPage,
+    isFetchingNextPage: productModelIsFetchingNextPage,
+  } = getInfiniteProductModelsForAddSale({
     search: query.productFilterSearch,
   });
-  const productOptions = useMemo(() => {
+
+  const productModelOptions = useMemo(() => {
     const allProducts =
-      productLists?.pages.flatMap((page: any) => {
+      allProductModelsForAddSale?.pages.flatMap((page: any) => {
         return Array.isArray(page)
           ? page
           : page?.data?.data || page?.data || [];
       }) || [];
 
     return allProducts.map((pr: any) => {
-      const findColor = colorOptions.find((color) =>
-        color.value === pr?.color ? color.hex : "",
-      );
-
       return {
         value: pr?.id,
         label: (
           <div className="flex items-center justify-between w-full py-1">
             <div className="flex flex-col gap-0.5 overflow-hidden">
               <span className="text-[14px] font-medium text-slate-800 leading-tight truncate">
-                {pr?.product_model?.name}
+                {pr?.name}
               </span>
 
               <div className="flex items-center gap-1.5 text-[11px] text-slate-400 font-normal">
                 <span className="truncate">
-                  {productCategories[pr?.product_model?.product_category?.name]}
-                </span>
-                -
-                <span className="truncate">
-                  {productMaterialTypes[pr?.product_material_type?.name]}
+                  {productCategories[pr?.product_category?.name]}
                 </span>
                 <span className="text-slate-300">|</span>
-                <div className="flex items-center gap-1 shrink-0">
-                  <span className="capitalize">{pr?.color}</span>
-                  <div
-                    className="h-3 w-3 rounded-full border border-slate-200 shadow-sm"
-                    style={{ backgroundColor: findColor?.hex }}
-                  ></div>
-                </div>
+                <span className="truncate">{pr?.size}</span>
               </div>
             </div>
 
-            <div className="flex flex-col items-end gap-0.5 shrink-0 ml-2">
-              <span className="text-[13px] font-bold text-emerald-600 tabular-nums">
-                {isPriceVisible ? Number(pr?.product_model?.price).toLocaleString() : "******"}{" "}
-                uzs
-              </span>
-              <span
-                className={`text-[11px] font-medium ${
-                  pr?.quantity > 0 ? "text-blue-500" : "text-red-500"
-                }`}
-              >
-                Qoldiq: {pr?.quantity} ta
-              </span>
-            </div>
+            <span className="text-[13px] font-bold text-emerald-600 tabular-nums">
+              {isPriceVisible
+                ? `${Number(pr?.price).toLocaleString()} uzs`
+                : "******"}{" "}
+            </span>
           </div>
         ),
-        displayLabel: `${pr?.product_model?.name} - ${pr?.color ? pr?.color?.charAt(0)?.toUpperCase() + pr?.color?.slice(1) : ""}`,
+        displayLabel: `${pr?.name} - ${productCategories[pr?.product_category?.name]}`,
         originalProduct: pr,
       };
     });
-  }, [productLists, isPriceVisible]);
-
-  const tagRender = (props: any) => {
-    const { value, closable, onClose } = props;
-    const selectedOption = productOptions.find(
-      (opt: any) => opt.value === value,
-    );
-
-    return (
-      <div className="flex items-center gap-1 bg-blue-50 border border-blue-200 text-blue-700 px-2 py-[5px] m-0.5 rounded-lg text-[13px]">
-        <span>{selectedOption?.displayLabel || "N+"}</span>
-        {closable && (
-          <span onClick={onClose} className="cursor-pointer ml-1">
-            ✕
-          </span>
-        )}
-      </div>
-    );
-  };
+  }, [allProductModelsForAddSale, isPriceVisible]);
 
   const shouldFetchShop = isShopOpen || !!query.shopId;
   const { data: shops, isLoading: shopLoading } =
@@ -264,13 +219,18 @@ const AdminAddSalePage = () => {
     const shop_id = getParam("shopId") || "";
     const customer_id = getParam("customerId") || "";
     const paid_amount = localStorage.getItem("paid_amount") || "";
-    const sale_items = localStorage.getItem("sale_items") || "[]";
+    const sale_items = JSON.parse(localStorage.getItem("sale_items") || "[]");
     const savedImgs = JSON.parse(localStorage.getItem("images") || "[]");
 
+    const saleItems = sale_items?.map((pr: any) => ({
+      product_id: pr?.product_id,
+      quantity: pr?.quantity,
+      price: pr?.price,
+    }));
     formData.append("shop_id", shop_id);
     formData.append("customer_id", customer_id);
     formData.append("paid_amount", paid_amount);
-    formData.append("sale_items", sale_items);
+    formData.append("sale_items", JSON.stringify(saleItems));
     savedImgs.forEach((base64: any, inx: number) => {
       const file = base64ToFile(base64, `product_${inx}.png`);
       formData.append("images", file);
@@ -368,20 +328,18 @@ const AdminAddSalePage = () => {
             setIsCustomerOpen={setIsCustomerOpen}
           />
           <SaleItemsManager
-            productId={query.productId}
             shopId={query.shopId}
-            productOptions={productOptions}
+            productId={query.productId}
             shopOptions={shopsOptions}
-            productListLoading={productListLoading}
-            productHasNextPage={productHasNextPage}
-            productIsFetchingNextPage={productIsFetchingNextPage}
-            productFetchNextPage={productFetchNextPage}
-            onSearchChange={handleSearchProductFilterChange}
+            productModelOptions={productModelOptions}
             shopListLoading={shopLoading}
-            setIsProductOpen={setIsProductOpen}
+            productModelListLoading={productModelLoading}
+            productModelHasNextPage={productModelHasNextPage}
+            productModelIsFetchingNextPage={productModelIsFetchingNextPage}
+            productModelFetchNextPage={productModelFetchNextPage}
+            onSearchChange={handleSearchProductFilterChange}
             setIsShopOpen={setIsShopOpen}
             handleChange={handleChange}
-            tagRender={tagRender}
             isPriceVisible={isPriceVisible}
             setIsPriceVisible={setIsPriceVisible}
           />
