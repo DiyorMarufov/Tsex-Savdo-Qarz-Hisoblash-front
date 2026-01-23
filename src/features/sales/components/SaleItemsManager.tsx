@@ -1,7 +1,11 @@
 import { InputNumber, Select, Spin } from "antd";
 import { memo, useMemo, useState, useEffect } from "react";
 import type { Option } from "../../../shared/lib/types";
-import { colorOptions } from "../../../shared/lib/constants";
+import {
+  colorOptions,
+  productCategories,
+  productMaterialTypes,
+} from "../../../shared/lib/constants";
 import { Eye, EyeOff } from "lucide-react";
 import { useParamsHook } from "../../../shared/hooks/params/useParams";
 import CustomTagRender from "../lib/CustomTagRender";
@@ -178,12 +182,7 @@ const SaleItemsManager = ({
                   productModelListLoading ? "Yuklanmoqda..." : "Modelni tanlang"
                 }
                 className="min-[800px]:w-full h-10! custom-select-placeholder"
-                tagRender={(props) => (
-                  <CustomTagRender
-                    props={props}
-                    productModelOptions={productModelOptions || []}
-                  />
-                )}
+                tagRender={(props) => <CustomTagRender props={props} />}
                 optionLabelProp="displayLabel"
                 loading={productModelListLoading}
                 showSearch
@@ -207,10 +206,15 @@ const SaleItemsManager = ({
                           className="flex flex-col gap-3 p-3 bg-slate-50 border border-slate-100 rounded-xl"
                         >
                           <div className="flex justify-between items-start">
-                            <span className="text-sm font-bold text-slate-800 leading-tight">
-                              {model?.model_name}
-                            </span>
-                            <span className="text-emerald-600 font-bold text-[12px]">
+                            <div className="flex flex-col">
+                              <span className="text-sm font-bold text-slate-800 leading-tight">
+                                {model?.model_name}
+                              </span>
+                              <span className="text-[12px] text-slate-600">
+                                {productCategories[model?.category_name]}
+                              </span>
+                            </div>
+                            <span className="text-emerald-600 font-bold text-[13px]">
                               {isPriceVisible
                                 ? `${Number(model?.base_price).toLocaleString()} uzs`
                                 : "******"}
@@ -225,7 +229,6 @@ const SaleItemsManager = ({
                             onVariantSelect={(v: any) =>
                               handleVariantSelect(model?.model_id, v)
                             }
-                            productModelOptions={productModelOptions || []}
                           />
 
                           <div className="flex flex-col gap-3">
@@ -234,22 +237,41 @@ const SaleItemsManager = ({
                                 key={v.product_id}
                                 className="p-3 bg-white border border-bg-fy rounded-lg"
                               >
-                                <div className="flex justify-between items-center mb-2">
-                                  <div className="flex items-center gap-2">
-                                    <div
-                                      className="w-3 h-3 rounded-full border"
-                                      style={{
-                                        backgroundColor: colorOptions.find(
-                                          (c) => c.value === v.color,
-                                        )?.hex,
-                                      }}
-                                    ></div>
-                                    <span className="text-[12px] font-bold capitalize">
-                                      {v.color}
+                                <div className="flex justify-between items-center mb-1.5">
+                                  <div className="flex flex-col">
+                                    <span className="text-[13px] font-medium text-slate-700 leading-tight">
+                                      {
+                                        productMaterialTypes[
+                                          v?.variant_details
+                                            ?.product_material_type?.name
+                                        ]
+                                      }
                                     </span>
-                                    <span className="text-[11px] text-slate-400">
-                                      ({v.unit_in_package} talik)
-                                    </span>
+
+                                    <div className="flex items-center gap-1 text-slate-400">
+                                      <div className="flex items-center gap-1">
+                                        <span className="text-[11px] capitalize">
+                                          {v.color}
+                                        </span>
+                                        <div
+                                          className="w-3 h-3 rounded-full border border-slate-200 shrink-0"
+                                          style={{
+                                            backgroundColor:
+                                              colorOptions.find(
+                                                (c) => c.value === v.color,
+                                              )?.hex || "#eee",
+                                          }}
+                                        ></div>
+                                      </div>
+
+                                      <span className="text-[10px] opacity-70">
+                                        |
+                                      </span>
+
+                                      <span className="text-[11px] font-normal">
+                                        {v.unit_in_package} talik
+                                      </span>
+                                    </div>
                                   </div>
                                   <span className="text-[11px] font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">
                                     Qoldiq: {v.stock} ta
@@ -258,7 +280,7 @@ const SaleItemsManager = ({
 
                                 <div className="grid grid-cols-2 gap-3">
                                   <div className="flex flex-col gap-1">
-                                    <span className="text-[11px] text-slate-400 ml-1">
+                                    <span className="text-[11px] text-slate-400">
                                       Miqdori
                                     </span>
                                     <InputNumber
@@ -284,7 +306,7 @@ const SaleItemsManager = ({
                                     />
                                   </div>
                                   <div className="flex flex-col gap-1">
-                                    <span className="text-[11px] text-slate-400 ml-1">
+                                    <span className="text-[11px] text-slate-400">
                                       Sotuv narxi
                                     </span>
                                     <InputNumber

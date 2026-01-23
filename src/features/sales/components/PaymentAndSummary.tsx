@@ -33,13 +33,15 @@ const PaymentAndSummary = () => {
 
   useEffect(() => {
     const saleItems = JSON.parse(localStorage.getItem("sale_items") || "[]");
-    const total = saleItems.reduce((acc: number, item: any) => {
-      const quantity = Number(item?.quantity) || 0;
-      const price = Number(item?.price) || 0;
-      const unit_in_package = Number(item?.unit_in_package);
-      return acc + price * unit_in_package * quantity;
+    const selectedVariants = saleItems?.flatMap(
+      (selectedItem: any) => selectedItem?.selected_variants,
+    );
+    const total = selectedVariants?.reduce((acc: any, item: any) => {
+      const quantity = item?.quantity;
+      const price = item?.price;
+      const unit_in_package = item?.unit_in_package;
+      return acc + quantity * price * unit_in_package;
     }, 0);
-
     setTotalAmount(total);
   }, [pRef]);
 

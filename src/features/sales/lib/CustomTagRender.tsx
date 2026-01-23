@@ -4,15 +4,11 @@ import type { CustomTagProps } from "rc-select/lib/BaseSelect";
 
 interface Props {
   props: CustomTagProps;
-  productModelOptions: any[];
 }
 
-const customTagRender: FC<Props> = ({ props, productModelOptions }) => {
-  const { value, closable, onClose } = props;
+const customTagRender: FC<Props> = ({ props }) => {
+  const { label, closable, onClose } = props;
 
-  const selectedOption: any = productModelOptions?.find(
-    (opt: any) => opt.value === value,
-  );
   const onPreventMouseDown = (event: React.MouseEvent<HTMLSpanElement>) => {
     event.preventDefault();
     event.stopPropagation();
@@ -26,7 +22,7 @@ const customTagRender: FC<Props> = ({ props, productModelOptions }) => {
       onClose={onClose}
       className="ml-px! mt-1! py-[3px]!"
     >
-      {selectedOption?.displayLabel || "N+"}
+      {label || "N+"}
     </Tag>
   );
 };

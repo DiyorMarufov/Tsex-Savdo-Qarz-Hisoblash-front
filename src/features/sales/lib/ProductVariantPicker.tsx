@@ -1,23 +1,21 @@
 import { Select } from "antd";
 import { memo, useMemo, type FC } from "react";
-import CustomTagRender from "./CustomTagRender";
 import { useProduct } from "../../../shared/lib/apis/products/useProduct";
 import {
   colorOptions,
   productMaterialTypes,
 } from "../../../shared/lib/constants";
+import CustomTagRender from "./CustomTagRender";
 
 interface ProductVariantPickerProps {
   modelId: any;
   onVariantSelect: (variant: any) => void;
-  productModelOptions: any[];
   selectedVariants: any[];
 }
 
 const ProductVariantPicker: FC<ProductVariantPickerProps> = ({
   modelId,
   onVariantSelect,
-  productModelOptions,
   selectedVariants = [],
 }) => {
   const { getAllProductsForSaleCreate } = useProduct();
@@ -94,12 +92,6 @@ const ProductVariantPicker: FC<ProductVariantPickerProps> = ({
         loading={isLoading}
         value={selectedProductIds}
         options={options}
-        tagRender={(props) => (
-          <CustomTagRender
-            props={props}
-            productModelOptions={productModelOptions || []}
-          />
-        )}
         optionLabelProp="displayLabel"
         className="w-full h-10! custom-select-placeholder"
         onChange={(_, opts: any) => {
@@ -108,10 +100,12 @@ const ProductVariantPicker: FC<ProductVariantPickerProps> = ({
             : [];
           onVariantSelect(selectedVariants);
         }}
+        tagRender={(props) => <CustomTagRender props={props} />}
         filterOption={false}
         showSearch
         maxTagCount="responsive"
         allowClear
+        placement="bottomLeft"
       />
     </div>
   );
