@@ -12,6 +12,10 @@ import ProTable from "@ant-design/pro-table";
 import { productColumns } from "../../../../shared/lib/model/products/products-model";
 import ProductMobileList from "../../../../widgets/products/ProductMobileList/ProductMobileList";
 import SearchInput from "../../../../shared/ui/SearchInput/SearchInput";
+import {
+  productColors,
+  productMaterialTypes,
+} from "../../../../shared/lib/constants";
 
 const AdminProductsPage = () => {
   const navigate = useNavigate();
@@ -88,7 +92,21 @@ const AdminProductsPage = () => {
 
   const handleSearchChange = (value: string) => {
     setLocalSearch(value);
-    debouncedSetSearchQuery(value);
+
+    let lowerValue: string = value.toLowerCase();
+
+    if (!lowerValue.trim()) {
+      debouncedSetSearchQuery("");
+      return;
+    }
+
+    const materialKey = Object.keys(productMaterialTypes).find((key) =>
+      productMaterialTypes[key].toLowerCase().includes(lowerValue),
+    );
+
+    const colorKey = productColors[lowerValue];
+
+    debouncedSetSearchQuery(materialKey || colorKey || lowerValue);
   };
   // Search ends
 
@@ -119,7 +137,7 @@ const AdminProductsPage = () => {
 
       <div className="min-[500px]:mt-1 rounded-[12px] border border-e-bg-fy bg-[#ffffff] p-3.5">
         <SearchInput
-          placeholder="Mahsulot nomi bo'yicha qidirish"
+          placeholder="Mahsulot turi,rangi bo'yicha qidirish"
           className="h-10! bg-bg-ty! text-[16px]!"
           value={localSearch}
           onChange={handleSearchChange}

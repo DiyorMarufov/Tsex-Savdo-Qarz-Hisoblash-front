@@ -82,12 +82,11 @@ const ProductDetailPage = () => {
     }) || [];
 
   return (
-    <div className="mx-auto bg-white rounded-[5px]">
+    <div className="mx-auto bg-white rounded-[12px] overflow-hidden">
       <div className="relative flex items-center px-4 lg:px-8 h-12 border-b bg-white">
         <ArrowLeft
-          className="hover:opacity-75 cursor-pointer z-10"
+          className="hover:opacity-75 cursor-pointer"
           onClick={() => navigate(-1)}
-          size={20}
         />
 
         <h2 className="absolute inset-0 flex items-center justify-center text-[17px] font-bold text-slate-800 pointer-events-none">

@@ -4,7 +4,13 @@ import { Edit, Trash } from "lucide-react";
 export type CustomerTranscationsListItemsType = {
   id?: string;
   customer: any;
-  type: "borrowing" | "lending";
+  type:
+    | "borrowing"
+    | "lending"
+    | "full_payment"
+    | "partial_payment"
+    | "avans"
+    | "real";
   amount: number;
   due_date: Date;
   description: string;
@@ -34,6 +40,10 @@ export const transactionColumns = (
     valueEnum: {
       borrowing: { text: "Qarz olish", status: "Error" },
       lending: { text: "Qarz berish", status: "Warning" },
+      full_payment: { text: "To'liq to'lov", status: "Success" },
+      partial_payment: { text: "Qisman to'lov", status: "Processing" },
+      avans: { text: "Avans", status: "Success" },
+      real: { text: "Real", status: "Error" },
     },
   },
   {

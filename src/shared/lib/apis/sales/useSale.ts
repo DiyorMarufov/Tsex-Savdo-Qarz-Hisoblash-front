@@ -19,6 +19,24 @@ export const useSale = () => {
         queryKey: [sale, "sales-statistics-for-report"],
       });
       client.invalidateQueries({
+        queryKey: ["customer", "customer-total-balance"],
+      });
+      client.invalidateQueries({
+        queryKey: ["customer", "most-debtor-customers"],
+      });
+      client.invalidateQueries({
+        queryKey: ["customer", "customer-balance-summary"],
+      });
+      client.invalidateQueries({
+        queryKey: ["customer", "all-customers"],
+      });
+      client.invalidateQueries({
+        queryKey: ["customer", "all-customers-statistics-for-report"],
+      });
+      client.invalidateQueries({
+        queryKey: ["customer_transaction", "customer-transactions"],
+      });
+      client.invalidateQueries({
         queryKey: ["product", "all-products-summary"],
       });
       client.invalidateQueries({

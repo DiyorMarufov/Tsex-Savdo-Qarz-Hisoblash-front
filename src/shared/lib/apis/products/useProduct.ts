@@ -16,15 +16,6 @@ export const useProduct = () => {
     onSuccess: () => {
       client.invalidateQueries({ queryKey: [product, "all-products-by-id"] });
       client.invalidateQueries({ queryKey: [product] });
-      client.invalidateQueries({
-        queryKey: ["product_model", "all-product-models"],
-      });
-      client.invalidateQueries({
-        queryKey: [
-          "product_history",
-          "all-infinite-product-histories-by-product-id",
-        ],
-      });
 
       client.invalidateQueries({
         queryKey: [product, "all-products-for-report"],
@@ -39,10 +30,19 @@ export const useProduct = () => {
         queryKey: [product, "all-infinite-products"],
       });
       client.invalidateQueries({
-        queryKey: [product, "all-products-for-sale-create"],
+        queryKey: [product, "all-inifinite-products-for-sale-create"],
       });
       client.invalidateQueries({
         queryKey: [product, "latest-product"],
+      });
+      client.invalidateQueries({
+        queryKey: ["product_model", "all-product-models"],
+      });
+      client.invalidateQueries({
+        queryKey: [
+          "product_history",
+          "all-infinite-product-histories-by-product-id",
+        ],
       });
       client.invalidateQueries({ queryKey: ["tsex", "total-balance"] });
       client.invalidateQueries({ queryKey: ["tsex", "most-debtor-tsexes"] });

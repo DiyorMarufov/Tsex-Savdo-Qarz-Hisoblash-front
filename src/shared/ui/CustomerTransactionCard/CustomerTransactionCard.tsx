@@ -19,15 +19,52 @@ const CustomerTransactionCard = ({ trd, onDetail }: TransactionCardProps) => {
             {trd.customer.full_name}
           </h3>
           <div className="mt-1">
-            {trd.type === "borrowing" ? (
-              <span className="bg-rose-50 text-[11px] rounded-full text-rose-600 font-bold px-2 py-0.5 uppercase tracking-wide">
-                Qarz olish
-              </span>
-            ) : (
-              <span className="bg-blue-50 text-[11px] rounded-full text-blue-600 font-bold px-2 py-0.5 uppercase tracking-wide">
-                Qarz berish
-              </span>
-            )}
+            {(() => {
+              switch (trd.type) {
+                case "borrowing":
+                  return (
+                    <span className="bg-rose-50 text-[11px] rounded-full text-rose-600 font-bold px-2 py-0.5 uppercase tracking-wide">
+                      Qarz olish
+                    </span>
+                  );
+                case "real":
+                  return (
+                    <span className="bg-orange-50 text-[11px] rounded-full text-orange-600 font-bold px-2 py-0.5 uppercase tracking-wide">
+                      Real
+                    </span>
+                  );
+                case "lending":
+                  return (
+                    <span className="bg-blue-50 text-[11px] rounded-full text-blue-600 font-bold px-2 py-0.5 uppercase tracking-wide">
+                      Qarz berish
+                    </span>
+                  );
+                case "full_payment":
+                  return (
+                    <span className="bg-emerald-50 text-[11px] rounded-full text-emerald-600 font-bold px-2 py-0.5 uppercase tracking-wide">
+                      To'liq to'lov
+                    </span>
+                  );
+                case "partial_payment":
+                  return (
+                    <span className="bg-sky-50 text-[11px] rounded-full text-sky-600 font-bold px-2 py-0.5 uppercase tracking-wide">
+                      Qisman to'lov
+                    </span>
+                  );
+                case "avans":
+                  return (
+                    <span className="bg-purple-50 text-[11px] rounded-full text-purple-600 font-bold px-2 py-0.5 uppercase tracking-wide">
+                      Avans
+                    </span>
+                  );
+                default:
+                  return (
+                    <span className="bg-slate-50 text-[11px] rounded-full text-slate-600 font-bold px-2 py-0.5 uppercase tracking-wide">
+                      {trd.type}
+                    </span>
+                  );
+              }
+            })()}
           </div>
         </div>
 
@@ -62,7 +99,9 @@ const CustomerTransactionCard = ({ trd, onDetail }: TransactionCardProps) => {
             <span className="text-[13px]">
               Muddati:{" "}
               <span className="text-slate-600 font-bold">
-                {new Date(trd.due_date).toLocaleDateString("uz-UZ")}
+                {trd.due_date
+                  ? new Date(trd.due_date).toLocaleDateString("uz-UZ")
+                  : "-"}
               </span>
             </span>
           </div>
@@ -111,15 +150,17 @@ const CustomerTransactionCard = ({ trd, onDetail }: TransactionCardProps) => {
               {new Date(trd.created_at).toLocaleString("uz-UZ")}
             </span>
           </div>
-          <AntdButton
-            type="primary"
-            className="h-8! rounded-xl! border-none!"
-            onClick={() =>
-              onDetail(trd.id as string, trd.type as "lending" | "borrowing")
-            }
-          >
-            Batafsil
-          </AntdButton>
+          {(trd.type === "lending" || trd.type === "borrowing") && (
+            <AntdButton
+              type="primary"
+              className="h-8! rounded-xl! border-none!"
+              onClick={() =>
+                onDetail(trd.id as string, trd.type as "lending" | "borrowing")
+              }
+            >
+              Batafsil
+            </AntdButton>
+          )}
         </div>
       </div>
     </div>

@@ -41,8 +41,8 @@ const TsexesReportChart: FC<TsexesReportProps> = ({ data, loading }) => {
                 data={data}
                 margin={{
                   top: 25,
-                  right: 10,
-                  left: -20,
+                  right: 0,
+                  left: 0,
                   bottom: isMobile ? 40 : 10,
                 }}
                 barGap={isMobile ? 2 : 6}

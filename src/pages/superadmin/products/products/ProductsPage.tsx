@@ -10,6 +10,7 @@ import { productColumns } from "../../../../shared/lib/model/products/products-m
 import ProductMobileList from "../../../../widgets/products/ProductMobileList/ProductMobileList";
 import { ArrowLeft } from "lucide-react";
 import SearchInput from "../../../../shared/ui/SearchInput/SearchInput";
+import { productColors, productMaterialTypes } from "../../../../shared/lib/constants";
 
 const ProductsPage = () => {
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ const ProductsPage = () => {
   // Products start
   const { data: allProducts, isLoading: productLoading } = getAllProducts(
     query,
-    id
+    id,
   );
   const products = allProducts?.data?.data;
   const total = allProducts?.data?.total || 0;
@@ -81,12 +82,26 @@ const ProductsPage = () => {
         page: 1,
       });
     }, 600),
-    [setParams]
+    [setParams],
   );
 
   const handleSearchChange = (value: string) => {
     setLocalSearch(value);
-    debouncedSetSearchQuery(value);
+
+    let lowerValue: string = value.toLowerCase();
+
+    if (!lowerValue.trim()) {
+      debouncedSetSearchQuery("");
+      return;
+    }
+
+    const materialKey = Object.keys(productMaterialTypes).find((key) =>
+      productMaterialTypes[key].toLowerCase().includes(lowerValue),
+    );
+
+    const colorKey = productColors[lowerValue];
+
+    debouncedSetSearchQuery(materialKey || colorKey || lowerValue);
   };
   // Search ends
 
