@@ -14,11 +14,10 @@ export const useShop = () => {
       gcTime: 1000 * 60 * 60,
     });
 
-  const getAllShopsForProductsFilter = (enabled: boolean = false) =>
+  const getAllShopsForProductsFilter = () =>
     useQuery<IResponseData>({
       queryKey: [shop, "shops-filter"],
       queryFn: () => api.get("shops/filters/list").then((res) => res.data),
-      enabled,
       refetchOnWindowFocus: false,
       staleTime: Infinity,
       gcTime: 1000 * 60 * 60,

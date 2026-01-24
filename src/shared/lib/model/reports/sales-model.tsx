@@ -6,7 +6,7 @@ export type SalesTableListItem = {
   shop: { name: string };
   seller: { full_name: string };
   customer: { full_name: string };
-  type: "full_payment" | "partial_payment" | "real";
+  type: "full_payment" | "real" | "avans";
   total_amount: number;
   paid_amount: number;
   debt: number;
@@ -71,8 +71,8 @@ export const salesColumns = (
         text: "To'liq To'lov",
         status: "Success",
       },
-      partial_payment: {
-        text: "Qisman To'lov",
+      avans: {
+        text: "Avans",
         status: "Warning",
       },
       real: {
@@ -90,7 +90,7 @@ export const salesColumns = (
     sorter: true,
     hideInSearch: true,
     render: (_, record) => (
-      <div className="text-green-600 font-bold">
+      <div className="text-slate-700 font-bold">
         {record.total_amount.toLocaleString()}
       </div>
     ),
@@ -108,7 +108,7 @@ export const salesColumns = (
     ),
   },
   {
-    title: "Qarz (UZS)",
+    title: "Qarz (Real)",
     dataIndex: "debt",
     width: 150,
     sorter: true,
@@ -144,52 +144,5 @@ export const salesColumns = (
         Batafsil
       </div>
     ),
-  },
-];
-
-export const fakeSales: SalesTableListItem[] = [
-  {
-    id: "s1",
-    shop: { name: "Markaziy Do'kon" },
-    seller: { full_name: "Azizov Jamshid" },
-    customer: { full_name: "Qurbonov Dilshod" },
-    type: "full_payment",
-    total_amount: 550000,
-    paid_amount: 550000,
-    debt: 0,
-    created_at: new Date("2024-05-20T14:30:00"),
-  },
-  {
-    id: "s2",
-    shop: { name: "Filial 1" },
-    seller: { full_name: "Karimov Sherzod" },
-    customer: { full_name: "Aliyeva Sevara" },
-    type: "partial_payment",
-    total_amount: 1200000,
-    paid_amount: 500000,
-    debt: 700000,
-    created_at: new Date("2024-05-20T14:30:00"),
-  },
-  {
-    id: "s3",
-    shop: { name: "Markaziy Do'kon" },
-    seller: { full_name: "Azizov Jamshid" },
-    customer: { full_name: "Valiyev G'ani" },
-    type: "real",
-    total_amount: 300000,
-    paid_amount: 0,
-    debt: 300000,
-    created_at: new Date("2024-05-20T14:30:00"),
-  },
-  {
-    id: "s4",
-    shop: { name: "Filial 2" },
-    seller: { full_name: "Soliyev Lola" },
-    customer: { full_name: "Hamidov Akmal" },
-    type: "full_payment",
-    total_amount: 80000,
-    paid_amount: 80000,
-    debt: 0,
-    created_at: new Date("2024-05-20T14:30:00"),
   },
 ];

@@ -21,7 +21,6 @@ import { useProductModel } from "../../../shared/lib/apis/product-models/useProd
 const AdminAddSalePage = () => {
   const navigate = useNavigate();
   const [isCustomerOpen, setIsCustomerOpen] = useState<boolean>(false);
-  const [isShopOpen, setIsShopOpen] = useState<boolean>(false);
   const [isPriceVisible, setIsPriceVisible] = useState<boolean>(false);
   const { getInfiniteCustomers } = useCustomer();
   const { getInfiniteProductModelsForAddSale } = useProductModel();
@@ -214,9 +213,8 @@ const AdminAddSalePage = () => {
     });
   }, [allProductModelsForAddSale, isPriceVisible]);
 
-  const shouldFetchShop = isShopOpen || !!query.shopId;
   const { data: shops, isLoading: shopLoading } =
-    getAllShopsForProductsFilter(shouldFetchShop);
+    getAllShopsForProductsFilter();
   const shopsOptions =
     shops?.data?.map((st) => ({
       value: st?.id,
@@ -290,7 +288,13 @@ const AdminAddSalePage = () => {
 
   // HandleCancel starts
   const handleCancelSale = () => {
-    removeParams(["shopId", "customerId"]);
+    removeParams([
+      "shopId",
+      "customerId",
+      "productId",
+      "product_model_search",
+      "customer_search",
+    ]);
     localStorage.removeItem("paid_amount");
     localStorage.removeItem("sale_items");
     localStorage.removeItem("selected_product_ids");
@@ -353,7 +357,6 @@ const AdminAddSalePage = () => {
             productModelIsFetchingNextPage={productModelIsFetchingNextPage}
             productModelFetchNextPage={productModelFetchNextPage}
             onSearchChange={handleSearchProductFilterChange}
-            setIsShopOpen={setIsShopOpen}
             handleChange={handleChange}
             isPriceVisible={isPriceVisible}
             setIsPriceVisible={setIsPriceVisible}

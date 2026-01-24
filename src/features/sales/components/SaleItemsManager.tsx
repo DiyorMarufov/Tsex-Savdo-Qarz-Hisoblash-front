@@ -22,7 +22,6 @@ interface SaleItemsManagerProps {
   productModelFetchNextPage?: any;
   onSearchChange?: (value: string) => void;
   shopListLoading: boolean;
-  setIsShopOpen: (visible: boolean) => void;
   handleChange: (key: "shopId" | "productId", value: string[] | string) => void;
   isPriceVisible: boolean;
   setIsPriceVisible: any;
@@ -39,7 +38,6 @@ const SaleItemsManager = ({
   productModelFetchNextPage,
   onSearchChange,
   shopListLoading,
-  setIsShopOpen,
   handleChange,
   isPriceVisible,
   setIsPriceVisible,
@@ -145,6 +143,12 @@ const SaleItemsManager = ({
       }
     }
   };
+
+  // useEffect(() => {
+  //   if (shopOptions) {
+  //     handleChange("shopId", shopOptions[0]?.value);
+  //   }
+  // }, [shopOptions]);
 
   return (
     <div className="flex flex-col gap-2 bg-[#ffffff] p-4 border border-bg-fy rounded-[5px] overflow-hidden">
@@ -371,9 +375,6 @@ const SaleItemsManager = ({
                 placeholder={
                   shopListLoading ? "Yuklanmoqda..." : "Do'konni tanlang"
                 }
-                onDropdownVisibleChange={(visible) => {
-                  if (visible) setIsShopOpen(visible);
-                }}
                 className="h-10! w-full"
                 loading={shopListLoading}
                 allowClear

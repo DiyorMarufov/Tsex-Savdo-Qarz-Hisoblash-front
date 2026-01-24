@@ -36,14 +36,14 @@ export const customerColumns = (
     onFilter: true,
   },
   {
-    title: "Balans (UZS)",
+    title: "Balans",
     dataIndex: "balance",
     width: 150,
     render: (_, record) => {
       const balanceAmount = record.balance;
       const formattedAmount = Math.abs(balanceAmount).toLocaleString("uz-UZ");
 
-      if (balanceAmount < 0) {
+      if (balanceAmount > 0) {
         return <div className="text-red-600 font-bold">-{formattedAmount}</div>;
       }
 

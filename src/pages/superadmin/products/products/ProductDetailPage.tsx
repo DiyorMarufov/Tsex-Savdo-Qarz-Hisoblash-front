@@ -173,7 +173,15 @@ const ProductDetailPage = () => {
                     : ""
                 }
               />
-              <InfoRow label="Miqdori" value={product.quantity} />
+              <div className="flex justify-between items-center py-3">
+                <span className="text-bg-sy text-[14px]">Miqdori</span>
+                <span
+                  className={`text-[15px] ${product.quantity >= 10 ? "text-blue-500" : "text-red-500"} font-bold
+                  `}
+                >
+                  {product.quantity}
+                </span>
+              </div>
               <InfoRow
                 label="Pochkadagi soni"
                 value={product.unit_in_package || "—"}
@@ -260,7 +268,7 @@ const InfoRow = memo(
       <span className="text-bg-sy text-[14px]">{label}</span>
       <span
         className={`text-[15px] font-bold ${
-          highlight ? "text-green-500 font-semibold" : "text-gray-700"
+          highlight ? "text-green-500 font-semibold" : "text-gray-600"
         }`}
       >
         {value}

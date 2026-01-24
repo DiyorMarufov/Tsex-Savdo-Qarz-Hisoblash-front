@@ -11,7 +11,7 @@ export type ProductModelTableItem = {
     id: string;
     name: string;
   };
-  price: number;
+  total_quantity: number;
   size: string;
   shop: {
     id: string;
@@ -75,12 +75,14 @@ export const productModelColumns = (
       ],
   },
   {
-    title: "Narxi",
-    dataIndex: "price",
+    title: "Miqdori",
+    dataIndex: "quantity",
     width: 120,
     render: (_, record) => (
-      <div className="text-green-600 font-bold">
-        {record.price.toLocaleString()}
+      <div
+        className={`${record.total_quantity >= 10 ? "text-blue-500" : "text-red-500"} font-bold`}
+      >
+        {record.total_quantity}
       </div>
     ),
   },

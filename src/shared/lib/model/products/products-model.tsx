@@ -10,12 +10,12 @@ export type ProductTableListItem = {
       id: string;
       name: string;
     };
-    price: number;
   };
   product_material_type: {
     id: string;
     name: string;
   };
+  quantity: number;
   color: string;
   images: [{ id: string; image_url: string }];
   created_at: Date;
@@ -65,12 +65,14 @@ export const productColumns = (
     render: (_, record) => <span className="capitalize">{record.color}</span>,
   },
   {
-    title: "Narxi",
-    dataIndex: ["product_model", "price"],
+    title: "Miqdori",
+    dataIndex: "quantity",
     width: 120,
     render: (_, record) => (
-      <div className="text-green-600 font-bold">
-        {record.product_model.price.toLocaleString()}
+      <div
+        className={`${record.quantity >= 10 ? "text-blue-500" : "text-red-500"} font-bold`}
+      >
+        {record.quantity}
       </div>
     ),
   },

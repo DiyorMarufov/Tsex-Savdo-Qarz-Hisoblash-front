@@ -21,12 +21,16 @@ const SaleReportCard = ({ item, onDetail }: SaleReportCardProps) => {
         text: "text-emerald-600",
         label: "To'liq to'lov",
       },
-      partial_payment: {
-        bg: "bg-amber-50",
-        text: "text-amber-600",
-        label: "Qisman to'lov",
+      avans: {
+        bg: "bg-orange-50",
+        text: "text-orange-600",
+        label: "Avans",
       },
-      real: { bg: "bg-blue-50", text: "text-blue-600", label: "Real" },
+      real: {
+        bg: "bg-blue-50",
+        text: "text-blue-600",
+        label: "Real",
+      },
     };
 
     const status = statusMap[type] || {
@@ -71,7 +75,7 @@ const SaleReportCard = ({ item, onDetail }: SaleReportCardProps) => {
         </div>
 
         <div className="flex flex-col items-end shrink-0 gap-1.5">
-          <span className="text-[17px] font-bold text-green-500 tabular-nums leading-tight">
+          <span className="text-[17px] font-bold text-slate-700 tabular-nums leading-tight">
             {item.total_amount.toLocaleString()} uzs
           </span>
           {renderStatus(item.type)}
@@ -95,7 +99,7 @@ const SaleReportCard = ({ item, onDetail }: SaleReportCardProps) => {
           <div className="flex items-center gap-1.5 text-slate-400">
             <Wallet size={13} />
             <span className="text-[10px] font-bold uppercase tracking-tight">
-              Qarz
+              Qarz (Real)
             </span>
           </div>
           <span

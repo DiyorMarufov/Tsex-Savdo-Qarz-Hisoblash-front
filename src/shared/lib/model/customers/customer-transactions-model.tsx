@@ -4,13 +4,7 @@ import { Edit, Trash } from "lucide-react";
 export type CustomerTranscationsListItemsType = {
   id?: string;
   customer: any;
-  type:
-    | "borrowing"
-    | "lending"
-    | "full_payment"
-    | "partial_payment"
-    | "avans"
-    | "real";
+  type: "borrowing" | "lending" | "full_payment" | "avans" | "real";
   amount: number;
   due_date: Date;
   description: string;
@@ -41,7 +35,6 @@ export const transactionColumns = (
       borrowing: { text: "Qarz olish", status: "Error" },
       lending: { text: "Qarz berish", status: "Warning" },
       full_payment: { text: "To'liq to'lov", status: "Success" },
-      partial_payment: { text: "Qisman to'lov", status: "Processing" },
       avans: { text: "Avans", status: "Success" },
       real: { text: "Real", status: "Error" },
     },
@@ -66,7 +59,7 @@ export const transactionColumns = (
     sorter: true,
   },
   {
-    title: "Tranzaksiyadan Keyingi Balans",
+    title: "Qarz",
     dataIndex: "balance_after",
     width: 180,
     search: false,
@@ -74,7 +67,7 @@ export const transactionColumns = (
       const balanceAmount = record.balance_after;
       const formattedAmount = Math.abs(balanceAmount).toLocaleString("uz-UZ");
 
-      if (balanceAmount < 0) {
+      if (balanceAmount > 0) {
         return <div className="text-red-600 font-bold">-{formattedAmount}</div>;
       }
 

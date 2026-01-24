@@ -9,7 +9,7 @@ interface TransactionCardProps {
 }
 
 const CustomerTransactionCard = ({ trd, onDetail }: TransactionCardProps) => {
-  const isBalanceDebt = trd.balance_after < 0;
+  const isBalanceDebt = trd.balance_after <= 0;
 
   return (
     <div className="flex flex-col border border-bg-fy bg-white rounded-2xl p-4 gap-3">
@@ -45,12 +45,6 @@ const CustomerTransactionCard = ({ trd, onDetail }: TransactionCardProps) => {
                       To'liq to'lov
                     </span>
                   );
-                case "partial_payment":
-                  return (
-                    <span className="bg-sky-50 text-[11px] rounded-full text-sky-600 font-bold px-2 py-0.5 uppercase tracking-wide">
-                      Qisman to'lov
-                    </span>
-                  );
                 case "avans":
                   return (
                     <span className="bg-purple-50 text-[11px] rounded-full text-purple-600 font-bold px-2 py-0.5 uppercase tracking-wide">
@@ -82,12 +76,12 @@ const CustomerTransactionCard = ({ trd, onDetail }: TransactionCardProps) => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-slate-600">
             <span className="text-[13px] font-medium text-slate-400">
-              Keyingi balans:
+              Qarz:
             </span>
             <span
-              className={`text-[15px] font-bold ${isBalanceDebt ? "text-red-500" : "text-green-500"}`}
+              className={`text-[15px] font-bold ${isBalanceDebt ? "text-green-500" : "text-red-500"}`}
             >
-              {isBalanceDebt ? "-" : ""}
+              {isBalanceDebt ? "" : "-"}
               {Math.abs(trd.balance_after).toLocaleString()}
             </span>
           </div>

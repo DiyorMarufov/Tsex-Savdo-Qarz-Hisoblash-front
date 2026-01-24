@@ -90,9 +90,24 @@ const ProductModelCard = ({ item, onDetail }: ProductModelCardProps) => {
       </div>
 
       <div className="flex flex-row min-[385px]:flex-col items-center min-[385px]:items-end justify-between min-[385px]:justify-start gap-1">
-        <div className="flex">
-          <span className="font-bold text-green-600 shrink-0 text-[14px]">
-            {Number(item.price).toLocaleString()} uzs
+        <div className="flex items-center gap-1.5 mt-auto">
+          <div className={`relative flex h-2 w-2`}>
+            {item.total_quantity < 10 && (
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+            )}
+            <span
+              className={`relative inline-flex rounded-full h-2 w-2 ${
+                item.total_quantity >= 10 ? "bg-blue-500" : "bg-red-500"
+              }`}
+            ></span>
+          </div>
+
+          <span
+            className={`text-[11px] font-bold tracking-tight ${
+              item.total_quantity >= 10 ? "text-blue-500" : "text-red-500"
+            }`}
+          >
+            Qoldiq: {item.total_quantity} ta
           </span>
         </div>
 

@@ -10,7 +10,7 @@ interface Props {
 }
 
 const CustomerCard = ({ cs, onDetail }: Props) => {
-  const isDebt = cs.balance < 0;
+  const isDebt = cs.balance <= 0;
 
   return (
     <div className="flex flex-col border border-bg-fy bg-white rounded-2xl p-4 gap-3">
@@ -29,9 +29,9 @@ const CustomerCard = ({ cs, onDetail }: Props) => {
 
         <div className="flex flex-col items-end shrink-0">
           <span
-            className={`text-[17px] font-bold tabular-nums ${isDebt ? "text-red-500" : "text-green-500"}`}
+            className={`text-[17px] font-bold tabular-nums ${isDebt ? "text-green-500" : "text-red-500"}`}
           >
-            {isDebt ? "-" : "+"}
+            {isDebt ? "" : "-"}
             {Math.abs(cs.balance).toLocaleString()} UZS
           </span>
           <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
