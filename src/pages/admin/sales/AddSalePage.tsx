@@ -214,7 +214,7 @@ const AdminAddSalePage = () => {
   }, [allProductModelsForAddSale, isPriceVisible]);
 
   const { data: shops, isLoading: shopLoading } =
-    getAllShopsForProductsFilter();
+    getAllShopsForProductsFilter(true);
   const shopsOptions =
     shops?.data?.map((st) => ({
       value: st?.id,
