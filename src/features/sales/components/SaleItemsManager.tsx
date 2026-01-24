@@ -75,7 +75,6 @@ const SaleItemsManager = ({
       });
 
       localStorage.setItem("sale_items", JSON.stringify(filtered));
-      if (filtered.length === 0) removeParam("product_search");
       return filtered;
     });
   }, [productId, productModelOptions, removeParam]);
@@ -123,11 +122,13 @@ const SaleItemsManager = ({
               variant_details: v,
             };
           });
+          removeParam("product_search");
           return {
             ...item,
             selected_variants: updatedVariants,
           };
         }
+        removeParam("product_search");
         return item;
       });
       localStorage.setItem("sale_items", JSON.stringify(newItems));
@@ -188,6 +189,9 @@ const SaleItemsManager = ({
                 showSearch
                 filterOption={false}
                 onSearch={onSearchChange}
+                onBlur={() => {
+                  removeParam("product_search");
+                }}
                 allowClear
                 maxTagCount="responsive"
               />

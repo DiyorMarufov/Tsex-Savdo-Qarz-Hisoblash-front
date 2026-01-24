@@ -1,11 +1,15 @@
 import { Select } from "antd";
-import { memo, useMemo, type FC } from "react";
+import { memo, useCallback, useMemo, useState, type FC } from "react";
 import { useProduct } from "../../../shared/lib/apis/products/useProduct";
 import {
   colorOptions,
+  productColors,
   productMaterialTypes,
 } from "../../../shared/lib/constants";
 import CustomTagRender from "./CustomTagRender";
+import { useParamsHook } from "../../../shared/hooks/params/useParams";
+import type { QueryParams } from "../../../shared/lib/types";
+import { debounce } from "../../../shared/lib/functions/debounce";
 
 interface ProductVariantPickerProps {
   modelId: any;
@@ -18,15 +22,82 @@ const ProductVariantPicker: FC<ProductVariantPickerProps> = ({
   onVariantSelect,
   selectedVariants = [],
 }) => {
-  const { getAllProductsForSaleCreate } = useProduct();
-  const { data, isLoading } = getAllProductsForSaleCreate(modelId);
+  const { getInfiniteProductsForSaleCreate } = useProduct();
+
+  const { getParam, setParams, removeParam } = useParamsHook();
+  const [, setSearchProduct] = useState(getParam("product_search") || "");
+
+  // Query starts
+  const query: QueryParams = useMemo(() => {
+    const productSearch = getParam("product_search") || undefined;
+
+    return {
+      productSearch,
+    };
+  }, [getParam]);
+  // Query ends
+  const {
+    data: productsData,
+    isLoading: productLoading,
+    hasNextPage: productHasNextPage,
+    isFetchingNextPage: productIsFetchingNextPage,
+    fetchNextPage: productFetchNextPage,
+  } = getInfiniteProductsForSaleCreate(modelId, {
+    search: query.productSearch,
+  });
+
+  // FilterSearch starts
+  const debouncedSetSearchProductQuery = useCallback(
+    debounce((nextValue: string) => {
+      if (nextValue) {
+        setParams({ product_search: nextValue, page: 1 });
+      } else {
+        removeParam("product_search");
+      }
+    }, 500),
+    [setParams, removeParam],
+  );
+
+  const handleSearchProductFilterChange = (value: string) => {
+    setSearchProduct(value);
+
+    let lowerValue: string = value.toLowerCase();
+
+    if (!lowerValue.trim()) {
+      debouncedSetSearchProductQuery("");
+      return;
+    }
+
+    const materialKey = Object.keys(productMaterialTypes).find((key) =>
+      productMaterialTypes[key].toLowerCase().includes(lowerValue),
+    );
+
+    const colorKey = productColors[lowerValue];
+
+    debouncedSetSearchProductQuery(materialKey || colorKey || lowerValue);
+  };
+  // FilterSearch ends
+
+  const handleScroll = (e: any) => {
+    const { target } = e;
+    if (target.scrollTop + target.clientHeight >= target.scrollHeight - 10) {
+      if (productHasNextPage && !productIsFetchingNextPage) {
+        productFetchNextPage();
+      }
+    }
+  };
 
   const selectedProductIds = useMemo(() => {
     return selectedVariants.map((v) => v.product_id);
   }, [selectedVariants]);
 
   const options = useMemo(() => {
-    const productsList = data?.data?.data || data?.data || [];
+    const productsList =
+      productsData?.pages.flatMap((page: any) => {
+        return Array.isArray(page)
+          ? page
+          : page?.data?.data || page?.data || [];
+      }) || [];
 
     return productsList.map((p: any) => {
       const findColor = colorOptions.find((color) => color.value === p.color);
@@ -79,7 +150,7 @@ const ProductVariantPicker: FC<ProductVariantPickerProps> = ({
         original: p,
       };
     });
-  }, [data, colorOptions, productMaterialTypes]);
+  }, [productsData, colorOptions, productMaterialTypes]);
 
   return (
     <div className="flex flex-col gap-1 w-full">
@@ -88,8 +159,9 @@ const ProductVariantPicker: FC<ProductVariantPickerProps> = ({
       </span>
       <Select
         mode="multiple"
+        onPopupScroll={handleScroll}
         placeholder="Variantni tanlang"
-        loading={isLoading}
+        loading={productLoading}
         value={selectedProductIds}
         options={options}
         optionLabelProp="displayLabel"
@@ -103,9 +175,13 @@ const ProductVariantPicker: FC<ProductVariantPickerProps> = ({
         tagRender={(props) => <CustomTagRender props={props} />}
         filterOption={false}
         showSearch
-        maxTagCount="responsive"
-        allowClear
+        onSearch={handleSearchProductFilterChange}
+        onBlur={() => {
+          removeParam("product_search");
+        }}
         placement="bottomLeft"
+        allowClear
+        maxTagCount="responsive"
       />
     </div>
   );

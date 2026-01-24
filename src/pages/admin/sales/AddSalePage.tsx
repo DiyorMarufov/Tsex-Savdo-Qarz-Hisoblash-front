@@ -28,11 +28,13 @@ const AdminAddSalePage = () => {
   const { getAllShopsForProductsFilter } = useShop();
   const { createSale } = useSale();
 
-  const { getParam, setParams, removeParams } = useParamsHook();
+  const { getParam, setParams, removeParam, removeParams } = useParamsHook();
   const [, setCustomerModalSearch] = useState(
     getParam("customer_search") || "",
   );
-  const [, setProductFilterSearch] = useState(getParam("product_search") || "");
+  const [, setProductFilterSearch] = useState(
+    getParam("product_model_search") || "",
+  );
   const { handleApiError } = useApiNotification();
 
   useEffect(() => {
@@ -49,7 +51,7 @@ const AdminAddSalePage = () => {
     const productId =
       productIdArray.length > 0 ? productIdArray.join(",") : undefined;
     const customerFilterSearch = getParam("customer_search") || undefined;
-    const productFilterSearch = getParam("product_search") || undefined;
+    const productFilterSearch = getParam("product_model_search") || undefined;
 
     return {
       customerId,
@@ -74,10 +76,14 @@ const AdminAddSalePage = () => {
 
   const debouncedSetSearchProductFilterQuery = useCallback(
     debounce((nextValue: string) => {
-      setParams({
-        product_search: nextValue || "",
-        page: 1,
-      });
+      if (nextValue) {
+        setParams({
+          product_model_search: nextValue || "",
+          page: 1,
+        });
+      } else {
+        removeParam("product_model_search");
+      }
     }, 500),
     [setParams],
   );
@@ -89,6 +95,12 @@ const AdminAddSalePage = () => {
 
   const handleSearchProductFilterChange = (value: string) => {
     setProductFilterSearch(value);
+
+    if (!value.trim()) {
+      debouncedSetSearchProductFilterQuery("");
+      return;
+    }
+
     debouncedSetSearchProductFilterQuery(value);
   };
   // FilterSearch ends
@@ -114,7 +126,7 @@ const AdminAddSalePage = () => {
         existingIds.length !== newValues.length ? newValues : existingIds;
 
       localStorage.setItem("selected_product_ids", JSON.stringify(finalValues));
-
+      removeParam("product_model_search");
       setParams({ p_ref: Date.now().toString() });
       return;
     }
@@ -216,21 +228,24 @@ const AdminAddSalePage = () => {
   const handleFinishSale = () => {
     const formData = new FormData();
 
-    const shop_id = getParam("shopId") || "";
-    const customer_id = getParam("customerId") || "";
-    const paid_amount = localStorage.getItem("paid_amount") || "";
-    const sale_items = JSON.parse(localStorage.getItem("sale_items") || "[]");
+    const shopId = getParam("shopId") || "";
+    const customerId = getParam("customerId") || "";
+    const paidAmount = localStorage.getItem("paid_amount") || "";
+    const saleItems = JSON.parse(localStorage.getItem("sale_items") || "[]");
     const savedImgs = JSON.parse(localStorage.getItem("images") || "[]");
 
-    const saleItems = sale_items?.map((pr: any) => ({
-      product_id: pr?.product_id,
-      quantity: pr?.quantity,
-      price: pr?.price,
-    }));
-    formData.append("shop_id", shop_id);
-    formData.append("customer_id", customer_id);
-    formData.append("paid_amount", paid_amount);
-    formData.append("sale_items", JSON.stringify(saleItems));
+    const saleItemsData = saleItems?.flatMap((sv: any) =>
+      sv?.selected_variants?.map((si: any) => ({
+        product_id: si?.product_id,
+        quantity: si?.quantity,
+        price: si?.price,
+      })),
+    );
+
+    formData.append("shop_id", shopId);
+    formData.append("customer_id", customerId);
+    formData.append("paid_amount", paidAmount);
+    formData.append("sale_items", JSON.stringify(saleItemsData));
     savedImgs.forEach((base64: any, inx: number) => {
       const file = base64ToFile(base64, `product_${inx}.png`);
       formData.append("images", file);

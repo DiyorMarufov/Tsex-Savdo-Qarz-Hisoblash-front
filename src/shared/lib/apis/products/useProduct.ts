@@ -131,15 +131,24 @@ export const useProduct = () => {
       gcTime: 1000 * 60 * 10,
     });
 
-  const getAllProductsForSaleCreate = (id: string) =>
-    useQuery({
-      queryKey: [product, "all-products-for-sale-create", id],
-      queryFn: () =>
-        api.get(`products/product-model/${id}`).then((res) => res.data),
+  const getInfiniteProductsForSaleCreate = (id: string, params?: any) =>
+    useInfiniteQuery({
+      queryKey: [product, "all-inifinite-products-for-sale-create", id, params],
+      queryFn: ({ pageParam = 1 }) =>
+        api
+          .get(`products/product-model/${id}`, {
+            params: { ...params, page: pageParam, limit: 10 },
+          })
+          .then((res) => res.data),
       enabled: !!id,
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage?.data?.data.length === 10
+          ? allPages.length + 1
+          : undefined;
+      },
+      initialPageParam: 1,
       refetchOnWindowFocus: false,
       staleTime: 1000 * 60 * 5,
-      gcTime: 1000 * 60 * 10,
     });
 
   const getLatestProductForProductCreate = (id: string) =>
@@ -198,7 +207,7 @@ export const useProduct = () => {
     getProductsSummaryForReport,
     getAllProductsForProductsFilter,
     getAllTop5ProductsForReport,
-    getAllProductsForSaleCreate,
+    getInfiniteProductsForSaleCreate,
     getLatestProductForProductCreate,
     getProductById,
     deleteProductById,

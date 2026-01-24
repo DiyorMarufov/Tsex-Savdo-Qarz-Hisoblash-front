@@ -30,6 +30,7 @@ export interface QueryParams {
   date?: string | undefined;
   customerId?: string;
   customerType?: string;
+  productSearch?: string;
   customerFilterSearch?: string;
   productFilterSearch?: string;
   categorySearch?: string;
