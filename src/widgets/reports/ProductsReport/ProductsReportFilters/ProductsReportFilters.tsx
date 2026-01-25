@@ -20,11 +20,11 @@ interface ProductReportFiltersProps {
   shopId?: string;
   tsexId?: string;
   modelId?: string;
-  customerOptions: Option[];
+  customerOptions?: Option[];
   shopsOptions: Option[];
   modelOptions?: Option[];
   tsexesOptions: Option[];
-  setIsCustomerOpen: (open: boolean) => void;
+  setIsCustomerOpen?: (open: boolean) => void;
   customerHasNextPage?: boolean;
   customerIsFetchingNextPage?: boolean;
   customerFetchNextPage?: any;
@@ -37,7 +37,7 @@ interface ProductReportFiltersProps {
   modeltIsFetchingNextPage?: boolean;
   modelFetchNextPage?: any;
   onSearchChange?: (value: string) => void;
-  customerLoading: boolean;
+  customerLoading?: boolean;
   tsexLoading: boolean;
   shopLoading: boolean;
   isProduct?: boolean;
@@ -163,7 +163,7 @@ const ProductsReportFilters = ({
               placeholder="Barcha mijozlar"
               className="h-10! w-full rounded-lg custom-select border-slate-200"
               onDropdownVisibleChange={(visible: any) => {
-                if (visible) setIsCustomerOpen(true);
+                if (visible) setIsCustomerOpen?.(true);
               }}
               dropdownRender={(menu: any) => (
                 <>
