@@ -9,18 +9,26 @@ import type { Dayjs } from "dayjs";
 interface ProductReportFiltersProps {
   onFilterSubmit: (filters: {
     dates: string[] | null;
+    customerId: string;
     shopId: string;
     tsexId: string;
     modelId: string;
   }) => void;
   start: Dayjs | undefined | null;
   end: Dayjs | undefined | null;
+  customerId?: string;
   shopId?: string;
   tsexId?: string;
   modelId?: string;
+  customerOptions: Option[];
   shopsOptions: Option[];
   modelOptions?: Option[];
   tsexesOptions: Option[];
+  setIsCustomerOpen: (open: boolean) => void;
+  customerHasNextPage?: boolean;
+  customerIsFetchingNextPage?: boolean;
+  customerFetchNextPage?: any;
+  onSearchCustomerChange?: (value: string) => void;
   setIsModelOpen?: (open: boolean) => void;
   setIsTsexOpen: (open: boolean) => void;
   setIsShopOpen: (open: boolean) => void;
@@ -29,6 +37,7 @@ interface ProductReportFiltersProps {
   modeltIsFetchingNextPage?: boolean;
   modelFetchNextPage?: any;
   onSearchChange?: (value: string) => void;
+  customerLoading: boolean;
   tsexLoading: boolean;
   shopLoading: boolean;
   isProduct?: boolean;
@@ -36,6 +45,7 @@ interface ProductReportFiltersProps {
 
 interface FilterFormValues {
   range: [Dayjs | null, Dayjs | null];
+  customerId: string;
   shopId: string;
   tsexId: string;
   modelId: string;
@@ -45,12 +55,19 @@ const ProductsReportFilters = ({
   onFilterSubmit,
   start,
   end,
+  customerId,
   shopId,
   tsexId,
   modelId,
+  customerOptions = [],
   shopsOptions = [],
   modelOptions = [],
   tsexesOptions = [],
+  setIsCustomerOpen,
+  customerHasNextPage,
+  customerIsFetchingNextPage,
+  customerFetchNextPage,
+  onSearchCustomerChange,
   setIsModelOpen,
   setIsTsexOpen,
   setIsShopOpen,
@@ -59,6 +76,7 @@ const ProductsReportFilters = ({
   modeltIsFetchingNextPage,
   modelFetchNextPage,
   onSearchChange,
+  customerLoading,
   tsexLoading,
   shopLoading,
   isProduct = true,
@@ -69,6 +87,7 @@ const ProductsReportFilters = ({
   useEffect(() => {
     form.setFieldsValue({
       range: [start || null, end || null],
+      customerId: customerId || "",
       shopId: shopId || "",
       tsexId: tsexId || "",
       modelId: modelId || "",
@@ -87,6 +106,7 @@ const ProductsReportFilters = ({
               range[1].format("YYYY-MM-DD HH:mm:ss"),
             ]
           : null,
+      customerId: values.customerId || "",
       shopId: values.shopId || "",
       tsexId: values.tsexId || "",
       modelId: values.modelId || "",
@@ -99,6 +119,10 @@ const ProductsReportFilters = ({
     if (target.scrollTop + target.clientHeight >= target.scrollHeight - 10) {
       if (modelHasNextPage && !modeltIsFetchingNextPage) {
         modelFetchNextPage();
+      }
+
+      if (customerHasNextPage && !customerIsFetchingNextPage) {
+        customerFetchNextPage();
       }
     }
   };
@@ -127,6 +151,38 @@ const ProductsReportFilters = ({
             : "col-span-3 grid grid-cols-3 gap-4 max-[1150px]:col-span-1 max-[390px]:grid-cols-1"
         }
       >
+        <div className="w-full">
+          {isVertical && (
+            <p className="mb-1 text-sm text-slate-500">Mijozlar</p>
+          )}
+          <Form.Item name="customerId" noStyle>
+            <Filter
+              onPopupScroll={handleScroll}
+              value={customerId}
+              options={customerOptions}
+              placeholder="Barcha mijozlar"
+              className="h-10! w-full rounded-lg custom-select border-slate-200"
+              onDropdownVisibleChange={(visible: any) => {
+                if (visible) setIsCustomerOpen(true);
+              }}
+              dropdownRender={(menu: any) => (
+                <>
+                  {menu}
+                  {customerIsFetchingNextPage && (
+                    <span className="text-[12px] text-gray-500">
+                      Yuklanmoqda...
+                    </span>
+                  )}
+                </>
+              )}
+              loading={customerLoading}
+              showSearch
+              filterOption={false}
+              onSearch={onSearchCustomerChange}
+            />
+          </Form.Item>
+        </div>
+
         {isProduct && (
           <div className="w-full">
             {isVertical && (

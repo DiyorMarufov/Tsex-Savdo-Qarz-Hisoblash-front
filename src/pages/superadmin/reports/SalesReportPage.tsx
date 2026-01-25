@@ -7,31 +7,36 @@ import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
 import { useSale } from "../../../shared/lib/apis/sales/useSale";
 import { useParamsHook } from "../../../shared/hooks/params/useParams";
 import dayjs from "dayjs";
-import type { QueryParams } from "../../../shared/lib/types";
+import type { Option, QueryParams } from "../../../shared/lib/types";
 import { debounce } from "../../../shared/lib/functions/debounce";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import ProductsReportFilters from "../../../widgets/reports/ProductsReport/ProductsReportFilters/ProductsReportFilters";
 import { useShop } from "../../../shared/lib/apis/shops/useShop";
 import { useTsex } from "../../../shared/lib/apis/tsexes/useTsex";
 import { salesColumns } from "../../../shared/lib/model/reports/sales-model";
+import { useCustomer } from "../../../shared/lib/apis/customers/useCustomer";
+import { formatPhoneNumber } from "../../../shared/lib/functions/formatPhoneNumber";
 
 const SalesReportPage = () => {
+  const [isCustomerOpen, setIsCustomerOpen] = useState<boolean>(false);
   const [isTsexOpen, setIsTsexOpen] = useState<boolean>(false);
   const [isShopOpen, setIsShopOpen] = useState<boolean>(false);
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    window.scroll({ top: 0 });
-  }, []);
-
   const { getParam, setParams, removeParam } = useParamsHook();
   const [localSearch, setLocalSearch] = useState(getParam("search") || "");
   const [, setProductFilterSearch] = useState(getParam("product_search") || "");
+  const [, setCustomerSearch] = useState(getParam("customer_search") || "");
 
   const { getSalesSummaryForReport, getAllSales } = useSale();
+  const { getInfiniteCustomers } = useCustomer();
   const { getAllShopsForProductsFilter } = useShop();
   const { getAllTsexesForProductsFilter } = useTsex();
+
+  useEffect(() => {
+    window.scroll({ top: 0 });
+  }, []);
 
   // Query starts
   const query: QueryParams = useMemo(() => {
@@ -40,9 +45,11 @@ const SalesReportPage = () => {
     const search = getParam("search") || undefined;
     const s = getParam("startDate");
     const e = getParam("endDate");
+    const customerId = getParam("customerId") || "";
     const shopId = getParam("shopId") || "";
     const tsexId = getParam("tsexId") || "";
     const productFilterSearch = getParam("product_search") || undefined;
+    const customerFilterSearch = getParam("customer_search") || undefined;
 
     const isFirstLoad = s === null && e === null;
 
@@ -58,9 +65,11 @@ const SalesReportPage = () => {
       endStr: isFirstLoad
         ? dayjs().endOf("day").format("YYYY-MM-DD HH:mm:ss")
         : e || "",
+      customerId,
       shopId,
       tsexId,
       productFilterSearch,
+      customerFilterSearch,
     };
   }, [getParam]);
   // Query ends
@@ -74,6 +83,7 @@ const SalesReportPage = () => {
     getSalesSummaryForReport({
       startDate: query.startStr,
       endDate: query.endStr,
+      customerId: query.customerId,
       shopId: query.shopId,
       tsexId: query.tsexId,
     });
@@ -91,6 +101,7 @@ const SalesReportPage = () => {
     search: query.search,
     startDate: query.startStr,
     endDate: query.endStr,
+    customerId: query.customerId,
     shopId: query.shopId,
     tsexId: query.tsexId,
   });
@@ -129,7 +140,7 @@ const SalesReportPage = () => {
         page: 1,
       });
     }, 500),
-    [setParams]
+    [setParams],
   );
 
   const debouncedSetSearchProductFilterQuery = useCallback(
@@ -139,7 +150,17 @@ const SalesReportPage = () => {
         page: 1,
       });
     }, 500),
-    [setParams]
+    [setParams],
+  );
+
+  const debouncedSetSearchCustomerQuery = useCallback(
+    debounce((nextValue: string) => {
+      setParams({
+        customer_search: nextValue || "",
+        page: 1,
+      });
+    }, 500),
+    [setParams],
   );
 
   const handleSearchChange = (value: string) => {
@@ -151,9 +172,49 @@ const SalesReportPage = () => {
     setProductFilterSearch(value);
     debouncedSetSearchProductFilterQuery(value);
   };
+
+  const handleSearchCustomerChange = (value: string) => {
+    setCustomerSearch(value);
+    debouncedSetSearchCustomerQuery(value);
+  };
   // Search ends
 
   // SaleReportFilter options start
+  const {
+    data: allCustomersList,
+    isLoading: customerListLoading,
+    fetchNextPage: customerFetchNextPage,
+    hasNextPage: customerHasNextPage,
+    isFetchingNextPage: customerIsFetchingNextPage,
+  } = getInfiniteCustomers(isCustomerOpen, {
+    search: query.customerFilterSearch,
+  });
+  const customerOptions: Option[] = [
+    {
+      value: "",
+      label: "Barcha mijozlar",
+    },
+    ...(
+      allCustomersList?.pages?.flatMap((page: any) => {
+        return Array.isArray(page)
+          ? page
+          : page?.data?.data || page?.data || [];
+      }) || []
+    ).map((cs: any) => ({
+      value: cs.id,
+      label: (
+        <div className="flex items-center justify-between w-full gap-4">
+          <span className="font-medium text-slate-800 truncate">
+            {cs.full_name}
+          </span>
+          <span className="text-[12px] text-slate-400 font-normal tabular-nums shrink-0">
+            {formatPhoneNumber(cs.phone_number)}
+          </span>
+        </div>
+      ),
+    })),
+  ];
+
   const { data: tsexes, isLoading: tsexLoading } =
     getAllTsexesForProductsFilter(isTsexOpen);
   const tsexesOptions = [
@@ -184,32 +245,42 @@ const SalesReportPage = () => {
   // SaleReportFilter onFilterSubmit starts
   const onFilterSubmit = (filters: {
     dates: string[] | null;
+    customerId: string;
     shopId: string;
     tsexId: string;
   }) => {
     setParams({
       startDate: filters.dates?.[0] || "",
       endDate: filters.dates?.[1] || "",
+      customerId: filters?.customerId || "",
       shopId: filters.shopId || "",
       tsexId: filters.tsexId || "",
     });
   };
   // SaleReportFilter onFilterSubmit ends
 
-  if (pathname.startsWith("/superadmin/reports/sale/")) return <Outlet />;
+  if (pathname.startsWith("/admin/reports/sale/")) return <Outlet />;
   return (
     <div className="flex flex-col gap-4">
       <ProductsReportFilters
         onFilterSubmit={onFilterSubmit}
         start={query.start}
         end={query.end}
+        customerId={query.customerId}
         shopId={query.shopId}
         tsexId={query.tsexId}
+        customerOptions={customerOptions}
         shopsOptions={shopsOptions}
         tsexesOptions={tsexesOptions}
+        setIsCustomerOpen={setIsCustomerOpen}
+        customerHasNextPage={customerHasNextPage}
+        customerIsFetchingNextPage={customerIsFetchingNextPage}
+        customerFetchNextPage={customerFetchNextPage}
         setIsTsexOpen={setIsTsexOpen}
         setIsShopOpen={setIsShopOpen}
+        onSearchCustomerChange={handleSearchCustomerChange}
         onSearchChange={handleSearchProductFilterChange}
+        customerLoading={customerListLoading}
         tsexLoading={tsexLoading}
         shopLoading={shopLoading}
         isProduct={false}
@@ -226,6 +297,7 @@ const SalesReportPage = () => {
         params={{
           startDate: query.startStr,
           endDate: query.endStr,
+          customerId: query.customerId as string,
           tsexId: query.tsexId as string,
           shopId: query.shopId as string,
         }}

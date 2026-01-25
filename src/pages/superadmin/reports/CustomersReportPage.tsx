@@ -18,7 +18,7 @@ const CustomersReportPage = () => {
   const navigate = useNavigate();
   const { getParam, setParams, removeParam } = useParamsHook();
   const [localSearch, setLocalSearch] = useState(getParam("search") || "");
-  const [, setCustomerModalSearch] = useState(
+  const [, setCustomerSearch] = useState(
     getParam("customer_search") || ""
   );
   const [isCustomerOpen, setIsCustomerOpen] = useState<boolean>(false);
@@ -154,8 +154,8 @@ const CustomersReportPage = () => {
     debouncedSetSearchQuery(value);
   };
 
-  const handleSearchCstomerModalChange = (value: string) => {
-    setCustomerModalSearch(value);
+  const handleSearchCustomerModalChange = (value: string) => {
+    setCustomerSearch(value);
     debouncedSetSearchCustomerModalQuery(value);
   };
   // Search ends
@@ -223,7 +223,7 @@ const CustomersReportPage = () => {
         customerHasNextPage={customerHasNextPage}
         customerIsFetchingNextPage={customerIsFetchingNextPage}
         customerFetchNextPage={customerFetchNextPage}
-        onSearchChange={handleSearchCstomerModalChange}
+        onSearchChange={handleSearchCustomerModalChange}
       />
       <CustomersReportBalances
         creditor={creditor}

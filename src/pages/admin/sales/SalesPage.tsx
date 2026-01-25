@@ -9,21 +9,26 @@ import PlusButton from "../../../shared/ui/Button/PlusButton";
 import SalesFilter from "../../../widgets/sales/SalesFilter/SalesFilter";
 import { useParamsHook } from "../../../shared/hooks/params/useParams";
 import { useSale } from "../../../shared/lib/apis/sales/useSale";
-import type { QueryParams } from "../../../shared/lib/types";
+import type { Option, QueryParams } from "../../../shared/lib/types";
 import dayjs from "dayjs";
 import SalesReportMobileList from "../../../widgets/reports/SalesReport/SalesReportMobileList/SalesReportMobileList";
 import { useShop } from "../../../shared/lib/apis/shops/useShop";
 import { useTsex } from "../../../shared/lib/apis/tsexes/useTsex";
 import { debounce } from "../../../shared/lib/functions/debounce";
+import { useCustomer } from "../../../shared/lib/apis/customers/useCustomer";
+import { formatPhoneNumber } from "../../../shared/lib/functions/formatPhoneNumber";
 
 const AdminSalesPage = () => {
+  const [isCustomerOpen, setIsCustomerOpen] = useState<boolean>(false);
   const [isTsexOpen, setIsTsexOpen] = useState<boolean>(false);
   const [isShopOpen, setIsShopOpen] = useState<boolean>(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { getParam, setParams, removeParam } = useParamsHook();
   const [localSearch, setLocalSearch] = useState(getParam("search") || "");
+  const [, setCustomerSearch] = useState(getParam("customer_search") || "");
   const { getAllSales } = useSale();
+  const { getInfiniteCustomers } = useCustomer();
   const { getAllShopsForProductsFilter } = useShop();
   const { getAllTsexesForProductsFilter } = useTsex();
 
@@ -38,9 +43,11 @@ const AdminSalesPage = () => {
     const search = getParam("search") || undefined;
     const s = getParam("startDate");
     const e = getParam("endDate");
+    const customerId = getParam("customerId") || "";
     const shopId = getParam("shopId") || "";
     const tsexId = getParam("tsexId") || "";
     const productFilterSearch = getParam("product_search") || undefined;
+    const customerFilterSearch = getParam("customer_search") || undefined;
 
     const isFirstLoad = s === null && e === null;
 
@@ -56,9 +63,11 @@ const AdminSalesPage = () => {
       endStr: isFirstLoad
         ? dayjs().endOf("day").format("YYYY-MM-DD HH:mm:ss")
         : e || "",
+      customerId,
       shopId,
       tsexId,
       productFilterSearch,
+      customerFilterSearch,
     };
   }, [getParam]);
   // Query ends
@@ -74,6 +83,7 @@ const AdminSalesPage = () => {
     search: query.search,
     startDate: query.startStr,
     endDate: query.endStr,
+    customerId: query.customerId,
     shopId: query.shopId,
     tsexId: query.tsexId,
   });
@@ -112,7 +122,17 @@ const AdminSalesPage = () => {
         page: 1,
       });
     }, 500),
-    [setParams]
+    [setParams],
+  );
+
+  const debouncedSetSearchCustomerQuery = useCallback(
+    debounce((nextValue: string) => {
+      setParams({
+        customer_search: nextValue || "",
+        page: 1,
+      });
+    }, 500),
+    [setParams],
   );
 
   const handleSearchChange = (value: string) => {
@@ -120,9 +140,48 @@ const AdminSalesPage = () => {
     debouncedSetSearchQuery(value);
   };
 
+  const handleSearchCustomerChange = (value: string) => {
+    setCustomerSearch(value);
+    debouncedSetSearchCustomerQuery(value);
+  };
   // Search ends
 
   // SaleFilter options start
+  const {
+    data: allCustomersList,
+    isLoading: customerListLoading,
+    fetchNextPage: customerFetchNextPage,
+    hasNextPage: customerHasNextPage,
+    isFetchingNextPage: customerIsFetchingNextPage,
+  } = getInfiniteCustomers(isCustomerOpen, {
+    search: query.customerFilterSearch,
+  });
+  const customerOptions: Option[] = [
+    {
+      value: "",
+      label: "Barcha mijozlar",
+    },
+    ...(
+      allCustomersList?.pages?.flatMap((page: any) => {
+        return Array.isArray(page)
+          ? page
+          : page?.data?.data || page?.data || [];
+      }) || []
+    ).map((cs: any) => ({
+      value: cs.id,
+      label: (
+        <div className="flex items-center justify-between w-full gap-4">
+          <span className="font-medium text-slate-800 truncate">
+            {cs.full_name}
+          </span>
+          <span className="text-[12px] text-slate-400 font-normal tabular-nums shrink-0">
+            {formatPhoneNumber(cs.phone_number)}
+          </span>
+        </div>
+      ),
+    })),
+  ];
+
   const { data: tsexes, isLoading: tsexLoading } =
     getAllTsexesForProductsFilter(isTsexOpen);
   const tsexesOptions = [
@@ -154,12 +213,14 @@ const AdminSalesPage = () => {
   // SaleReportFilter onFilterSubmit starts
   const onFilterSubmit = (filters: {
     dates: string[] | null;
+    customerId: string;
     shopId: string;
     tsexId: string;
   }) => {
     setParams({
       startDate: filters.dates?.[0] || "",
       endDate: filters.dates?.[1] || "",
+      customerId: filters?.customerId || "",
       shopId: filters.shopId || "",
       tsexId: filters.tsexId || "",
     });
@@ -185,14 +246,22 @@ const AdminSalesPage = () => {
           onFilterSubmit={onFilterSubmit}
           start={query.start}
           end={query.end}
+          customerId={query.customerId}
           shopId={query.shopId}
           tsexId={query.tsexId}
           localSearch={localSearch}
+          customerOptions={customerOptions}
           shopsOptions={shopsOptions}
           tsexesOptions={tsexesOptions}
+          setIsCustomerOpen={setIsCustomerOpen}
+          customerHasNextPage={customerHasNextPage}
+          customerIsFetchingNextPage={customerIsFetchingNextPage}
+          customerFetchNextPage={customerFetchNextPage}
           setIsTsexOpen={setIsTsexOpen}
           setIsShopOpen={setIsShopOpen}
+          onSearchCustomerChange={handleSearchCustomerChange}
           handleSearchChange={handleSearchChange}
+          customerLoading={customerListLoading}
           tsexLoading={tsexLoading}
           shopLoading={shopLoading}
         />

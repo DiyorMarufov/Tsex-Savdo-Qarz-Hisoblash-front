@@ -10,19 +10,28 @@ import Filter from "../../../shared/ui/Filter/Filter";
 interface CombinedReportFilterProps {
   onFilterSubmit: (filters: {
     dates: string[] | null;
+    customerId: string;
     shopId: string;
     tsexId: string;
   }) => void;
   start: Dayjs | undefined | null;
   end: Dayjs | undefined | null;
+  customerId?: string;
   shopId?: string;
   tsexId?: string;
   localSearch?: string;
+  customerOptions: Option[];
   shopsOptions: Option[];
   tsexesOptions: Option[];
+  setIsCustomerOpen: (open: boolean) => void;
+  customerHasNextPage?: boolean;
+  customerIsFetchingNextPage?: boolean;
+  customerFetchNextPage?: any;
+  onSearchCustomerChange?: (value: string) => void;
   setIsTsexOpen: (open: boolean) => void;
   setIsShopOpen: (open: boolean) => void;
   handleSearchChange: (value: string) => void;
+  customerLoading: boolean;
   tsexLoading: boolean;
   shopLoading: boolean;
 }
@@ -31,14 +40,22 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
   onFilterSubmit,
   start,
   end,
+  customerId,
   shopId,
   tsexId,
   localSearch,
+  customerOptions = [],
   shopsOptions = [],
   tsexesOptions = [],
+  setIsCustomerOpen,
   setIsTsexOpen,
   setIsShopOpen,
+  customerHasNextPage,
+  customerIsFetchingNextPage,
+  customerFetchNextPage,
+  onSearchCustomerChange,
   handleSearchChange,
+  customerLoading,
   tsexLoading,
   shopLoading,
 }) => {
@@ -53,6 +70,7 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
     start ? start.format("YYYY-MM-DD HH:mm:ss") : "",
     end ? end.format("YYYY-MM-DD HH:mm:ss") : "",
   ]);
+  const [tempCustomerId, setTempCustomerId] = useState(customerId);
   const [tempShopId, setTempShopId] = useState(shopId);
   const [tempTsexId, setTempTsexId] = useState(tsexId);
 
@@ -69,6 +87,7 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
   const handleSubmit = () => {
     onFilterSubmit({
       dates: tempDateStrings,
+      customerId: tempCustomerId || "",
       shopId: tempShopId || "",
       tsexId: tempTsexId || "",
     });
@@ -78,6 +97,15 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
   const handleRangeChange = (values: any, dateStrings: [string, string]) => {
     setTempDates(values);
     setTempDateStrings(values ? dateStrings : null);
+  };
+
+  const handleScroll = (e: any) => {
+    const { target } = e;
+    if (target.scrollTop + target.clientHeight >= target.scrollHeight - 10) {
+      if (customerHasNextPage && !customerIsFetchingNextPage) {
+        customerFetchNextPage();
+      }
+    }
   };
 
   return (
@@ -92,7 +120,7 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
           />
         </div>
 
-        <div className="max-[800px]:hidden grid grid-cols-4 gap-4 items-end">
+        <div className="max-[800px]:hidden grid grid-cols-5 gap-4 max-[1200px]:grid-cols-4 items-center">
           <div className="w-full">
             <DatePicker.RangePicker
               value={tempDates}
@@ -102,6 +130,33 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
               placeholder={["Boshlanish", "Tugash"]}
               className="h-10! w-full rounded-lg border-slate-200"
               inputReadOnly
+            />
+          </div>
+          <div className="w-full">
+            <Filter
+              onPopupScroll={handleScroll}
+              value={tempCustomerId}
+              options={customerOptions}
+              onChange={setTempCustomerId}
+              placeholder="Barcha mijozlar"
+              className="h-10! w-full rounded-lg custom-select border-slate-200"
+              onDropdownVisibleChange={(visible: any) => {
+                if (visible) setIsCustomerOpen(true);
+              }}
+              dropdownRender={(menu: any) => (
+                <>
+                  {menu}
+                  {customerIsFetchingNextPage && (
+                    <span className="text-[12px] text-gray-500">
+                      Yuklanmoqda...
+                    </span>
+                  )}
+                </>
+              )}
+              loading={customerLoading}
+              showSearch
+              filterOption={false}
+              onSearch={onSearchCustomerChange}
             />
           </div>
           <div className="w-full">
@@ -130,7 +185,7 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
               loading={shopLoading}
             />
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-end max-[1200px]:col-span-4 max-[1200px]:justify-end">
             <Button
               type="primary"
               icon={<FilterOutlined />}
@@ -174,6 +229,35 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
               placeholder={["Boshlanish", "Tugash"]}
               className="h-10! w-full rounded-lg border-slate-200"
               inputReadOnly
+            />
+          </div>
+
+          <div className="w-full">
+            <p className="mb-1 text-sm text-slate-500 font-medium">Mijozlar</p>
+            <Filter
+              onPopupScroll={handleScroll}
+              value={tempCustomerId}
+              options={customerOptions}
+              onChange={setTempCustomerId}
+              placeholder="Barcha mijozlar"
+              className="h-10! w-full rounded-lg custom-select border-slate-200"
+              onDropdownVisibleChange={(visible: any) => {
+                if (visible) setIsCustomerOpen(true);
+              }}
+              dropdownRender={(menu: any) => (
+                <>
+                  {menu}
+                  {customerIsFetchingNextPage && (
+                    <span className="text-[12px] text-gray-500">
+                      Yuklanmoqda...
+                    </span>
+                  )}
+                </>
+              )}
+              loading={customerLoading}
+              showSearch
+              filterOption={false}
+              onSearch={onSearchCustomerChange}
             />
           </div>
 
