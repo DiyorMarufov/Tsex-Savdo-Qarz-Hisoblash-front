@@ -42,8 +42,8 @@ const AdminAddSalePage = () => {
 
   // Query starts
   const query: QueryParams = useMemo(() => {
-    const customerId = getParam("customerId") || undefined;
-    const shopId = getParam("shopId") || undefined;
+    const customerId = localStorage.getItem("custome_id") || undefined;
+    const shopId = localStorage.getItem("shop_id") || undefined;
 
     const savedData = localStorage.getItem("selected_product_ids");
     const productIdArray: string[] = savedData ? JSON.parse(savedData) : [];
@@ -109,28 +109,37 @@ const AdminAddSalePage = () => {
     key: "customerId" | "productId" | "shopId",
     value: string | string[],
   ) => {
-    if (key === "productId") {
-      const savedData = localStorage.getItem("selected_product_ids");
+    switch (key) {
+      case "customerId":
+        localStorage.setItem("customer_id", value as string);
+        break;
 
-      let existingIds: string[] = [];
-      try {
-        existingIds = savedData ? JSON.parse(savedData) : [];
-      } catch (e) {
-        existingIds = [];
-      }
+      case "productId":
+        const savedData = localStorage.getItem("selected_product_ids");
 
-      const newValues = Array.isArray(value) ? value : [value];
+        let existingIds: string[] = [];
+        try {
+          existingIds = savedData ? JSON.parse(savedData) : [];
+        } catch (e) {
+          existingIds = [];
+        }
 
-      let finalValues =
-        existingIds.length !== newValues.length ? newValues : existingIds;
+        const newValues = Array.isArray(value) ? value : [value];
 
-      localStorage.setItem("selected_product_ids", JSON.stringify(finalValues));
-      removeParam("product_model_search");
-      setParams({ p_ref: Date.now().toString() });
-      return;
+        let finalValues =
+          existingIds.length !== newValues.length ? newValues : existingIds;
+        localStorage.setItem(
+          "selected_product_ids",
+          JSON.stringify(finalValues),
+        );
+        removeParam("product_model_search");
+        setParams({ p_ref: Date.now().toString() });
+        break;
+      case "shopId":
+        localStorage.setItem("shop_id", value as string);
+        setParams({ p_ref: Date.now().toString() });
+        break;
     }
-
-    setParams({ [key]: value as string });
   };
   // HanldeChangeSelect ends
 
@@ -226,8 +235,8 @@ const AdminAddSalePage = () => {
   const handleFinishSale = () => {
     const formData = new FormData();
 
-    const shopId = getParam("shopId") || "";
-    const customerId = getParam("customerId") || "";
+    const shopId = localStorage.getItem("shop_id") || "";
+    const customerId = localStorage.getItem("customer_id") || "";
     const paidAmount = localStorage.getItem("paid_amount") || "";
     const saleItems = JSON.parse(localStorage.getItem("sale_items") || "[]");
     const savedImgs = JSON.parse(localStorage.getItem("images") || "[]");
@@ -251,10 +260,11 @@ const AdminAddSalePage = () => {
 
     createSale.mutate(formData, {
       onSuccess: () => {
-        removeParams(["shopId", "customerId"]);
-        localStorage.removeItem("paid_amount");
-        localStorage.removeItem("sale_items");
+        localStorage.removeItem("customer_id");
         localStorage.removeItem("selected_product_ids");
+        localStorage.removeItem("sale_items");
+        localStorage.removeItem("shop_id");
+        localStorage.removeItem("paid_amount");
         localStorage.removeItem("images");
         navigate("/admin/sales");
       },
@@ -288,16 +298,12 @@ const AdminAddSalePage = () => {
 
   // HandleCancel starts
   const handleCancelSale = () => {
-    removeParams([
-      "shopId",
-      "customerId",
-      "productId",
-      "product_model_search",
-      "customer_search",
-    ]);
-    localStorage.removeItem("paid_amount");
-    localStorage.removeItem("sale_items");
+    removeParams(["productId", "product_model_search", "customer_search"]);
+    localStorage.removeItem("customer_id");
     localStorage.removeItem("selected_product_ids");
+    localStorage.removeItem("sale_items");
+    localStorage.removeItem("shop_id");
+    localStorage.removeItem("paid_amount");
     localStorage.removeItem("images");
     navigate("/admin/sales");
   };

@@ -82,7 +82,7 @@ const SaleReportCard = ({ item, onDetail }: SaleReportCardProps) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 bg-slate-50/50 p-3 rounded-xl border border-slate-100/50">
+      <div className="grid grid-cols-2 gap-2 bg-slate-50/50 p-3 rounded-xl border border-slate-100/50">
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-1.5 text-slate-400">
             <CreditCard size={13} />
@@ -91,7 +91,10 @@ const SaleReportCard = ({ item, onDetail }: SaleReportCardProps) => {
             </span>
           </div>
           <span className="text-[15px] font-bold text-green-500">
-            {item.paid_amount.toLocaleString()} uzs
+            {item.paid_amount.toLocaleString()} uzs{" "}
+            <span className="text-[10px] text-slate-500">
+              ({item.total_quantity} ta)
+            </span>
           </span>
         </div>
 
@@ -106,7 +109,7 @@ const SaleReportCard = ({ item, onDetail }: SaleReportCardProps) => {
             className={`text-[15px] font-bold ${isDebt ? "text-red-500" : "text-emerald-500"}`}
           >
             {isDebt ? "-" : ""}
-            {Math.abs(item.debt).toLocaleString()}
+            {Math.abs(item.debt).toLocaleString()} uzs
           </span>
         </div>
       </div>

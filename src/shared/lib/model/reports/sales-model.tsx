@@ -10,8 +10,9 @@ export type SalesTableListItem = {
   total_amount: number;
   paid_amount: number;
   debt: number;
-  created_at: Date;
+  total_quantity: number;
   images?: { id: string; image_url: string }[];
+  created_at: Date;
 };
 
 export const salesColumns = (
@@ -124,6 +125,11 @@ export const salesColumns = (
 
       return <div className="text-green-600">0</div>;
     },
+  },
+  {
+    title: "Umumiy (pochka)",
+    dataIndex: "total_quantity",
+    width: 100,
   },
   {
     title: "Kiritilgan sana",

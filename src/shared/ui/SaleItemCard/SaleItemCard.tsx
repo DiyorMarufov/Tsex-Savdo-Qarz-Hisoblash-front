@@ -45,7 +45,7 @@ const SaleItemReportCard = ({ item }: SaleItemRepordCard) => {
               <span className="text-[15px] font-bold text-slate-700">
                 {item.quantity}
                 <span className="text-[11px] font-medium text-slate-400 ml-1">
-                  pochka
+                  ta
                 </span>
               </span>
             </div>

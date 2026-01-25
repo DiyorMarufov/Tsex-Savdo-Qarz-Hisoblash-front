@@ -9,12 +9,12 @@ interface SaleInfo {
 
 interface SaleItemReportHeaderProps {
   saleInfo: SaleInfo;
-  total: number;
+  totalQuantity: number;
 }
 
 const SaleItemReportHeader = ({
   saleInfo,
-  total,
+  totalQuantity,
 }: SaleItemReportHeaderProps) => {
   return (
     <div className="flex justify-between gap-1 items-center border border-bg-fy bg-[#ffffff] rounded-[12px] p-4">
@@ -25,7 +25,7 @@ const SaleItemReportHeader = ({
           </h2>
           <div className="flex items-center gap-1">
             <span className="bg-blue-50 text-blue-600 text-[11px] font-bold px-2 py-0.5 rounded-full border border-blue-100">
-              {total || 0} mahsulot
+              {totalQuantity || 0} ta
             </span>
             <span className="bg-blue-50 text-blue-600 text-[11px] font-bold px-2 py-0.5 rounded-full border border-blue-100">
               {saleInfo.totalUnits} juft

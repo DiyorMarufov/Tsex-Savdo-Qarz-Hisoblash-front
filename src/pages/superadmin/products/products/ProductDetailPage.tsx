@@ -281,7 +281,7 @@ const ProductHistoryItem = memo(({ history }: { history: any }) => (
   <div className="flex justify-between items-center py-3 border-b last:border-0 border-gray-100">
     <div className="flex flex-col">
       <span className="text-[14px] font-medium text-slate-700">
-        +{history.quantity} pochka
+        +{history.quantity} ta
       </span>
       <span className="text-[12px] text-gray-400">
         {new Date(history.created_at).toLocaleString("uz-UZ")}

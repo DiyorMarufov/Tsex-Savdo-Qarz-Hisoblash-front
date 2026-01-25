@@ -40,6 +40,7 @@ const AdminSaleItemsReportPage = () => {
 
   const saleItems: SaleItemsTableListItem[] = allSaleItems?.data?.data || [];
   const saleInfo = allSaleItems?.data?.saleInfo;
+  const totalQuantity = allSaleItems?.data?.totalQuantity;
   const total = allSaleItems?.data?.total;
 
   // PageChange starts
@@ -75,7 +76,10 @@ const AdminSaleItemsReportPage = () => {
         {saleItemLoading ? (
           <SaleItemReportHeaderSkeleton />
         ) : (
-          <SaleItemReportHeader saleInfo={saleInfo} total={total} />
+          <SaleItemReportHeader
+            saleInfo={saleInfo}
+            totalQuantity={totalQuantity}
+          />
         )}
       </div>
       <div className="max-[500px]:hidden">
@@ -90,7 +94,8 @@ const AdminSaleItemsReportPage = () => {
               <div className="h-[26px] w-[110px] bg-gray-200 animate-pulse rounded border border-gray-100"></div>
             ) : (
               <span className="text-[12px] text-gray-400 font-medium bg-white px-2 py-1 rounded border border-bg-fy">
-                Umumiy: {total || 0} ta mahsulot, {saleInfo?.totalUnits} juft
+                Umumiy: {totalQuantity || 0} ta mahsulot, {saleInfo?.totalUnits}{" "}
+                juft
               </span>
             )}
           </div>
@@ -138,7 +143,7 @@ const AdminSaleItemsReportPage = () => {
       <SaleItemReportMobileList
         data={saleItems}
         loading={saleItemLoading}
-        total={total}
+        total={totalQuantity}
         currentPage={Number(query.page)}
         pageSize={Number(query.limit)}
         onPageChange={handlePageChange}

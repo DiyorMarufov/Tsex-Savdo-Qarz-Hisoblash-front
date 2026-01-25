@@ -82,36 +82,38 @@ const CustomerTransactionCard = ({ trd, onDetail }: TransactionCardProps) => {
               className={`text-[15px] font-bold ${isBalanceDebt ? "text-green-500" : "text-red-500"}`}
             >
               {isBalanceDebt ? "" : "-"}
-              {Math.abs(trd.balance_after).toLocaleString()}
+              {Math.abs(trd.balance_after).toLocaleString()} uzs
             </span>
           </div>
         </div>
 
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-slate-400">
-            <Calendar size={14} />
-            <span className="text-[13px]">
-              Muddati:{" "}
-              <span className="text-slate-600 font-bold">
-                {trd.due_date
-                  ? new Date(trd.due_date).toLocaleDateString("uz-UZ")
-                  : "-"}
+        {(trd.type === "lending" || trd.type === "borrowing") && (
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-slate-400">
+              <Calendar size={14} />
+              <span className="text-[13px]">
+                Muddati:{" "}
+                <span className="text-slate-600 font-bold">
+                  {trd.due_date
+                    ? new Date(trd.due_date).toLocaleDateString("uz-UZ")
+                    : "-"}
+                </span>
               </span>
-            </span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <Circle
+                size={8}
+                fill={trd.status === "open" ? "#10b981" : "#94a3b8"}
+                className={
+                  trd.status === "open" ? "text-emerald-500" : "text-slate-400"
+                }
+              />
+              <span className="text-[12px] font-bold text-slate-500 uppercase">
+                {trd.status === "open" ? "Ochiq" : "Yopilgan"}
+              </span>
+            </div>
           </div>
-          <div className="flex items-center gap-1.5">
-            <Circle
-              size={8}
-              fill={trd.status === "open" ? "#10b981" : "#94a3b8"}
-              className={
-                trd.status === "open" ? "text-emerald-500" : "text-slate-400"
-              }
-            />
-            <span className="text-[12px] font-bold text-slate-500 uppercase">
-              {trd.status === "open" ? "Ochiq" : "Yopilgan"}
-            </span>
-          </div>
-        </div>
+        )}
       </div>
 
       <div className="flex items-start gap-2 px-1">

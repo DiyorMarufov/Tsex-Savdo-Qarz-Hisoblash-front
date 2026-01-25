@@ -144,11 +144,11 @@ const SaleItemsManager = ({
     }
   };
 
-  // useEffect(() => {
-  //   if (shopOptions) {
-  //     handleChange("shopId", shopOptions[0]?.value);
-  //   }
-  // }, [shopOptions]);
+  useEffect(() => {
+    if (shopOptions?.length > 0 && !shopId) {
+      handleChange("shopId", shopOptions[0]?.value);
+    }
+  }, [shopOptions, shopId]);
 
   return (
     <div className="flex flex-col gap-2 bg-[#ffffff] p-4 border border-bg-fy rounded-[5px] overflow-hidden">

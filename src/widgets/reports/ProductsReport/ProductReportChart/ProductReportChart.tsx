@@ -64,7 +64,7 @@ const ProductReportChart: FC<ProductReportProps> = ({ data, loading }) => {
                   boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
                   fontSize: "12px",
                 }}
-                formatter={(value: number) => [`${value} pochka`, "Sotilgan"]}
+                formatter={(value: number) => [`${value} ta`, "Sotilgan"]}
               />
               <Bar dataKey="sales" radius={[0, 4, 4, 0]} barSize={22}>
                 <LabelList
