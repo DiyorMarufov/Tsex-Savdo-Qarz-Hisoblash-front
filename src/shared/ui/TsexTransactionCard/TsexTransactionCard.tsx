@@ -78,7 +78,7 @@ const TsexTransactionCard: React.FC<Props> = ({ data }) => {
           <div className="flex items-center gap-2 text-slate-400">
             <Wallet size={14} />
             <span className="text-[13px]">
-              Balans (Keyin):{" "}
+              Balans:{" "}
               <span
                 className={`font-bold ${isBalanceNegative ? "text-red-500" : "text-green-500"}`}
               >

@@ -151,37 +151,39 @@ const ProductsReportFilters = ({
             : "col-span-3 grid grid-cols-3 gap-4 max-[1150px]:col-span-1 max-[390px]:grid-cols-1"
         }
       >
-        <div className="w-full">
-          {isVertical && (
-            <p className="mb-1 text-sm text-slate-500">Mijozlar</p>
-          )}
-          <Form.Item name="customerId" noStyle>
-            <Filter
-              onPopupScroll={handleScroll}
-              value={customerId}
-              options={customerOptions}
-              placeholder="Barcha mijozlar"
-              className="h-10! w-full rounded-lg custom-select border-slate-200"
-              onDropdownVisibleChange={(visible: any) => {
-                if (visible) setIsCustomerOpen?.(true);
-              }}
-              dropdownRender={(menu: any) => (
-                <>
-                  {menu}
-                  {customerIsFetchingNextPage && (
-                    <span className="text-[12px] text-gray-500">
-                      Yuklanmoqda...
-                    </span>
-                  )}
-                </>
-              )}
-              loading={customerLoading}
-              showSearch
-              filterOption={false}
-              onSearch={onSearchCustomerChange}
-            />
-          </Form.Item>
-        </div>
+        {!isProduct && (
+          <div className="w-full">
+            {isVertical && (
+              <p className="mb-1 text-sm text-slate-500">Mijozlar</p>
+            )}
+            <Form.Item name="customerId" noStyle>
+              <Filter
+                onPopupScroll={handleScroll}
+                value={customerId}
+                options={customerOptions}
+                placeholder="Barcha mijozlar"
+                className="h-10! w-full rounded-lg custom-select border-slate-200"
+                onDropdownVisibleChange={(visible: any) => {
+                  if (visible) setIsCustomerOpen?.(true);
+                }}
+                dropdownRender={(menu: any) => (
+                  <>
+                    {menu}
+                    {customerIsFetchingNextPage && (
+                      <span className="text-[12px] text-gray-500">
+                        Yuklanmoqda...
+                      </span>
+                    )}
+                  </>
+                )}
+                loading={customerLoading}
+                showSearch
+                filterOption={false}
+                onSearch={onSearchCustomerChange}
+              />
+            </Form.Item>
+          </div>
+        )}
 
         {isProduct && (
           <div className="w-full">

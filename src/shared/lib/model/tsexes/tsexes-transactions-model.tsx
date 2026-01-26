@@ -49,7 +49,7 @@ export const tsexTransactionsColumns: ProColumns<TsexTransactionsTableListItem>[
       ellipsis: true,
     },
     {
-      title: "Balans (Keyin)",
+      title: "Balans",
       dataIndex: "balance_after",
       width: 130,
       align: "right",
