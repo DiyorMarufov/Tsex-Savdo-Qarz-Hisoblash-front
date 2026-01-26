@@ -42,7 +42,7 @@ const AdminAddSalePage = () => {
 
   // Query starts
   const query: QueryParams = useMemo(() => {
-    const customerId = localStorage.getItem("custome_id") || undefined;
+    const customerId = localStorage.getItem("customer_id") || undefined;
     const shopId = localStorage.getItem("shop_id") || undefined;
 
     const savedData = localStorage.getItem("selected_product_ids");
@@ -111,7 +111,12 @@ const AdminAddSalePage = () => {
   ) => {
     switch (key) {
       case "customerId":
-        localStorage.setItem("customer_id", value as string);
+        if (value) {
+          localStorage.setItem("customer_id", value as string);
+        } else {
+          localStorage.setItem("customer_id", "");
+        }
+        setParams({ p_ref: Date.now().toString() });
         break;
 
       case "productId":
@@ -136,7 +141,12 @@ const AdminAddSalePage = () => {
         setParams({ p_ref: Date.now().toString() });
         break;
       case "shopId":
-        localStorage.setItem("shop_id", value as string);
+        if (value) {
+          localStorage.setItem("shop_id", value as string);
+        } else {
+          localStorage.setItem("shop_id", "");
+        }
+
         setParams({ p_ref: Date.now().toString() });
         break;
     }
@@ -241,18 +251,26 @@ const AdminAddSalePage = () => {
     const saleItems = JSON.parse(localStorage.getItem("sale_items") || "[]");
     const savedImgs = JSON.parse(localStorage.getItem("images") || "[]");
 
-    const saleItemsData = saleItems?.flatMap((sv: any) =>
-      sv?.selected_variants?.map((si: any) => ({
-        product_id: si?.product_id,
-        quantity: si?.quantity,
-        price: si?.price,
-      })),
-    );
+    const saleItemsData =
+      saleItems?.length > 0
+        ? saleItems?.flatMap((sv: any) =>
+            sv?.selected_variants?.map((si: any) => ({
+              product_id: si?.product_id,
+              quantity: si?.quantity,
+              price: si?.price,
+            })),
+          )
+        : "[]";
+    const finalSaleItemsData = saleItemsData?.filter(Boolean);
 
     formData.append("shop_id", shopId);
     formData.append("customer_id", customerId);
     formData.append("paid_amount", paidAmount);
-    formData.append("sale_items", JSON.stringify(saleItemsData));
+    if (finalSaleItemsData && finalSaleItemsData?.length > 0) {
+      formData.append("sale_items", JSON.stringify(finalSaleItemsData));
+    } else {
+      formData.append("sale_items", "[]");
+    }
     savedImgs.forEach((base64: any, inx: number) => {
       const file = base64ToFile(base64, `product_${inx}.png`);
       formData.append("images", file);
@@ -272,7 +290,28 @@ const AdminAddSalePage = () => {
         const status = err?.response?.data?.statusCode;
         const msg = err?.response?.data?.message;
 
-        if (status === 404 && msg.startsWith("Shop with ID")) {
+        console.log(msg);
+        if (status === 422 && Array.isArray(msg) && msg.length === 2) {
+          handleApiError("Mijoz va model tanlanmagan", "topRight");
+          return;
+        } else if (
+          status === 422 &&
+          Array.isArray(msg) &&
+          msg.length === 1 &&
+          msg[0] === "customer_id should not be empty"
+        ) {
+          handleApiError("Mijoz tanlanmagan", "topRight");
+          return;
+        } else if (
+          (status === 422 &&
+            Array.isArray(msg) &&
+            msg.length === 1 &&
+            msg[0] === "sale_items must be an array") ||
+          "sale_items should not be empty"
+        ) {
+          handleApiError("Model tanlanmagan", "topRight");
+          return;
+        } else if (status === 404 && msg.startsWith("Shop with ID")) {
           handleApiError("Do'kon topilmadi", "topRight");
           return;
         } else if (status === 404 && msg.startsWith("Seller with ID")) {
