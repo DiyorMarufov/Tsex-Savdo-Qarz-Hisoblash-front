@@ -17,9 +17,6 @@ import { productColumns } from "../../../shared/lib/model/products/products-mode
 import { useProductModel } from "../../../shared/lib/apis/product-models/useProductModel";
 
 const ProductsReportPage = () => {
-  const [, setIsModelOpen] = useState<boolean>(false);
-  const [, setIsTsexOpen] = useState<boolean>(false);
-  const [, setIsShopOpen] = useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -266,9 +263,6 @@ const ProductsReportPage = () => {
         shopsOptions={shopsOptions}
         tsexesOptions={tsexesOptions}
         modelOptions={productOptions}
-        setIsModelOpen={setIsModelOpen}
-        setIsTsexOpen={setIsTsexOpen}
-        setIsShopOpen={setIsShopOpen}
         modelLoading={modelListLoading}
         modelHasNextPage={modelHasNextPage}
         modeltIsFetchingNextPage={modelIsFetchingNextPage}
