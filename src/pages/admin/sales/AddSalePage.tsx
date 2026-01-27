@@ -11,12 +11,12 @@ import type { Option, QueryParams } from "../../../shared/lib/types";
 import { formatPhoneNumber } from "../../../shared/lib/functions/formatPhoneNumber";
 import { useParamsHook } from "../../../shared/hooks/params/useParams";
 import { useShop } from "../../../shared/lib/apis/shops/useShop";
-import { base64ToFile } from "../../../shared/lib/functions/base64ToFile";
 import { useSale } from "../../../shared/lib/apis/sales/useSale";
 import { useApiNotification } from "../../../shared/hooks/api-notification/useApiNotification";
 import { debounce } from "../../../shared/lib/functions/debounce";
 import { productCategories } from "../../../shared/lib/constants";
 import { useProductModel } from "../../../shared/lib/apis/product-models/useProductModel";
+import { getOptimizedWebP } from "../../../shared/lib/functions/getOptimizedWebP";
 
 const AdminAddSalePage = () => {
   const navigate = useNavigate();
@@ -242,7 +242,7 @@ const AdminAddSalePage = () => {
   // Options end
 
   // HandleFinishSale starts
-  const handleFinishSale = () => {
+  const handleFinishSale = async () => {
     const formData = new FormData();
 
     const shopId = localStorage.getItem("shop_id") || "";
@@ -271,9 +271,14 @@ const AdminAddSalePage = () => {
     } else {
       formData.append("sale_items", "[]");
     }
-    savedImgs.forEach((base64: any, inx: number) => {
-      const file = base64ToFile(base64, `product_${inx}.png`);
-      formData.append("images", file);
+
+    const uploadPromise = savedImgs?.map((base64: string, inx: number) =>
+      getOptimizedWebP(base64, `product_${inx}.webp`),
+    );
+    const fixedFiles = await Promise.all(uploadPromise);
+
+    fixedFiles.forEach((file) => {
+      if (file) formData.append("images", file);
     });
 
     createSale.mutate(formData, {

@@ -120,7 +120,7 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
           />
         </div>
 
-        <div className="max-[800px]:hidden grid grid-cols-5 gap-4 max-[1200px]:grid-cols-4 items-center">
+        <div className="grid grid-cols-5 gap-4 max-[1200px]:grid-cols-4 max-[800px]:hidden items-center">
           <div className="w-full">
             <DatePicker.RangePicker
               value={tempDates}

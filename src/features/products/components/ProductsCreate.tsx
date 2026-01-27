@@ -3,11 +3,15 @@ import {
   Form,
   Input,
   Select,
+  Upload,
+  Image,
   type FormProps,
   type UploadProps,
+  type UploadFile,
+  type GetProp,
 } from "antd";
-import Dragger from "antd/es/upload/Dragger";
-import { Inbox, Plus } from "lucide-react";
+import { PlusOutlined } from "@ant-design/icons";
+import { Plus } from "lucide-react";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useProduct } from "../../../shared/lib/apis/products/useProduct";
@@ -21,6 +25,7 @@ import { useProductMaterialType } from "../../../shared/lib/apis/product-materia
 import { useParamsHook } from "../../../shared/hooks/params/useParams";
 import type { QueryParams } from "../../../shared/lib/types";
 import { debounce } from "../../../shared/lib/functions/debounce";
+import { getOptimizedWebP } from "../../../shared/lib/functions/getOptimizedWebP";
 
 type FieldType = {
   model_id: string;
@@ -30,8 +35,12 @@ type FieldType = {
   unit_in_package: number;
 };
 
+type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
+
 const ProductsCreate = () => {
-  const [fileList, setFileList] = useState<any>(null);
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState("");
   const [isMaterialTypeOpen, setIsMaterialTypeOpen] = useState<boolean>(false);
   const { getParam, setParams } = useParamsHook();
   const [, setMaterialTypeSearch] = useState(
@@ -43,36 +52,54 @@ const ProductsCreate = () => {
   const { id } = useParams();
 
   const { getAllProductMaterialTypesForFilter } = useProductMaterialType();
-
   const { createProduct, getLatestProductForProductCreate } = useProduct();
   const { handleApiError } = useApiNotification();
+
+  const getBase64 = (file: FileType): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+    });
+
+  const handlePreview = async (file: UploadFile) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj as FileType);
+    }
+    setPreviewImage(file.url || (file.preview as string));
+    setPreviewOpen(true);
+  };
 
   const props: UploadProps = {
     name: "image",
     multiple: false,
-    capture: false,
-    beforeUpload: () => false,
+    listType: "picture-card",
     fileList,
-    onChange(info) {
-      setFileList(info.fileList);
+    onPreview: handlePreview,
+    beforeUpload: () => false,
+    onChange({ fileList }) {
+      const processedFileList = fileList.map((file) => ({
+        ...file,
+        status: "done" as const,
+      }));
+      setFileList(processedFileList);
     },
     onDrop(e) {
       console.log("Dropped files", e.dataTransfer.files);
     },
   };
 
-  // Query starts
   const query: QueryParams = useMemo(() => {
     const categorySearch = getParam("category_search") || undefined;
     const materialTypeSearch = getParam("material_type_search") || undefined;
-
     return { categorySearch, materialTypeSearch };
   }, [getParam]);
-  // Query ends
 
-  const onFinish: FormProps<FieldType>["onFinish"] = (values: FieldType) => {
+  const onFinish: FormProps<FieldType>["onFinish"] = async (
+    values: FieldType,
+  ) => {
     const formData = new FormData();
-
     Object.entries(values).forEach(([key, value]) => {
       if (value !== undefined && value !== null && value !== "") {
         formData.append(key, value as string);
@@ -80,9 +107,18 @@ const ProductsCreate = () => {
     });
 
     if (fileList && fileList.length > 0) {
-      fileList.forEach((file: any) => {
-        if (file.originFileObj) {
-          formData.append("images", file.originFileObj);
+      const uploadPromises = fileList.map((fileItem: any, inx: number) => {
+        const actualFile =
+          fileItem?.originFileObj ||
+          (fileItem instanceof File ? fileItem : null);
+        const finalFile = actualFile || fileItem;
+        return getOptimizedWebP(finalFile, `product_${inx}.webp`);
+      });
+
+      const fixedFiles = await Promise.all(uploadPromises);
+      fixedFiles.forEach((file) => {
+        if (file) {
+          formData.append("images", file);
         }
       });
     }
@@ -96,7 +132,6 @@ const ProductsCreate = () => {
       onError: (err: any) => {
         const status = err?.response?.data?.statusCode;
         const msg = err?.response?.data?.message;
-
         if (
           status === 400 &&
           msg.startsWith(
@@ -128,9 +163,6 @@ const ProductsCreate = () => {
     });
   };
 
-  // Options start
-
-  // Search starts
   const debouncedSetMaterialTypeSearchQuery = useCallback(
     debounce((nextValue: string) => {
       setParams({
@@ -142,20 +174,15 @@ const ProductsCreate = () => {
 
   const handleMaterialTypeSearchChange = (value: string) => {
     setMaterialTypeSearch(value);
-
     if (!value.trim()) {
       debouncedSetMaterialTypeSearchQuery("");
       return;
     }
-
     const englishKey = Object.keys(productMaterialTypes).find((key) =>
       productMaterialTypes[key].toLowerCase().includes(value.toLowerCase()),
     );
     debouncedSetMaterialTypeSearchQuery(englishKey as string);
   };
-  // Search ends
-
-  // Options start
 
   const colorOptionsWithDot = colorOptions.map((color) => ({
     value: color.value,
@@ -178,6 +205,7 @@ const ProductsCreate = () => {
   } = getAllProductMaterialTypesForFilter(isMaterialTypeOpen, {
     search: query.materialTypeSearch,
   });
+
   const productMaterialTypeOptions = allProductMaterialTypes?.data?.map(
     (ct: any) => ({
       value: ct?.id,
@@ -192,21 +220,25 @@ const ProductsCreate = () => {
     value: latestProduct?.data?.product?.unit_in_package,
     label: latestProduct?.data?.product?.unit_in_package,
   };
-  // Options end
 
   useEffect(() => {
     if (id) {
       form.setFieldsValue({ model_id: id });
     }
-
     const currentUnitValue = form.getFieldValue("unit_in_package");
-
     if (latestProductOption?.value && !currentUnitValue) {
       form.setFieldsValue({
         unit_in_package: latestProductOption.value,
       });
     }
   }, [id, latestProductOption?.value, form]);
+
+  const uploadButton = (
+    <button style={{ border: 0, background: "none" }} type="button">
+      <PlusOutlined style={{ fontSize: "20px", color: "#666" }} />
+      <div style={{ marginTop: 8, color: "#666" }}>Upload</div>
+    </button>
+  );
 
   return (
     <Form
@@ -234,7 +266,6 @@ const ProductsCreate = () => {
               disabled
             />
           </Form.Item>
-
           <Form.Item<FieldType>
             name="model_id"
             noStyle
@@ -308,16 +339,9 @@ const ProductsCreate = () => {
               },
               {
                 validator: (_, value) => {
-                  if (!value) {
-                    return Promise.resolve();
-                  }
-
+                  if (!value) return Promise.resolve();
                   const numericValue = Number(String(value).replace(/,/g, ""));
-
-                  if (numericValue > 0) {
-                    return Promise.resolve();
-                  }
-
+                  if (numericValue > 0) return Promise.resolve();
                   return Promise.reject(
                     new Error("Miqdori 0 dan baland bo'lishi kerak!"),
                   );
@@ -361,17 +385,18 @@ const ProductsCreate = () => {
         <span className="text-[16px] max-[500px]:text-[15px] text-[#232E2F] flex mb-1">
           Mahsulot rasmi
         </span>
-        <Dragger
-          {...props}
-          className="rounded-xl border-gray-300 bg-gray-50 hover:bg-gray-100 transition-al"
-        >
-          <p className="ant-upload-drag-icon flex justify-center">
-            <Inbox className="w-10 h-10 text-blue-500" />
-          </p>
-          <p className="ant-upload-text text-gray-700 font-medium">
-            Click or drag file to upload your store image
-          </p>
-        </Dragger>
+        <Upload {...props}>{fileList.length >= 5 ? null : uploadButton}</Upload>
+        {previewImage && (
+          <Image
+            wrapperStyle={{ display: "none" }}
+            preview={{
+              visible: previewOpen,
+              onVisibleChange: (visible) => setPreviewOpen(visible),
+              afterOpenChange: (visible) => !visible && setPreviewImage(""),
+            }}
+            src={previewImage}
+          />
+        )}
       </div>
 
       <Form.Item>
@@ -381,7 +406,7 @@ const ProductsCreate = () => {
             className="h-9! bg-red-500! text-white! max-[500px]:w-full"
           >
             Bekor qilish
-          </Button>{" "}
+          </Button>
           <Button
             type="primary"
             htmlType="submit"

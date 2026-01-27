@@ -1,11 +1,30 @@
-import { InputNumber, type UploadProps } from "antd";
-import Dragger from "antd/es/upload/Dragger";
-import { Inbox } from "lucide-react";
+import {
+  InputNumber,
+  Upload,
+  Image,
+  type UploadFile,
+  type UploadProps,
+  type GetProp,
+} from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 import { memo, useEffect, useState } from "react";
 import { useParamsHook } from "../../../shared/hooks/params/useParams";
 
+type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
+
+const getBase64 = (file: FileType): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (error) => reject(error);
+  });
+
 const PaymentAndSummary = () => {
-  const [fileList, setFileList] = useState<any>(null);
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState("");
+
   const { getParam } = useParamsHook();
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [paidAmount, setPaidAmount] = useState<any>(
@@ -13,22 +32,29 @@ const PaymentAndSummary = () => {
   );
 
   const pRef = getParam("p_ref") || "";
+
+  const handlePreview = async (file: UploadFile) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj as FileType);
+    }
+    setPreviewImage(file.url || (file.preview as string));
+    setPreviewOpen(true);
+  };
+
   const props: UploadProps = {
     name: "image",
     multiple: false,
-    capture: false,
+    listType: "picture-card",
+    fileList,
+    onPreview: handlePreview,
     beforeUpload: (file) => {
       handleFileUpload(file);
       return false;
     },
-    fileList,
-    onChange(info) {
-      setFileList(info.fileList);
+    onChange({ fileList: newFileList }) {
+      setFileList(newFileList);
     },
     onRemove: (file) => handleFileRemove(file),
-    onDrop(e) {
-      console.log("Dropped files", e.dataTransfer.files);
-    },
   };
 
   useEffect(() => {
@@ -49,12 +75,10 @@ const PaymentAndSummary = () => {
 
   const handleFileUpload = (file: File) => {
     const reader = new FileReader();
-
     reader.onloadend = () => {
       const base64Str = reader.result as string;
       const existingImgs = localStorage.getItem("images");
       const imgsArr = existingImgs ? JSON.parse(existingImgs) : [];
-
       imgsArr.push(base64Str);
       localStorage.setItem("images", JSON.stringify(imgsArr));
     };
@@ -73,9 +97,17 @@ const PaymentAndSummary = () => {
 
   const debt = paidAmount - totalAmount;
 
+  const uploadButton = (
+    <button style={{ border: 0, background: "none" }} type="button">
+      <PlusOutlined />
+      <div style={{ marginTop: 8 }}>Yuklash</div>
+    </button>
+  );
+
   return (
     <div className="w-full bg-[#ffffff] px-5 py-4 flex flex-col gap-5 border border-bg-fy rounded-[5px] overflow-hidden">
       <span className="text-[20px] font-medium text-[#232E2F]">To'lov</span>
+
       <div>
         <span className="text-[16px] max-[500px]:text-[15px] text-[#232E2F] flex mb-1">
           To'langan summa
@@ -85,24 +117,14 @@ const PaymentAndSummary = () => {
           className="h-10! w-full! flex! items-center!"
           placeholder="0,00 UZS"
           controls={false}
-          stringMode={false}
-          onKeyPress={(e) => {
-            if (!/[0-9]/.test(e.key)) {
-              e.preventDefault();
-            }
+          onChange={(val) => {
+            const numVal = val === null ? null : Number(val);
+            if (numVal === null) localStorage.removeItem("paid_amount");
+            else localStorage.setItem("paid_amount", numVal.toString());
+            setPaidAmount(numVal);
           }}
           formatter={(v) => `${v}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
           parser={(v) => v!.replace(/[^\d]/g, "")}
-          onChange={(val) => {
-            if (val === null) {
-              localStorage.removeItem("paid_amount");
-              setPaidAmount(null);
-            } else {
-              const numVal = Number(val);
-              localStorage.setItem("paid_amount", numVal.toString());
-              setPaidAmount(numVal);
-            }
-          }}
         />
       </div>
 
@@ -110,21 +132,19 @@ const PaymentAndSummary = () => {
         <span className="text-[16px] max-[500px]:text-[15px] text-[#232E2F] flex mb-1">
           Mahsulot rasmi
         </span>
-        <Dragger
-          {...props}
-          className="rounded-xl border-gray-300 bg-gray-50 hover:bg-gray-100 transition-al"
-        >
-          <p className="ant-upload-drag-icon flex justify-center">
-            <Inbox className="w-10 h-10 text-blue-500" />
-          </p>
-          <p className="ant-upload-text text-gray-700 font-medium">
-            Click or drag file to upload your store image
-          </p>
-          <p className="ant-upload-hint text-gray-500 text-sm">
-            You can upload a single or multiple files. Avoid uploading
-            restricted data.
-          </p>
-        </Dragger>
+        <Upload {...props}>{fileList.length >= 5 ? null : uploadButton}</Upload>
+
+        {previewImage && (
+          <Image
+            wrapperStyle={{ display: "none" }}
+            preview={{
+              visible: previewOpen,
+              onVisibleChange: (visible) => setPreviewOpen(visible),
+              afterOpenChange: (visible) => !visible && setPreviewImage(""),
+            }}
+            src={previewImage}
+          />
+        )}
       </div>
 
       <div className="w-full h-px bg-bg-fy"></div>
@@ -139,7 +159,7 @@ const PaymentAndSummary = () => {
         <div className="flex justify-between gap-3">
           <span className="text-gray-700 text-[16px]">To'langan summa</span>
           <span className="text-[17px]">
-            {paidAmount ? paidAmount.toLocaleString() : paidAmount} UZS
+            {paidAmount ? paidAmount.toLocaleString() : 0} UZS
           </span>
         </div>
         <div className="bg-[#FEF2F2] rounded-[5px]">
