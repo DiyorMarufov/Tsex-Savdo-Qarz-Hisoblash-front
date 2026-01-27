@@ -67,18 +67,17 @@ export const useCustomer = () => {
       gcTime: 1000 * 60 * 10,
     });
 
-  const getAllCustomersForTransaction = (enabled: boolean = false) =>
+  const getAllCustomersForTransaction = () =>
     useQuery<IResponseData>({
       queryKey: [customer, "all-customers-for-transaction"],
       queryFn: () =>
         api.get("customers/transactions/list").then((res) => res.data),
-      enabled,
       refetchOnWindowFocus: false,
       staleTime: Infinity,
       gcTime: 1000 * 60 * 60,
     });
 
-  const getInfiniteCustomers = (enabled: boolean = false, params?: any) =>
+  const getInfiniteCustomers = (params?: any) =>
     useInfiniteQuery({
       queryKey: [customer, "all-infinite-customers", params],
       queryFn: ({ pageParam = 1 }) =>
@@ -87,7 +86,6 @@ export const useCustomer = () => {
             params: { ...params, page: pageParam, limit: 10 },
           })
           .then((res) => res.data),
-      enabled,
       getNextPageParam: (lastPage, allPages) => {
         return lastPage?.data?.data.length === 10
           ? allPages.length + 1

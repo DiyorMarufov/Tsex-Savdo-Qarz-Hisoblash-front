@@ -15,7 +15,6 @@ interface CustomersReportFilterProps {
   end: Dayjs | undefined | null;
   customerId?: string;
   customerOptions: Option[];
-  setIsCustomerOpen: (open: boolean) => void;
   customerLoading: boolean;
   customerHasNextPage?: boolean;
   customerIsFetchingNextPage?: boolean;
@@ -29,7 +28,6 @@ const CustomersReportFilter: FC<CustomersReportFilterProps> = ({
   end,
   customerId,
   customerOptions = [],
-  setIsCustomerOpen,
   customerLoading,
   customerHasNextPage,
   customerIsFetchingNextPage,
@@ -103,9 +101,6 @@ const CustomersReportFilter: FC<CustomersReportFilterProps> = ({
               onChange={setTempCustomerId}
               placeholder="Barcha mijozlar"
               className="h-10! w-full rounded-lg custom-select border-slate-200"
-              onDropdownVisibleChange={(visible: any) => {
-                if (visible) setIsCustomerOpen(true);
-              }}
               dropdownRender={(menu: any) => (
                 <>
                   {menu}
@@ -176,9 +171,6 @@ const CustomersReportFilter: FC<CustomersReportFilterProps> = ({
               onChange={setTempCustomerId}
               placeholder="Barcha mijozlar"
               className="h-10! w-full rounded-lg custom-select border-slate-200"
-              onDropdownVisibleChange={(visible: any) => {
-                if (visible) setIsCustomerOpen(true);
-              }}
               dropdownRender={(menu: any) => (
                 <>
                   {menu}

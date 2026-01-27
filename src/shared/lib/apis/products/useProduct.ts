@@ -39,6 +39,9 @@ export const useProduct = () => {
         queryKey: ["product_model", "all-product-models"],
       });
       client.invalidateQueries({
+        queryKey: ["product_model", "product-model-by-id"],
+      });
+      client.invalidateQueries({
         queryKey: [
           "product_history",
           "all-infinite-product-histories-by-product-id",
@@ -83,23 +86,19 @@ export const useProduct = () => {
       gcTime: 1000 * 60 * 10,
     });
 
-  const getAllProductsForProductsFilter = (
-    enabled: boolean = false,
-    params?: any,
-  ) =>
+  const getAllProductsForProductsFilter = (params?: any) =>
     useQuery({
       queryKey: [product, "products-filter", params],
       queryFn: () =>
         api
           .get("products/reports/filters-list", { params })
           .then((res) => res.data),
-      enabled,
       refetchOnWindowFocus: false,
       staleTime: 1000 * 60 * 5,
       gcTime: 1000 * 60 * 10,
     });
 
-  const getInfiniteProducts = (enabled: boolean = false, params?: any) =>
+  const getInfiniteProducts = (params?: any) =>
     useInfiniteQuery({
       queryKey: [product, "all-infinite-products", params],
       queryFn: ({ pageParam = 1 }) =>
@@ -108,7 +107,6 @@ export const useProduct = () => {
             params: { ...params, page: pageParam, limit: 10 },
           })
           .then((res) => res.data),
-      enabled,
       getNextPageParam: (lastPage, allPages) => {
         return lastPage?.data?.data.length === 10
           ? allPages.length + 1
@@ -178,6 +176,9 @@ export const useProduct = () => {
       client.invalidateQueries({ queryKey: [product, "all-products-by-id"] }),
       client.invalidateQueries({
         queryKey: ["product_model", "all-product-models"],
+      }),
+      client.invalidateQueries({
+        queryKey: ["product_model", "product-model-by-id"],
       }),
       client.invalidateQueries({
         queryKey: [product, "all-products-for-report"],

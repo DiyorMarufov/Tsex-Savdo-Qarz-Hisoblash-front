@@ -10,7 +10,6 @@ interface ReportFilterProps {
   onFilterSubmit: (filters: { dates: string[] | null; tsexId: string }) => void;
   start: Dayjs | undefined | null;
   end: Dayjs | undefined | null;
-  setIsTsexOpen: (open: boolean) => void;
   tsexId?: string;
   tsexesOptions: Option[];
   tsexLoading: boolean;
@@ -20,7 +19,6 @@ const ReportFilter = ({
   onFilterSubmit,
   start,
   end,
-  setIsTsexOpen,
   tsexId,
   tsexesOptions,
   tsexLoading,
@@ -82,9 +80,6 @@ const ReportFilter = ({
               onChange={setTempTsexId}
               placeholder="Barcha tsexlar"
               className="h-10! w-full rounded-lg custom-select border-slate-200"
-              onDropdownVisibleChange={(visible: any) => {
-                if (visible) setIsTsexOpen(true);
-              }}
               loading={tsexLoading}
             />
           </div>
@@ -140,9 +135,6 @@ const ReportFilter = ({
               onChange={setTempTsexId}
               placeholder="Barcha tsexlar"
               className="h-10! w-full rounded-lg custom-select border-slate-200"
-              onDropdownVisibleChange={(visible: any) => {
-                if (visible) setIsTsexOpen(true);
-              }}
               loading={tsexLoading}
             />
           </div>

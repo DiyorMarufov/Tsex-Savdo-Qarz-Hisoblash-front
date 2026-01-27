@@ -24,14 +24,10 @@ interface ProductReportFiltersProps {
   shopsOptions: Option[];
   modelOptions?: Option[];
   tsexesOptions: Option[];
-  setIsCustomerOpen?: (open: boolean) => void;
   customerHasNextPage?: boolean;
   customerIsFetchingNextPage?: boolean;
   customerFetchNextPage?: any;
   onSearchCustomerChange?: (value: string) => void;
-  setIsModelOpen?: (open: boolean) => void;
-  setIsTsexOpen: (open: boolean) => void;
-  setIsShopOpen: (open: boolean) => void;
   modelLoading?: boolean;
   modelHasNextPage?: boolean;
   modeltIsFetchingNextPage?: boolean;
@@ -63,14 +59,10 @@ const ProductsReportFilters = ({
   shopsOptions = [],
   modelOptions = [],
   tsexesOptions = [],
-  setIsCustomerOpen,
   customerHasNextPage,
   customerIsFetchingNextPage,
   customerFetchNextPage,
   onSearchCustomerChange,
-  setIsModelOpen,
-  setIsTsexOpen,
-  setIsShopOpen,
   modelLoading,
   modelHasNextPage,
   modeltIsFetchingNextPage,
@@ -163,9 +155,6 @@ const ProductsReportFilters = ({
                 options={customerOptions}
                 placeholder="Barcha mijozlar"
                 className="h-10! w-full rounded-lg custom-select border-slate-200"
-                onDropdownVisibleChange={(visible: any) => {
-                  if (visible) setIsCustomerOpen?.(true);
-                }}
                 dropdownRender={(menu: any) => (
                   <>
                     {menu}
@@ -198,9 +187,6 @@ const ProductsReportFilters = ({
                   modelLoading ? "Yuklanmoqda..." : "Barcha modellar"
                 }
                 className="h-10! w-full rounded-lg custom-select border-slate-200"
-                onOpenChange={(visible: boolean) =>
-                  visible && setIsModelOpen?.(true)
-                }
                 dropdownRender={(menu: any) => (
                   <>
                     {menu}
@@ -226,9 +212,6 @@ const ProductsReportFilters = ({
               options={tsexesOptions}
               placeholder="Barcha tsexlar"
               className="h-10! w-full rounded-lg custom-select border-slate-200"
-              onOpenChange={(visible: boolean) =>
-                visible && setIsTsexOpen(true)
-              }
               loading={tsexLoading}
             />
           </Form.Item>
@@ -242,9 +225,6 @@ const ProductsReportFilters = ({
               options={shopsOptions}
               placeholder="Barcha do'konlar"
               className="h-10! w-full rounded-lg custom-select border-slate-200"
-              onOpenChange={(visible: boolean) =>
-                visible && setIsShopOpen(true)
-              }
               loading={shopLoading}
             />
           </Form.Item>

@@ -20,7 +20,6 @@ import { getOptimizedWebP } from "../../../shared/lib/functions/getOptimizedWebP
 
 const AdminAddSalePage = () => {
   const navigate = useNavigate();
-  const [isCustomerOpen, setIsCustomerOpen] = useState<boolean>(false);
   const [isPriceVisible, setIsPriceVisible] = useState<boolean>(false);
   const { getInfiniteCustomers } = useCustomer();
   const { getInfiniteProductModelsForAddSale } = useProductModel();
@@ -154,14 +153,13 @@ const AdminAddSalePage = () => {
   // HanldeChangeSelect ends
 
   // Options start
-  const shouldFetchCustomers = isCustomerOpen || !!query.customerId;
   const {
     data: allCustomersList,
     isLoading: customerListLoading,
     fetchNextPage: customerFetchNextPage,
     hasNextPage: customerHasNextPage,
     isFetchingNextPage: customerIsFetchingNextPage,
-  } = getInfiniteCustomers(shouldFetchCustomers, {
+  } = getInfiniteCustomers({
     search: query.customerFilterSearch,
   });
   const customerOptions: Option[] = (
@@ -233,7 +231,7 @@ const AdminAddSalePage = () => {
   }, [allProductModelsForAddSale, isPriceVisible]);
 
   const { data: shops, isLoading: shopLoading } =
-    getAllShopsForProductsFilter(true);
+    getAllShopsForProductsFilter();
   const shopsOptions =
     shops?.data?.map((st) => ({
       value: st?.id,
@@ -394,7 +392,6 @@ const AdminAddSalePage = () => {
             customerIsFetchingNextPage={customerIsFetchingNextPage}
             customerFetchNextPage={customerFetchNextPage}
             onSearchChange={handleSearchCustomerModalChange}
-            setIsCustomerOpen={setIsCustomerOpen}
           />
           <SaleItemsManager
             shopId={query.shopId}

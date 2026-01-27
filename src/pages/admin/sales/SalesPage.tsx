@@ -19,9 +19,6 @@ import { useCustomer } from "../../../shared/lib/apis/customers/useCustomer";
 import { formatPhoneNumber } from "../../../shared/lib/functions/formatPhoneNumber";
 
 const AdminSalesPage = () => {
-  const [isCustomerOpen, setIsCustomerOpen] = useState<boolean>(false);
-  const [isTsexOpen, setIsTsexOpen] = useState<boolean>(false);
-  const [isShopOpen, setIsShopOpen] = useState<boolean>(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { getParam, setParams, removeParam } = useParamsHook();
@@ -153,7 +150,7 @@ const AdminSalesPage = () => {
     fetchNextPage: customerFetchNextPage,
     hasNextPage: customerHasNextPage,
     isFetchingNextPage: customerIsFetchingNextPage,
-  } = getInfiniteCustomers(isCustomerOpen, {
+  } = getInfiniteCustomers({
     search: query.customerFilterSearch,
   });
   const customerOptions: Option[] = [
@@ -183,7 +180,7 @@ const AdminSalesPage = () => {
   ];
 
   const { data: tsexes, isLoading: tsexLoading } =
-    getAllTsexesForProductsFilter(isTsexOpen);
+    getAllTsexesForProductsFilter();
   const tsexesOptions = [
     {
       value: "",
@@ -196,7 +193,7 @@ const AdminSalesPage = () => {
   ];
 
   const { data: shops, isLoading: shopLoading } =
-    getAllShopsForProductsFilter(isShopOpen);
+    getAllShopsForProductsFilter();
   const shopsOptions = [
     {
       value: "",
@@ -253,12 +250,9 @@ const AdminSalesPage = () => {
           customerOptions={customerOptions}
           shopsOptions={shopsOptions}
           tsexesOptions={tsexesOptions}
-          setIsCustomerOpen={setIsCustomerOpen}
           customerHasNextPage={customerHasNextPage}
           customerIsFetchingNextPage={customerIsFetchingNextPage}
           customerFetchNextPage={customerFetchNextPage}
-          setIsTsexOpen={setIsTsexOpen}
-          setIsShopOpen={setIsShopOpen}
           onSearchCustomerChange={handleSearchCustomerChange}
           handleSearchChange={handleSearchChange}
           customerLoading={customerListLoading}

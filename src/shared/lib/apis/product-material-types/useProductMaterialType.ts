@@ -4,10 +4,7 @@ import { api } from "../../../../features/auth/api";
 export const product_material_type = "product_material_type";
 
 export const useProductMaterialType = () => {
-  const getAllProductMaterialTypesForFilter = (
-    enabled: boolean = false,
-    params?: any,
-  ) =>
+  const getAllProductMaterialTypesForFilter = (params?: any) =>
     useQuery({
       queryKey: [
         product_material_type,
@@ -18,7 +15,6 @@ export const useProductMaterialType = () => {
         api
           .get("product-material-types/filters-list", { params })
           .then((res) => res.data),
-      enabled,
       refetchOnWindowFocus: false,
       staleTime: Infinity,
       gcTime: 1000 * 60 * 60,

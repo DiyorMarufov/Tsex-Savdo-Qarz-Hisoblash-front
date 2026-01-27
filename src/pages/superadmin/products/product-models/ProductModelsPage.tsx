@@ -14,8 +14,6 @@ import ProductModelMobileList from "../../../../widgets/products/ProductModelMob
 import { useApiNotification } from "../../../../shared/hooks/api-notification/useApiNotification";
 
 const ProductModelsPage = () => {
-  const [isTsexOpen, setIsTsexOpen] = useState<boolean>(false);
-  const [isShopOpen, setIsShopOpen] = useState<boolean>(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { getAllProductModels, deleteProductModelById } = useProductModel();
@@ -104,7 +102,7 @@ const ProductModelsPage = () => {
   };
 
   const { data: shops, isLoading: shopLoading } =
-    getAllShopsForProductsFilter(isShopOpen);
+    getAllShopsForProductsFilter();
   const shopsOptions = [
     {
       value: "",
@@ -117,7 +115,7 @@ const ProductModelsPage = () => {
   ];
 
   const { data: tsexes, isLoading: tsexLoading } =
-    getAllTsexesForProductsFilter(isTsexOpen);
+    getAllTsexesForProductsFilter();
   const tsexesOptions = [
     {
       value: "",
@@ -172,8 +170,6 @@ const ProductModelsPage = () => {
         tsexesOptions={tsexesOptions}
         shopId={query.shopId}
         tsexId={query.tsexId}
-        setIsTsexOpen={setIsTsexOpen}
-        setIsShopOpen={setIsShopOpen}
         tsexLoading={tsexLoading}
         shopLoading={shopLoading}
       />

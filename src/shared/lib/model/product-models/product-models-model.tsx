@@ -25,8 +25,8 @@ export type ProductModelTableItem = {
     images: {
       id: string;
       image_url: string;
-    }[];
-  }[];
+    };
+  };
   created_at: string;
 };
 
@@ -48,7 +48,7 @@ export const productModelColumns = (
     hideInSearch: true,
     render: (_, record) => (
       <Image
-        src={record.products?.[0]?.images?.[0]?.image_url ?? undefined}
+        src={record.products.images.image_url ?? undefined}
         alt={record.name}
         style={{
           width: "40px",

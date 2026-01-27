@@ -22,7 +22,6 @@ interface TransactionModalProps {
   customers: Option[];
   form: FormInstance;
   loading: boolean;
-  setIsCustomerOpen: (open: boolean) => void;
   customerLoading: boolean;
   customerHasNextPage?: boolean;
   customerIsFetchingNextPage?: boolean;
@@ -38,7 +37,6 @@ const CustomerTransactionModal = ({
   customers,
   form,
   loading,
-  setIsCustomerOpen,
   customerLoading,
   customerHasNextPage,
   customerIsFetchingNextPage,
@@ -89,9 +87,6 @@ const CustomerTransactionModal = ({
                 className="h-10!"
                 options={customers}
                 placeholder="Mijozni tanlang"
-                onDropdownVisibleChange={(visible) => {
-                  if (visible) setIsCustomerOpen(visible);
-                }}
                 dropdownRender={(menu: any) => (
                   <>
                     {menu}
@@ -129,7 +124,7 @@ const CustomerTransactionModal = ({
                     }
 
                     const numericValue = Number(
-                      String(value).replace(/,/g, "")
+                      String(value).replace(/,/g, ""),
                     );
 
                     if (numericValue > 0) {
@@ -137,7 +132,7 @@ const CustomerTransactionModal = ({
                     }
 
                     return Promise.reject(
-                      new Error("To'lov summasi 0 dan baland bo'lishi kerak!")
+                      new Error("To'lov summasi 0 dan baland bo'lishi kerak!"),
                     );
                   },
                 },
@@ -150,7 +145,7 @@ const CustomerTransactionModal = ({
                   : v
               }
             >
-              <Input className="h-10!" placeholder="0,00 UZS" allowClear/>
+              <Input className="h-10!" placeholder="0,00 UZS" allowClear />
             </Form.Item>
           </div>
 

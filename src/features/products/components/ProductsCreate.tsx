@@ -41,7 +41,6 @@ const ProductsCreate = () => {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
-  const [isMaterialTypeOpen, setIsMaterialTypeOpen] = useState<boolean>(false);
   const { getParam, setParams } = useParamsHook();
   const [, setMaterialTypeSearch] = useState(
     getParam("material_type_search") || "",
@@ -202,7 +201,7 @@ const ProductsCreate = () => {
   const {
     data: allProductMaterialTypes,
     isLoading: productMaterialTypeLoading,
-  } = getAllProductMaterialTypesForFilter(isMaterialTypeOpen, {
+  } = getAllProductMaterialTypesForFilter({
     search: query.materialTypeSearch,
   });
 
@@ -292,9 +291,6 @@ const ProductsCreate = () => {
               className="h-10!"
               placeholder="Material turi"
               options={productMaterialTypeOptions}
-              onDropdownVisibleChange={(visible: any) => {
-                if (visible) setIsMaterialTypeOpen(true);
-              }}
               onSearch={handleMaterialTypeSearchChange}
               loading={productMaterialTypeLoading}
               filterOption={false}

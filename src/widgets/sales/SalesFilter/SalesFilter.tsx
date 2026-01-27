@@ -23,13 +23,10 @@ interface CombinedReportFilterProps {
   customerOptions: Option[];
   shopsOptions: Option[];
   tsexesOptions: Option[];
-  setIsCustomerOpen: (open: boolean) => void;
   customerHasNextPage?: boolean;
   customerIsFetchingNextPage?: boolean;
   customerFetchNextPage?: any;
   onSearchCustomerChange?: (value: string) => void;
-  setIsTsexOpen: (open: boolean) => void;
-  setIsShopOpen: (open: boolean) => void;
   handleSearchChange: (value: string) => void;
   customerLoading: boolean;
   tsexLoading: boolean;
@@ -47,9 +44,6 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
   customerOptions = [],
   shopsOptions = [],
   tsexesOptions = [],
-  setIsCustomerOpen,
-  setIsTsexOpen,
-  setIsShopOpen,
   customerHasNextPage,
   customerIsFetchingNextPage,
   customerFetchNextPage,
@@ -140,9 +134,6 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
               onChange={setTempCustomerId}
               placeholder="Barcha mijozlar"
               className="h-10! w-full rounded-lg custom-select border-slate-200"
-              onDropdownVisibleChange={(visible: any) => {
-                if (visible) setIsCustomerOpen(true);
-              }}
               dropdownRender={(menu: any) => (
                 <>
                   {menu}
@@ -166,9 +157,6 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
               onChange={setTempTsexId}
               placeholder="Barcha tsexlar"
               className="h-10! w-full rounded-lg custom-select border-slate-200"
-              onDropdownVisibleChange={(visible: any) => {
-                if (visible) setIsTsexOpen(true);
-              }}
               loading={tsexLoading}
             />
           </div>
@@ -179,9 +167,6 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
               onChange={setTempShopId}
               placeholder="Barcha do'konlar"
               className="h-10! w-full rounded-lg custom-select border-slate-200"
-              onDropdownVisibleChange={(visible: any) => {
-                if (visible) setIsShopOpen(true);
-              }}
               loading={shopLoading}
             />
           </div>
@@ -241,9 +226,6 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
               onChange={setTempCustomerId}
               placeholder="Barcha mijozlar"
               className="h-10! w-full rounded-lg custom-select border-slate-200"
-              onDropdownVisibleChange={(visible: any) => {
-                if (visible) setIsCustomerOpen(true);
-              }}
               dropdownRender={(menu: any) => (
                 <>
                   {menu}
@@ -269,9 +251,6 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
               onChange={setTempTsexId}
               placeholder="Barcha tsexlar"
               className="h-10! w-full rounded-lg custom-select border-slate-200"
-              onDropdownVisibleChange={(visible: any) => {
-                if (visible) setIsTsexOpen(true);
-              }}
               loading={tsexLoading}
             />
           </div>
@@ -284,9 +263,6 @@ const SalesFilter: FC<CombinedReportFilterProps> = ({
               onChange={setTempShopId}
               placeholder="Barcha do'konlar"
               className="h-10! w-full rounded-lg custom-select border-slate-200"
-              onDropdownVisibleChange={(visible: any) => {
-                if (visible) setIsShopOpen(true);
-              }}
               loading={shopLoading}
             />
           </div>

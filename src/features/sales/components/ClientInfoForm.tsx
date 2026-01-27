@@ -13,7 +13,6 @@ interface ClientInfoFormProps {
   customerIsFetchingNextPage?: boolean;
   customerFetchNextPage?: any;
   onSearchChange?: (value: string) => void;
-  setIsCustomerOpen: (visible: boolean) => void;
 }
 
 const ClientInfoForm = ({
@@ -25,7 +24,6 @@ const ClientInfoForm = ({
   customerIsFetchingNextPage,
   customerFetchNextPage,
   onSearchChange,
-  setIsCustomerOpen,
 }: ClientInfoFormProps) => {
   const navigate = useNavigate();
 
@@ -55,9 +53,6 @@ const ClientInfoForm = ({
                   ? "Yuklanmoqda..."
                   : "Mijozni qidiring yoki tanlang"
               }
-              onDropdownVisibleChange={(visible) => {
-                if (visible) setIsCustomerOpen(visible);
-              }}
               dropdownRender={(menu: any) => (
                 <>
                   {menu}

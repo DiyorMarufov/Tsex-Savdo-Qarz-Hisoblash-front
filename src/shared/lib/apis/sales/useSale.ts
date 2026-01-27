@@ -48,6 +48,9 @@ export const useSale = () => {
       client.invalidateQueries({
         queryKey: ["product"],
       });
+      client.invalidateQueries({
+        queryKey: ["product_model", "product-model-by-id"],
+      });
     },
   });
 

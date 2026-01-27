@@ -17,9 +17,9 @@ import { productColumns } from "../../../shared/lib/model/products/products-mode
 import { useProductModel } from "../../../shared/lib/apis/product-models/useProductModel";
 
 const ProductsReportPage = () => {
-  const [isModelOpen, setIsModelOpen] = useState<boolean>(false);
-  const [isTsexOpen, setIsTsexOpen] = useState<boolean>(false);
-  const [isShopOpen, setIsShopOpen] = useState<boolean>(false);
+  const [, setIsModelOpen] = useState<boolean>(false);
+  const [, setIsTsexOpen] = useState<boolean>(false);
+  const [, setIsShopOpen] = useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -202,7 +202,7 @@ const ProductsReportPage = () => {
     fetchNextPage: modelFetchNextPage,
     hasNextPage: modelHasNextPage,
     isFetchingNextPage: modelIsFetchingNextPage,
-  } = getInfiniteProductModels(isModelOpen, {
+  } = getInfiniteProductModels({
     search: query.productFilterSearch,
   });
 
@@ -228,7 +228,7 @@ const ProductsReportPage = () => {
   ];
 
   const { data: tsexes, isLoading: tsexLoading } =
-    getAllTsexesForProductsFilter(isTsexOpen);
+    getAllTsexesForProductsFilter();
   const tsexesOptions = [
     {
       value: "",
@@ -241,7 +241,7 @@ const ProductsReportPage = () => {
   ];
 
   const { data: shops, isLoading: shopLoading } =
-    getAllShopsForProductsFilter(isShopOpen);
+    getAllShopsForProductsFilter();
   const shopsOptions = [
     {
       value: "",

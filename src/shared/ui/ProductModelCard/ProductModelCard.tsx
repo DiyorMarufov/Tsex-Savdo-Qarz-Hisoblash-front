@@ -6,6 +6,9 @@ import { QuestionCircleOutlined } from "@ant-design/icons";
 import { useProductModel } from "../../lib/apis/product-models/useProductModel";
 import { useApiNotification } from "../../hooks/api-notification/useApiNotification";
 import { productCategories } from "../../lib/constants";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setEditingProductModelId } from "../../../features/products/model/productModelModel";
 
 interface ProductModelCardProps {
   item: ProductModelTableItem;
@@ -13,8 +16,16 @@ interface ProductModelCardProps {
 }
 
 const ProductModelCard = ({ item, onDetail }: ProductModelCardProps) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { deleteProductModelById } = useProductModel();
   const { handleApiError, handleSuccess } = useApiNotification();
+
+  const handleUpdate = (id: string) => {
+    dispatch(setEditingProductModelId(id));
+    navigate("add");
+  };
+
   const handleDelete = (id: string) => {
     deleteProductModelById.mutate(id, {
       onSuccess: () => {
@@ -51,7 +62,7 @@ const ProductModelCard = ({ item, onDetail }: ProductModelCardProps) => {
         onClick={(e) => e.stopPropagation()}
       >
         <Image
-          src={item.products?.[0]?.images?.[0]?.image_url}
+          src={item.products.images.image_url}
           alt={item.name}
           style={{ width: "100%", height: "100%", objectFit: "cover" }}
           wrapperClassName="w-full h-full"
@@ -112,10 +123,14 @@ const ProductModelCard = ({ item, onDetail }: ProductModelCardProps) => {
         </div>
 
         <div className="flex gap-1">
-          <div className="p-2 hover:bg-emerald-50 rounded-lg cursor-pointer transition-colors group">
+          <div
+            className="p-2 hover:bg-emerald-50 rounded-lg cursor-pointer transition-colors group"
+            onClick={(e) => e.stopPropagation()}
+          >
             <Edit
               size={18}
               className="text-slate-400 group-hover:text-emerald-600"
+              onClick={() => handleUpdate(item.id)}
             />
           </div>
           <div

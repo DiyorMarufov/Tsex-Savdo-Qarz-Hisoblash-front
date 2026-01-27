@@ -22,6 +22,12 @@ export const useProductModel = () => {
       }),
       client.invalidateQueries({
         queryKey: [product_model, "all-infinite-product-models-for-add-sale"],
+      }),
+      client.invalidateQueries({
+        queryKey: [product_model, "product-models-by-id"],
+      }),
+      client.invalidateQueries({
+        queryKey: [product_model, "product-model-by-id"],
       })
     ),
   });
@@ -36,7 +42,7 @@ export const useProductModel = () => {
       gcTime: 1000 * 60 * 10,
     });
 
-  const getInfiniteProductModels = (enabled: boolean = false, params?: any) =>
+  const getInfiniteProductModels = (params?: any) =>
     useInfiniteQuery({
       queryKey: [product_model, "all-infinite-product-models", params],
       queryFn: ({ pageParam = 1 }) =>
@@ -45,7 +51,6 @@ export const useProductModel = () => {
             params: { ...params, page: pageParam, limit: 10 },
           })
           .then((res) => res.data),
-      enabled,
       getNextPageParam: (lastPage, allPages) => {
         return lastPage?.data?.data.length === 10
           ? allPages.length + 1
@@ -81,7 +86,7 @@ export const useProductModel = () => {
 
   const getProductModelByIdForFilter = (id: string) =>
     useQuery({
-      queryKey: [product_model, "product-model-by-id", id],
+      queryKey: [product_model, "product-models-by-id", id],
       queryFn: () =>
         api.get(`product-models/filters-list/${id}`).then((res) => res.data),
       enabled: !!id,
@@ -89,6 +94,38 @@ export const useProductModel = () => {
       staleTime: Infinity,
       gcTime: Infinity,
     });
+
+  const getOneByIdForUpdate = (id: string) =>
+    useQuery({
+      queryKey: [product_model, "product-model-by-id", id],
+      queryFn: () => api.get(`product-models/${id}`).then((res) => res.data),
+      enabled: !!id,
+      refetchOnWindowFocus: false,
+      staleTime: Infinity,
+      gcTime: Infinity,
+    });
+
+  const updateProductModelById = useMutation({
+    mutationFn: ({ id, data }: { id: string; data: any }) =>
+      api.patch(`product-models/${id}`, data).then((res) => res.data),
+    onSuccess: () => (
+      client.invalidateQueries({
+        queryKey: [product_model, "all-product-models"],
+      }),
+      client.invalidateQueries({
+        queryKey: [product_model, "all-infinite-products-models"],
+      }),
+      client.invalidateQueries({
+        queryKey: [product_model, "all-infinite-product-models-for-add-sale"],
+      }),
+      client.invalidateQueries({
+        queryKey: [product_model, "product-models-by-id"],
+      }),
+      client.invalidateQueries({
+        queryKey: [product_model, "product-model-by-id"],
+      })
+    ),
+  });
 
   const deleteProductModelById = useMutation({
     mutationFn: (id: string) =>
@@ -105,6 +142,8 @@ export const useProductModel = () => {
     getInfiniteProductModels,
     getInfiniteProductModelsForAddSale,
     getProductModelByIdForFilter,
+    getOneByIdForUpdate,
+    updateProductModelById,
     deleteProductModelById,
   };
 };

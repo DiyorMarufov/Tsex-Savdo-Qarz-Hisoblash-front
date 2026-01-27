@@ -16,7 +16,6 @@ interface TsexTransactionModalProps {
   form: FormInstance;
   tsexesOptions: Option[];
   pending: boolean;
-  setIsTsexOpen: (open: boolean) => void;
   loading: boolean;
 }
 
@@ -27,7 +26,6 @@ const TsexTransactionModal = ({
   form,
   tsexesOptions,
   pending,
-  setIsTsexOpen,
   loading,
 }: TsexTransactionModalProps) => {
   const paymentOptions = [
@@ -70,9 +68,6 @@ const TsexTransactionModal = ({
                 className="h-10!"
                 options={tsexesOptions}
                 placeholder="Tsexni tanlang"
-                onDropdownVisibleChange={(visible) => {
-                  if (visible) setIsTsexOpen(true);
-                }}
                 loading={loading}
                 allowClear
               />
@@ -109,7 +104,7 @@ const TsexTransactionModal = ({
                     }
 
                     const numericValue = Number(
-                      String(value).replace(/,/g, "")
+                      String(value).replace(/,/g, ""),
                     );
 
                     if (numericValue > 0) {
@@ -117,7 +112,7 @@ const TsexTransactionModal = ({
                     }
 
                     return Promise.reject(
-                      new Error("Summa 0 dan baland bo'lishi kerak!")
+                      new Error("Summa 0 dan baland bo'lishi kerak!"),
                     );
                   },
                 },

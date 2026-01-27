@@ -18,10 +18,7 @@ const CustomersReportPage = () => {
   const navigate = useNavigate();
   const { getParam, setParams, removeParam } = useParamsHook();
   const [localSearch, setLocalSearch] = useState(getParam("search") || "");
-  const [, setCustomerSearch] = useState(
-    getParam("customer_search") || ""
-  );
-  const [isCustomerOpen, setIsCustomerOpen] = useState<boolean>(false);
+  const [, setCustomerSearch] = useState(getParam("customer_search") || "");
   const {
     getAllCustomers,
     getCustomerBalanceSummary,
@@ -136,7 +133,7 @@ const CustomersReportPage = () => {
         page: 1,
       });
     }, 500),
-    [setParams]
+    [setParams],
   );
 
   const debouncedSetSearchCustomerModalQuery = useCallback(
@@ -146,7 +143,7 @@ const CustomersReportPage = () => {
         page: 1,
       });
     }, 500),
-    [setParams]
+    [setParams],
   );
 
   const handleSearchChange = (value: string) => {
@@ -180,7 +177,7 @@ const CustomersReportPage = () => {
     fetchNextPage: customerFetchNextPage,
     hasNextPage: customerHasNextPage,
     isFetchingNextPage: customerIsFetchingNextPage,
-  } = getInfiniteCustomers(isCustomerOpen, {
+  } = getInfiniteCustomers({
     search: query.customerFilterSearch,
   });
   const customerOptions: Option[] = [
@@ -218,7 +215,6 @@ const CustomersReportPage = () => {
         end={query.end}
         customerId={query.customerId}
         customerOptions={customerOptions}
-        setIsCustomerOpen={setIsCustomerOpen}
         customerLoading={customerListLoading}
         customerHasNextPage={customerHasNextPage}
         customerIsFetchingNextPage={customerIsFetchingNextPage}

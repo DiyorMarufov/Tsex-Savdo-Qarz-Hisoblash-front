@@ -26,7 +26,6 @@ type FieldType = {
 };
 
 const TsexesPage = () => {
-  const [isTsexOpen, setIsTsexOpen] = useState<boolean>(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [form] = Form.useForm();
@@ -271,7 +270,7 @@ const TsexesPage = () => {
 
   // Options start
   const { data: tsexesFilter, isLoading: tsexListLoading } =
-    getAllTsexesForProductsFilter(isTsexOpen);
+    getAllTsexesForProductsFilter();
   const tsexesOptions = tsexesFilter?.data?.map((ts) => ({
     value: ts?.id,
     label: ts?.name,
@@ -343,7 +342,6 @@ const TsexesPage = () => {
         onFinish={onFinish}
         form={form}
         tsexesOptions={tsexesOptions as Option[]}
-        setIsTsexOpen={setIsTsexOpen}
         loading={tsexListLoading}
         pending={createTsexTransaction.isPending}
       />

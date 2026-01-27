@@ -33,7 +33,6 @@ const CustomersPage = () => {
   >(null);
   const [newCustomerOpen, setNewCustomerOpen] = useState<boolean>(false);
   const [openDrawer, setOpenDrawer] = useState(false);
-  const [isCustomerOpen, setIsCustomerOpen] = useState<boolean>(false);
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -294,7 +293,7 @@ const CustomersPage = () => {
     fetchNextPage: customerFetchNextPage,
     hasNextPage: customerHasNextPage,
     isFetchingNextPage: customerIsFetchingNextPage,
-  } = getInfiniteCustomers(isCustomerOpen, {
+  } = getInfiniteCustomers({
     search: query.customerFilterSearch,
   });
   const customerOptions: Option[] = (
@@ -408,7 +407,6 @@ const CustomersPage = () => {
         customers={customerOptions}
         form={form}
         loading={createLend.isPending || createBorrow.isPending}
-        setIsCustomerOpen={setIsCustomerOpen}
         customerLoading={customerListLoading}
         customerHasNextPage={customerHasNextPage}
         customerIsFetchingNextPage={customerIsFetchingNextPage}

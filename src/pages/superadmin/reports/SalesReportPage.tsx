@@ -18,9 +18,6 @@ import { useCustomer } from "../../../shared/lib/apis/customers/useCustomer";
 import { formatPhoneNumber } from "../../../shared/lib/functions/formatPhoneNumber";
 
 const SalesReportPage = () => {
-  const [isCustomerOpen, setIsCustomerOpen] = useState<boolean>(false);
-  const [isTsexOpen, setIsTsexOpen] = useState<boolean>(false);
-  const [isShopOpen, setIsShopOpen] = useState<boolean>(false);
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
@@ -186,7 +183,7 @@ const SalesReportPage = () => {
     fetchNextPage: customerFetchNextPage,
     hasNextPage: customerHasNextPage,
     isFetchingNextPage: customerIsFetchingNextPage,
-  } = getInfiniteCustomers(isCustomerOpen, {
+  } = getInfiniteCustomers({
     search: query.customerFilterSearch,
   });
   const customerOptions: Option[] = [
@@ -216,7 +213,7 @@ const SalesReportPage = () => {
   ];
 
   const { data: tsexes, isLoading: tsexLoading } =
-    getAllTsexesForProductsFilter(isTsexOpen);
+    getAllTsexesForProductsFilter();
   const tsexesOptions = [
     {
       value: "",
@@ -229,7 +226,7 @@ const SalesReportPage = () => {
   ];
 
   const { data: shops, isLoading: shopLoading } =
-    getAllShopsForProductsFilter(isShopOpen);
+    getAllShopsForProductsFilter();
   const shopsOptions = [
     {
       value: "",
@@ -272,12 +269,9 @@ const SalesReportPage = () => {
         customerOptions={customerOptions}
         shopsOptions={shopsOptions}
         tsexesOptions={tsexesOptions}
-        setIsCustomerOpen={setIsCustomerOpen}
         customerHasNextPage={customerHasNextPage}
         customerIsFetchingNextPage={customerIsFetchingNextPage}
         customerFetchNextPage={customerFetchNextPage}
-        setIsTsexOpen={setIsTsexOpen}
-        setIsShopOpen={setIsShopOpen}
         onSearchCustomerChange={handleSearchCustomerChange}
         onSearchChange={handleSearchProductFilterChange}
         customerLoading={customerListLoading}

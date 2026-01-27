@@ -14,7 +14,6 @@ import SearchInput from "../../../shared/ui/SearchInput/SearchInput";
 import { tsexColumns } from "../../../shared/lib/model/tsexes/tsexes-model";
 
 const TsexesReportPage = () => {
-  const [isTsexOpen, setIsTsexOpen] = useState<boolean>(false);
   const navigate = useNavigate();
   const { setParams, getParam, removeParam } = useParamsHook();
   const [localSearch, setLocalSearch] = useState(getParam("search") || "");
@@ -93,7 +92,7 @@ const TsexesReportPage = () => {
 
   // TsexReport options start
   const { data: tsexesFilter, isLoading: tsexFilterLoading } =
-    getAllTsexesForProductsFilter(isTsexOpen);
+    getAllTsexesForProductsFilter();
   const tsexesOptions = [
     {
       value: "",
@@ -156,7 +155,7 @@ const TsexesReportPage = () => {
         page: 1,
       });
     }, 500),
-    [setParams]
+    [setParams],
   );
 
   const handleSearchChange = (value: string) => {
@@ -174,7 +173,6 @@ const TsexesReportPage = () => {
         tsexId={query.tsexId}
         tsexesOptions={tsexesOptions}
         tsexLoading={tsexFilterLoading}
-        setIsTsexOpen={setIsTsexOpen}
       />
 
       <TsexesReportBalances

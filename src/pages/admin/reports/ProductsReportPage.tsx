@@ -17,9 +17,6 @@ import { productColumns } from "../../../shared/lib/model/products/products-mode
 import { useProductModel } from "../../../shared/lib/apis/product-models/useProductModel";
 
 const AdminProductsReportPage = () => {
-  const [isModelOpen, setIsModelOpen] = useState<boolean>(false);
-  const [isTsexOpen, setIsTsexOpen] = useState<boolean>(false);
-  const [isShopOpen, setIsShopOpen] = useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -202,7 +199,7 @@ const AdminProductsReportPage = () => {
     fetchNextPage: modelFetchNextPage,
     hasNextPage: modelHasNextPage,
     isFetchingNextPage: modelIsFetchingNextPage,
-  } = getInfiniteProductModels(isModelOpen, {
+  } = getInfiniteProductModels({
     search: query.productFilterSearch,
   });
 
@@ -228,7 +225,7 @@ const AdminProductsReportPage = () => {
   ];
 
   const { data: tsexes, isLoading: tsexLoading } =
-    getAllTsexesForProductsFilter(isTsexOpen);
+    getAllTsexesForProductsFilter();
   const tsexesOptions = [
     {
       value: "",
@@ -241,7 +238,7 @@ const AdminProductsReportPage = () => {
   ];
 
   const { data: shops, isLoading: shopLoading } =
-    getAllShopsForProductsFilter(isShopOpen);
+    getAllShopsForProductsFilter();
   const shopsOptions = [
     {
       value: "",
@@ -266,9 +263,6 @@ const AdminProductsReportPage = () => {
         shopsOptions={shopsOptions}
         tsexesOptions={tsexesOptions}
         modelOptions={productOptions}
-        setIsModelOpen={setIsModelOpen}
-        setIsTsexOpen={setIsTsexOpen}
-        setIsShopOpen={setIsShopOpen}
         modelLoading={modelListLoading}
         modelHasNextPage={modelHasNextPage}
         modeltIsFetchingNextPage={modelIsFetchingNextPage}

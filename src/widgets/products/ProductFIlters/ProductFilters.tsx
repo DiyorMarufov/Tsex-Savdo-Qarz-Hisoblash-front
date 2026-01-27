@@ -11,8 +11,6 @@ interface ProductFiltersProps {
   shopsOptions: Option[];
   tsexesOptions: Option[];
   onFilterChange: (key: "shopId" | "tsexId", value: string) => void;
-  setIsTsexOpen: (open: boolean) => void;
-  setIsShopOpen: (open: boolean) => void;
   tsexLoading: boolean;
   shopLoading: boolean;
   isAdmin?: boolean;
@@ -26,8 +24,6 @@ const ProductFilters = ({
   shopsOptions,
   tsexesOptions,
   onFilterChange,
-  setIsTsexOpen,
-  setIsShopOpen,
   tsexLoading,
   shopLoading,
   isAdmin = false,
@@ -49,9 +45,6 @@ const ProductFilters = ({
           options={tsexesOptions}
           value={tsexLoading || tsexesOptions.length <= 1 ? undefined : tsexId}
           onChange={(val) => onFilterChange("tsexId", val)}
-          onDropdownVisibleChange={(visible: any) => {
-            if (visible) setIsTsexOpen(true);
-          }}
           loading={tsexLoading}
         />
         <Filter
@@ -60,9 +53,6 @@ const ProductFilters = ({
           options={shopsOptions}
           alue={shopLoading || shopsOptions.length <= 1 ? undefined : shopId}
           onChange={(val) => onFilterChange("shopId", val)}
-          onDropdownVisibleChange={(visible: any) => {
-            if (visible) setIsShopOpen(true);
-          }}
           loading={shopLoading}
         />
       </div>

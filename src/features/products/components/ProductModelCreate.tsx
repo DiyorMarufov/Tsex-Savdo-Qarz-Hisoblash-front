@@ -14,6 +14,9 @@ import {
 } from "../../../shared/lib/constants";
 import { useProductCategory } from "../../../shared/lib/apis/product-categories/useProductCategory";
 import type { QueryParams } from "../../../shared/lib/types";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../../../app/store";
+import { setEditingProductModelId } from "../model/productModelModel";
 
 type FieldType = {
   name: string;
@@ -25,21 +28,27 @@ type FieldType = {
 };
 
 const ProductModelCreate = () => {
-  const [isCategoryOpen, setIsCategoryOpen] = useState<boolean>(false);
-  const [isTsexOpen, setIsTsexOpen] = useState<boolean>(false);
-  const [isShopOpen,] = useState<boolean>(true);
   const { getParam, setParams } = useParamsHook();
   const [, setCategorySearch] = useState(getParam("category_search") || "");
 
   const navigate = useNavigate();
   const [form] = Form.useForm();
+  const dispatch = useDispatch();
 
   const { getAllProductCategoriesForFilter } = useProductCategory();
   const { getAllShopsForProductsFilter } = useShop();
   const { getAllTsexesForProductsFilter } = useTsex();
-  const { createProductModel } = useProductModel();
+  const { createProductModel, getOneByIdForUpdate, updateProductModelById } =
+    useProductModel();
   const { handleApiError } = useApiNotification();
 
+  const editingProductModelId = useSelector(
+    (state: RootState) => state.setEditingProductModelId.editingProductModelId,
+  );
+  const { data: productModel } = getOneByIdForUpdate(editingProductModelId);
+  const editingProductModel = productModel?.data?.data;
+  const products = productModel?.data?.products;
+  const saleItems = productModel?.data?.saleItems;
   // Query starts
   const query: QueryParams = useMemo(() => {
     const categorySearch = getParam("category_search") || undefined;
@@ -49,49 +58,109 @@ const ProductModelCreate = () => {
   // Query ends
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values: FieldType) => {
-    const { price } = values;
+    if (editingProductModelId) {
+      const data = {
+        ...values,
+        price: String(values.price).replace(/\D/g, ""),
+      };
+      updateProductModelById.mutate(
+        {
+          id: editingProductModelId,
+          data,
+        },
+        {
+          onSuccess: () => {
+            dispatch(setEditingProductModelId(null));
+            form.resetFields();
+            navigate("/admin/models");
+          },
+          onError: (err: any) => {
+            const status = err?.response?.data?.statusCode;
+            const msg = err?.response?.data?.message;
 
-    const data = {
-      ...values,
-      price: String(price).replace(/\D/g, ""),
-    };
+            if (status === 404 && msg.startsWith("Product model with ID")) {
+              handleApiError("Model topilmadi", "topRight");
+              return;
+            } else if (
+              status === 404 &&
+              msg.startsWith("Product category with ID")
+            ) {
+              handleApiError("Kategoriya topilmadi", "topRight");
+              return;
+            } else if (status === 404 && msg.startsWith("Tsex with ID")) {
+              handleApiError("Tsex topilmadi", "topRight");
+              return;
+            } else if (status === 404 && msg.startsWith("Shop with ID")) {
+              handleApiError("Do'kon topilmadi", "topRight");
+              return;
+            } else if (
+              status === 400 &&
+              msg.startsWith(
+                "Can't update product model, it has relation with products",
+              )
+            ) {
+              handleApiError("Bu model mahsulotlarga ega", "topRight");
+              return;
+            } else if (
+              status === 400 &&
+              msg.startsWith(
+                "Can't update product model, it has been sold already",
+              )
+            ) {
+              handleApiError("Bu modeldan sotuvlarga ega", "topRight");
+              return;
+            } else {
+              handleApiError("Serverda xato", "topRight");
+              return;
+            }
+          },
+        },
+      );
+    } else {
+      const { price } = values;
 
-    createProductModel.mutate(data, {
-      onSuccess: () => {
-        form.resetFields();
-        navigate("/admin/models");
-      },
-      onError: (err: any) => {
-        const status = err?.response?.data?.statusCode;
-        const msg = err?.response?.data?.message;
+      const data = {
+        ...values,
+        price: String(price).replace(/\D/g, ""),
+      };
 
-        if (status === 409 && msg.startsWith("Model already exists")) {
-          handleApiError("Model allaqachon mavjud", "topRight");
-          return;
-        } else if (
-          status === 400 &&
-          msg.startsWith("Price should not be negative")
-        ) {
-          handleApiError("Narx pozitiv bo'lishi kerak", "topRight");
-          return;
-        } else if (status === 404 && msg.startsWith("Category with ID")) {
-          handleApiError("Kategoriya topilmadi", "topRight");
-          return;
-        } else if (status === 404 && msg.startsWith("Tsex with ID")) {
-          handleApiError("Tsex topilmadi", "topRight");
-          return;
-        } else if (status === 404 && msg.startsWith("Shop with ID")) {
-          handleApiError("Do'kon topilmadi", "topRight");
-          return;
-        } else if (status === 404 && msg.startsWith("User with ID")) {
-          handleApiError("Superadmin topilmadi", "topRight");
-          return;
-        } else {
-          handleApiError("Serverda xato", "topRight");
-          return;
-        }
-      },
-    });
+      createProductModel.mutate(data, {
+        onSuccess: () => {
+          form.resetFields();
+          navigate("/admin/models");
+        },
+        onError: (err: any) => {
+          const status = err?.response?.data?.statusCode;
+          const msg = err?.response?.data?.message;
+
+          if (status === 409 && msg.startsWith("Model already exists")) {
+            handleApiError("Model allaqachon mavjud", "topRight");
+            return;
+          } else if (
+            status === 400 &&
+            msg.startsWith("Price should not be negative")
+          ) {
+            handleApiError("Narx pozitiv bo'lishi kerak", "topRight");
+            return;
+          } else if (status === 404 && msg.startsWith("Category with ID")) {
+            handleApiError("Kategoriya topilmadi", "topRight");
+            return;
+          } else if (status === 404 && msg.startsWith("Tsex with ID")) {
+            handleApiError("Tsex topilmadi", "topRight");
+            return;
+          } else if (status === 404 && msg.startsWith("Shop with ID")) {
+            handleApiError("Do'kon topilmadi", "topRight");
+            return;
+          } else if (status === 404 && msg.startsWith("User with ID")) {
+            handleApiError("Superadmin topilmadi", "topRight");
+            return;
+          } else {
+            handleApiError("Serverda xato", "topRight");
+            return;
+          }
+        },
+      });
+    }
   };
 
   // Search starts
@@ -121,7 +190,7 @@ const ProductModelCreate = () => {
 
   // Options start
   const { data: allProductCategories, isLoading: productCategoryLoading } =
-    getAllProductCategoriesForFilter(isCategoryOpen, {
+    getAllProductCategoriesForFilter({
       search: query.categorySearch,
     });
   const productCategoryOptions = allProductCategories?.data?.map((ct: any) => ({
@@ -130,7 +199,7 @@ const ProductModelCreate = () => {
   }));
 
   const { data: tsexes, isLoading: tsexLoading } =
-    getAllTsexesForProductsFilter(isTsexOpen);
+    getAllTsexesForProductsFilter();
   const tsexesOptions =
     tsexes?.data?.map((ts) => ({
       value: ts?.id,
@@ -138,7 +207,7 @@ const ProductModelCreate = () => {
     })) || [];
 
   const { data: shops, isLoading: shopLoading } =
-    getAllShopsForProductsFilter(isShopOpen);
+    getAllShopsForProductsFilter();
   const shopsOptions =
     shops?.data?.map((st) => ({
       value: st?.id,
@@ -151,7 +220,19 @@ const ProductModelCreate = () => {
       const shop = shopsOptions[0];
       form.setFieldsValue({ shop_id: shop?.value });
     }
-  }, [shopsOptions[0]]);
+
+    if (editingProductModelId) {
+      const data: FieldType = {
+        name: editingProductModel?.name,
+        category_id: editingProductModel?.product_category?.id,
+        price: editingProductModel?.price?.toLocaleString(),
+        size: editingProductModel?.size,
+        tsex_id: editingProductModel?.tsex?.id,
+        shop_id: editingProductModel?.shop?.id,
+      };
+      form.setFieldsValue(data);
+    }
+  }, [shopsOptions[0], editingProductModelId]);
 
   return (
     <Form
@@ -174,7 +255,12 @@ const ProductModelCreate = () => {
               },
             ]}
           >
-            <Input className="h-10!" placeholder="Nomi" allowClear />
+            <Input
+              className="h-10!"
+              placeholder="Nomi"
+              disabled={saleItems > 0 ? true : false}
+              allowClear
+            />
           </Form.Item>
         </div>
 
@@ -196,12 +282,10 @@ const ProductModelCreate = () => {
               className="h-10!"
               placeholder="Kategoriya"
               options={productCategoryOptions}
-              onDropdownVisibleChange={(visible: any) => {
-                if (visible) setIsCategoryOpen(true);
-              }}
               onSearch={handleCategorySearchChange}
               filterOption={false}
               loading={productCategoryLoading}
+              disabled={saleItems > 0 ? true : false}
               allowClear
             />
           </Form.Item>
@@ -246,7 +330,12 @@ const ProductModelCreate = () => {
                 : v
             }
           >
-            <Input className="h-10!" placeholder="Narxi" allowClear />
+            <Input
+              className="h-10!"
+              placeholder="Narxi"
+              disabled={products > 0 ? true : false}
+              allowClear
+            />
           </Form.Item>
         </div>
 
@@ -267,6 +356,7 @@ const ProductModelCreate = () => {
               className="h-10!"
               placeholder="Razmeri"
               options={productSizeOptions}
+              disabled={saleItems > 0 ? true : false}
               allowClear
             />
           </Form.Item>
@@ -291,10 +381,8 @@ const ProductModelCreate = () => {
               className="h-10!"
               placeholder="Tsex"
               options={tsexesOptions}
-              onDropdownVisibleChange={(visible: any) => {
-                if (visible) setIsTsexOpen(true);
-              }}
               loading={tsexLoading}
+              disabled={products > 0 ? true : false}
               showSearch
               allowClear
             />
@@ -319,6 +407,7 @@ const ProductModelCreate = () => {
               placeholder={shopLoading ? "Yuklanmoqda..." : "Do'kon"}
               options={shopsOptions}
               loading={shopLoading}
+              disabled={products > 0 ? true : false}
               allowClear
             />
           </Form.Item>
@@ -337,11 +426,21 @@ const ProductModelCreate = () => {
             type="primary"
             htmlType="submit"
             className="h-9! max-[500px]:w-full"
-            loading={createProductModel.isPending}
-            disabled={createProductModel.isPending}
+            loading={
+              editingProductModelId
+                ? updateProductModelById.isPending
+                : createProductModel.isPending
+            }
+            disabled={
+              editingProductModelId
+                ? updateProductModelById.isPending
+                : createProductModel.isPending
+            }
           >
             <Plus />
-            Yangi model qo'shish
+            {editingProductModelId
+              ? "Modelni o'zgartirish"
+              : "Yangi model qo'shish"}
           </Button>
         </div>
       </Form.Item>
